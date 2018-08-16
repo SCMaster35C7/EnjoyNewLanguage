@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="global.sesoc.Youtube.dao.MemberMapper">
+	<select id="selectOneFromMember" parameterType="map" resultType="Member">
+		select
+			*
+		from
+			member
+		where
+			userid=#{userid}
+		<if test="userpwd != null">
+		and
+			userpwd=#{userpwd}
+		</if>
+	</select>
+</mapper>
