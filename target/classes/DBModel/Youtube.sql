@@ -25,7 +25,7 @@ CREATE TABLE Member (
 	userid	 		VARCHAR2(50) 	CONSTRAINT user_userid_pk 		PRIMARY KEY,	-- 아이디
 	username		VARCHAR2(100) 	CONSTRAINT user_username_nn		NOT NULL,		-- 이름
 	userpwd			VARCHAR2(100) 	CONSTRAINT user_userpwd_nn		NOT NULL,		-- 비밀번호
-	phone			VARCHAR2(20)	CONSTRAINT user_userphone_nn 	NOT NULL,		-- 전화번호
+		--phone			VARCHAR2(20)	CONSTRAINT user_userphone_nn 	NOT NULL,		-- 전화번호
 	gender 			CHAR(1)			CONSTRAINT user_gender_nn		NOT NULL,		-- 성별
 	birth			DATE			CONSTRAINT user_birth_nn		NOT NULL,		-- 생일
 	joinDate		DATE			DEFAULT SYSDATE,								-- 가입일
@@ -37,14 +37,16 @@ CREATE TABLE Member (
 
 -- 2. 교육 자료 테이블(교육용 게시판용)
 CREATE TABLE EducationVideo(
-	videoNum			NUMBER 			CONSTRAINT educationvideo_videoNum_pk	PRIMARY KEY,	-- 교육용 비디오번호
-	url					VARCHAR2(1000)	CONSTRAINT educationvideo_url_nn		NOT NULL,		-- 교육영상 URL
-	subtitle			VARCHAR2(1000) 	CONSTRAINT educationvideo_subtitle_nn	NOT NULL,		-- 자막
-	regDate				DATE			DEFAULT SYSDATE,										-- 등록일
-	hitCount			NUMBER			DEFAULT 0,												-- 조회수
-	recommendation		NUMBER			DEFAULT 0,												-- 추천수
-	decommendation		NUMBER			DEFAULT 0,												-- 비추천수
-	CONSTRAINT EducationVideo UNIQUE(url)
+	videoNum			NUMBER 			CONSTRAINT eduvideo_videoNum_pk		PRIMARY KEY,	-- 교육용 비디오번호
+	title				VARCHAR2(100)	CONSTRAINT eduvideo_title_nn			NOT NULL,		-- 교육영상 제목
+	url					VARCHAR2(1000)	CONSTRAINT eduvideo_url_nn			NOT NULL,		-- 교육영상 URL
+	originalFile		VARCHAR2(1000) 	CONSTRAINT eduvideo_originalfile_nn	NOT NULL,		-- 파일 원본 이름
+	savedFile			VARCHAR2(1000) 	CONSTRAINT eduvideo_savedfile_nn		NOT NULL,		-- 저장된 파일 이름
+	regDate				DATE			DEFAULT SYSDATE,											-- 등록일
+	hitCount			NUMBER			DEFAULT 0,													-- 조회수
+	recommendation		NUMBER			DEFAULT 0,													-- 추천수
+	decommendation		NUMBER			DEFAULT 0,													-- 비추천수
+	CONSTRAINT eduvideo_url_uq UNIQUE(url)
 );
 
 CREATE SEQUENCE EDUCATION_VIDEO_SEQ;
@@ -58,7 +60,7 @@ CREATE TABLE WrongAnswer(
 	wrongAnswer		VARCHAR2(1000) 	CONSTRAINT wronganswer_wrongSentence_nn 	NOT NULL,		-- 오답 문장
 	correctAnswer	VARCHAR2(1000) 	CONSTRAINT wronganswer_correctAnswer_nn 	NOT NULL,		-- 올바른 문장
 	url				VARCHAR2(1000),																-- 영상URL
-	regDate			DATE		DEFAULT SYSDATE,												-- 등록일
+	regDate	DATE		DEFAULT SYSDATE,											-- 등록일
 	classification	NUMBER			CONSTRAINT wronganswer_classification_nn	NOT NULL,		-- 구분코드(0-단어, 1-문장)
 	CONSTRAINT wronganswer_userid_fk FOREIGN KEY(userid) REFERENCES Member(userid) ON DELETE CASCADE,
 	CONSTRAINT wronganswer_url_fk	 FOREIGN KEY(url) REFERENCES EducationVideo(url) ON DELETE CASCADE
@@ -112,7 +114,8 @@ CREATE SEQUENCE INVESTIGATION_SEQ;
 CREATE TABLE InvestigationSubtitle(
 	subtitlenum			NUMBER			CONSTRAINT isubtitle_subtitlenum_pk		PRIMARY KEY,	-- 요청 자막 제공 번호
 	subtitleName		VARCHAR2(200)	CONSTRAINT isubtitle_subtitlename_nn	NOT NULL,		-- 자막 이름
-	subtitleFile		VARCHAR2(1000)	CONSTRAINT isubtitle_subtitlefile_nn	NOT NULL,		-- 자막 파일이름
+	originalFile		VARCHAR2(1000)	CONSTRAINT isubtitle_originalfile_nn	NOT NULL,		-- 자막 원본 이름
+	savedFile			VARCHAR2(1000)	CONSTRAINT isubtitle_savedFile_nn		NOT NULL,		-- 저장된 파일 이름
 	userid				VARCHAR2(50)	CONSTRAINT isubtitle_userid_nn			NOT NULL,		-- 자막 제공자
 	investigationnum	NUMBER,																	-- 자막 요청 게시글 번호
 	regDate				DATE			DEFAULT SYSDATE,										-- 자막 제공일
