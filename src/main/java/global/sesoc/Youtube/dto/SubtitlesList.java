@@ -7,6 +7,7 @@ public class SubtitlesList {
 
 	List<ArrayList<String>> fulltext;
 	List<ArrayList<String>> quiz;
+	ArrayList<Integer> playtime;
 	ArrayList<String> correct;
 
 	public SubtitlesList() {
@@ -35,6 +36,14 @@ public class SubtitlesList {
 
 	public void setCorrect(ArrayList<String> correct) {
 		this.correct = correct;
+	}
+
+	public ArrayList<Integer> getPlaytime() {
+		return playtime;
+	}
+
+	public void setPlaytime(ArrayList<Integer> playtime) {
+		this.playtime = playtime;
 	}
 
 }

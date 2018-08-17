@@ -15,18 +15,20 @@ import global.sesoc.Youtube.dto.SubtitlesList;
 public class SubtitlesMaker {
 
 	Random r = new Random();
+	ArrayList<Integer> playtime;
 
-	//url : 자막파일절대위치, level : 난이도(숫자가 작을수록 높은 난이도)
+	// url : 자막파일절대위치, level : 난이도(숫자가 작을수록 높은 난이도)
 	public SubtitlesList RandomText(String url, int level) {
 		SubtitlesList resultlist = new SubtitlesList();
 		FileReader fileReader = null;
 		BufferedReader in = null;
 		String str = null;
 		List<ArrayList<String>> fulltext = new ArrayList<>(); // 본문 풀 텍스트
-		List<ArrayList<String>> quiz = new ArrayList<>();     // 문제지
-		ArrayList<String> correct = new ArrayList<>();        //정답 리스트
-	
-		int cut = 0; //srt 자막의 첫 문장은 보이지 않는 문자로 글 압축타입을 지정한다. 그러므로 무조건 첫줄은 걸러야 한다.
+		List<ArrayList<String>> quiz = new ArrayList<>(); // 문제지
+		ArrayList<String> correct = new ArrayList<>(); // 정답 리스트
+		playtime = new ArrayList<>(); // 각 자막 줄별 시작타임 저장
+
+		int cut = 0; // srt 자막의 첫 문장은 보이지 않는 문자로 글 압축타입을 지정한다. 그러므로 무조건 첫줄은 걸러야 한다.
 		try {
 			fileReader = new FileReader(url);
 			in = new BufferedReader(fileReader);
@@ -63,38 +65,19 @@ public class SubtitlesMaker {
 					for (int i = 0; i < block; i++) {
 
 						correct.add(textlist.get(sortlist[i]));
-						quiztext.set(sortlist[i], "★" + textlist.get(sortlist[i]).length());
+						quiztext.set(sortlist[i], "★★" + textlist.get(sortlist[i]).length());
 
 					}
 
 					quiz.add(quiztext);
 				}
-			}
-/*
-			for (int i = 0; i < correct.size(); i++) {
-				System.out.println(correct.get(i));
-			}
-			
-			System.out.println("\n\n===========\n\n");
-
-			for (int i = 0; i < quiz.size(); i++) {
-				for (int j = 0; j < quiz.get(i).size(); j++) {
-					System.out.print(quiz.get(i).get(j) + " ");
-
-				}
-				System.out.println();
-
+				resultlist.setCorrect(correct);
+				resultlist.setFulltext(fulltext);
+				resultlist.setPlaytime(playtime);
+				resultlist.setQuiz(quiz);
+				
 			}
 			
-			System.out.println("\n\n===========\n\n");
-			
-			for(int i=0;i<fulltext.size();i++) {
-				for(int j=0;j<fulltext.get(i).size();j++) {
-					System.out.print(fulltext.get(i).get(j)+" ");
-				}
-				System.out.println();
-			}
-*/
 		} catch (Exception e) {
 
 		} finally {
@@ -124,23 +107,40 @@ public class SubtitlesMaker {
 		// 위에 적힌 1, 2, 3 이런거 지우기
 		if ((text.charAt(0)) >= '0' && text.charAt(0) <= '9') {
 			// 뒤에 . 이 붙은 숫자는 대본임으로 삭제하지 않는다.
-			if (!text.contains("."))
+			if (!text.contains(".")&&text.length()<5)
 				return null;
 		}
 		// ??:??:??,??? --> ??:??:??,??? 지우기
-		if (text.contains("-->"))
+		if (text.contains("-->")) {
+			int resultTime = analysisTime(text);
+			playtime.add(resultTime);
+			System.out.println(resultTime);
+
 			return null;
+		}
 
 		StringTokenizer st = new StringTokenizer(replacedText, " -?!.,:—^\"[]{}()");
 
 		while (st.hasMoreTokens()) {
 			String textpiece = st.nextToken();
 			textpiece = textpiece.trim();
-
 			result.add(textpiece);
-
 		}
 		return result;
+	}
+
+	//시간분석, time 부분 String 값을 받아서 해당 시간을 분석, second 로 리턴
+	public int analysisTime(String time) {
+		int resultTime = 0;
+
+		int checkpoint = time.indexOf(",");
+		time = time.substring(0, checkpoint);
+		String[] timetable = time.split(":");
+		resultTime += Integer.parseInt(timetable[0]) * 3600;
+		resultTime += Integer.parseInt(timetable[1]) * 60;
+		resultTime += Integer.parseInt(timetable[2]);
+
+		return resultTime;
 	}
 
 }
