@@ -40,4 +40,12 @@ public class VideoController {
 		System.out.println(edu);
 		return "EducationBoard/detailEduBoard";
 	}
+	
+	
+	@RequestMapping(value="/slide", method=RequestMethod.GET)
+	public String slide() {
+		
+		return "slide";
+	}
+	
 }
