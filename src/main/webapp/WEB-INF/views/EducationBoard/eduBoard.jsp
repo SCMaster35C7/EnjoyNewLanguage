@@ -8,12 +8,10 @@
 	<meta charset="UTF-8">
 	<title>Enjoy Language</title>
 	
-	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
-			$('#addEduVideo').on('click', function() {
-				location.href = "addEduVideo";
-			});
+			$()
 		});
 	</script>
 </head>

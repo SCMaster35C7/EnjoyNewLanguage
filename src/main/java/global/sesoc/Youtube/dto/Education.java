@@ -2,10 +2,8 @@ package global.sesoc.Youtube.dto;
 
 public class Education {
 	private int videoNum;
-	private String title;
 	private String url;
-	private String originalfile;
-	private String savedfile;
+	private String subtitle;
 	private String regDate;
 	private int hitCount;
 	private int recommendation;
@@ -16,14 +14,12 @@ public class Education {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Education(int videoNum, String title, String url, String originalfile, String savedfile, String regDate,
-			int hitCount, int recommendation, int decommendation) {
+	public Education(int videoNum, String url, String subtitle, String regDate, int hitCount, int recommendation,
+			int decommendation) {
 		super();
 		this.videoNum = videoNum;
-		this.title = title;
 		this.url = url;
-		this.originalfile = originalfile;
-		this.savedfile = savedfile;
+		this.subtitle = subtitle;
 		this.regDate = regDate;
 		this.hitCount = hitCount;
 		this.recommendation = recommendation;
@@ -33,17 +29,11 @@ public class Education {
 	public int getVideoNum() {
 		return videoNum;
 	}
-	public String getTitle() {
-		return title;
-	}
 	public String getUrl() {
 		return url;
 	}
-	public String getOriginalfile() {
-		return originalfile;
-	}
-	public String getSavedfile() {
-		return savedfile;
+	public String getSubtitle() {
+		return subtitle;
 	}
 	public String getRegDate() {
 		return regDate;
@@ -61,17 +51,11 @@ public class Education {
 	public void setVideoNum(int videoNum) {
 		this.videoNum = videoNum;
 	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public void setOriginalfile(String originalfile) {
-		this.originalfile = originalfile;
-	}
-	public void setSavedfile(String savedfile) {
-		this.savedfile = savedfile;
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
 	}
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
@@ -88,8 +72,8 @@ public class Education {
 	
 	@Override
 	public String toString() {
-		return "Education [videoNum=" + videoNum + ", title=" + title + ", url=" + url + ", originalfile="
-				+ originalfile + ", savedfile=" + savedfile + ", regDate=" + regDate + ", hitCount=" + hitCount
-				+ ", recommendation=" + recommendation + ", decommendation=" + decommendation + "]";
+		return "Education [videoNum=" + videoNum + ", url=" + url + ", subtitle=" + subtitle + ", regDate=" + regDate
+				+ ", hitCount=" + hitCount + ", recommendation=" + recommendation + ", decommendation=" + decommendation
+				+ "]";
 	}
 }
