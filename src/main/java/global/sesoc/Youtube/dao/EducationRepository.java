@@ -13,9 +13,9 @@ public class EducationRepository {
 	@Autowired
 	SqlSession session;
 
-	public List<Education> selectAllStudyList() {
+	public List<Education> selectAllEduList() {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
-		List<Education> eduList = mapper.selectAllStudyList();
+		List<Education> eduList = mapper.selectAllEduList();
 		
 		return eduList;
 	}
@@ -25,6 +25,13 @@ public class EducationRepository {
 		Education edu = mapper.selectOneFromEduVideo(videoNum);
 		
 		return edu;
+	}
+
+	public int insertEduVideo(Education education) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.insertEduVideo(education);
+		
+		return result;
 	}
 	
 }
