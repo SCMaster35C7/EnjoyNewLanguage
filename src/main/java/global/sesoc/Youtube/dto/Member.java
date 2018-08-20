@@ -12,10 +12,12 @@ public class Member {
 	private int waringCount;
 	private int admin;
 	private int statis;
+	
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public Member(String userid, String useremail, String userpwd, char gender, String birth, String joinDate,
 			String lastAccess, int point, int waringCount, int admin, int statis) {
 		super();
@@ -31,6 +33,7 @@ public class Member {
 		this.admin = admin;
 		this.statis = statis;
 	}
+	
 	public String getUserid() {
 		return userid;
 	}
@@ -64,6 +67,7 @@ public class Member {
 	public int getStatis() {
 		return statis;
 	}
+	
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
@@ -97,6 +101,7 @@ public class Member {
 	public void setStatis(int statis) {
 		this.statis = statis;
 	}
+	
 	@Override
 	public String toString() {
 		return "Member [userid=" + userid + ", useremail=" + useremail + ", userpwd=" + userpwd + ", gender=" + gender

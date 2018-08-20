@@ -13,7 +13,13 @@ import global.sesoc.Youtube.dto.Member;
 public class MemberRepository {
 	@Autowired
 	SqlSession session;
-
+	
+	/**
+	 * 사용자 아이디 중복 검사 or 사용자 아이디 확인
+	 * @param useremail
+	 * @param userpwd
+	 * @return
+	 */
 	public Member selectOneFromMember(String useremail, String userpwd) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("useremail", useremail);
