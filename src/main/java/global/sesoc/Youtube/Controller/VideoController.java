@@ -67,4 +67,19 @@ public class VideoController {
 		int result = eduRepository.insertEduVideo(education);
 		return "EducationBoard/addEduVideo";
 	}
+	
+	@RequestMapping(value="/slide", method=RequestMethod.GET)
+	public String slide() {
+		
+		return "EducationBoard/slide";
+	}
+	
+	@RequestMapping(value="/studyboard", method=RequestMethod.GET)
+	public String studyboard() {
+		
+		return "EducationBoard/studyboard";
+	}
+
 }
+
+
