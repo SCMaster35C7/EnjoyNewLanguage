@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
+	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Enjoy Language</title>
+<meta charset="UTF-8">
+<title>Enjoy Language</title>
+
+<script type="text/javascript" src="scripts/JQuery/jquery-3.3.1.min.js"></script>
+<script>
 	
-	<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
-	<script>
+	var correct="";
 		$(function() {		
 
 			$('#mute').on('click', mute);
@@ -17,6 +19,76 @@
 			$('#soundVolum').on('click', soundVolum);
 			$('#seekTo').on('click', seekTo);
 		});
+		
+		
+		function getSubList() {
+			var level = $('#level').val();
+			var jamacURL = '${jamacURL}';
+
+			$.ajax({
+				method : 'get',
+				url : 'getSubtitlesList',
+				data : 'level=' + level + "&videoNum=" + ${edu.videoNum},
+				contentType : 'application/json; charset=UTF-8',
+				dataType : 'json',
+				success : makeSubList,
+				error : function() {
+					console.log('error!!');
+				}
+
+			})
+
+		}
+		
+		
+		
+		
+		function makeSubList(s) {
+			correct=s.correct; //정답 배열 스크립트 맨위에 저장(채점시 용도)
+			var subtitles="";
+			
+			for (var i = 0; i < s.quiz.length; i++) {
+				
+				//<a class="gotime"></a>
+				//문자열을 <a>태크로 감쌈
+				 subtitles+='<a onclick='+'"'+'seekTo('+s.playtime[i]+')'+'"'+'>';
+				for (var j = 0; j < s.quiz[i].length; j++) {
+					if(s.quiz[i][j].indexOf('★')==0){
+						var longer=s.quiz[i][j].replace("★★", "");
+						var textlong;
+						if(longer>1){
+							textlong=longer/2;  //택스트 입력칸 사이즈 조절
+						}else{
+							textlong=1;  // 0.5는 불가능하여 오히려 더 큰사이즈가 되므로 최소 1
+						}
+						subtitles += '<input class="answer" type="text" size='+'"'+textlong+'"'+'px> ';
+					}else{
+						subtitles+=s.quiz[i][j];
+						subtitles+=' ';
+					}
+				}
+				subtitles+='</a><br>';
+			}
+			$('#jamaclist').html(subtitles);
+			
+
+		}
+		
+		function mark(){
+          console.log(correct[1]);
+			var answer=$('.answer');
+			for(var i=0;i<correct.length;i++){
+				if(correct[i]==answer[i].value.toLowerCase()){
+					answer[i].style.color= "blue";
+					answer[i].readOnly=true;
+				}else{
+					answer[i].readOnly=true;
+					answer[i].style.color= "red";
+					answer[i].value=('정답: '+correct[i]+", 오답: "+answer[i].value);
+					answer[i].size=(correct[i].length*4);
+				}
+			}
+		}
 	</script>
 </head>
 
@@ -24,7 +96,9 @@
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 
 	<!--<div id="youtube"></div>   -->
-	<iframe id="youtube" width="960" height="490" src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1" frameborder="0" allowfullscreen ></iframe>
+	<iframe id="youtube" width="960" height="490"
+		src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
+		frameborder="0" allowfullscreen></iframe>
 
 
 	<script>
@@ -112,49 +186,44 @@
 			player.setVolume(soundValue.value, true);
 		}
 		
-		function seekTo() {
-			var start = document.getElementById("start");
-			
+		function seekTo(start) {
+			//var start = document.getElementById("start");
+			/*
 			if(isNaN(start.value) == true) {
 				alert("초를 입력해주세요.");
 				start.focus();
 				return;
 			}
-			player.seekTo(start.value, true);
+			*/
+			console.log(start);
+			player.seekTo(start, true);
 		}
 	</script>
-	
+
 	<hr />
 	<!-- 재생속도 조절 -->
 	<table border="1">
 
 		<tr>
 			<th>동영상 재생/멈춤</th>
-			<td>
-				<input type="button" id="playYoutube" value="재생">
-				<input type="button" id="pauseYoutube" value="멈춤">
-			</td>
+			<td><input type="button" id="playYoutube" value="재생"> <input
+				type="button" id="pauseYoutube" value="멈춤"></td>
 		</tr>
 		<tr>
 			<th>동영상 현재 시간 출력</th>
-			<td>
-				<input type="button" id="currentTime" value="영상 시간 출력"/>
-			</td>
+			<td><input type="button" id="currentTime" value="영상 시간 출력" /></td>
 		</tr>
 		<tr>
 			<th>동영상 음소거/음소거 제거</th>
-			<td>
-				<input type="button" id="mute" value="음소거"/>
-				<input type="button" id="unMute" value="음소거 제거"/>
-			</td>
+			<td><input type="button" id="mute" value="음소거" /> <input
+				type="button" id="unMute" value="음소거 제거" /></td>
 		</tr>
 		<tr>
 			<th>동영상 소리 설정</th>
-			<td>
-				<input type="number" id="soundValue" max="100" min="0"/>
-				<input type="button" id="soundVolum" value="소리조절"/>
-			</td>
+			<td><input type="number" id="soundValue" max="100" min="0" /> <input
+				type="button" id="soundVolum" value="소리조절" /></td>
 		</tr>
+		<!-- 
 		<tr>
 			<th>동영상 재생시간 이동</th>
 			<td>
@@ -162,6 +231,16 @@
 				<input type="button" id="seekTo" value="영상이동"/>
 			</td>
 		</tr>
+		 -->
 	</table>
+	<div>
+		<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level">
+		<input type="button" onclick="getSubList()" value="문제생성"> 
+		<input type="button" onclick="mark()" value="채점하기">
+
+	</div>
+
+	<div id="jamaclist"></div>
+
 </body>
 </html>

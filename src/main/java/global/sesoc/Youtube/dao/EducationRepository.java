@@ -16,15 +16,21 @@ public class EducationRepository {
 	public List<Education> selectAllStudyList() {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		List<Education> eduList = mapper.selectAllStudyList();
-		
+
 		return eduList;
 	}
 
 	public Education selectOneFromEduVideo(int videoNum) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Education edu = mapper.selectOneFromEduVideo(videoNum);
-		
+
 		return edu;
 	}
-	
+
+	public String selectSubName(int videoNum) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		String result = mapper.selectSubName(videoNum);
+		return result;
+	}
+
 }

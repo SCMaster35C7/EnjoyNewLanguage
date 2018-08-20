@@ -32,4 +32,10 @@
 		where
 			videonum = #{videoNum}
 	</select>
+	
+	<select id="selectSubName" parameterType="String" resultType="String">
+	select  subtitle
+	from EducationVideo
+	where videonum=#{value}
+	</select>
 </mapper>
