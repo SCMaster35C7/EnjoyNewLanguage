@@ -23,16 +23,16 @@ public class MemberContoller {
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(String userid, String userpwd, HttpSession session, Model model) {
-		Member member = mRepository.selectOneFromMember(userid, userpwd);
+	public String login(String useremail, String userpwd, HttpSession session, Model model) {
+		Member member = mRepository.selectOneFromMember(useremail, userpwd);
 		
 		if(member != null) {
-			session.setAttribute("userid", member.getUserid());
+			session.setAttribute("useremail", member.getUseremail());
 			session.setAttribute("admin", member.getAdmin());
 			System.out.println(member);
 			return "redirect:/";
 		}else {
-			model.addAttribute("userid", userid);
+			model.addAttribute("useremail", useremail);
 			model.addAttribute("userpwd",userpwd);
 			model.addAttribute("message", "아이디나 비밀번호가 틀렸습니다.");
 			

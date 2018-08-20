@@ -9,15 +9,23 @@
 	
 	<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
 	<script>
-		$(function() {
-			
+		$(function() {		
+
+			$('#mute').on('click', mute);
+			$('#unMute').on('click', unMute);
+	
+			$('#soundVolum').on('click', soundVolum);
+			$('#seekTo').on('click', seekTo);
 		});
 	</script>
 </head>
 
 <body>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-	<iframe id="youtube" width="960" height="490" src="${edu.url}" frameborder="0" allowfullscreen></iframe>
+
+	<!--<div id="youtube"></div>   -->
+	<iframe id="youtube" width="960" height="490" src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1" frameborder="0" allowfullscreen ></iframe>
+
 
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -65,12 +73,95 @@
  
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
+
+        // youtube 기능 함수 나열 =======================================================
+        
+		function playYoutube() {
+            // 플레이어 자동실행 (주의: 모바일에서는 자동실행되지 않음)
+            player.playVideo();
+            console.log( player.getVideoEmbedCode());
+        }
+		
+        function pauseYoutube() {
+        	player.pauseVideo();
+        	// player.stopVideo();	완전 멈춰서 처음부터 시작함
+        }
+        
+		function youtubeCurrentTime() {
+			//var youtube = $('#youtube');
+			console.log(player.getCurrentTime());	// 현재 상영 시간 출력
+			// console.log(player.getDuration());	// 총 시간 출력
+		}
+		
+		function mute() {
+			player.mute();
+		}
+		
+		function unMute() {
+			player.unMute();
+		}
+		
+		function soundVolum() {
+			var soundValue = document.getElementById("soundValue");
+			
+			if(isNaN(soundValue.value) == true) {
+				alert("볼륨 값을 입력해주세요.");
+				soundValue.focus();
+				return;
+			}
+			player.setVolume(soundValue.value, true);
+		}
+		
+		function seekTo() {
+			var start = document.getElementById("start");
+			
+			if(isNaN(start.value) == true) {
+				alert("초를 입력해주세요.");
+				start.focus();
+				return;
+			}
+			player.seekTo(start.value, true);
+		}
 	</script>
 	
 	<hr />
 	<!-- 재생속도 조절 -->
 	<table border="1">
-		
+
+		<tr>
+			<th>동영상 재생/멈춤</th>
+			<td>
+				<input type="button" id="playYoutube" value="재생">
+				<input type="button" id="pauseYoutube" value="멈춤">
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 현재 시간 출력</th>
+			<td>
+				<input type="button" id="currentTime" value="영상 시간 출력"/>
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 음소거/음소거 제거</th>
+			<td>
+				<input type="button" id="mute" value="음소거"/>
+				<input type="button" id="unMute" value="음소거 제거"/>
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 소리 설정</th>
+			<td>
+				<input type="number" id="soundValue" max="100" min="0"/>
+				<input type="button" id="soundVolum" value="소리조절"/>
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 재생시간 이동</th>
+			<td>
+				<input type="text" id="start"/>
+				<input type="button" id="seekTo" value="영상이동"/>
+			</td>
+		</tr>
 	</table>
 </body>
 </html>
