@@ -10,7 +10,7 @@
 		from
 			member
 		where
-			userid=#{userid}
+			useremail=#{useremail}
 		<if test="userpwd != null">
 		and
 			userpwd=#{userpwd}
