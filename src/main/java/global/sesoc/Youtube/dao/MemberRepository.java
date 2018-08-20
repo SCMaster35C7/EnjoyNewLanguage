@@ -14,9 +14,9 @@ public class MemberRepository {
 	@Autowired
 	SqlSession session;
 
-	public Member selectOneFromMember(String userid, String userpwd) {
+	public Member selectOneFromMember(String useremail, String userpwd) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("userid", userid);
+		map.put("useremail", useremail);
 		map.put("userpwd", userpwd);
 		
 		MemberMapper mapper = session.getMapper(MemberMapper.class);

@@ -2,9 +2,8 @@ package global.sesoc.Youtube.dto;
 
 public class Member {
 	private String userid;
-	private String username;
+	private String useremail;
 	private String userpwd;
-	private String phone;
 	private char gender;
 	private String birth;
 	private String joinDate;
@@ -12,18 +11,17 @@ public class Member {
 	private int point;
 	private int waringCount;
 	private int admin;
-	
+	private int statis;
 	public Member() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
-	public Member(String userid, String username, String userpwd, String phone, char gender, String birth,
-			String joinDate, String lastAccess, int point, int waringCount, int admin) {
+	public Member(String userid, String useremail, String userpwd, char gender, String birth, String joinDate,
+			String lastAccess, int point, int waringCount, int admin, int statis) {
 		super();
 		this.userid = userid;
-		this.username = username;
+		this.useremail = useremail;
 		this.userpwd = userpwd;
-		this.phone = phone;
 		this.gender = gender;
 		this.birth = birth;
 		this.joinDate = joinDate;
@@ -31,19 +29,16 @@ public class Member {
 		this.point = point;
 		this.waringCount = waringCount;
 		this.admin = admin;
+		this.statis = statis;
 	}
-	
 	public String getUserid() {
 		return userid;
 	}
-	public String getUsername() {
-		return username;
+	public String getUseremail() {
+		return useremail;
 	}
 	public String getUserpwd() {
 		return userpwd;
-	}
-	public String getPhone() {
-		return phone;
 	}
 	public char getGender() {
 		return gender;
@@ -66,18 +61,17 @@ public class Member {
 	public int getAdmin() {
 		return admin;
 	}
-	
+	public int getStatis() {
+		return statis;
+	}
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUseremail(String useremail) {
+		this.useremail = useremail;
 	}
 	public void setUserpwd(String userpwd) {
 		this.userpwd = userpwd;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 	public void setGender(char gender) {
 		this.gender = gender;
@@ -100,11 +94,15 @@ public class Member {
 	public void setAdmin(int admin) {
 		this.admin = admin;
 	}
-	
+	public void setStatis(int statis) {
+		this.statis = statis;
+	}
 	@Override
 	public String toString() {
-		return "Member [userid=" + userid + ", username=" + username + ", userpwd=" + userpwd + ", phone=" + phone
-				+ ", gender=" + gender + ", birth=" + birth + ", joinDate=" + joinDate + ", lastAccess=" + lastAccess
-				+ ", point=" + point + ", waringCount=" + waringCount + ", admin=" + admin + "]";
+		return "Member [userid=" + userid + ", useremail=" + useremail + ", userpwd=" + userpwd + ", gender=" + gender
+				+ ", birth=" + birth + ", joinDate=" + joinDate + ", lastAccess=" + lastAccess + ", point=" + point
+				+ ", waringCount=" + waringCount + ", admin=" + admin + ", statis=" + statis + "]";
 	}
+	
+	
 }
