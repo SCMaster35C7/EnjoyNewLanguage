@@ -23,9 +23,11 @@
 		update member 
 		set 
 			usernick = #{usernick} 
-			, userpwd = #{userpwd} 
+			, userpwd = #{newpwd} 
 		where 
 			useremail = #{useremail} and
-			userpwd	  = #{userpwd}				
+			userpwd = #{currpwd}			
 	</update>
+	
+	
 </mapper>
