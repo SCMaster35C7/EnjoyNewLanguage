@@ -46,4 +46,15 @@ public class MemberContoller {
 		
 		return "redirect:/";
 	}
+	@RequestMapping(value="/updateMember", method=RequestMethod.GET)
+	public String updateMember() {
+		
+		return "Member/updateMember";
+	}
+	
+	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
+	public String updateMember(Member member) {
+		int result = mRepository.updateMember(member);
+		return "redirect:/";
+	}
 }

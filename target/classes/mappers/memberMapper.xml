@@ -16,4 +16,16 @@
 			userpwd=#{userpwd}
 		</if>
 	</select>
+	
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="Member">
+		update member 
+		set 
+			usernick = #{usernick} 
+			, userpwd = #{userpwd} 
+		where 
+			useremail = #{useremail} and
+			userpwd	  = #{userpwd}				
+	</update>
 </mapper>

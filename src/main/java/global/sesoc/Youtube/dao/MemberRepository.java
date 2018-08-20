@@ -25,4 +25,9 @@ public class MemberRepository {
 		return member;
 	}
 	
+	public int updateMember (Member member) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int result = mapper.updateMember(member);
+		return result;
+	}
 }
