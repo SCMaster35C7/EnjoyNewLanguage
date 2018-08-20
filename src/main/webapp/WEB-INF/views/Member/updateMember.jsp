@@ -32,6 +32,11 @@ $(function(){
 	
 	});
 	
+	$('#btnCancel').on('click', function(){
+		
+		location.href = "${pageContext.request.contextPath}/"
+	});
+	
 });
 </script>
 </head>
@@ -77,8 +82,8 @@ $(function(){
 		
 		<tr>
 			<td colspan="2" align="center">
-			<input type="button" value="수정" id="btnUpdate"/>
-			<input type="button" value="취소" id="btnCancel"/>
+			<input type="button" value="수정" id="btnUpdate" />
+			<input type="button" value="취소" id="btnCancel" />
 			</td>			
 		</tr>
 	</table>
