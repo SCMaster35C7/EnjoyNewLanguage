@@ -71,15 +71,8 @@ public class VideoController {
 	@RequestMapping(value="/slide", method=RequestMethod.GET)
 	public String slide() {
 		
-		return "EducationBoard/slide";
+		return "Practice/slide";
 	}
-	
-	@RequestMapping(value="/studyboard", method=RequestMethod.GET)
-	public String studyboard() {
-		
-		return "EducationBoard/studyboard";
-	}
-
 }
 
 
