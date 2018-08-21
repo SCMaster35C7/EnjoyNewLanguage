@@ -8,11 +8,11 @@
 	<meta charset="UTF-8">
 	<title>Enjoy Language</title>
 	
-	<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
 			$('#loginBtn').on('click', function() {
-				var userid = $('#userid');
+				var useremail = $('#useremail');
 				var userpwd = $('#userpwd');
 				
 				$('#loginForm').submit();
@@ -31,7 +31,7 @@
 		<table border="1">
 			<tr>
 				<td>아이디 </td>
-				<td><input type="text" id="userid" name="userid" value="${userid}" /></td>
+				<td><input type="text" id="useremail" name="useremail" value="${useremail}" /></td>
 			</tr>
 			<tr>
 				<td>비밀번호</td>

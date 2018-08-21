@@ -8,14 +8,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dto.Education;
+import global.sesoc.Youtube.util.FileService;
 
 @Controller
 public class VideoController {
 	@Autowired
 	EducationRepository eduRepository;
+	
+	//교육용 자막파일 경로
+	private final String eduFileRoot = "/EducationVideo";
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -24,7 +29,7 @@ public class VideoController {
 	
 	@RequestMapping(value="/eduBoard", method=RequestMethod.GET)
 	public String eduBoard(Model model) {
-		List<Education> eduList =  eduRepository.selectAllStudyList();
+		List<Education> eduList =  eduRepository.selectAllEduList();
 		
 		model.addAttribute("eduList",eduList);
 		
@@ -37,7 +42,44 @@ public class VideoController {
 		
 		model.addAttribute("edu", edu);
 		
-		System.out.println(edu);
 		return "EducationBoard/detailEduBoard";
 	}
+	
+	@RequestMapping(value="/addEduVideo", method=RequestMethod.GET)
+	public String addEduVideo() {
+		
+		return "EducationBoard/addEduVideo";
+	}
+	
+	@RequestMapping(value="/addEduVideo", method=RequestMethod.POST)
+	public String addEduVideo(Education education, MultipartFile subtitle) {
+		//System.out.println(education);
+		//System.out.println(subtitle);
+		if(subtitle.getSize() != 0) {
+			String originalfile = subtitle.getOriginalFilename();
+			String savedfile = FileService.saveFile(subtitle, eduFileRoot);
+			
+			education.setOriginalfile(originalfile);
+			education.setSavedfile(savedfile);
+		}
+		//System.out.println(education);
+		
+		int result = eduRepository.insertEduVideo(education);
+		return "EducationBoard/addEduVideo";
+	}
+	
+	@RequestMapping(value="/slide", method=RequestMethod.GET)
+	public String slide() {
+		
+		return "EducationBoard/slide";
+	}
+	
+	@RequestMapping(value="/studyboard", method=RequestMethod.GET)
+	public String studyboard() {
+		
+		return "EducationBoard/studyboard";
+	}
+
 }
+
+

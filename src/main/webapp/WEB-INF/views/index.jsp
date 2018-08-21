@@ -8,7 +8,7 @@
 	<meta charset="UTF-8">
 	<title>Enjoy Language</title>
 	
-	<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
 			
@@ -28,5 +28,17 @@
 	<c:if test="${not empty sessionScope.userid }">
 		<a href="logout">logout</a>
 	</c:if>
+	
+	<br/><br/>
+	<a href="slide">슬라이드 만들거임 -다나-</a> 
+	<br/><br/>
+	
+	<br/><br/>
+	<a href="studyboard">공부영상게세판갈그임 -다나-</a> 
+	<br/><br/>
+	
+	<br/><br/>
+	<a href="joinForm">횐갑화면 ㄱㄱ  -다나-</a> 
+	<br/><br/>
 </body>
 </html>
