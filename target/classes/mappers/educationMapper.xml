@@ -7,7 +7,6 @@
 	<select id="selectAllEduList" resultType="Education">
 		select
 			videonum
-			, title
 			, url
 			, originalfile
 			, savedfile
@@ -23,7 +22,6 @@
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum
-			, title
 			, url
 			, originalfile
 			, savedfile
