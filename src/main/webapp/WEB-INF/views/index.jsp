@@ -21,16 +21,20 @@
 	<h2>[Home]</h2>
 	<a href="eduBoard">study board로 가보자</a> <br/>
 	
-	<c:if test="${empty sessionScope.useremail }">
+	<c:if test="${empty sessionScope.userid }">
 		<a href="login">login</a>
 	</c:if>
 	
-	<c:if test="${not empty sessionScope.useremail }">
+	<c:if test="${not empty sessionScope.userid }">
 		<a href="logout">logout</a>
 	</c:if>
 	
 	<br/><br/>
 	<a href="slide">슬라이드 만들거임 -다나-</a> 
+	<br/><br/>
+	
+	<br/><br/>
+	<a href="studyboard">공부영상게세판갈그임 -다나-</a> 
 	<br/><br/>
 	
 	<br/><br/>
