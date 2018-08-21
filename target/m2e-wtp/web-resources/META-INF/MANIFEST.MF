@@ -1,5 +1,4 @@
 <<<<<<< HEAD
-<<<<<<< HEAD
 Manifest-Version: 1.0
 Built-By: gkdlt
 Build-Jdk: 1.8.0_162
@@ -12,10 +11,3 @@ Build-Jdk: 1.8.0_181
 Created-By: Maven Integration for Eclipse
 
 >>>>>>> Muk
-=======
-Manifest-Version: 1.0
-Built-By: LG
-Build-Jdk: 1.8.0_162
-Created-By: Maven Integration for Eclipse
-
->>>>>>> parent of e08c706... Merge pull request #23 from SCMaster35C7/Seok
