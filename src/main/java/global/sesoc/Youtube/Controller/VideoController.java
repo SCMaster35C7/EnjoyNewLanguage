@@ -24,7 +24,7 @@ public class VideoController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		return "index";
+		return "jisungindex";
 	}
 	
 	@RequestMapping(value="/eduBoard", method=RequestMethod.GET)
@@ -67,4 +67,12 @@ public class VideoController {
 		int result = eduRepository.insertEduVideo(education);
 		return "EducationBoard/addEduVideo";
 	}
+	
+	@RequestMapping(value="/slide", method=RequestMethod.GET)
+	public String slide() {
+		
+		return "Practice/slide";
+	}
 }
+
+
