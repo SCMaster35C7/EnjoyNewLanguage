@@ -24,6 +24,10 @@ public class MemberRepository {
 		
 		return member;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> Muk
 	public int updateMember (Member member) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		
@@ -36,4 +40,8 @@ public class MemberRepository {
 		}
 		return result;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Muk

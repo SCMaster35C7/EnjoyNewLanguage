@@ -49,6 +49,7 @@ public class MemberContoller {
 		return "redirect:/";
 	}
 	
+
 	@RequestMapping(value="/joinForm", method=RequestMethod.GET)
 	public String joinForm() {
 		
@@ -60,6 +61,10 @@ public class MemberContoller {
 		System.out.println(useremail);
 		return "중복";
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> Muk
 	@RequestMapping(value="/updateMember", method=RequestMethod.GET)
 	public String updateMember() {
 		
@@ -73,5 +78,9 @@ public class MemberContoller {
 		System.out.println(result);
 		
 		return "redirect:/";
+<<<<<<< HEAD
+=======
+
+>>>>>>> Muk
 	}
 }
