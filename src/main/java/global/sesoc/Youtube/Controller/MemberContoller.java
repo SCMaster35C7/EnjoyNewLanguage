@@ -60,4 +60,18 @@ public class MemberContoller {
 		System.out.println(useremail);
 		return "중복";
 	}
+	@RequestMapping(value="/updateMember", method=RequestMethod.GET)
+	public String updateMember() {
+		
+		return "Member/updateMember";
+	}
+	
+	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
+	public String updateMember(Member member) {
+		int result = mRepository.updateMember(member);
+		
+		System.out.println(result);
+		
+		return "redirect:/";
+	}
 }
