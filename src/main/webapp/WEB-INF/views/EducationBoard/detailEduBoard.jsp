@@ -26,7 +26,7 @@
 <body>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
-	<iframe id="youtube" width="960" height="490" src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1" frameborder="0" allowfullscreen ></iframe>
+	<iframe id="youtube" width="960" height="490" src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"></iframe>
 
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -49,8 +49,6 @@
 				}
 			});
 		}
-
-		
 		
 		// 4. Youtube Player의 준비가 끝나면 호출할 함수
 		function onPlayerReady(event) {
@@ -156,9 +154,12 @@
 				<input type="button" id="seekTo" value="영상이동"/>
 			</td>
 		</tr>
+		<tr>
+			<th>교육 영상 목록으로 이동</th>
+			<td>
+				<a href="eduBoard?currentPage=${currentPage}&searchType=${searchType}&searchWord=${searchWord}">교육 영상 목록</a>
+			</td>
+		</tr>
 	</table>
-
-	
-	
 </body>
 </html>

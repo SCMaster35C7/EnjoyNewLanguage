@@ -19,6 +19,7 @@
     <!-- Bootstrap core JavaScript -->
     <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="YoutubeAPI/auth.js"></script>
     
     <script type="text/javascript">
 		$(function() {
@@ -40,22 +41,20 @@
 	
     <!-- Page Content -->
 	<div class="container">
+		<div class="row">
 		<c:if test="${not empty eduList}">
 			<c:forEach var="eduList" items="${eduList}">
 		<!-- <h1 class="my-4">Welcome to Modern Business</h1>-->
 		<!-- Marketing Icons Section -->
-		<div class="row">
 			<div class="col-lg-4 mb-4">
 				<div class="card h-100">
 					<h4 class="card-header" align="center">
-						<a href="detailEduBoard?videoNum=${eduList.videoNum}">${eduList.title}</a>
+						<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
 					</h4>
 					
 					<div class="card-body">
 						<p class="card-text" align="center">
-						
-							<img alt="" src="">
-						
+							<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
 						</p>
 					</div>
 					
@@ -74,35 +73,78 @@
 							조회수 ${eduList.hitCount}
 						<!-- </a> -->
 					</div>
-					
 				</div>
 			</div>
-		</div>
 			</c:forEach>
 		</c:if>
+		</div>
+		<div class="row">
+			<ul class="pagination justify-content-center">
+				<li class="page-item">
+					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}"> 
+					<span>&laquo;</span>
+					<span class="sr-only">PreviousPage</span>
+					</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+					<span>&lt;</span> 
+					<span class="sr-only">Previous</span>
+					</a>
+				</li>
+			
+				<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
+					<c:if test="${navi.currentPage == page }">
+						<li class="page-item active"><a class="page-link">${page}</a></li>
+					</c:if>
+					<c:if test="${navi.currentPage != page }">
+						<li class="page-item"><a class="page-link"
+							href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+					</c:if>
+				</c:forEach>
+			
+				<li class="page-item">
+					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+					<span>&gt;</span> 
+					<span class="sr-only">Next</span>
+					</a>
+				</li>
+			
+				<li class="page-item">
+					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+					<span>&raquo;</span> 
+					<span class="sr-only">NextPage</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		
+		<div>
+		<c:if test="${(sessionScope.admin) != 0 and (not empty sessionScope.admin)}">
+			<div>
+				<input type="button" value="주류 정보 입력" id="insertAlcohol"
+					class="btn btn-primary">
+				<script>
+					document.getElementById("insertAlcohol").onclick = function() {
+						//alert("주류 데이터를 넣을거야!");
+						location.href = "inputAlcoholForm";
+					}
+				</script>
+			</div>
+		</c:if>
+		</div>
 	</div>
 	<!-- /.row -->
-   	<br/><br/><br/><br/>
+  	<br/><br/><br/><br/>
 
-   
 
-    <!-- Footer -->
+
+	<!-- Footer -->
    <!--  <footer class="py-5 bg-dark">
       <div class="container">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
       </div>
       /.container
     </footer> -->
-	<c:if test="${not empty eduList}">
-		<c:forEach var="eduList" items="${eduList}">
-			<tr>
-				<td><a href="detailEduBoard?videoNum=${eduList.videoNum}">${eduList.videoNum}번 영상  시청</a></td>
-				<td>${eduList.regDate}</td>
-				<td>${eduList.hitCount}</td>
-				<td>${eduList.recommendation}</td>
-				<td>${eduList.decommendation}</td>
-			</tr>
-		</c:forEach>
-	</c:if>
   </body>
 </html>
