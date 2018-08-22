@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+</head>
+<body>
+	<h1>회원정보수정</h1>
 <title>Enjoy Language</title>
 <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">

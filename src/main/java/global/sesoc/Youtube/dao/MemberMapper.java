@@ -5,11 +5,13 @@ import java.util.Map;
 import global.sesoc.Youtube.dto.Member;
 
 public interface MemberMapper {
-	public Member selectOneFromMember(Map<String, Object> map);		// 아이디 중복 검사, 아이디 검사
-	
-<<<<<<< HEAD
+	public Member selectOneFromMember(Member member);		// 아이디 중복 검사, 아이디 검사
+
+	public int insertMember(Member member);
+
+	public int updateStatus(String useremail);
+
+	public Member selectByNick(String usernick);
+
 	public int updateMember(Member member);		//회원정보 수정
-=======
-	public int updateMember (Member member);	// 회원수정
->>>>>>> Muk
 }
