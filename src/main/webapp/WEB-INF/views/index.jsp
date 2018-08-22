@@ -36,5 +36,7 @@
 	<br/><br/>
 	<a href="joinForm">횐갑화면 ㄱㄱ  -다나-</a> 
 	<br/><br/>
+	
+	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
 </body>
 </html>
