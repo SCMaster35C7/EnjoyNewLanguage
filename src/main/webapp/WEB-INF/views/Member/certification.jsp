@@ -7,7 +7,7 @@
 <title>인증완료</title>
 <script language="JavaScript">
 function forwarding(){
-		location = "./login"}
+		location = "./"}
 </script>
 <style type="text/css">
 	body{
@@ -23,7 +23,7 @@ function forwarding(){
 	<img alt="" src="images/email.png" align="middle"/>
 	
 	<p>메일 인증이 완료되었습니다.<br/><br/>
-	로그인 화면으로 돌아갑니다.<br/><br/>
+	 홈화면으로 돌아갑니다.<br/><br/>
 	잠시만 기다려주세요...<br/></p>
 	</div>
 </body>
