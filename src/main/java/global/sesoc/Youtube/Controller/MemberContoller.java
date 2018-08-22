@@ -196,8 +196,11 @@ public class MemberContoller {
 	
 	
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
-	public String updateMember(Member member) {
-		int result = mRepository.updateMember(member);
+	public String updateMember(String currpwd, String newpwd, String usernick, HttpSession session) {
+			
+		String loginId = (String) session.getAttribute("loginId");		
+		System.out.println("현재비번 : "+currpwd +"새 비번 : " +newpwd);
+		int result  = mRepository.updateMember(loginId, currpwd, newpwd, usernick);
 		
 		System.out.println(result);
 		
