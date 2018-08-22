@@ -72,4 +72,10 @@ public class EducationRepository {
 		return result;
 	}
 	
+	public String selectSubName(int videoNum) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		String result = mapper.selectSubName(videoNum);
+		return result;
+	}
+	
 }

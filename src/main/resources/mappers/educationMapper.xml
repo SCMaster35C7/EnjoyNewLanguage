@@ -69,4 +69,10 @@
 		where
 			videonum = #{videonum}
 	</update>
+	
+	<select id="selectSubName" parameterType="int" resultType="String">
+	select  savedfile
+	from EducationVideo
+	where videonum=#{value}
+	</select>
 </mapper>
