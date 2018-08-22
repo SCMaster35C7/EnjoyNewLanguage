@@ -13,4 +13,5 @@ public interface MemberMapper {
 
 	public Member selectByNick(String usernick);
 
+	public int updateMember(Member member);		//회원정보 수정
 }

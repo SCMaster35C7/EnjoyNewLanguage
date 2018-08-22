@@ -67,6 +67,7 @@ public class MemberContoller {
 		return "redirect:/";
 	}
 	
+
 	@RequestMapping(value="/joinForm", method=RequestMethod.GET)
 	public String joinForm() {
 		
@@ -146,8 +147,7 @@ public class MemberContoller {
 		
 		return "Member/certification";
 	}
-	
-	
+  
 	@RequestMapping(value="/myPage", method=RequestMethod.GET)
 	public String myPage() {
 		
@@ -163,4 +163,14 @@ public class MemberContoller {
 	}
 	
 	
+	
+	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
+	public String updateMember(Member member) {
+		int result = mRepository.updateMember(member);
+		
+		System.out.println(result);
+		
+		return "redirect:/";
+
+	}
 }
