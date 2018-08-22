@@ -29,9 +29,10 @@
 		<a href="logout">logout</a>
 	</c:if>
 	
+		
 	<br/><br/>
-	<a href="slide">슬라이드 만들거임 -다나-</a> 
-	<br/><br/>
+	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
+	
 	
 	<br/><br/>
 	<a href="joinForm">횐갑화면 ㄱㄱ  -다나-</a> 

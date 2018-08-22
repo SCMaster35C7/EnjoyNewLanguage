@@ -37,8 +37,9 @@
 		where useremail=#{useremail}
 	</update>
 	
+	
 	<!-- 회원정보 수정 -->
-	<update id="updateMember" parameterType="Member">
+	<update id="updateMember" parameterType="map">
 		update member 
 		set 
 			usernick = #{usernick} 

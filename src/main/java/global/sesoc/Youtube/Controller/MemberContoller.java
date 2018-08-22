@@ -1,12 +1,7 @@
 package global.sesoc.Youtube.Controller;
 
 
-import javax.mail.MessagingException;
-import javax.mail.Message.RecipientType;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +10,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -196,8 +190,11 @@ public class MemberContoller {
 	
 	
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
-	public String updateMember(Member member) {
-		int result = mRepository.updateMember(member);
+	public String updateMember(String currpwd, String newpwd, String usernick, HttpSession session) {
+			
+		String loginId = (String) session.getAttribute("loginId");		
+		System.out.println("현재비번 : "+currpwd +"새 비번 : " +newpwd);
+		int result  = mRepository.updateMember(loginId, currpwd, newpwd, usernick);
 		
 		System.out.println(result);
 		
