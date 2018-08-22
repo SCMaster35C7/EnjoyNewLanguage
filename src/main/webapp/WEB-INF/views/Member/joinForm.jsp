@@ -18,29 +18,32 @@
     <!-- 글씨체 -->
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
     
-    <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+    <script  src="JQuery/jquery-3.3.1.min.js"></script>
     	
     	
     	<script type="text/javascript" >
     	$(function(){
     		
+    		//이메일 중복검사
     		$('#useremail').keyup(function(){
     			
     			var useremail = $(this).val();
     			
-    			
     			if (useremail.match('@')) {
     				console.log("@@@");
+    				
     				$.ajax({
     						method	:	'post'
     						,url	: 'emailCheck'
-    						,data	: useremail
+    						,data	: "useremail="+useremail
     						,dataType	: 'text'
-    						,contentType : 'text/html;charset=UTF-8'
     						,success	: function(resp){
     							
     		            	 	$("#emailcheck").text(resp);
+						}, error:function(resp, code, error) {
+							alert("resp : "+resp+", code:"+code+", error:"+error);
 						}
+						
     					
     				});
     				
@@ -52,6 +55,34 @@
     			
     		});
     		
+    	
+    		//닉네임중복검사
+			$('#usernick').keyup(function(){
+    			
+    			var usernick = $(this).val();
+    			
+    			
+    				
+    				$.ajax({
+    						method	:	'post'
+    						,url	: 'nickCheck'
+    						,data	: "usernick="+usernick
+    						,dataType	: 'text'
+    						,success	: function(resp){
+    							
+    		            	 	$("#nickcheck").text(resp);
+						}, error:function(resp, code, error) {
+							alert("resp : "+resp+", code:"+code+", error:"+error);
+						}
+						
+    					
+    				});
+    				
+    				
+				
+    			
+    			
+    		});
     		
     	});
     </script>
@@ -91,7 +122,7 @@
           <hr/>
         </div>
         <div class="col-md-6 col-md-offset-3">
-          <form id="joinForm" name="joinForm" action="joinStep1" method="post">
+          <form id="joinForm" name="joinForm" action="mailSending" method="post">
          
             <div class="form-group">
               <label for="InputEmail">* 이메일 주소</label>
@@ -102,7 +133,7 @@
             <div class="form-group">
               <label for="usernick">* 닉네임</label>
               <input type="text" class="form-control" id="usernick" name="usernick" placeholder="닉네임">
-           		 <p class="help-block">중복검사할거야</p>
+           		 <p class="help-block" id="nickcheck" style="width:400px;"></p>
             </div>
             
             
@@ -114,6 +145,7 @@
               <label for="InputPassword2">* 비밀번호 확인</label>
               <input type="password" class="form-control" id="InputPassword2" placeholder="비밀번호 확인">
               <p class="help-block" style="width:400px;">비밀번호 확인을 위해 다시한번 입력 해 주세요</p>
+              <input type="hidden" name="userpwd" id="userpwd" value="1111"/>
             </div>
             
             
@@ -122,10 +154,10 @@
               <br/>
             <label class="btn btn-primary active">
                   <span class="fa fa-check">여자</span>
-                  <input id="female" type="checkbox" autocomplete="off" >
+                  <input id="female" name="gender" value="f" type="checkbox" autocomplete="off" >
                   &nbsp;
                   <span class="fa fa-check">남자</span>
-                  <input id="male" type="checkbox" autocomplete="off" >
+                  <input id="male" name="gender" value="m" type="checkbox" autocomplete="off" >
               </label>
             </div>
             
@@ -158,6 +190,28 @@
             
             </form>
  		</article>
-    
+ 		
+ 		
+ 	<!-- <div class="container">
+  <h4>메일 보내기</h4>
+  <form action="mailSending" method="post">
+    <div align="center">받는 사람 이메일
+      <input type="text" name="tomail" size="120" style="width:100%" placeholder="상대의 이메일" class="form-control" >
+    </div>     
+    <div align="center">제목
+      <input type="text" name="title" size="120" style="width:100%" placeholder="제목을 입력해주세요" class="form-control" >
+    </div>
+    <p>
+    <div align="center">내용 
+      <textarea name="content" cols="120" rows="12" style="width:100%; resize:none" placeholder="내용#" class="form-control"></textarea>
+    </div>
+    <p>
+    <div align="center">
+      <input type="submit" value="메일 보내기" class="btn btn-warning">
+    </div>
+  </form>
+</div>
+    <button style=" color: white;background-color: #4c586f;border: none;width:200px;height:50px;text-align: center;text-decoration: none;  font-size: 25px;border-radius:10px;">인증하기♥</button>
+  --> 
   </body>
 </html>
