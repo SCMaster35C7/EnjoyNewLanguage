@@ -9,7 +9,7 @@
 <body>
 	<h1>회원정보수정</h1>
 <title>Enjoy Language</title>
-<script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
 	
@@ -50,13 +50,13 @@ $(function(){
 		<tr>
 			<td>아이디[이메일] :</td>
 			<td><input type="text" id="useremail" disabled="disabled"
-				value="${sessionScope.useremail} readonly=" readonly"/></td>
+				value="${sessionScope.useremail}" readonly=" readonly"/></td>
 		</tr>
 
 		<tr>
 			<td>이름 :</td>
 			<td><input type="text" id="usernick" disabled="disabled"
-				value="${sessionScope.usernick} readonly=" readonly"/></td>
+				value="${sessionScope.usernick}" readonly=" readonly"/></td>
 		</tr>
 
 		<tr>
@@ -74,13 +74,13 @@ $(function(){
 		<tr>
 			<td>성별 :</td>
 			<td><input type="text" id="gender" disabled="disabled"
-				value="${sessionScope.gender} readonly="readonly"/></td>
+				value="${sessionScope.gender}" readonly="readonly"/></td>
 		</tr>
 
 		<tr>
 			<td>생일 :</td>
 			<td><input type="text"  disabled="disabled"
-				value="${sessionScope.birth} readonly="readonly"/></td>
+				value="${sessionScope.birth}" readonly="readonly"/></td>
 		</tr>
 		
 		<tr>
