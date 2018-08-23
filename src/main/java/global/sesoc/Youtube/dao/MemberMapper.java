@@ -13,4 +13,6 @@ public interface MemberMapper {
 
 	public Member selectByNick(String usernick);
 
+	public int updateLastAccess(String useremail);
+
 }
