@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 </head>
-<body>
-	<h1>회원정보수정</h1>
+<body>	
 <title>Enjoy Language</title>
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
@@ -15,21 +14,14 @@ $(function(){
 	
 	$('#btnUpdate').on('click', function(){
 		
-		if($('#currpwd').val().length <4 || $('#currpwd').val().length>10){
-			alert('비밀번호 유효성 몇자리로 합니까?');
-			return;
-		}
-		if($('#newpwd').val().length <4 || $('#newpwd').val().length>10){
-			alert('비밀번호  유효성 몇자리로 합니까?');
-			return;
-		}
-		if($('#currpwd').val() == $('#newpwd').val()){
-			alert('새로 입력한 비밀번호와 현재 비밀번호가 달라야 합니다.');
-			return;
-		}
-		if($('#newpwd').val() != $('#checkpwd').val()){
-			alert('새로 입력한 비밀번호와 비밀번호 확인 값은 같아야 합니다.');
-			return;
+		$pattern = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
+			
+		if($('#userpwd').val().match($pattern)){
+			
+			alert('비밀번호 형식이 맞습니다.');
+			
+		} else {
+			alert('비밀번호는 대/소문자,  숫자, 특수 문자 포함, 8자 이상');
 		}
 		$('#updateMember').submit();
 	
@@ -44,43 +36,46 @@ $(function(){
 </script>
 </head>
 <body>
-	<div>회원 수정</div>3
+	<h1>회원정보수정</h1>
 	<form id="updateMember" action="updateMember" method="post">
-	<table>
+	<table border="1" >
 		<tr>
 			<td>아이디[이메일] :</td>
-			<td><input type="text" id="useremail" disabled="disabled"
-				value="${sessionScope.useremail}" readonly=" readonly"/></td>
+			<td>${sessionScope.useremail}</td>
+		</tr>
+		
+		<tr>
+			<td>닉네임 :</td>
+			<td>${sessionScope.usernick}</td>
+		</tr>
+		
+		<tr>
+			<td>바꿀 닉네임</td>
+			<td><input type="text" id="usernick" name="usernick"
+				placeholder="바꿀 닉네임을 입력" /></td>
 		</tr>
 
 		<tr>
-			<td>이름 :</td>
-			<td><input type="text" id="usernick" disabled="disabled"
-				value="${sessionScope.usernick}" readonly=" readonly"/></td>
+			<td>바꿀 비밀번호 :</td>
+			<td><input id="userpwd"  type="password" name="userpwd" placeholder="바꿀 비밀번호 입력" /></td>
 		</tr>
-
-		<tr>
-			<td>현재 비밀번호 :</td>
-			<td><input id="currpwd"  type="password" name="currpwd" placeholder="현재 비밀번호 입력" /></td>
-		</tr>
-		<tr>
+		<!-- <tr>
 			<td>새 비밀번호 입력 :</td>
 			<td><input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" /></td>
 		</tr>
 		<tr>
 			<td>새 비밀번호 확인 :</td>
 			<td><input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" /></td>
-		</tr>
+		</tr> -->
+		
 		<tr>
 			<td>성별 :</td>
-			<td><input type="text" id="gender" disabled="disabled"
-				value="${sessionScope.gender}" readonly="readonly"/></td>
+			<td>${sessionScope.gender}</td>
 		</tr>
 
 		<tr>
 			<td>생일 :</td>
-			<td><input type="text"  disabled="disabled"
-				value="${sessionScope.birth}" readonly="readonly"/></td>
+			<td>${sessionScope.birth}</td>
 		</tr>
 		
 		<tr>

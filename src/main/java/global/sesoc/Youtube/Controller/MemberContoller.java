@@ -68,6 +68,10 @@ public class MemberContoller {
 			else {
 				session.setAttribute("useremail", member.getUseremail());
 				session.setAttribute("admin", member.getAdmin());
+				session.setAttribute("usernick", member.getUsernick());
+				session.setAttribute("gender", member.getGender());
+				session.setAttribute("birth", member.getBirth());
+				
 				System.out.println("로그인한넘"+ member);
 				
 				//접속일 업뎃
@@ -207,11 +211,9 @@ public class MemberContoller {
 	
 	
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
-	public String updateMember(String currpwd, String newpwd, String usernick, HttpSession session) {
-			
-		String loginId = (String) session.getAttribute("loginId");		
-		System.out.println("현재비번 : "+currpwd +"새 비번 : " +newpwd);
-		int result  = mRepository.updateMember(loginId, currpwd, newpwd, usernick);
+	public String updateMember(Member member) {
+		
+		int result = mRepository.updateMember(member);
 		
 		System.out.println(result);
 		
