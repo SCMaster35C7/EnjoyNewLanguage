@@ -6,7 +6,11 @@
 <mapper namespace="global.sesoc.Youtube.dao.MemberMapper">
 	<select id="selectOneFromMember" parameterType="Member" resultType="Member">
 		select
-			*
+			useremail, usernick, userpwd, gender
+			, to_char(birth, 'YYYY-MM-DD') birth
+			, to_char(joinDate, 'YYYY-MM-DD') joinDate
+			, to_char(lastAccess, 'YYYY-MM-DD') lastAccess
+			, point, warningCount, admin, status
 		from
 			member
 		where
@@ -19,7 +23,11 @@
 	
 	<select id="selectByNick" parameterType="string" resultType="Member">
 		select
-			*
+			useremail, usernick, userpwd, gender
+			, to_char(birth, 'YYYY-MM-DD') birth
+			, to_char(joinDate, 'YYYY-MM-DD') joinDate
+			, to_char(lastAccess, 'YYYY-MM-DD') lastAccess
+			, point, warningCount, admin, status
 		from
 			member
 		where usernick = #{usernick}
@@ -37,6 +45,15 @@
 		where useremail=#{useremail}
 	</update>
 	
+
+	<update id="updateLastAccess" parameterType="string">
+		update member
+		set lastAccess = sysdate
+		where useremail=#{useremail}
+	</update>
+	
+</mapper>
+
 	
 	<!-- 회원정보 수정 -->
 	<update id="updateMember" parameterType="map">

@@ -54,7 +54,15 @@ public class MemberRepository {
 		return member;
 	}
 
-	
+
+	public int updateLastAccess(String useremail) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int result = mapper.updateLastAccess(useremail);
+		
+		return result;
+		
+	}
+
 		public int updateMember(String loginId, String currpwd, String newpwd, String usernick) {
 			MemberMapper mapper = session.getMapper(MemberMapper.class);
 

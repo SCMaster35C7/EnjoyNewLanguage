@@ -9,7 +9,7 @@ public class Member {
 	private String joinDate;
 	private String lastAccess;
 	private int point;
-	private int waringCount;
+	private int warningCount;
 	private int admin;
 	private int status;
 	public Member() {
@@ -18,7 +18,7 @@ public class Member {
 	}
 	
 	public Member(String useremail, String usernick, String userpwd, char gender, String birth, String joinDate,
-			String lastAccess, int point, int waringCount, int admin, int status) {
+			String lastAccess, int point, int warningCount, int admin, int status) {
 		super();
 		this.useremail = useremail;
 		this.usernick = usernick;
@@ -28,7 +28,7 @@ public class Member {
 		this.joinDate = joinDate;
 		this.lastAccess = lastAccess;
 		this.point = point;
-		this.waringCount = waringCount;
+		this.warningCount = warningCount;
 		this.admin = admin;
 		this.status = status;
 	}
@@ -57,9 +57,19 @@ public class Member {
 	public int getPoint() {
 		return point;
 	}
-	public int getWaringCount() {
-		return waringCount;
+
+	public void setPoint(int point) {
+		this.point = point;
 	}
+
+	public int getWarningCount() {
+		return warningCount;
+	}
+
+	public void setWarningCount(int warningCount) {
+		this.warningCount = warningCount;
+	}
+
 	public int getAdmin() {
 		return admin;
 	}
@@ -105,6 +115,6 @@ public class Member {
 	public String toString() {
 		return "Member [useremail=" + useremail + ", usernick=" + usernick + ", userpwd=" + userpwd + ", gender="
 				+ gender + ", birth=" + birth + ", joinDate=" + joinDate + ", lastAccess=" + lastAccess + ", point="
-				+ point + ", waringCount=" + waringCount + ", admin=" + admin + ", status=" + status + "]";
+				+ point + ", warningCount=" + warningCount + ", admin=" + admin + ", status=" + status + "]";
 	}
 }

@@ -13,5 +13,8 @@ public interface MemberMapper {
 
 	public Member selectByNick(String usernick);
 
-	public int updateMember(Map<String, String> map);		//회원정보 수정
+
+public int updateLastAccess(String useremail);
+
+public int updateMember(Member member);		//회원정보 수정
 }

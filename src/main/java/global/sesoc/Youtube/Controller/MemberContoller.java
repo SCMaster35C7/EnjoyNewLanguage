@@ -54,11 +54,28 @@ public class MemberContoller {
 		
 		Member member = mRepository.selectOneFromMember(m);
 		
+		//아이디 비번 같은 계정이 있음
 		if(member != null) {
-			session.setAttribute("useremail", member.getUseremail());
-			session.setAttribute("admin", member.getAdmin());
-			System.out.println(member);
-			return "redirect:/";
+			//인증상태 확인
+			if (member.getStatus()==0) {
+				model.addAttribute("useremail", useremail);
+				model.addAttribute("userpwd",userpwd);
+				model.addAttribute("message", "이메일 인증 먼저 해주세요~!");
+				
+				return "Member/login";
+			}
+			
+			else {
+				session.setAttribute("useremail", member.getUseremail());
+				session.setAttribute("admin", member.getAdmin());
+				System.out.println("로그인한넘"+ member);
+				
+				//접속일 업뎃
+				mRepository.updateLastAccess(member.getUseremail());
+				
+				return "redirect:/";
+			}
+			
 		}else {
 			model.addAttribute("useremail", useremail);
 			model.addAttribute("userpwd",userpwd);
