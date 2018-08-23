@@ -53,12 +53,22 @@
 	</update>
 	
 	<!-- 회원정보 수정 -->
-	<update id="updateMember" parameterType="Member">
+	<!-- <update id="updateMember" parameterType="Member">
 		update member 
 		set 
 			usernick = #{usernick} 
 			, userpwd = #{userpwd} 
 		where 
-			useremail = #{useremail
+			useremail = #{useremail}
+	</update> -->
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="map" >
+	update member
+	set
+		userpwd = #{newpwd}
+		, usernick = #{usernick}
+	where
+		userpwd = #{currpwd} and useremail = #{useremail}
 	</update>
 </mapper>

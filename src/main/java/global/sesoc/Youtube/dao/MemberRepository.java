@@ -63,10 +63,21 @@ public class MemberRepository {
 		
 	}
 
-	public int updateMember(Member member) {
+	public int updateMember(String useremail, String currpwd, String newpwd, String usernick/*, Member member*/) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		
-		int result = mapper.updateMember(member);
+		int result = 0;
+		
+		Map<String, String> map = new HashMap<>();
+		
+		map.put("useremail", useremail);
+		map.put("currpwd", currpwd);
+		map.put("newpwd", newpwd);
+		map.put("usernick", usernick);
+		
+		result = mapper.updateMember(map);
+		
+		/*int result = mapper.updateMember(member);*/
 			
 		return result;
 	}

@@ -211,11 +211,26 @@ public class MemberContoller {
 	
 	
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
-	public String updateMember(Member member) {
+	public String updateMember(Model model, HttpSession session, String usernick, String currpwd, String newpwd) {
 		
-		int result = mRepository.updateMember(member);
-		
+		String useremail = (String) session.getAttribute("useremail");
+		System.out.println("현재비번 : "+currpwd +"새 비번 : " +newpwd + "새 닉네임 : " +usernick);
+		int result  = mRepository.updateMember(useremail, currpwd, newpwd, usernick);
+						
 		System.out.println(result);
+		
+		String message = null;		
+				
+		if(result == 1) {
+			
+			message = "비밀번호 수정 완료. 다시 로그인해 주세요";
+			session.invalidate();
+			
+		} else {
+			message = "비밀번호가 수정되지 않았습니다.";
+		}
+		
+		model.addAttribute("msg", message);
 		
 		return "redirect:/";
 

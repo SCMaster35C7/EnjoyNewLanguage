@@ -5,24 +5,65 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Enjoy Language</title>
 </head>
 <body>	
-<title>Enjoy Language</title>
+
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	//닉네임중복검사
+	$('#usernick').keyup(function(){
+		
+		var usernick = $(this).val();   			
+			
+			$.ajax({
+					method	:	'post'
+					,url	: 'nickCheck'
+					,data	: "usernick="+usernick
+					,dataType	: 'text'
+					,success	: function(resp){
+						
+	            	 	$("#nickcheck").text(resp);
+				}, error:function(resp, code, error) {
+					alert("resp : "+resp+", code:"+code+", error:"+error);
+				}    					
+			});    			
+	});
 	
 	$('#btnUpdate').on('click', function(){
 		
-		$pattern = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
+		var usernick = $("#usernick").val();
+		var mem = mebe
+		$pattern = '^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';			
+		
+		
+		if (usernick.length<=0) {
+			/* nickCheck=='중복된 닉네임 입니다' */
+			alert('닉네임 다시 한 번 확인해주세요');
+			$("#usernick").select();
+			$("#usernick").focus();
+			return;
+		}
+		
+		if($('#currpwd').val() == $('#newpwd').val()){
+			alert('새로입력한 비밀번호와 현재 비밀번호가 달라야 합니다.');
+			return;
+		}
+		if($('#newpwd').val() != $('#checkpwd').val()){
+			alert('새로입력한 비밀번호와 비밀번호 확인 값은 같아야 합니다.');
+			return;
+		}
+		if($('#newpwd').val().match($pattern)){
 			
-		if($('#userpwd').val().match($pattern)){
-			
-			alert('비밀번호 형식이 맞습니다.');
+			alert('비밀번호 수정이 완료되었습니다. 다시 로그인해주세요');
 			
 		} else {
-			alert('비밀번호는 대/소문자,  숫자, 특수 문자 포함, 8자 이상');
+			alert('비밀번호는 대/소문자, 숫자, 특수 문자 포함, 8자 이상');
+		
+			return;
 		}
+		
 		$('#updateMember').submit();
 	
 	});
@@ -34,6 +75,16 @@ $(function(){
 	
 });
 </script>
+<c:if test="${not empty msg}">
+<script>
+$(function(){
+	alert("${msg}");
+	location.href = "${pageContext.request.contextPath}/";
+	
+});
+</script>
+</c:if>
+
 </head>
 <body>
 	<h1>회원정보수정</h1>
@@ -51,22 +102,22 @@ $(function(){
 		
 		<tr>
 			<td>바꿀 닉네임</td>
-			<td><input type="text" id="usernick" name="usernick"
-				placeholder="바꿀 닉네임을 입력" /></td>
+			<td><input type="text" id="usernick" name="usernick" placeholder="바꿀 닉네임을 입력" /></td>
 		</tr>
-
+		 
 		<tr>
-			<td>바꿀 비밀번호 :</td>
-			<td><input id="userpwd"  type="password" name="userpwd" placeholder="바꿀 비밀번호 입력" /></td>
+			<td>현재 비밀번호 :</td>
+			<td><input id="currpwd" type="password" name="currpwd" placeholder="현재 비밀번호 입력" /></td>
 		</tr>
-		<!-- <tr>
+		
+		<tr>
 			<td>새 비밀번호 입력 :</td>
 			<td><input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" /></td>
 		</tr>
 		<tr>
 			<td>새 비밀번호 확인 :</td>
 			<td><input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" /></td>
-		</tr> -->
+		</tr>
 		
 		<tr>
 			<td>성별 :</td>
@@ -86,5 +137,6 @@ $(function(){
 		</tr>
 	</table>
 	</form>
+
 </body>
 </html>
