@@ -12,12 +12,11 @@ public class Member {
 	private int warningCount;
 	private int admin;
 	private int status;
-	
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Member(String useremail, String usernick, String userpwd, char gender, String birth, String joinDate,
 			String lastAccess, int point, int warningCount, int admin, int status) {
 		super();
@@ -33,63 +32,28 @@ public class Member {
 		this.admin = admin;
 		this.status = status;
 	}
-
+	
 	public String getUseremail() {
 		return useremail;
 	}
-
-	public void setUseremail(String useremail) {
-		this.useremail = useremail;
-	}
-
 	public String getUsernick() {
 		return usernick;
 	}
-
-	public void setUsernick(String usernick) {
-		this.usernick = usernick;
-	}
-
 	public String getUserpwd() {
 		return userpwd;
 	}
-
-	public void setUserpwd(String userpwd) {
-		this.userpwd = userpwd;
-	}
-
 	public char getGender() {
 		return gender;
 	}
-
-	public void setGender(char gender) {
-		this.gender = gender;
-	}
-
 	public String getBirth() {
 		return birth;
 	}
-
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
-
 	public String getJoinDate() {
 		return joinDate;
 	}
-
-	public void setJoinDate(String joinDate) {
-		this.joinDate = joinDate;
-	}
-
 	public String getLastAccess() {
 		return lastAccess;
 	}
-
-	public void setLastAccess(String lastAccess) {
-		this.lastAccess = lastAccess;
-	}
-
 	public int getPoint() {
 		return point;
 	}
@@ -109,26 +73,48 @@ public class Member {
 	public int getAdmin() {
 		return admin;
 	}
-
-	public void setAdmin(int admin) {
-		this.admin = admin;
-	}
-
 	public int getStatus() {
 		return status;
 	}
-
+	
+	public void setUseremail(String useremail) {
+		this.useremail = useremail;
+	}
+	public void setUsernick(String usernick) {
+		this.usernick = usernick;
+	}
+	public void setUserpwd(String userpwd) {
+		this.userpwd = userpwd;
+	}
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
+	public void setJoinDate(String joinDate) {
+		this.joinDate = joinDate;
+	}
+	public void setLastAccess(String lastAccess) {
+		this.lastAccess = lastAccess;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
+	public void setWaringCount(int waringCount) {
+		this.waringCount = waringCount;
+	}
+	public void setAdmin(int admin) {
+		this.admin = admin;
+	}
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Member [useremail=" + useremail + ", usernick=" + usernick + ", userpwd=" + userpwd + ", gender="
 				+ gender + ", birth=" + birth + ", joinDate=" + joinDate + ", lastAccess=" + lastAccess + ", point="
 				+ point + ", warningCount=" + warningCount + ", admin=" + admin + ", status=" + status + "]";
 	}
-
-	
-	
 }

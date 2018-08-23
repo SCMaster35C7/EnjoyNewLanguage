@@ -45,10 +45,24 @@
 		where useremail=#{useremail}
 	</update>
 	
+
 	<update id="updateLastAccess" parameterType="string">
 		update member
 		set lastAccess = sysdate
 		where useremail=#{useremail}
 	</update>
 	
+</mapper>
+
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="map">
+		update member 
+		set 
+			usernick = #{usernick} 
+			, userpwd = #{newpwd} 
+		where 
+			useremail = #{useremail} and
+			userpwd = #{currpwd}			
+	</update>
 </mapper>

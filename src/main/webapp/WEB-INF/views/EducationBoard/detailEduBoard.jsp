@@ -7,8 +7,12 @@
 	<meta charset="UTF-8">
 	<title>Enjoy Language</title>
 	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
+	
+	var correct="";
+	var TestType=false;  //문제유형용 변수 false : text, true : mic
 		$(function() {
 			$('#playYoutube').on('click', playYoutube);
 			$('#pauseYoutube').on('click', pauseYoutube);
@@ -19,7 +23,133 @@
 			
 			$('#soundVolum').on('click', soundVolum);
 			$('#seekTo').on('click', seekTo);
+		
+			
+			
+			// 테스트용, 버튼 클릭시 음성파일 런타임 이동
+			$('#testbutton').on('click',function(){
+				var tester=document.getElementById('soundFile');
+				tester.currentTime=25.2342;
+			})
+			
+			
+			
+		// 테스트용 코드, 콘솔창에 음성파일 재생시간 출력
+			/*
+			document.getElementById("soundFile").addEventListener("timeupdate", function(){
+				
+				console.log(this.currentTime);
+			});
+			*/
+             document.getElementById("soundFile").addEventListener("canplay", function(){
+				
+				console.log('ready!!');
+			});
+			
+			
+			
 		});
+		
+		function startAnnyang(textbar) {
+			annyang.start({autoRestart: false,continuous: false});
+			var recognition = annyang.getSpeechRecognizer();
+			recognition.onresult=function(event){
+				var resultText=event.results[0][0];
+				annyang.abort();
+				textbar.value=resultText.transcript; //input에 돌아온 리턴값 입력
+				textbar.style.backgroundColor="";   //문자입력시 배경 없에기
+			}
+		}
+		
+		
+		function getSubList() {
+			var level = $('#level').val(); //난이도
+			var jamacURL = '${jamacURL}';   //자막주소
+			var ChoiceType = document.getElementsByClassName('TestType'); //문제유형
+			
+			if(ChoiceType[0].checked){
+				TestType=false;
+			}else{
+				TestType=true;
+			}
+			// 스크립트 상위에 선언해둔 TestType 이란 변수를 이용하여 마이크 스크립트를 작동시킬지 체크	
+
+			$.ajax({
+				method : 'get',
+				url : 'getSubtitlesList',
+				data : 'level=' + level + "&videoNum=" + ${edu.videoNum},
+				contentType : 'application/json; charset=UTF-8',
+				dataType : 'json',
+				success : makeSubList,
+				error : function() {
+					console.log('error!!');
+				}
+
+			})
+
+		}
+		
+		function makeSubList(s) {
+			correct=s.correct; //정답 배열 스크립트 맨위에 저장(채점시 용도)
+			var subtitles="";
+			var readonly="";
+			if(TestType){
+				readonly = 'readonly="readonly"';
+			}else{
+				readonly="";
+			}
+			//음성입력일시 input 창을 readonly로, 텍스트 입력일시 입력가능하게	
+			for (var i = 0; i < s.quiz.length; i++) {		
+				// <a> 태그 : 자막 줄 별 시간정보, 클릭시 해당시간으로 영상 이동
+				 subtitles+='<a onclick='+'"'+'seekTo('+s.playtime[i]+')'+'"'+'>'+s.playtimeView[i]+'</a> ';
+				for (var j = 0; j < s.quiz[i].length; j++) {
+					if(s.quiz[i][j].indexOf('★')==0){
+						var longer=s.quiz[i][j].replace("★★", "");
+						var textlong;
+						if(longer>1){
+							textlong=longer/2;  //택스트 입력칸 사이즈 조절
+						}else{
+							textlong=1;  // 0.5는 불가능하여 오히려 더 큰사이즈가 되므로 최소 1
+						}
+						subtitles += '<input class="answer"'+readonly+' type="text" size='+'"'+textlong+'"'+'px> ';
+					}else{
+						subtitles+=s.quiz[i][j];
+						subtitles+=' ';
+					}
+				}
+				subtitles+='<br>';
+			}
+			$('#jamaclist').html(subtitles);
+			
+			//음성 방식 test일시 추가되는 부분
+			if(TestType){
+			$('.answer').on('click',function(){		
+				var textbar=this;
+				startAnnyang(textbar);
+				textbar.style.backgroundColor="#d6f4c1";
+			})
+			}
+			
+
+		}
+		
+		function mark(){
+          console.log(correct[1]);
+			var answer=$('.answer');
+			for(var i=0;i<correct.length;i++){
+				if(correct[i].toLowerCase()==answer[i].value.toLowerCase()){
+					answer[i].style.color= "blue";
+					answer[i].readOnly=true;
+				}else{
+					answer[i].readOnly=true;
+					answer[i].style.color= "red";
+					answer[i].value=('정답: '+correct[i]+", 오답: "+answer[i].value);
+					answer[i].size=(correct[i].length*4);
+				}
+			}
+		}
+		
+		
 	</script>
 </head>
 
@@ -108,16 +238,28 @@
 			player.setVolume(soundValue.value, true);
 		}
 		
-		function seekTo() {
-			var start = document.getElementById("start");
+		function seekTo(start) {
 			
+			//var start2 = document.getElementById("start").value;
+			//console.log(start2);
+			/*
 			if(isNaN(start.value) == true) {
 				alert("초를 입력해주세요.");
 				start.focus();
 				return;
 			}
-			player.seekTo(start.value, true);
+			*/
+			
+			player.seekTo(start, true);
 		}
+		
+		$(function() {
+		document.getElementById("soundFile").addEventListener("timeupdate", function(){
+			//console.log(this.currentTime);
+			player.seekTo(this.currentTime, true);
+			console.log(this.currentTime+", "+player.getCurrentTime());
+		});
+		})
 	</script>
 	
 	<hr />
@@ -157,8 +299,43 @@
 			</td>
 		</tr>
 	</table>
+	
+	<div>
+	 <input type="radio" class="TestType" name="TestType" value="text"> 문자입력 
+	 <input type="radio" class="TestType" name="TestType" value="mic">  음성입력
+	
+	
+		<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level">
+		<input type="button" onclick="getSubList()" value="문제생성"> 
+		<input type="button" onclick="mark()" value="채점하기">
 
-	
-	
+	</div>
+
+  <!-- 
+  <audio id="soundFile" controls="controls" loop="loop" preload="auto">
+  <source src="soundFile?soundFileNum=1" type="audio/mpeg" >
+
+  </audio>
+   -->
+  <audio id="soundFile" controls="controls" src="getsound/That Time of Year2.mp3">
+Your user agent does not support the HTML5 Audio element.
+</audio>
+
+<input type="button" id="testbutton" value="이동!">
+
+  
+	<div id="jamaclist">
+	 
+	</div>
+
+
+
+
+
+
+
+<!-- 
+	<p id="time_${sndkj}"> </p>
+	 -->
 </body>
 </html>
