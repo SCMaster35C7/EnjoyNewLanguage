@@ -26,6 +26,26 @@
 			$('#addEduVideo').on('click', function() {
 				location.href = "addEduVideo";
 			});
+			
+			$('#recommendation').on('click', function() {
+				$.ajax({
+					method:'get'
+					, url:'updateRecommendation'
+					, success:function(resp) {
+						alert(resp);
+					}
+				});
+			});
+			
+			$('#decommendation').on('click', function() {
+				$.ajax({
+					method:'get'
+					, url:'updateDecommendation'
+					, success:function(resp) {
+						alert(resp);
+					}
+				});
+			});
 		});
     </script>
 </head>
@@ -59,19 +79,17 @@
 					</div>
 					
 					<div class="card-footer" align="center">
-						<!-- <a href="#" class="btn btn-primary"> -->
+						<button id="recommendation" class="btn">
 							<img alt="" src="images/tup.png">${eduList.recommendation}
-						<!-- </a> -->
+						</button>
 						
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<!-- <a href="#" class="btn btn-primary"> -->
+						<button id="decommendation" class="btn">
 							<img alt="" src="images/tdown.png">${eduList.decommendation}
-						<!-- </a> -->
+						</button>
 						
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<!--  <a href="#" class="btn btn-primary"> -->
-							조회수 ${eduList.hitCount}
-						<!-- </a> -->
+						조회수 ${eduList.hitCount}
 					</div>
 				</div>
 			</div>
