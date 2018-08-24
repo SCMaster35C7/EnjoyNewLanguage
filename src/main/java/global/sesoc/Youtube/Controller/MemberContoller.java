@@ -135,11 +135,14 @@ public class MemberContoller {
 	
 	@RequestMapping(value="/nickCheck", method=RequestMethod.POST, produces="application/json; charset=utf-8")
 	public @ResponseBody String nickCheck(String usernick) {
-		
+		/*String a="true";
+		String b="false";*/
 		if (mRepository.selectByNick(usernick)==null) {
 			return "사용 가능한 닉네임 입니다";
-		} else 	return "중복된 닉네임 입니다";
-
+			/*return a;*/
+		} else 	return "중복된 닉네임 입니다.";
+			/*return b;	*/
+		
 	}
 	
 	
