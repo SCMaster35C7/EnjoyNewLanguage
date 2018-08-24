@@ -24,7 +24,14 @@ $(function(){
 					,dataType	: 'text'
 					,success	: function(resp){
 						
-	            	 	$("#nickcheck").text(resp);
+						$("#nickcheck").text(resp);
+						/* if(resp=='true'){
+							$("#nickcheck").text("사용가능!!!!! 아이디입니다.");
+						}else{
+							$("#nickcheck").html('<span style="color: red; font-weight: bold;">중복된 아이디입니다.</span>');
+						}  */
+						
+	            	 	
 				}, error:function(resp, code, error) {
 					alert("resp : "+resp+", code:"+code+", error:"+error);
 				}    					
@@ -34,26 +41,28 @@ $(function(){
 	$('#btnUpdate').on('click', function(){
 		
 		var usernick = $("#usernick").val();
-		var mem = mebe
+		var nickcheck = $("#nickcheck").text();
+		
 		$pattern = '^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';			
 		
 		
-		if (usernick.length<=0) {
-			/* nickCheck=='중복된 닉네임 입니다' */
-			alert('닉네임 다시 한 번 확인해주세요');
-			$("#usernick").select();
-			$("#usernick").focus();
-			return;
+		if (nickcheck.length<=0||nickcheck=='중복된 닉네임 입니다') {
+				alert('닉네임 다시 한 번 확인해주세요');
+				$("#usernick").select();
+				$("#usernick").focus();
+				return;
 		}
 		
 		if($('#currpwd').val() == $('#newpwd').val()){
 			alert('새로입력한 비밀번호와 현재 비밀번호가 달라야 합니다.');
 			return;
 		}
+		
 		if($('#newpwd').val() != $('#checkpwd').val()){
 			alert('새로입력한 비밀번호와 비밀번호 확인 값은 같아야 합니다.');
 			return;
 		}
+		
 		if($('#newpwd').val().match($pattern)){
 			
 			alert('비밀번호 수정이 완료되었습니다. 다시 로그인해주세요');
@@ -102,7 +111,9 @@ $(function(){
 		
 		<tr>
 			<td>바꿀 닉네임</td>
-			<td><input type="text" id="usernick" name="usernick" placeholder="바꿀 닉네임을 입력" /></td>
+			<td><input type="text" id="usernick" name="usernick" placeholder="바꿀 닉네임을 입력" />
+			&nbsp;&nbsp;<span id="nickcheck"></span>&nbsp;&nbsp; 
+			</td>
 		</tr>
 		 
 		<tr>
@@ -135,7 +146,7 @@ $(function(){
 			<input type="button" value="취소" id="btnCancel" />
 			</td>			
 		</tr>
-	</table>
+	</table>	
 	</form>
 
 </body>
