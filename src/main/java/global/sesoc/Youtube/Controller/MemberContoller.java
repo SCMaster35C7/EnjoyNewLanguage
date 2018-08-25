@@ -57,7 +57,7 @@ public class MemberContoller {
 		if(member != null) {
 			session.setAttribute("useremail", member.getUseremail());
 			session.setAttribute("admin", member.getAdmin());
-			System.out.println(member);
+			//System.out.println(member);
 			return "redirect:/";
 		}else {
 			model.addAttribute("useremail", useremail);

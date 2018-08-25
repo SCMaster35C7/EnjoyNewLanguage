@@ -1,11 +1,11 @@
 package global.sesoc.Youtube.Controller;
 
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dto.Education;
+import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
 
@@ -52,7 +53,7 @@ public class VideoController {
 			Model model			
 			) {
 		int totalRecordCount = eduRepository.getTotalCount(searchType, searchWord);
-		System.out.println(totalRecordCount);
+		//System.out.println(totalRecordCount);
 		
 		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
 		List<Education> eduList =  eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
@@ -129,16 +130,41 @@ public class VideoController {
 		return "Practice/slide";
 	}
 	
-	@RequestMapping(value="/updateRecommendation", method=RequestMethod.GET, produces="application/json; charset=UTF-8")
-	public @ResponseBody String updateRecommendation() {
+	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
+	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
+		//System.out.println(reco);
 		
-		return "안녕";
-	}
-	
-	@RequestMapping(value="/updateDecommendation", method=RequestMethod.GET, produces="application/json; charset=UTF-8")
-	public @ResponseBody String updateDecommendation() {
+		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
+		//System.out.println(recoTemp);
 		
-		return "안녕";
+		if(recoTemp != null) {
+			System.out.println("이미 있음");
+			int savedReco = recoTemp.getRecommendation();
+			int reqReco	= reco.getRecommendation();
+			
+			if(savedReco != reqReco) {
+				if(reqReco == 0) {
+					// 좋아요 상태에서 싫어요로 변경
+					
+				}else {
+					// 싫어요 상태에서 좋아요로 변경
+					
+				}
+			}
+			
+			return "fail";
+		}else {
+			//System.out.println("없음");
+			int result = eduRepository.insertRecommendation(reco);
+			if(reco.getRecommendation() == 0) {
+				// 0 = 추천
+				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+			}else {
+				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+			}
+			
+			return "success";
+		}
 	}
 }
 

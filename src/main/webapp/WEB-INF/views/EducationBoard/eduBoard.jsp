@@ -27,22 +27,62 @@
 				location.href = "addEduVideo";
 			});
 			
-			$('#recommendation').on('click', function() {
+			$('.recommendation').on('click', function() {
+				var useremail = "${sessionScope.useremail}";
+				
+				if(useremail.trim().length == 0) {
+					location.href="login";
+					return;
+				}
+				var target = $(this);
+				var recoCount =  Number(target.children("span").text())+1;
+				var videonum = target.parent().children("input").val();
+				var dataForm = {"useremail":useremail, "identificationnum":videonum, "recommendtable":"0", "recommendation":"0"};
+				
 				$.ajax({
-					method:'get'
-					, url:'updateRecommendation'
+					method:'post'
+					, url:'insertRecommendation'
+					, data: JSON.stringify(dataForm)
+					, contentType: "application/json; charset=utf-8"
 					, success:function(resp) {
-						alert(resp);
+						if(resp == "success") {
+							target.children("span").html(recoCount);
+						}else {
+							alert("이미 추천/비추천을 하셨습니다.");
+						}
+					  }
+					, error:function(resp, code, error) {
+						alert("resp : "+resp+", code : "+code+", error : "+error);
 					}
 				});
 			});
 			
-			$('#decommendation').on('click', function() {
+			$('.decommendation').on('click', function() {
+				var useremail = "${sessionScope.useremail}";
+				
+				if(useremail.trim().length == 0) {
+					location.href="login";
+					return;
+				}
+				var target = $(this);
+				var recoCount = Number(target.children("span").text())+1;
+				var videonum = target.parent().children("input").val();
+				var dataForm = {"useremail":useremail, "identificationnum":videonum, "recommendtable":"0", "recommendation":"1"};
+				
 				$.ajax({
-					method:'get'
-					, url:'updateDecommendation'
+					method:'post'
+					, url:'insertRecommendation'
+					, data: JSON.stringify(dataForm)
+					, contentType: "application/json; charset=utf-8"
 					, success:function(resp) {
-						alert(resp);
+						if(resp == "success") {
+							target.children("span").html(recoCount);
+						}else {
+							alert("이미 추천/비추천을 하셨습니다.");
+						}
+					  }
+					, error:function(resp, code, error) {
+						alert("resp : "+resp+", code : "+code+", error : "+error);
 					}
 				});
 			});
@@ -53,6 +93,7 @@
     <header>
             <div><h2>공부영상게시판</h2></div>
     </header>
+    <div id="temp">안녕</div>
    <br/>
    
    	<c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
@@ -79,13 +120,17 @@
 					</div>
 					
 					<div class="card-footer" align="center">
-						<button id="recommendation" class="btn">
-							<img alt="" src="images/tup.png">${eduList.recommendation}
+						<input type="hidden" value="${eduList.videoNum}">
+						<button class="btn recommendation">
+							<img alt="" src="images/tup.png">
+							<span>${eduList.recommendation}</span>
 						</button>
 						
+						
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button id="decommendation" class="btn">
-							<img alt="" src="images/tdown.png">${eduList.decommendation}
+						<button class="btn decommendation">
+							<img alt="" src="images/tdown.png">
+							<span>${eduList.decommendation}</span>
 						</button>
 						
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
