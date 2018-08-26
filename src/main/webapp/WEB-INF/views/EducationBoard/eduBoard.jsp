@@ -35,7 +35,8 @@
 					return;
 				}
 				var target = $(this);
-				var recoCount =  Number(target.children("span").text())+1;
+				var recoCount = Number(target.children("span").text());
+				var decoTarget = target.parent().children(".decommendation").children("#decoCount");
 				var videonum = target.parent().children("input").val();
 				var dataForm = {"useremail":useremail, "identificationnum":videonum, "recommendtable":"0", "recommendation":"0"};
 				
@@ -46,9 +47,15 @@
 					, contentType: "application/json; charset=utf-8"
 					, success:function(resp) {
 						if(resp == "success") {
-							target.children("span").html(recoCount);
-						}else {
-							alert("이미 추천/비추천을 하셨습니다.");
+							alert("영상을 좋아합니다.");
+							target.children("span").html(recoCount+1);
+						}else if(resp == "cancel") {
+							alert("좋아요를 취소합니다.");
+							target.children("span").html(recoCount-1);
+						}else if(resp == "change") {
+							alert("좋아요로 변경하셨습니다.");
+							decoTarget.html(Number(decoTarget.text())-1);
+							target.children("span").html(recoCount+1);
 						}
 					  }
 					, error:function(resp, code, error) {
@@ -65,7 +72,8 @@
 					return;
 				}
 				var target = $(this);
-				var recoCount = Number(target.children("span").text())+1;
+				var decoCount = Number(target.children("span").text());
+				var recoTarget = target.parent().children(".recommendation").children("#recoCount");
 				var videonum = target.parent().children("input").val();
 				var dataForm = {"useremail":useremail, "identificationnum":videonum, "recommendtable":"0", "recommendation":"1"};
 				
@@ -76,9 +84,15 @@
 					, contentType: "application/json; charset=utf-8"
 					, success:function(resp) {
 						if(resp == "success") {
-							target.children("span").html(recoCount);
-						}else {
-							alert("이미 추천/비추천을 하셨습니다.");
+							alert("영상을 싫어합니다.");
+							target.children("span").html(decoCount+1);
+						}else if(resp == "cancel") {
+							alert("싫어요를 취소합니다.");
+							target.children("span").html(decoCount-1);
+						}else if(resp == "change"){
+							alert("싫어요로 변경하셨습니다.");
+							recoTarget.html(Number(recoTarget.text())-1);
+							target.children("span").html(decoCount+1);
 						}
 					  }
 					, error:function(resp, code, error) {
@@ -123,14 +137,14 @@
 						<input type="hidden" value="${eduList.videoNum}">
 						<button class="btn recommendation">
 							<img alt="" src="images/tup.png">
-							<span>${eduList.recommendation}</span>
+							<span id="recoCount">${eduList.recommendation}</span>
 						</button>
 						
 						
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn decommendation">
 							<img alt="" src="images/tdown.png">
-							<span>${eduList.decommendation}</span>
+							<span id="decoCount">${eduList.decommendation}</span>
 						</button>
 						
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

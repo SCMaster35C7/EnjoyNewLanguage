@@ -100,4 +100,29 @@ public class EducationRepository {
 		
 		return result;
 	}
+
+	public int deleteRecommend(Recommendation reco) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.deleteRecommend(reco);
+		
+		return result;
+	}
+
+	public int updateDecreRecommend(int videonum, String commendation) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		Map<String,Object> map = new HashMap<>();
+		map.put("videonum", videonum);
+		map.put("commendation", commendation);
+		
+		int result = mapper.updateDecreRecommend(map);
+		
+		return result;
+	}
+
+	public int updateRecommend(Recommendation reco) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.updateRecommend(reco);
+		
+		return result;
+	}
 }

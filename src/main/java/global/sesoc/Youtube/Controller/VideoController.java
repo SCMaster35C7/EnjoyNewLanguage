@@ -139,27 +139,45 @@ public class VideoController {
 		
 		if(recoTemp != null) {
 			System.out.println("이미 있음");
-			int savedReco = recoTemp.getRecommendation();
-			int reqReco	= reco.getRecommendation();
+			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
+			int reqReco	= reco.getRecommendation();			// 요청온 값
 			
-			if(savedReco != reqReco) {
+			if(savedReco == reqReco) {
+				int result = eduRepository.deleteRecommend(reco);
+				
+				if(reqReco == 0) {
+					// 좋아요 상태 취소
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
+				}else {
+					// 싫어요 상태 취소
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
+				}
+				
+				return "cancel";
+			}else {
+				int result = 0 ;
 				if(reqReco == 0) {
 					// 좋아요 상태에서 싫어요로 변경
-					
+					result = eduRepository.updateRecommend(reco);
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
 				}else {
 					// 싫어요 상태에서 좋아요로 변경
-					
+					result = eduRepository.updateRecommend(reco);
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
 				}
 			}
 			
-			return "fail";
+			return "change";
 		}else {
-			//System.out.println("없음");
 			int result = eduRepository.insertRecommendation(reco);
+			
 			if(reco.getRecommendation() == 0) {
-				// 0 = 추천
+				// 좋아요
 				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
 			}else {
+				// 싫어요
 				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
 			}
 			
