@@ -1,107 +1,108 @@
 package global.sesoc.Youtube.dto;
 
 public class Member {
-	private String userid;
+	
 	private String useremail;
+	private String usernick;
 	private String userpwd;
 	private char gender;
 	private String birth;
 	private String joinDate;
 	private String lastAccess;
 	private int point;
-	private int waringCount;
+	private int warningCount;
 	private int admin;
-	private int statis;
+	private int status;
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Member(String userid, String useremail, String userpwd, char gender, String birth, String joinDate,
-			String lastAccess, int point, int waringCount, int admin, int statis) {
+	public Member(String useremail, String usernick, String userpwd, char gender, String birth, String joinDate,
+			String lastAccess, int point, int warningCount, int admin, int status) {
 		super();
-		this.userid = userid;
 		this.useremail = useremail;
+		this.usernick = usernick;
 		this.userpwd = userpwd;
 		this.gender = gender;
 		this.birth = birth;
 		this.joinDate = joinDate;
 		this.lastAccess = lastAccess;
 		this.point = point;
-		this.waringCount = waringCount;
+		this.warningCount = warningCount;
 		this.admin = admin;
-		this.statis = statis;
-	}
-	public String getUserid() {
-		return userid;
+		this.status = status;
 	}
 	public String getUseremail() {
 		return useremail;
 	}
-	public String getUserpwd() {
-		return userpwd;
-	}
-	public char getGender() {
-		return gender;
-	}
-	public String getBirth() {
-		return birth;
-	}
-	public String getJoinDate() {
-		return joinDate;
-	}
-	public String getLastAccess() {
-		return lastAccess;
-	}
-	public int getPoint() {
-		return point;
-	}
-	public int getWaringCount() {
-		return waringCount;
-	}
-	public int getAdmin() {
-		return admin;
-	}
-	public int getStatis() {
-		return statis;
-	}
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
 	public void setUseremail(String useremail) {
 		this.useremail = useremail;
+	}
+	public String getUsernick() {
+		return usernick;
+	}
+	public void setUsernick(String usernick) {
+		this.usernick = usernick;
+	}
+	public String getUserpwd() {
+		return userpwd;
 	}
 	public void setUserpwd(String userpwd) {
 		this.userpwd = userpwd;
 	}
+	public char getGender() {
+		return gender;
+	}
 	public void setGender(char gender) {
 		this.gender = gender;
+	}
+	public String getBirth() {
+		return birth;
 	}
 	public void setBirth(String birth) {
 		this.birth = birth;
 	}
+	public String getJoinDate() {
+		return joinDate;
+	}
 	public void setJoinDate(String joinDate) {
 		this.joinDate = joinDate;
+	}
+	public String getLastAccess() {
+		return lastAccess;
 	}
 	public void setLastAccess(String lastAccess) {
 		this.lastAccess = lastAccess;
 	}
+	public int getPoint() {
+		return point;
+	}
 	public void setPoint(int point) {
 		this.point = point;
 	}
-	public void setWaringCount(int waringCount) {
-		this.waringCount = waringCount;
+	public int getWarningCount() {
+		return warningCount;
+	}
+	public void setWarningCount(int warningCount) {
+		this.warningCount = warningCount;
+	}
+	public int getAdmin() {
+		return admin;
 	}
 	public void setAdmin(int admin) {
 		this.admin = admin;
 	}
-	public void setStatis(int statis) {
-		this.statis = statis;
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	@Override
 	public String toString() {
-		return "Member [userid=" + userid + ", useremail=" + useremail + ", userpwd=" + userpwd + ", gender=" + gender
-				+ ", birth=" + birth + ", joinDate=" + joinDate + ", lastAccess=" + lastAccess + ", point=" + point
-				+ ", waringCount=" + waringCount + ", admin=" + admin + ", statis=" + statis + "]";
+		return "Member [useremail=" + useremail + ", usernick=" + usernick + ", userpwd=" + userpwd + ", gender="
+				+ gender + ", birth=" + birth + ", joinDate=" + joinDate + ", lastAccess=" + lastAccess + ", point="
+				+ point + ", warningCount=" + warningCount + ", admin=" + admin + ", status=" + status + "]";
 	}
 	
 	

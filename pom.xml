@@ -71,6 +71,20 @@
 			<version>2.9.6</version>
 		</dependency>
 		
+		<!-- mail 인증 -->
+	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.5.6</version>
+	</dependency>
+
+	<!-- mail 서포트 -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context-support</artifactId>
+		<version>${org.springframework-version}</version>
+	</dependency>
+		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -4,9 +4,10 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="global.sesoc.Youtube.dao.EducationMapper">
-	<select id="selectAllEduList" resultType="Education">
+	<select id="selectEduList" resultType="Education">
 		select
 			videonum
+			, title
 			, url
 			, originalfile
 			, savedfile
@@ -22,6 +23,7 @@
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum
+			, title
 			, url
 			, originalfile
 			, savedfile
@@ -49,4 +51,28 @@
 			, #{savedfile}
 		)
 	</insert>
+	
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		select
+			count(*)
+		from 
+			EducationVideo
+		where
+			${searchType} like '%' || #{searchWord} || '%'
+	</select>
+	
+	<update id="updateHitCount" parameterType="int">
+		update
+			EducationVideo
+		set
+			hitcount = hitcount+1
+		where
+			videonum = #{videonum}
+	</update>
+	
+	<select id="selectSubName" parameterType="int" resultType="String">
+	select  savedfile
+	from EducationVideo
+	where videonum=#{value}
+	</select>
 </mapper>
