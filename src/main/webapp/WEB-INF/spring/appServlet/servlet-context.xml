@@ -28,6 +28,18 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- 인터셉터 빈 등록 -->
+	<beans:bean id="loginInterceptor" class="global.sesoc.Youtube.interceptor.LoginInterceptor"/>
+	
+	<!-- 인터셉터 경로 설정 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/detailEduBoard" />
+			<mapping path="/myPage" />
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="global.sesoc.Youtube" />
 	
 	
