@@ -59,9 +59,7 @@
     		//닉네임중복검사
 			$('#usernick').keyup(function(){
     			
-    			var usernick = $(this).val();
-    			
-    			
+    			var usernick = $(this).val();   			
     				
     				$.ajax({
     						method	:	'post'
@@ -73,19 +71,15 @@
     		            	 	$("#nickcheck").text(resp);
 						}, error:function(resp, code, error) {
 							alert("resp : "+resp+", code:"+code+", error:"+error);
-						}
-						
-    					
-    				});
-    				
-    			
+						}    					
+    				});    			
     		});
     		
 				$('#InputPassword1').keyup(function(){
     			
     				var pwd1 = $(this).val();
     				
-    				$pattern = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
+    				$pattern = '^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
     				
     				 if(pwd1.match($pattern)){
     					 

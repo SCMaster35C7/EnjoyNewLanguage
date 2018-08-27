@@ -51,19 +51,17 @@
 		set lastAccess = sysdate
 		where useremail=#{useremail}
 	</update>
-
+	
 	<!-- 회원정보 수정 -->
-	<update id="updateMember" parameterType="Member">
-		update member 
-		set 
-			usernick = #{usernick} 
-			, userpwd = #{newpwd} 
-		where 
-			useremail = #{useremail} and
-			userpwd = #{currpwd}			
+	<update id="updateMember" parameterType="map" >
+	update member
+	set
+		userpwd = #{newpwd}
+		, usernick = #{usernick}
+	where
+		userpwd = #{currpwd} and useremail = #{useremail}
 	</update>
-	
-	
+
 	<!-- 마이페이지 처음 정보 -->
 	<select id="selectMyInfo" parameterType="string" resultType="Member">
 		select 

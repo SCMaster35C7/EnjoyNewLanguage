@@ -1,22 +1,30 @@
-DROP TABLE DubbingReply;		-- 자막요청 게시판 댓글 테이블
+DROP TABLE DubbingReply;			-- 자막요청 게시판 댓글 테이블
+DROP TABLE DubbingRecomend;			-- 더빙 게시판 추천 테이블
 DROP TABLE Dubbing;					-- 더빙 게시판 테이블
 DROP TABLE InvestigationReply;		-- 자막요청 게시판 댓글 테이블
+DROP TABLE SubtitleRecomend;		-- 요청자막 추천 테이블
 DROP TABLE InvestigationSubtitle;	-- 요청자막 제공 테이블
+DROP TABLE InvestigationRecomend;	-- 자막요청 게시판 추천 테이블
 DROP TABLE Investigation;			-- 자막요청 게시판 테이블
 DROP TABLE WishList;				-- 찜한목록 테이블
 DROP TABLE UserStudy;				-- 사용자학습 테이블
 DROP TABLE WrongAnswer;				-- 사용자오답 테이블
+DROP TABLE EduVideoRecomend;		-- 교육자료 추천 테이블
 DROP TABLE EducationVideo;			-- 교육자료 테이블
 DROP TABLE Member;					-- 사용자정보 테이블
 
 DROP SEQUENCE DUBBING_REPLY_SEQ;			-- 더빙게시판 댓글 시퀀스
+DROP SEQUENCE DUBBING_RECOMEND_SEQ;			-- 더빙게시판 추천 시퀀스
 DROP SEQUENCE DUBBING_SEQ;					-- 더빙게시판 시퀀스
 DROP SEQUENCE INVESTIGATION_REPLY_SEQ;		-- 자막검증게시판 댓글 시퀀스
+DROP SEQUENCE SUBTITLE_RECOMEND_SEQ;		-- 요청자막 추천 시퀀스
 DROP SEQUENCE INVESTIGATION_SUBTITLE_SEQ;	-- 요청자막 제공 시퀀스 
+DROP SEQUENCE INVESTIGATION_RECOMEND_SEQ;	-- 자막요청 추천 시퀀스
 DROP SEQUENCE INVESTIGATION_SEQ;			-- 자막요청 시퀀스
 DROP SEQUENCE WISH_LIST_SEQ;				-- 찜한목록 시퀀스	
 DROP SEQUENCE USER_STUDY_SEQ;				-- 사용자학습용 시퀀스
 DROP SEQUENCE WRONG_ANSWER_SEQ;				-- 사용자오답용 시퀀스
+DROP SEQUENCE EDUCATION_VIDEO_RECOMEND_SEQ;	-- 교육자료 추천 시퀀스
 DROP SEQUENCE EDUCATION_VIDEO_SEQ;			-- 교육자료용 시퀀스
 
 CREATE TABLE Member (
@@ -35,10 +43,10 @@ CREATE TABLE Member (
 -- 2. 교육 자료 테이블(교육용 게시판용)
 CREATE TABLE EducationVideo(
 	videoNum			NUMBER 			CONSTRAINT eduvideo_videoNum_pk		PRIMARY KEY,	-- 교육용 비디오번호
-	title				VARCHAR2(100)	CONSTRAINT eduvideo_title_nn			NOT NULL,	-- 교육영상 제목
+	title				VARCHAR2(100)	CONSTRAINT eduvideo_title_nn		NOT NULL,		-- 교육영상 제목
 	url					VARCHAR2(1000)	CONSTRAINT eduvideo_url_nn			NOT NULL,		-- 교육영상 URL
 	originalFile		VARCHAR2(1000) 	CONSTRAINT eduvideo_originalfile_nn	NOT NULL,		-- 파일 원본 이름
-	savedFile			VARCHAR2(1000) 	CONSTRAINT eduvideo_savedfile_nn		NOT NULL,	-- 저장된 파일 이름
+	savedFile			VARCHAR2(1000) 	CONSTRAINT eduvideo_savedfile_nn	NOT NULL,		-- 저장된 파일 이름
 	regDate				DATE			DEFAULT SYSDATE,									-- 등록일
 	hitCount			NUMBER			DEFAULT 0,											-- 조회수
 	recommendation		NUMBER			DEFAULT 0,											-- 추천수
@@ -48,7 +56,20 @@ CREATE TABLE EducationVideo(
 
 CREATE SEQUENCE EDUCATION_VIDEO_SEQ;
 
--- 3. 사용자 오답 테이블
+--3. 교육 영상 추천 테이블
+CREATE TABLE EduVideoRecomend (
+	recommendNum	NUMBER 	CONSTRAINT edurecomend_recommendNum_pk		PRIMARY KEY,
+	recommendation	NUMBER	CONSTRAINT edurecomend_recommendation_NN	NOT NULL,
+	useremail		VARCHAR2(100),
+	videoNum		NUMBER,
+	recommendDate	Date DEFAULT SYSDATE,
+	CONSTRAINT edurecomend_useremail_fk FOREIGN KEY(useremail) 	REFERENCES Member(useremail) ON DELETE CASCADE,
+	CONSTRAINT edurecomend_videonum_fk 	FOREIGN KEY(videoNum) 	REFERENCES EducationVideo(videoNum)  ON DELETE CASCADE
+);
+
+CREATE SEQUENCE EDUCATION_VIDEO_RECOMEND_SEQ;
+
+-- 4. 사용자 오답 테이블
 CREATE TABLE WrongAnswer(
 	answernum		NUMBER			CONSTRAINT wronganswer_answernum_pk			PRIMARY KEY,	-- 오답번호
 	useremail		VARCHAR2(50),																-- 아이디
@@ -57,15 +78,15 @@ CREATE TABLE WrongAnswer(
 	wrongAnswer		VARCHAR2(1000) 	CONSTRAINT wronganswer_wrongSentence_nn 	NOT NULL,		-- 오답 문장
 	correctAnswer	VARCHAR2(1000) 	CONSTRAINT wronganswer_correctAnswer_nn 	NOT NULL,		-- 올바른 문장
 	url				VARCHAR2(1000),																-- 영상URL
-	regDate			DATE		DEFAULT SYSDATE,												-- 등록일
+	regDate			DATE			DEFAULT SYSDATE,											-- 등록일
 	classification	NUMBER			CONSTRAINT wronganswer_classification_nn	NOT NULL,		-- 구분코드(0-단어, 1-문장)
 	CONSTRAINT wronganswer_useremail_fk FOREIGN KEY(useremail) REFERENCES Member(useremail) ON DELETE CASCADE,
-	CONSTRAINT wronganswer_url_fk	 FOREIGN KEY(url) REFERENCES EducationVideo(url) ON DELETE CASCADE
+	CONSTRAINT wronganswer_url_fk	FOREIGN KEY(url) REFERENCES EducationVideo(url) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE WRONG_ANSWER_SEQ;
 
--- 4. 사용자 학습 테이블
+-- 5. 사용자 학습 테이블
 CREATE TABLE UserStudy(
 	studynum		NUMBER			CONSTRAINT userstudy_studynum_pk		PRIMARY KEY,		-- 학습번호
 	useremail		VARCHAR2(50),																-- 사용자 아이디
@@ -80,7 +101,7 @@ CREATE TABLE UserStudy(
 
 CREATE SEQUENCE USER_STUDY_SEQ;
 
--- 5. 찜한 목록 테이블
+-- 6. 찜한 목록 테이블
 CREATE TABLE WishList(	
 	wishnum			NUMBER			CONSTRAINT wishlist_wishnum_pk		PRIMARY KEY,			-- 찜목록 번호
 	useremail			VARCHAR2(50),																-- 사용자 아이디
@@ -92,7 +113,7 @@ CREATE TABLE WishList(
 
 CREATE SEQUENCE WISH_LIST_SEQ;
 
--- 6. 자막요청 게시판 테이블
+-- 7. 자막요청 게시판 테이블
 CREATE TABLE Investigation(
 	investigationnum	NUMBER			CONSTRAINT investigation_inum_pk 		PRIMARY KEY,	-- 검증 게시글 번호
 	url					VARCHAR2(1000)	CONSTRAINT investigation_url_nn			NOT NULL,		-- 자막 요청 영상
@@ -107,7 +128,20 @@ CREATE TABLE Investigation(
 
 CREATE SEQUENCE INVESTIGATION_SEQ;
 
--- 7. 요청 자막 제공 테이블
+-- 8. 자막 요청 게시판 추천용
+CREATE TABLE InvestigationRecomend (
+	recommendNum		NUMBER 	CONSTRAINT invrecomend_recommendNum_pk		PRIMARY KEY,	-- 추천 번호
+	recommendation		NUMBER	CONSTRAINT invrecomend_recommendation_nn	NOT NULL,		-- 추천/비추천 (0-비추천, 1-추천)
+	useremail			VARCHAR2(100),														-- 이메일(아이디)
+	investigationnum	NUMBER,																-- 자막 게시글 번호
+	recommendDate		Date 	DEFAULT SYSDATE,											-- 추천일
+	CONSTRAINT invrecomend_useremail_fk FOREIGN KEY(useremail) REFERENCES Member(useremail) ON DELETE CASCADE,
+	CONSTRAINT invrecomend_invnum_fk  FOREIGN KEY(investigationnum) REFERENCES Investigation(investigationnum)  ON DELETE CASCADE
+);
+
+CREATE SEQUENCE INVESTIGATION_RECOMEND_SEQ;
+
+-- 9. 요청 자막 제공 테이블
 CREATE TABLE InvestigationSubtitle(
 	subtitlenum			NUMBER			CONSTRAINT isubtitle_subtitlenum_pk		PRIMARY KEY,	-- 요청 자막 제공 번호
 	subtitleName		VARCHAR2(200)	CONSTRAINT isubtitle_subtitlename_nn	NOT NULL,		-- 자막 이름
@@ -125,7 +159,20 @@ CREATE TABLE InvestigationSubtitle(
 
 CREATE SEQUENCE INVESTIGATION_SUBTITLE_SEQ;
 
--- 8. 자막검증 게시판 댓글 테이블
+--10. 요청 자막 추천 테이블
+CREATE TABLE SubtitleRecomend (
+	recommendNum		NUMBER 	CONSTRAINT subrecomend_recommendNum_pk		PRIMARY KEY,	-- 추천 번호
+	recommendation		NUMBER	CONSTRAINT subrecomend_recommendation_nn	NOT NULL,		-- 추천/비추천 (0-비추천, 1-추천)
+	useremail			VARCHAR2(100),														-- 이메일(아이디)
+	subtitlenum			NUMBER,																-- 자막 게시글 번호
+	recommendDate		Date 	DEFAULT SYSDATE,											-- 추천일
+	CONSTRAINT subrecomend_useremail_fk FOREIGN KEY(useremail) REFERENCES Member(useremail) ON DELETE CASCADE,
+	CONSTRAINT subrecomend_subtitlenum_fk  FOREIGN KEY(subtitlenum) REFERENCES InvestigationSubtitle(subtitlenum)  ON DELETE CASCADE
+);
+
+CREATE SEQUENCE SUBTITLE_RECOMEND_SEQ;
+
+-- 11. 자막검증 게시판 댓글 테이블
 CREATE TABLE InvestigationReply(
 	replynum			NUMBER			CONSTRAINT ireply_replynum_nn	NOT NULL,	-- 댓글 번호
 	investigationnum	NUMBER,														-- 검증 게시글 번호
@@ -139,7 +186,7 @@ CREATE TABLE InvestigationReply(
 
 CREATE SEQUENCE INVESTIGATION_REPLY_SEQ;
 
--- 9. 더빙 게시판 테이블
+-- 12. 더빙 게시판 테이블
 CREATE TABLE  Dubbing(
 	dubbingnum			NUMBER			CONSTRAINT dubbing_dubbingnum_pk	PRIMARY KEY,	-- 더빙 게시글 번호
 	title				VARCHAR2(200)	CONSTRAINT dubbing_title_nn			NOT NULL,		-- 게시글 제목
@@ -155,7 +202,20 @@ CREATE TABLE  Dubbing(
 
 CREATE SEQUENCE DUBBING_SEQ;
 
--- 10. 더빙 게시판 댓글 테이블
+--13. 더빙 게시판 추천 테이블
+CREATE TABLE DubbingRecomend (
+	recommendNum		NUMBER 	CONSTRAINT dubrecomend_recommendNum_pk		PRIMARY KEY,	-- 추천 번호
+	recommendation		NUMBER	CONSTRAINT dubrecomend_recommendation_nn	NOT NULL,		-- 추천/비추천 (0-비추천, 1-추천)
+	useremail			VARCHAR2(100),														-- 이메일(아이디)
+	dubbingnum			NUMBER,																-- 자막 게시글 번호
+	recommendDate		Date 	DEFAULT SYSDATE,											-- 추천일
+	CONSTRAINT dubrecomend_useremail_fk FOREIGN KEY(useremail) REFERENCES Member(useremail) ON DELETE CASCADE,
+	CONSTRAINT dubrecomend_dubbingnum_fk  FOREIGN KEY(dubbingnum) REFERENCES Dubbing(dubbingnum)  ON DELETE CASCADE
+);
+
+CREATE SEQUENCE DUBBING_RECOMEND_SEQ;
+
+-- 14. 더빙 게시판 댓글 테이블
 CREATE TABLE DubbingReply(
 	replynum			NUMBER			CONSTRAINT dubbingreply_replynum_pk		PRIMARY KEY,	-- 댓글 번호
 	dubbingnum			NUMBER,																	-- 더빙 게시글 번호

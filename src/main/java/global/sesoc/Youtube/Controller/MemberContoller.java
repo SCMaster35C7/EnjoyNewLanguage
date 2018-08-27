@@ -63,6 +63,7 @@ public class MemberContoller {
 		
 		//아이디 비번 같은 계정이 있음
 		if(member != null) {
+
 			//인증상태 확인
 			if (member.getStatus()==0) {
 				model.addAttribute("useremail", useremail);
@@ -75,6 +76,10 @@ public class MemberContoller {
 			else {
 				session.setAttribute("useremail", member.getUseremail());
 				session.setAttribute("admin", member.getAdmin());
+				session.setAttribute("usernick", member.getUsernick());
+				session.setAttribute("gender", member.getGender());
+				session.setAttribute("birth", member.getBirth());
+				
 				System.out.println("로그인한넘"+ member);
 				
 				//접속일 업뎃
@@ -82,7 +87,7 @@ public class MemberContoller {
 				
 				return "redirect:/";
 			}
-			
+
 		}else {
 			model.addAttribute("useremail", useremail);
 			model.addAttribute("userpwd",userpwd);
@@ -138,11 +143,14 @@ public class MemberContoller {
 	
 	@RequestMapping(value="/nickCheck", method=RequestMethod.POST, produces="application/json; charset=utf-8")
 	public @ResponseBody String nickCheck(String usernick) {
-		
+		/*String a="true";
+		String b="false";*/
 		if (mRepository.selectByNick(usernick)==null) {
 			return "사용 가능한 닉네임 입니다";
-		} else 	return "중복된 닉네임 입니다";
-
+			/*return a;*/
+		} else 	return "중복된 닉네임 입니다.";
+			/*return b;	*/
+		
 	}
 	
 	
@@ -277,13 +285,26 @@ public class MemberContoller {
 	
 	
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
-	public String updateMember(String currpwd, String newpwd, String usernick, HttpSession session) {
-			
-		String loginId = (String) session.getAttribute("loginId");		
-		System.out.println("현재비번 : "+currpwd +"새 비번 : " +newpwd);
-		int result  = mRepository.updateMember(loginId, currpwd, newpwd, usernick);
+	public String updateMember(Model model, HttpSession session, String usernick, String currpwd, String newpwd) {
 		
+		String useremail = (String) session.getAttribute("useremail");
+		System.out.println("현재비번 : "+currpwd +"새 비번 : " +newpwd + "새 닉네임 : " +usernick);
+		int result  = mRepository.updateMember(useremail, currpwd, newpwd, usernick);
+						
 		System.out.println(result);
+		
+		String message = null;		
+				
+		if(result == 1) {
+			
+			message = "비밀번호 수정 완료. 다시 로그인해 주세요";
+			session.invalidate();
+			
+		} else {
+			message = "비밀번호가 수정되지 않았습니다.";
+		}
+		
+		model.addAttribute("msg", message);
 		
 		return "redirect:/";
 
