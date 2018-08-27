@@ -51,12 +51,9 @@
 		set lastAccess = sysdate
 		where useremail=#{useremail}
 	</update>
-	
-</mapper>
 
-	
 	<!-- 회원정보 수정 -->
-	<update id="updateMember" parameterType="map">
+	<update id="updateMember" parameterType="Member">
 		update member 
 		set 
 			usernick = #{usernick} 
@@ -65,4 +62,35 @@
 			useremail = #{useremail} and
 			userpwd = #{currpwd}			
 	</update>
+	
+	
+	<!-- 마이페이지 처음 정보 -->
+	<select id="selectMyInfo" parameterType="string" resultType="Member">
+		select 
+				   m.useremail
+   				 , m.usernick
+   				 , sum(s.SUCCESSCOUNT) as allSuccess
+   				 , sum(s.FAILURECOUNT) as allFailure 
+   				 , sum(s.CHALLENGECOUNT) as allChallenge  
+   				 ,(sum(s.SUCCESSCOUNT)/sum(s.CHALLENGECOUNT))*100 as winningRate
+		from member m, userstudy s
+		where m.useremail = #{useremail}
+		group by m.useremail, m.usernick, m.point
+	</select>
+	
+	<!-- 마이페이지 레벨 누적 -->
+	<select id="selectLevels" parameterType="string" resultType="TestResult">
+		select testlevel
+		from userstudy
+		where useremail = #{useremail}
+	</select>
+	
+	<!-- 마이페이지 영상목록 -->
+	<select id="selectMyVideo" parameterType="string" resultType="Video">
+		select
+   			 s.url, s.challengecount, e.title, e.videonum
+		from userstudy s, educationvideo e
+		where s.url = e.url
+		and useremail = #{useremail}
+	</select> 
 </mapper>

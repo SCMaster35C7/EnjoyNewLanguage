@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,10 @@ public class VideoController {
 	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() {
+	public String home(HttpServletRequest request, Model model) {
+		String plzLogin = (String) request.getAttribute("plzLogin");
+		System.out.println("로그인해임마 :  "+plzLogin);
+		model.addAttribute("plzLogin", plzLogin);
 		return "index";
 	}
 	
@@ -80,7 +84,11 @@ public class VideoController {
 	 * @return
 	 */
 	@RequestMapping(value="/detailEduBoard", method=RequestMethod.GET)
-	public String detailEduBoard(int videoNum, int currentPage, String searchType, String searchWord, Model model) {
+	public String detailEduBoard(int videoNum, 
+			@RequestParam(value="currentPage", defaultValue="0") int currentPage, 
+			@RequestParam(value="searchType", defaultValue="") String searchType, 
+			@RequestParam(value="searchWord", defaultValue="") String searchWord, 
+			Model model) {
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
 		
 		if(edu != null) {

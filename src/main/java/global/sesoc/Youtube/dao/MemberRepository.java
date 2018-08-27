@@ -1,6 +1,7 @@
 package global.sesoc.Youtube.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import global.sesoc.Youtube.dto.Member;
+import global.sesoc.Youtube.dto.TestResult;
+import global.sesoc.Youtube.dto.Video;
 
 @Repository
 public class MemberRepository {
@@ -74,7 +77,7 @@ public class MemberRepository {
 			map.put("usernick", usernick);
 			
 			try {
-				result = mapper.updateMember(map);
+				//result = mapper.updateMember(map);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -82,5 +85,25 @@ public class MemberRepository {
 			return result;
 		}
 
+		public Member selectMyInfo(String useremail) {
+			
+			MemberMapper mapper = session.getMapper(MemberMapper.class);
+			Member member = mapper.selectMyInfo(useremail);
+			
+			return member;
+		}
+
+		public List<Video> selectMyVideo(String useremail) {
+			MemberMapper mapper = session.getMapper(MemberMapper.class);
+			List<Video> video= mapper.selectMyVideo(useremail);
+			
+			return video;
+		}
+
+		public List<TestResult> selectLevels(String useremail){
+			MemberMapper mapper = session.getMapper(MemberMapper.class);
+			List<TestResult> levelList= mapper.selectLevels(useremail);
+			return levelList;
+		}
 }
 

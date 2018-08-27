@@ -1,6 +1,11 @@
 package global.sesoc.Youtube.Controller;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import global.sesoc.Youtube.dao.MemberRepository;
 import global.sesoc.Youtube.dto.Member;
+import global.sesoc.Youtube.dto.TestResult;
+import global.sesoc.Youtube.dto.Video;
 
 @Controller
 public class MemberContoller {
@@ -146,7 +153,7 @@ public class MemberContoller {
 	   System.out.println("횐갑하는넘**********"+member);
 		
 		mRepository.insertMember(member);
-		session.setAttribute("useremail", member.getUseremail());
+		session.setAttribute("waitingEmail", member.getUseremail());
 		
 		
 	    String setfrom = "timetravelwithdoctor@gmail.com";         
@@ -184,15 +191,78 @@ public class MemberContoller {
 	
 	@RequestMapping(value="/certification", method=RequestMethod.GET)
 	public String certification(HttpSession session) {
-		String useremail = (String) session.getAttribute("useremail");
-		mRepository.updateStatus(useremail);
+		String waitingEmail = (String) session.getAttribute("waitingEmail");
+		mRepository.updateStatus(waitingEmail);
 		
 		return "Member/certification";
 	}
   
 	@RequestMapping(value="/myPage", method=RequestMethod.GET)
-	public String myPage() {
+	public String myPage(Model model, HttpSession session) {
+		String  useremail= (String) session.getAttribute("useremail");
+		//갠정보
+		Member member = mRepository.selectMyInfo(useremail);
+		//갠영상
+		List<Video> video = mRepository.selectMyVideo(useremail);
+		//갠레벨스
+		List<TestResult> levelList= mRepository.selectLevels(useremail);
 		
+		System.out.println("마이페이지에 나올 넘*******"+member);
+		System.out.println("마이페이지에 나올 영상*******"+video);
+		System.out.println("마이페이지에 나올 레벨스****"+levelList);
+
+		List<Video> notfinished = new ArrayList<>();
+		List<Video> finished = new ArrayList<>();
+		
+		for (Video item : video) {
+			int challengeCount = item.getChallengecount();
+			if (challengeCount==0) {
+				notfinished.add(item);
+			} else {
+				finished.add(item);
+				
+			}
+		}
+		
+		
+		model.addAttribute("myInfo", member);
+		model.addAttribute("finished", finished);
+		model.addAttribute("notfinished", notfinished);
+		//System.out.println("완료 영상*******"+finished);
+		//System.out.println("아직 영상*******"+notfinished);
+		
+		//map
+		Map<Integer, Integer> levelMap = new HashMap<>();
+		
+		int one = 0;
+		int two = 0;
+		int three = 0;
+		int four = 0;
+		int five = 0;
+		
+		for (int i = 0; i < levelList.size(); i++) {
+			if (levelList.get(i).getTestlevel()==1) {
+				one++;
+			} else if (levelList.get(i).getTestlevel()==2) {
+				two++;
+			} else if (levelList.get(i).getTestlevel()==3) {
+				three++;
+			} else if (levelList.get(i).getTestlevel()==4) {
+				four++;
+			} else if (levelList.get(i).getTestlevel()==5) {
+				five++;
+			}
+		}
+		
+		levelMap.put(1, one);
+		levelMap.put(2, two);
+		levelMap.put(3, three);
+		levelMap.put(4, four);
+		levelMap.put(5, five);
+		
+		
+		
+		model.addAttribute("levelMap", levelMap);
 		
 		return "Member/myPage";
 	}
