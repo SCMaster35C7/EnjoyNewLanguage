@@ -54,25 +54,32 @@ public class MemberRepository {
 		return member;
 	}
 
-	
-		public int updateMember(String loginId, String currpwd, String newpwd, String usernick) {
-			MemberMapper mapper = session.getMapper(MemberMapper.class);
 
-			int result = 0;
-			Map<String, String> map = new HashMap<>();
-			map.put("useremail", loginId);
-			map.put("currpwd", currpwd);
-			map.put("newpwd", newpwd);
-			map.put("usernick", usernick);
+	public int updateLastAccess(String useremail) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int result = mapper.updateLastAccess(useremail);
+		
+		return result;
+		
+	}
+
+	public int updateMember(String useremail, String currpwd, String newpwd, String usernick/*, Member member*/) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		
+		int result = 0;
+		
+		Map<String, String> map = new HashMap<>();
+		
+		map.put("useremail", useremail);
+		map.put("currpwd", currpwd);
+		map.put("newpwd", newpwd);
+		map.put("usernick", usernick);
+		
+		result = mapper.updateMember(map);
+		
+		/*int result = mapper.updateMember(member);*/
 			
-			try {
-				result = mapper.updateMember(map);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			return result;
-		}
-
+		return result;
+	}
 }
 

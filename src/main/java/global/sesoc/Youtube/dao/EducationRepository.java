@@ -74,6 +74,7 @@ public class EducationRepository {
 		return result;
 	}
 
+
 	public Recommendation selectOneFromRecommendation(Recommendation reco) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		
@@ -125,4 +126,13 @@ public class EducationRepository {
 		
 		return result;
 	}
+
+	
+	public String selectSubName(int videoNum) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		String result = mapper.selectSubName(videoNum);
+		return result;
+	}
+	
+
 }
