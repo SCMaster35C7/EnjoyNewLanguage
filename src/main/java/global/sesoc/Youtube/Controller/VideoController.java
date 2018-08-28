@@ -2,7 +2,6 @@ package global.sesoc.Youtube.Controller;
 
 import java.io.FileInputStream;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.util.FileCopyUtils;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
+
+import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.dto.SubtitlesList;
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
@@ -44,6 +49,9 @@ public class VideoController {
 		String plzLogin = (String) request.getAttribute("plzLogin");
 		System.out.println("로그인해임마 :  "+plzLogin);
 		model.addAttribute("plzLogin", plzLogin);
+
+
+
 		return "index";
 	}
 	
@@ -65,7 +73,7 @@ public class VideoController {
 			Model model			
 			) {
 		int totalRecordCount = eduRepository.getTotalCount(searchType, searchWord);
-		System.out.println(totalRecordCount);
+		//System.out.println(totalRecordCount);
 		
 		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
 		List<Education> eduList =  eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
@@ -146,6 +154,62 @@ public class VideoController {
 		return "Practice/slide";
 	}
 	
+
+	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
+	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
+		//System.out.println(reco);
+		
+		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
+		//System.out.println(recoTemp);
+		
+		if(recoTemp != null) {
+			System.out.println("이미 있음");
+			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
+			int reqReco	= reco.getRecommendation();			// 요청온 값
+			
+			if(savedReco == reqReco) {
+				int result = eduRepository.deleteRecommend(reco);
+				
+				if(reqReco == 0) {
+					// 좋아요 상태 취소
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
+				}else {
+					// 싫어요 상태 취소
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
+				}
+				
+				return "cancel";
+			}else {
+				int result = 0 ;
+				if(reqReco == 0) {
+					// 좋아요 상태에서 싫어요로 변경
+					result = eduRepository.updateRecommend(reco);
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+				}else {
+					// 싫어요 상태에서 좋아요로 변경
+					result = eduRepository.updateRecommend(reco);
+					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+				}
+			}
+			
+			return "change";
+		}else {
+			int result = eduRepository.insertRecommendation(reco);
+			
+			if(reco.getRecommendation() == 0) {
+				// 좋아요
+				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+			}else {
+				// 싫어요
+				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+			}
+			
+			return "success";
+		}
+	}
+
 	@RequestMapping(value="getSubtitlesList",method=RequestMethod.GET)
 	public @ResponseBody SubtitlesList getSubtitlesList(int level, int videoNum) {
 		String jamacName=eduRepository.selectSubName(videoNum);

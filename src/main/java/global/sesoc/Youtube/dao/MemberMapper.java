@@ -16,14 +16,13 @@ public interface MemberMapper {
 
 	public Member selectByNick(String usernick);
 
+	public int updateLastAccess(String useremail);
 
-public int updateLastAccess(String useremail);
+  public int updateMember(Map<String, String> map);		//회원정보 수정
 
-public int updateMember(Member member);		//회원정보 수정
+  public Member selectMyInfo(String useremail); //마이페이지 처음 정보
 
-public Member selectMyInfo(String useremail); //마이페이지 처음 정보
+  public List<Video> selectMyVideo(String useremail); //마이페이지 처음 영상제목
 
-public List<Video> selectMyVideo(String useremail); //마이페이지 처음 영상제목
-
-public List<TestResult> selectLevels(String useremail); //마이페이지 레벨스
+  public List<TestResult> selectLevels(String useremail); //마이페이지 레벨스
 }
