@@ -100,9 +100,5 @@
 		and d.dubbingnum = #{dubbingnum}
 	</select>
 	
-	<update id="updateRecomm" parameterType="int">
-		update dubbing
-		set recommendation = recommendation+1
-		where dubbingnum = #{dubbingnum}
-	</update>
+
 </mapper>

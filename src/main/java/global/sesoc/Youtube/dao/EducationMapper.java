@@ -17,5 +17,4 @@ public interface EducationMapper {
 	public int updateHitCount(int videoNum);				// 교육 영상 조회수 증가
 	public List<Dubbing> dubbingBoard();	//더빙보드
 	public Dubbing selectOneDub(int dubbingnum);
-	public int updateRecomm(int dubbingnum);
 }

@@ -91,10 +91,6 @@ public class EducationRepository {
 		return dubbing;
 	}
 
-	public int updateRecomm(int dubbingnum) {
-		EducationMapper mapper = session.getMapper(EducationMapper.class);
-		int result = mapper.updateRecomm(dubbingnum);
-		return result;
-	}
+	
 	
 }

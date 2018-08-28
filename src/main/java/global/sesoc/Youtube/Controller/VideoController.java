@@ -181,18 +181,7 @@ public class VideoController {
 			return "EducationBoard/dubDetail";
 		}
 		
-	//더빙디테일에서 추천
-		@RequestMapping(value="/recomm", method=RequestMethod.GET)
-		public String recomm(int dubbingnum, Model model) {
-			System.out.println("더빙넘은,,,,,,"+dubbingnum);
-			
-			eduRepository.updateRecomm(dubbingnum);
-			Dubbing dubbing = eduRepository.selectOneDub(dubbingnum);
-			model.addAttribute("dubbing", dubbing);
-			return "EducationBoard/dubDetail";
-		}
-		
-	//더빙디테일에서 비추천
+
 	
 	 // 개발중인 메소드 아직 쓰지마셈
 	/*
