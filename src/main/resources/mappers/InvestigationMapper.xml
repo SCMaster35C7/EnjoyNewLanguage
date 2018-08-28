@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="global.sesoc.Youtube.dao.InvestigationMapper">
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		select
+			count(*)
+		from
+			investigation
+		where
+			${searchType} like '%' || #{searchWord} || '%'
+	</select>
+	
+	<select id="selectInvList" parameterType="map" resultType="Investigation">
+		select
+			investigationnum
+			, url
+			, title
+			, content
+			, useremail
+			, to_char(regdate, 'YYYY-MM-DD') regdate
+			, hitcount
+			, recommendation
+			, decommendation
+		from
+			investigation
+		where
+			${searchType} like '%' || #{searchWord} || '%'
+	</select>
+</mapper>

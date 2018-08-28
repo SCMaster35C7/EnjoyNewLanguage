@@ -45,6 +45,7 @@
 					, url:'insertRecommendation'
 					, data: JSON.stringify(dataForm)
 					, contentType: "application/json; charset=utf-8"
+					, async : false
 					, success:function(resp) {
 						if(resp == "success") {
 							alert("영상을 좋아합니다.");
@@ -82,6 +83,7 @@
 					, url:'insertRecommendation'
 					, data: JSON.stringify(dataForm)
 					, contentType: "application/json; charset=utf-8"
+					, async : false
 					, success:function(resp) {
 						if(resp == "success") {
 							alert("영상을 싫어합니다.");
@@ -107,7 +109,6 @@
     <header>
             <div><h2>공부영상게시판</h2></div>
     </header>
-    <div id="temp">안녕</div>
    <br/>
    
    	<c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
@@ -194,21 +195,6 @@
 					</a>
 				</li>
 			</ul>
-		</div>
-		
-		<div>
-		<c:if test="${(sessionScope.admin) != 0 and (not empty sessionScope.admin)}">
-			<div>
-				<input type="button" value="주류 정보 입력" id="insertAlcohol"
-					class="btn btn-primary">
-				<script>
-					document.getElementById("insertAlcohol").onclick = function() {
-						//alert("주류 데이터를 넣을거야!");
-						location.href = "inputAlcoholForm";
-					}
-				</script>
-			</div>
-		</c:if>
 		</div>
 	</div>
 	<!-- /.row -->
