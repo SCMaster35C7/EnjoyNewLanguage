@@ -1,55 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
+	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Enjoy Language</title>
-	
-	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
-	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-	<script>
-	
+<meta charset="UTF-8">
+<title>Enjoy Language</title>
+
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+<script>
 	var correct="";
+	var quizIndex="";
 	var TestType=false;  //문제유형용 변수 false : text, true : mic
+	var saveTime=null;     //자막 싱크용 시간저장변수
+	var TestSuccess=false;  //시험을 끝까지 다 마쳤는지 확인
+	var TestFinish=false;  //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
+		
 		$(function() {
 			$('#playYoutube').on('click', playYoutube);
 			$('#pauseYoutube').on('click', pauseYoutube);
 			$('#currentTime').on('click', youtubeCurrentTime);
-			
 			$('#mute').on('click', mute);
-			$('#unMute').on('click', unMute);
-			
+			$('#unMute').on('click', unMute);		
 			$('#soundVolum').on('click', soundVolum);
-			$('#seekTo').on('click', seekTo);
-		
-			
-			
-			// 테스트용, 버튼 클릭시 음성파일 런타임 이동
-			$('#testbutton').on('click',function(){
-				var tester=document.getElementById('soundFile');
-				tester.currentTime=25.2342;
-			})
-			
-			
-			
-		// 테스트용 코드, 콘솔창에 음성파일 재생시간 출력
-			/*
-			document.getElementById("soundFile").addEventListener("timeupdate", function(){
-				
-				console.log(this.currentTime);
-			});
-			*/
-             document.getElementById("soundFile").addEventListener("canplay", function(){
-				
-				console.log('ready!!');
-			});
-			
-			
-			
+			$('#seekTo').on('click', seekTo);		
 		});
-		
+	    //음성인식 서비스 ,textbar: 클릭한 입력창
 		function startAnnyang(textbar) {
 			annyang.start({autoRestart: false,continuous: false});
 			var recognition = annyang.getSpeechRecognizer();
@@ -60,24 +38,31 @@
 				textbar.style.backgroundColor="";   //문자입력시 배경 없에기
 			}
 		}
-		
-		
+		// 문제 가져오기	
 		function getSubList() {
 			var level = $('#level').val(); //난이도
-			var jamacURL = '${jamacURL}';   //자막주소
 			var ChoiceType = document.getElementsByClassName('TestType'); //문제유형
+		
 			
 			if(ChoiceType[0].checked){
-				TestType=false;
+				if(level<1 ||level>5){
+					alert('텍스트 테스트 모드는 1~5 Level 까지 도전 가능합니다.');
+					return;
+				}			
+				TestType=false; //text 모드
 			}else{
-				TestType=true;
+				if(level<1||level>4){
+					alert('음성 테스트 모드는 1~4 Level 까지 도전 가능합니다.');
+					return;
+				}
+				TestType=true; // mic 모드
 			}
 			// 스크립트 상위에 선언해둔 TestType 이란 변수를 이용하여 마이크 스크립트를 작동시킬지 체크	
-
+			
 			$.ajax({
 				method : 'get',
 				url : 'getSubtitlesList',
-				data : 'level=' + level + "&videoNum=" + ${edu.videoNum},
+				data : 'level=' + level + "&savedfileName=" + '${edu.savedfile}',
 				contentType : 'application/json; charset=UTF-8',
 				dataType : 'json',
 				success : makeSubList,
@@ -86,13 +71,13 @@
 				}
 
 			})
-
 		}
-		
+		//문제 생성 s: ajax로 가져온 SubtitlesList 자료
 		function makeSubList(s) {
 			correct=s.correct; //정답 배열 스크립트 맨위에 저장(채점시 용도)
+			quizIndex=s.quizIndex; //퀴즈 (1차원배열 자료의)의 index 값
 			var subtitles="";
-			var readonly="";
+			var readonly="";   //mic 시험의 경우 text를 입력할 수 없도록 처리
 			if(TestType){
 				readonly = 'readonly="readonly"';
 			}else{
@@ -101,13 +86,13 @@
 			//음성입력일시 input 창을 readonly로, 텍스트 입력일시 입력가능하게	
 			for (var i = 0; i < s.quiz.length; i++) {		
 				// <a> 태그 : 자막 줄 별 시간정보, 클릭시 해당시간으로 영상 이동
-				 subtitles+='<a onclick='+'"'+'seekTo('+s.playtime[i]+')'+'"'+'>'+s.playtimeView[i]+'</a> ';
+				 subtitles+='<div id="T'+s.playtime[i]+'"><a onclick='+'"'+'seekTo('+s.playtime[i]+')'+'"'+'>'+s.playtimeView[i]+'</a> ';
 				for (var j = 0; j < s.quiz[i].length; j++) {
 					if(s.quiz[i][j].indexOf('★')==0){
-						var longer=s.quiz[i][j].replace("★★", "");
+						var longer=s.quiz[i][j].replace("★★", "");  //controller 에서 별처리한 문제 빈칸을 입력칸으로 가공
 						var textlong;
 						if(longer>1){
-							textlong=longer/2;  //택스트 입력칸 사이즈 조절
+							textlong=longer/2;  
 						}else{
 							textlong=1;  // 0.5는 불가능하여 오히려 더 큰사이즈가 되므로 최소 1
 						}
@@ -117,46 +102,107 @@
 						subtitles+=' ';
 					}
 				}
-				subtitles+='<br>';
+				subtitles+='</div><br>';
 			}
-			$('#jamaclist').html(subtitles);
+			$('#jamaclist').html(subtitles); //jamaclist div 에 가공이 끝난 문제를 뿌림
+			setInterval(function() {
+				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
+			var time='T'+parseFloat(player.getCurrentTime().toFixed(2));
+			//console.log(time);
+			
+			var TimeText=document.getElementById(time);
+			if(TimeText!=null){
+				if(saveTime!=null){
+		    saveTime.style.backgroundColor="";
+				}
+			TimeText.style.backgroundColor="red";
+			saveTime=TimeText;
+			}
+			},10);
 			
 			//음성 방식 test일시 추가되는 부분
 			if(TestType){
 			$('.answer').on('click',function(){		
+				if(!TestFinish){
 				var textbar=this;
 				startAnnyang(textbar);
 				textbar.style.backgroundColor="#d6f4c1";
+				}
 			})
 			}
-			
-
 		}
-		
+		//채점 시스템
 		function mark(){
-          console.log(correct[1]);
-			var answer=$('.answer');
+			TestFinish=true;
+			
+			if((player.getCurrentTime()/player.getDuration())<0.8){
+				alert('영상을 끝까지 재생해주세요!! \n영상을 80%이상 재생하셔야 채점이 가능합니다!!');
+				return null;
+			}
+			console.log((player.getCurrentTime()/player.getDuration()));
+			console.log(TestSuccess);
+			var answer=$('.answer');  //class명으로 긁어와서 배열로 생성
+			var WronganswerList=[];   //오답리스트(오답의 2차원배열값을 저장)
+			var CorrectanswerList=[]; //정답 리스트(오답의 정답 단어를 저장)
+			var correctCount=0;       //맞춘문제 갯수
+			var level=$('#level').val();
+		
+			
 			for(var i=0;i<correct.length;i++){
-				if(correct[i].toLowerCase()==answer[i].value.toLowerCase()){
+				if(correct[i]==answer[i].value){
+					correctCount++;
 					answer[i].style.color= "blue";
-					answer[i].readOnly=true;
+					answer[i].readOnly=true;				
 				}else{
 					answer[i].readOnly=true;
 					answer[i].style.color= "red";
 					answer[i].value=('정답: '+correct[i]+", 오답: "+answer[i].value);
+					WronganswerList.push(quizIndex[i]);
+					CorrectanswerList.push(correct[i]);
 					answer[i].size=(correct[i].length*4);
+					answer[i].readOnly=true;
 				}
 			}
-		}
-		
-		
+			
+			
+		 	
+			$.ajax({
+				method : 'post',
+				url : 'ScoreResult',
+				data : {
+					    'testlevel':level,
+					    'correctCount':correctCount,
+					    'WronganswerList': WronganswerList,
+					    'CorrectanswerList':CorrectanswerList,
+				        'useremail':'${sessionScope.useremail}',
+				        'url':'${edu.url}',
+				        'testType':TestType
+				},
+				 traditional : true,
+				success : function(resp){
+					if(resp=="ok"){
+					alert('채점완료!!\n시험결과: 합격 \n 총문제수: '+correct.length+"\n정답갯수: "+(correct.length-WronganswerList.length)+"\n정답률: "+(((correct.length-WronganswerList.length))/correct.length).toFixed(3));
+					}
+					else{
+					alert('채점완료!!\n시험결과: 불합격 \n 총문제수: '+correct.length+"\n정답갯수: "+(correct.length-WronganswerList.length)+"\n정답률: "+(((correct.length-WronganswerList.length))/correct.length).toFixed(3));
+					}
+				},
+				error : function() {
+					alert('채점에 실패했습니다.');
+					console.log('error!!');
+				}
+				
+			})
+		}	
 	</script>
 </head>
 
 <body>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
-	<iframe id="youtube" width="960" height="490" src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1" frameborder="0" allowfullscreen ></iframe>
+	<iframe id="youtube" width="960" height="490"
+		src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
+		frameborder="0" allowfullscreen></iframe>
 
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -179,9 +225,7 @@
 				}
 			});
 		}
-
-		
-		
+	
 		// 4. Youtube Player의 준비가 끝나면 호출할 함수
 		function onPlayerReady(event) {
 			event.target.playVideo();
@@ -214,8 +258,7 @@
         }
         
 		function youtubeCurrentTime() {
-			//var youtube = $('#youtube');
-			console.log(player.getCurrentTime());	// 현재 상영 시간 출력
+			console.log('재생률: '+(player.getCurrentTime()/player.getDuration()));	// 현재 상영 시간 출력
 			// console.log(player.getDuration());	// 총 시간 출력
 		}
 		
@@ -239,103 +282,50 @@
 		}
 		
 		function seekTo(start) {
-			
-			//var start2 = document.getElementById("start").value;
-			//console.log(start2);
-			/*
-			if(isNaN(start.value) == true) {
-				alert("초를 입력해주세요.");
-				start.focus();
-				return;
-			}
-			*/
-			
 			player.seekTo(start, true);
 		}
-		
-		$(function() {
-		document.getElementById("soundFile").addEventListener("timeupdate", function(){
-			//console.log(this.currentTime);
-			player.seekTo(this.currentTime, true);
-			console.log(this.currentTime+", "+player.getCurrentTime());
-		});
-		})
 	</script>
-	
+
 	<hr />
 	<table border="1">
 		<tr>
 			<th>동영상 재생/멈춤</th>
-			<td>
-				<input type="button" id="playYoutube" value="재생">
-				<input type="button" id="pauseYoutube" value="멈춤">
-			</td>
+			<td><input type="button" id="playYoutube" value="재생"> <input
+				type="button" id="pauseYoutube" value="멈춤"></td>
 		</tr>
 		<tr>
 			<th>동영상 현재 시간 출력</th>
-			<td>
-				<input type="button" id="currentTime" value="영상 시간 출력"/>
-			</td>
+			<td><input type="button" id="currentTime" value="영상 시간 출력" /></td>
 		</tr>
 		<tr>
 			<th>동영상 음소거/음소거 제거</th>
-			<td>
-				<input type="button" id="mute" value="음소거"/>
-				<input type="button" id="unMute" value="음소거 제거"/>
-			</td>
+			<td><input type="button" id="mute" value="음소거" /> <input
+				type="button" id="unMute" value="음소거 제거" /></td>
 		</tr>
 		<tr>
 			<th>동영상 소리 설정</th>
-			<td>
-				<input type="number" id="soundValue" max="100" min="0"/>
-				<input type="button" id="soundVolum" value="소리조절"/>
-			</td>
+			<td><input type="number" id="soundValue" max="100" min="0" /> <input
+				type="button" id="soundVolum" value="소리조절" /></td>
 		</tr>
 		<tr>
 			<th>동영상 재생시간 이동</th>
-			<td>
-				<input type="text" id="start"/>
-				<input type="button" id="seekTo" value="영상이동"/>
-			</td>
+			<td><input type="text" id="start" /> <input type="button"
+				id="seekTo" value="영상이동" /></td>
 		</tr>
 	</table>
-	
+
 	<div>
-	 <input type="radio" class="TestType" name="TestType" value="text"> 문자입력 
-	 <input type="radio" class="TestType" name="TestType" value="mic">  음성입력
-	
-	
-		<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level">
-		<input type="button" onclick="getSubList()" value="문제생성"> 
-		<input type="button" onclick="mark()" value="채점하기">
+		<input type="radio" class="TestType" name="TestType" value="text">
+		문자입력 <input type="radio" class="TestType" name="TestType" value="mic">
+		음성입력 <input type="number" placeholder="난이도를 1~5 입력해주세요." id="level">
+		<input type="button" onclick="getSubList()" value="문제생성"> <input
+			type="button" onclick="mark()" value="채점하기">
 
 	</div>
 
-  <!-- 
-  <audio id="soundFile" controls="controls" loop="loop" preload="auto">
-  <source src="soundFile?soundFileNum=1" type="audio/mpeg" >
 
-  </audio>
-   -->
-  <audio id="soundFile" controls="controls" src="getsound/That Time of Year2.mp3">
-Your user agent does not support the HTML5 Audio element.
-</audio>
-
-<input type="button" id="testbutton" value="이동!">
-
-  
-	<div id="jamaclist">
-	 
-	</div>
+	<div id="jamaclist"></div>
 
 
-
-
-
-
-
-<!-- 
-	<p id="time_${sndkj}"> </p>
-	 -->
 </body>
 </html>

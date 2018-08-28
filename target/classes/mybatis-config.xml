@@ -8,6 +8,8 @@
 	<typeAliases>
 		<typeAlias type="global.sesoc.Youtube.dto.Member" alias="Member"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Education" alias="Education"/>
+		<typeAlias type="global.sesoc.Youtube.dto.TestResult" alias="TestResult"/>
+		<typeAlias type="global.sesoc.Youtube.dto.WrongAnswer" alias="WrongAnswer"/>
 	</typeAliases>
 
 	<mappers>
