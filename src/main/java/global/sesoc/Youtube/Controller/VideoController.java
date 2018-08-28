@@ -130,6 +130,18 @@ public class VideoController {
 		return "Practice/slide";
 	}
 	
+	@RequestMapping(value="/searchTest", method=RequestMethod.GET)
+	public String searchTest() {
+		
+		return "Practice/search";
+	}
+	
+	
+	/***
+	 * 교육 영상 좋아요/ 싫어요 기능
+	 * @param reco
+	 * @return
+	 */
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
 		//System.out.println(reco);
@@ -138,7 +150,7 @@ public class VideoController {
 		//System.out.println(recoTemp);
 		
 		if(recoTemp != null) {
-			System.out.println("이미 있음");
+			//System.out.println("이미 있음");
 			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
 			int reqReco	= reco.getRecommendation();			// 요청온 값
 			
@@ -183,6 +195,12 @@ public class VideoController {
 			
 			return "success";
 		}
+	}
+	
+	@RequestMapping(value="/addVideo", method=RequestMethod.GET)
+	public String addVideo() {
+		
+		return "Practice/item";
 	}
 }
 

@@ -19,8 +19,6 @@
 <body>
 
 	<h2>[Home]</h2>
-	<a href="eduBoard">study board로 가보자</a> <br/>
-	
 	<c:if test="${empty sessionScope.useremail }">
 		<a href="login">login</a>
 	</c:if>
@@ -29,7 +27,16 @@
 		<a href="logout">logout</a>
 	</c:if>
 	
-		
+	<br/><br/>
+	<a href="eduBoard">study board로 가보자</a> <br/>
+	
+	
+	<br/><br/>
+	<a href="InvestigationBoard">자막검증게시판</a> <br/>
+	
+	<br/><br/>
+	<a href="searchTest">Youtube Search테스트</a> <br/>
+	
 	<br/><br/>
 	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
 	
