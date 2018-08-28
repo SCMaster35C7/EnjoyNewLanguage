@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.WrongAnswer;
+import global.sesoc.Youtube.dto.Member;
+import global.sesoc.Youtube.dto.Recommendation;
+
 
 @Repository
 public class EducationRepository {
@@ -74,6 +77,59 @@ public class EducationRepository {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.updateHitCount(videoNum);
 
+		return result;
+	}
+
+
+	public Recommendation selectOneFromRecommendation(Recommendation reco) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		
+		Recommendation result = mapper.selectOneFromRecommendation(reco);
+		
+		return result;
+	}
+
+	public int insertRecommendation(Recommendation reco) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		
+		int result = mapper.insertRecommendation(reco);
+		
+		return result;
+	}
+
+	public int updateIncreRecommend(int videonum, String commendation) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		Map<String,Object> map = new HashMap<>();
+		map.put("videonum", videonum);
+		map.put("commendation", commendation);
+		
+		int result = mapper.updateIncreRecommend(map);
+		
+		return result;
+	}
+
+	public int deleteRecommend(Recommendation reco) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.deleteRecommend(reco);
+		
+		return result;
+	}
+
+	public int updateDecreRecommend(int videonum, String commendation) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		Map<String,Object> map = new HashMap<>();
+		map.put("videonum", videonum);
+		map.put("commendation", commendation);
+		
+		int result = mapper.updateDecreRecommend(map);
+		
+		return result;
+	}
+
+	public int updateRecommend(Recommendation reco) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.updateRecommend(reco);
+		
 		return result;
 	}
 

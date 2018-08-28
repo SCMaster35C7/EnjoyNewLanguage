@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
-			
+		
 		});
 	</script>
 </head>
@@ -26,6 +26,7 @@
 	</c:if>
 	
 	<c:if test="${not empty sessionScope.useremail }">
+	${sessionScope.useremail }님아
 		<a href="logout">logout</a>
 	</c:if>
 	
@@ -40,5 +41,12 @@
 	
 	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
 	<a href="TryRetake?videoNum=9">재시험 테스트</a>
+	<c:if test="${plzLogin!=null}">
+		<script type="text/javascript">
+			$(function(){
+				alert("${plzLogin}");
+			});
+		</script>
+	</c:if>
 </body>
 </html>

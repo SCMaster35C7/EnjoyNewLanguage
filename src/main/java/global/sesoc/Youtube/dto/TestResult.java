@@ -7,8 +7,8 @@ public class TestResult {
 	private String url;
 	private String laststudy;
 	private int challengecount;
-	private int successCount;
-	private int failureCount;
+	private int successcount;
+	private int failcount;
 	private int testlevel;
 
 	public TestResult() {
@@ -56,22 +56,20 @@ public class TestResult {
 		this.challengecount = challengecount;
 	}
 
-	public int getSuccessCount() {
-		return successCount;
+	public int getSuccesscount() {
+		return successcount;
 	}
 
-	public void setSuccessCount(int successCount) {
-		this.successCount = successCount;
+	public void setSuccesscount(int successcount) {
+		this.successcount = successcount;
 	}
 
-	
-
-	public int getFailureCount() {
-		return failureCount;
+	public int getFailcount() {
+		return failcount;
 	}
 
-	public void setFailureCount(int failureCount) {
-		this.failureCount = failureCount;
+	public void setFailcount(int failcount) {
+		this.failcount = failcount;
 	}
 
 	public int getTestlevel() {
@@ -89,5 +87,4 @@ public class TestResult {
 				+ ", failureCount=" + failureCount + ", testlevel=" + testlevel + "]";
 	}
 
-	
 }
