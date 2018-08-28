@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.SubtitlesList;
 import global.sesoc.Youtube.util.FileService;
@@ -155,6 +157,43 @@ public class VideoController {
 		return sublist;
 
 	}
+	
+	
+	//더빙겟
+
+	@RequestMapping(value="/dubbingBoard", method=RequestMethod.GET)
+	public String dubbingBoard(HttpSession session, Model model) {
+		List<Dubbing> dubbing =  eduRepository.dubbingBoard();
+		model.addAttribute("dubbing", dubbing);
+		return "EducationBoard/dubbingBoard";
+	}
+	
+	
+	//더빙 디테일
+
+		@RequestMapping(value="/dubDetail", method=RequestMethod.GET)
+		public String dubDetail(int dubbingnum, Model model) {
+			System.out.println("더빙넘은,,,,,,"+dubbingnum);
+			
+			Dubbing dubbing = eduRepository.selectOneDub(dubbingnum);
+			model.addAttribute("dubbing", dubbing);
+		
+			return "EducationBoard/dubDetail";
+		}
+		
+	//더빙디테일에서 추천
+		@RequestMapping(value="/recomm", method=RequestMethod.GET)
+		public String recomm(int dubbingnum, Model model) {
+			System.out.println("더빙넘은,,,,,,"+dubbingnum);
+			
+			eduRepository.updateRecomm(dubbingnum);
+			Dubbing dubbing = eduRepository.selectOneDub(dubbingnum);
+			model.addAttribute("dubbing", dubbing);
+			return "EducationBoard/dubDetail";
+		}
+		
+	//더빙디테일에서 비추천
+	
 	 // 개발중인 메소드 아직 쓰지마셈
 	/*
 	//사용 미정, 컨트롤단에서 사운드 파일을 가져올 경우, 몇가지 기능이 마비

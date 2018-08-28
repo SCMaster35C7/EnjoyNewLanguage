@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 
 @Repository
@@ -75,6 +76,24 @@ public class EducationRepository {
 	public String selectSubName(int videoNum) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		String result = mapper.selectSubName(videoNum);
+		return result;
+	}
+	
+	public List<Dubbing> dubbingBoard() {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		List<Dubbing> dubbing = mapper.dubbingBoard();
+		return dubbing;
+	}
+
+	public Dubbing selectOneDub(int dubbingnum) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		Dubbing dubbing = mapper.selectOneDub(dubbingnum);
+		return dubbing;
+	}
+
+	public int updateRecomm(int dubbingnum) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.updateRecomm(dubbingnum);
 		return result;
 	}
 	

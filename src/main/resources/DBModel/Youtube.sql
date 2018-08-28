@@ -147,8 +147,8 @@ CREATE TABLE  Dubbing(
 	useremail			VARCHAR2(50)	CONSTRAINT dubbing_useremail_nn		NOT NULL,		-- 더빙한 사용자
 	url					VARCHAR2(1000)	CONSTRAINT dubbing_url_nn			NOT NULL,		-- 더빙한 영상
 	voiceFile			VARCHAR2(1000)	CONSTRAINT dubbing_voiceFile_nn		NOT NULL,		-- 더빙 음성  파일
-	regDate				DATE			DEFAULT SYSDATE,									-- 게시글 등록일
-	hitCount			NUMBER			DEFAULT 0,											-- 조회수
+	regdate				DATE			DEFAULT SYSDATE,									-- 게시글 등록일
+	hitcount			NUMBER			DEFAULT 0,											-- 조회수
 	recommendation		NUMBER			DEFAULT 0,											-- 추천수
 	decommendation		NUMBER			DEFAULT 0											-- 비추천수
 );

@@ -75,4 +75,34 @@
 	from EducationVideo
 	where videonum=#{value}
 	</select>
+	
+	<select id="dubbingBoard"  resultType="Dubbing">
+		select d.dubbingnum, d.title, m.usernick, d.hitcount, d.recommendation, d.decommendation, d.regdate
+		from dubbing d, member m
+		where d.useremail = m.useremail
+		order by d.dubbingnum desc
+	</select>
+	
+	<select id="selectOneDub" parameterType="int" resultType="Dubbing">
+		select 
+				  d.dubbingnum
+			  	, d.title
+				, m.usernick
+				, d.content
+				, d.url
+				, d.voiceFile
+				, d.hitcount
+				, d.recommendation
+				, d.decommendation
+				, d.regdate
+		from dubbing d, member m
+		where d.useremail = m.useremail
+		and d.dubbingnum = #{dubbingnum}
+	</select>
+	
+	<update id="updateRecomm" parameterType="int">
+		update dubbing
+		set recommendation = recommendation+1
+		where dubbingnum = #{dubbingnum}
+	</update>
 </mapper>

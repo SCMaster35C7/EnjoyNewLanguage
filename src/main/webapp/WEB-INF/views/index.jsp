@@ -47,5 +47,8 @@
 			});
 		</script>
 	</c:if>
+	
+	<br/><br/>
+	<a href="dubbingBoard">더빙게쉬판  -여름쓰다나-</a> 
 </body>
 </html>
