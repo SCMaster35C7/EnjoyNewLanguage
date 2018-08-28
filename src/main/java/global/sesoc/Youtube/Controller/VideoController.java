@@ -2,28 +2,28 @@ package global.sesoc.Youtube.Controller;
 
 
 import java.util.List;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletOutputStream;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dto.Education;
-import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.dto.SubtitlesList;
-
+import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
+import global.sesoc.Youtube.util.SubtitlesMaker;
 
 @Controller
 public class VideoController {
@@ -170,20 +170,19 @@ public class VideoController {
 	}
 	
 	
+	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
+	public String TryRetake(Model model,int videoNum) {
+		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
+    
+		model.addAttribute("edu", edu);
+		return "EducationBoard/RetakeEduBoard";
+	}
+	
 	/***
 	 * 교육 영상 좋아요/ 싫어요 기능
 	 * @param reco
 	 * @return
 	 */
-
-	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
-	public String TryRetake(Model model,int videoNum) {
-		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
-    
-    model.addAttribute('edu',edu);
-    return "EducationBoard/RetakeEduBoard";
-  }
-
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
 		//System.out.println(reco);
@@ -244,16 +243,4 @@ public class VideoController {
 		
 		return "Practice/item";
 	}
-
-	@RequestMapping(value="getSubtitlesList",method=RequestMethod.GET)
-	public @ResponseBody SubtitlesList getSubtitlesList(int level, int videoNum) {
-		String jamacName=eduRepository.selectSubName(videoNum);
-		String jamacURL=eduFileRoot+"/"+jamacName;
-		SubtitlesMaker sm = new SubtitlesMaker();
-		SubtitlesList sublist = sm.RandomText(jamacURL, level);
-
-		return sublist;
-
-	}
 }
-

@@ -232,7 +232,6 @@ public class MemberContoller {
 			}
 		}
 		
-		
 		model.addAttribute("myInfo", member);
 		model.addAttribute("finished", finished);
 		model.addAttribute("notfinished", notfinished);
