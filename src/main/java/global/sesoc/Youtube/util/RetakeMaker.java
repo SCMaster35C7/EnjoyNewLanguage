@@ -10,28 +10,26 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import global.sesoc.Youtube.dto.SubtitlesList;
+import global.sesoc.Youtube.dto.WrongAnswer;
 
-public class SubtitlesMaker {
+public class RetakeMaker {
 
-	
 	ArrayList<Double> playtime;
 	ArrayList<String> playtimeView;
 	ArrayList<String> quizIndex;
 
 	// url : 자막파일절대위치, level : 난이도(숫자가 높을수록 높은 난이도)
-	public SubtitlesList RandomText(String url, int level) {
+	public SubtitlesList RetakeText(String url, ArrayList<WrongAnswer> WrongList) {
 		SubtitlesList resultlist = new SubtitlesList();
 		FileReader fileReader = null;
 		BufferedReader in = null;
 		String str = null;
-		List<ArrayList<String>> fulltext = new ArrayList<>(); // 본문 풀 텍스트
 		List<ArrayList<String>> quiz = new ArrayList<>(); // 문제지
 		ArrayList<String> correct = new ArrayList<>(); // 정답 리스트
 		playtimeView = new ArrayList<>(); // 자막 타임 시각용
 
 		playtime = new ArrayList<>(); // 각 자막 줄별 시작타임 저장
 		quizIndex = new ArrayList<>(); // 각 퀴즈들의 인덱스 정보
-		int height = 0; // [][] 정보중 [?][]부분
 
 		int cut = 0; // srt 자막의 첫 문장은 보이지 않는 문자로 글 압축타입을 지정한다. 그러므로 무조건 첫줄은 걸러야 한다.
 		try {
@@ -40,6 +38,7 @@ public class SubtitlesMaker {
 
 			while (true) {
 				str = in.readLine();
+				//System.out.println(str);
 
 				if (str == null)
 					break;
@@ -48,42 +47,24 @@ public class SubtitlesMaker {
 					continue;
 				}
 				ArrayList<String> textlist = (ArrayList<String>) analysisText(str);
+			
 				if (textlist != null) {
-
-					fulltext.add(textlist);
-					ArrayList<String> quiztext = new ArrayList<>();
-					quiztext = (ArrayList<String>) textlist.clone();
-					int block = quiztext.size() / (6 - level);
-					ArrayList<Integer> numberlist = new ArrayList<>();
-					for (int i = 0; i < textlist.size(); i++) {
-						numberlist.add(i);
-					}
-					Collections.shuffle(numberlist);
-					int[] sortlist = new int[block];
-
-					for (int i = 0; i < block; i++) {
-						sortlist[i] = numberlist.get(i);
-
-					}
-					Arrays.sort(sortlist);
-
-					for (int i = 0; i < block; i++) {
-						String Index = height + ":" + sortlist[i];
-						quizIndex.add(Index);
-						correct.add(textlist.get(sortlist[i]));
-						quiztext.set(sortlist[i], "★★" + textlist.get(sortlist[i]).length());
-
-					}
-
-					quiz.add(quiztext);
-					height++;
+					quiz.add(textlist);
 				}
-
 				
+			}
+
+			
+			for (int i = 0; i < WrongList.size(); i++) {
+				correct.add(WrongList.get(i).getCorrectAnswer()); //정답 저장
+				quizIndex.add(WrongList.get(i).getWrongIndex());  // 퀴즈들 2차원좌표값 입력
+				String[] Index = WrongList.get(i).getWrongIndex().split(":"); //기존 틀린문제 2차원 좌표값 스트링을 분석
+				int quizlength = quiz.get(Integer.parseInt(Index[0])).get(Integer.parseInt(Index[1])).length();
+				quiz.get(Integer.parseInt(Index[0])).set(Integer.parseInt(Index[1]), ("★★" + quizlength));
 
 			}
+			
 			resultlist.setCorrect(correct);
-			resultlist.setFulltext(fulltext);
 			resultlist.setPlaytime(playtime);
 			resultlist.setQuiz(quiz);
 			resultlist.setPlaytimeView(playtimeView);

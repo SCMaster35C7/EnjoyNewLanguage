@@ -83,8 +83,8 @@ public class TestResult {
 	@Override
 	public String toString() {
 		return "TestResult [studynum=" + studynum + ", useremail=" + useremail + ", url=" + url + ", laststudy="
-				+ laststudy + ", challengecount=" + challengecount + ", successcount=" + successcount + ", failcount="
-				+ failcount + ", testlevel=" + testlevel + "]";
+				+ laststudy + ", challengecount=" + challengecount + ", successCount=" + successCount
+				+ ", failureCount=" + failureCount + ", testlevel=" + testlevel + "]";
 	}
 
 }
