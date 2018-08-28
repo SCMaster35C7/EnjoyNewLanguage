@@ -2,71 +2,177 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="global.sesoc.Youtube.dao.EducationMapper">
 	<select id="selectEduList" resultType="Education">
 		select
-			videonum
-			, title
-			, url
-			, originalfile
-			, savedfile
-			, to_char(regdate, 'YYYY-MM-DD') regdate
-			, hitcount
-			, recommendation
-			, decommendation
+		videonum
+		, title
+		, url
+		, originalfile
+		, savedfile
+		, to_char(regdate, 'YYYY-MM-DD') regdate
+		, hitcount
+		, recommendation
+		, decommendation
 		from
-			EducationVideo
-		order by 
-			regdate desc
+		EducationVideo
+		order by
+		regdate desc
 	</select>
-	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
+	<select id="selectOneFromEduVideo" parameterType="int"
+		resultType="Education">
 		select
-			videonum
-			, title
-			, url
-			, originalfile
-			, savedfile
-			, to_char(regdate, 'YYYY-MM-DD') regdate
-			, hitcount
-			, recommendation
-			, decommendation
+		videonum
+		, title
+		, url
+		, originalfile
+		, savedfile
+		, to_char(regdate, 'YYYY-MM-DD') regdate
+		, hitcount
+		, recommendation
+		, decommendation
 		from
-			EducationVideo
+		EducationVideo
 		where
-			videonum = #{videoNum}
+		videonum = #{videoNum}
 	</select>
 	<insert id="insertEduVideo" parameterType="Education">
-		insert into EducationVideo(
-			videonum
-			, title
-			, url
-			, originalfile
-			, savedfile
+		insert into
+		EducationVideo(
+		videonum
+		, title
+		, url
+		, originalfile
+		, savedfile
 		)values (
-			EDUCATION_VIDEO_SEQ.nextval
-			, #{title}
-			, #{url}
-			, #{originalfile}
-			, #{savedfile}
+		EDUCATION_VIDEO_SEQ.nextval
+		, #{title}
+		, #{url}
+		, #{originalfile}
+		, #{savedfile}
 		)
 	</insert>
-	
+
 	<select id="getTotalCount" parameterType="map" resultType="int">
 		select
-			count(*)
-		from 
-			EducationVideo
+		count(*)
+		from
+		EducationVideo
 		where
-			${searchType} like '%' || #{searchWord} || '%'
+		${searchType} like '%' || #{searchWord} || '%'
 	</select>
-	
+
 	<update id="updateHitCount" parameterType="int">
 		update
-			EducationVideo
+		EducationVideo
 		set
-			hitcount = hitcount+1
+		hitcount = hitcount+1
 		where
-			videonum = #{videonum}
+		videonum = #{videonum}
 	</update>
+
+	<select id="selectSubName" parameterType="int"
+		resultType="String">
+		select savedfile
+		from EducationVideo
+		where videonum=#{value}
+	</select>
+	<select id="selectSubName2" parameterType="String"
+		resultType="String">
+		select savedfile
+		from EducationVideo
+		where url=#{value}
+	</select>
+
+
+	<select id="checkUserStudyExist" parameterType="TestResult"
+		resultType="String">
+		select url
+		from userstudy
+		where useremail=#{useremail} and url=#{url}
+	</select>
+	
+	<insert id="insertUserStudy" parameterType="TestResult">
+	insert into userstudy
+	(
+	studynum,
+	useremail,
+	url,
+	testlevel
+	)
+	values
+	(
+	USER_STUDY_SEQ.nextval,
+	#{useremail},
+	#{url},
+	0
+	)
+	
+	</insert>
+	
+	<select id="checkLastTestlevel" parameterType="TestResult" resultType="int">
+	select testlevel
+	from userstudy
+	where useremail=#{useremail} and url=#{url}
+	</select>
+	
+	
+	<update id="updateTestResult" parameterType="TestResult">
+	update userstudy
+	set laststudy=sysdate,
+	challengeCount= challengeCount+1
+	<if test="successCount!=0">
+	,successCount=successCount+1
+	</if>
+	<if test="failureCount!=0">
+	,failureCount=failureCount+1
+	</if>
+	<if test="testlevel!=0">
+	,testlevel=#{testlevel}
+	</if>
+	where  useremail=#{useremail} and url=#{url}
+	
+	
+	</update>
+	
+	<insert id="insertWrongAnswer" parameterType="WrongAnswer">
+	insert into wronganswer
+	(
+	answernum,
+	useremail,
+	wrongindex,
+	correctanswer,
+	url,
+	regdate,
+	classification
+	)
+	values
+	(
+	WRONG_ANSWER_SEQ.nextval,
+	#{useremail},
+	#{wrongIndex},
+	#{correctAnswer},
+	#{url},
+	sysdate,
+	#{classification}
+	)
+	</insert>
+	
+	<select id="selectWrongAnswerList" parameterType="WrongAnswer" resultType="WrongAnswer">
+	select *
+	from WrongAnswer
+	where useremail=#{useremail} and url=#{url} and classification=#{classification}
+	order by answernum
+	
+	</select>
+	
+	<delete id="deleteWrongAnswer" parameterType="WrongAnswer">
+	delete from wronganswer
+	where useremail=#{useremail} 
+	and url=#{url} 
+	and classification=#{classification} 
+	and wrongindex=#{wrongIndex}
+	</delete>
+
 </mapper>
