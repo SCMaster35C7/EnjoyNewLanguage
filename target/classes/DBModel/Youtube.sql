@@ -54,10 +54,8 @@ CREATE SEQUENCE EDUCATION_VIDEO_SEQ;
 -- 3. 사용자 오답 테이블
 CREATE TABLE WrongAnswer(
 	answernum		NUMBER			CONSTRAINT wronganswer_answernum_pk			PRIMARY KEY,	-- 오답번호
-	useremail		VARCHAR2(100),																-- 아이디
-	startTime		VARCHAR2(10)	CONSTRAINT wronganswer_startTime_nn			NOT NULL,		-- 영상 시작시간
-	endTime			VARCHAR2(10)	CONSTRAINT wronganswer_endTime_nn			NOT NULL,		-- 영상 끝시간
-	wrongAnswer		VARCHAR2(1000) 	CONSTRAINT wronganswer_wrongSentence_nn 	NOT NULL,		-- 오답 문장
+	useremail		VARCHAR2(50),																-- 아이디
+	wrongIndex      VARCHAR2(50),
 	correctAnswer	VARCHAR2(1000) 	CONSTRAINT wronganswer_correctAnswer_nn 	NOT NULL,		-- 올바른 문장
 	url				VARCHAR2(1000),																-- 영상URL
 	regDate			DATE			DEFAULT SYSDATE,											-- 등록일
@@ -73,8 +71,8 @@ CREATE TABLE UserStudy(
 	studynum		NUMBER			CONSTRAINT userstudy_studynum_pk		PRIMARY KEY,		-- 학습번호
 	useremail		VARCHAR2(100),																-- 사용자 아이디
 	url				VARCHAR2(1000)	CONSTRAINT userstudy_useremail_nn		NOT NULL,			-- 영상URL
-	progressTime	VARCHAR2(10)	CONSTRAINT userstudy_progressTime_nn	NOT NULL,			-- 학습시간
-	lastStudy		DATE			DEFAULT SYSDATE,											-- 최종학습일
+	lastStudy		DATE			DEFAULT SYSDATE,
+        testlevel       NUMBER                											-- 최종학습일
 	challengeCount	NUMBER			DEFAULT 0,													-- 도전 횟수
 	successCount	NUMBER			DEFAULT 0,													-- 성공 횟수
 	failureCount	NUMBER			DEFAULT 0,													-- 실패 횟수

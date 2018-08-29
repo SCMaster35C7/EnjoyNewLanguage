@@ -5,11 +5,12 @@ import java.util.List;
 
 public class SubtitlesList {
 
-	List<ArrayList<String>> fulltext;
-	List<ArrayList<String>> quiz;
-	ArrayList<Integer> playtime;
-	ArrayList<String> playtimeView;
-	ArrayList<String> correct;
+	private List<ArrayList<String>> fulltext; // 2차원 배열로 가공한 전체 택스트
+	private List<ArrayList<String>> quiz;     // 2차원 배열로 가공한 퀴즈
+	private ArrayList<Double> playtime;       // 문장별 재생시간(계산용)
+	private ArrayList<String> playtimeView;   // 문장별 재생시간(시각용)
+	private ArrayList<String> correct;        // 퀴즈의 정답 리스트
+	private ArrayList<String> quizIndex;      // 각 퀴즈의 2차원배열에서의 인덱스 값
 
 	public SubtitlesList() {
 		super();
@@ -39,11 +40,11 @@ public class SubtitlesList {
 		this.correct = correct;
 	}
 
-	public ArrayList<Integer> getPlaytime() {
+	public ArrayList<Double> getPlaytime() {
 		return playtime;
 	}
 
-	public void setPlaytime(ArrayList<Integer> playtime) {
+	public void setPlaytime(ArrayList<Double> playtime) {
 		this.playtime = playtime;
 	}
 
@@ -54,6 +55,13 @@ public class SubtitlesList {
 	public void setPlaytimeView(ArrayList<String> playtimeView) {
 		this.playtimeView = playtimeView;
 	}
-	
+
+	public ArrayList<String> getQuizIndex() {
+		return quizIndex;
+	}
+
+	public void setQuizIndex(ArrayList<String> quizIndex) {
+		this.quizIndex = quizIndex;
+	}
 
 }

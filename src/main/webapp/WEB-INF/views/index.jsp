@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
-			
+		
 		});
 	</script>
 </head>
@@ -19,17 +19,25 @@
 <body>
 
 	<h2>[Home]</h2>
-	<a href="eduBoard">study board로 가보자</a> <br/>
-	
 	<c:if test="${empty sessionScope.useremail }">
 		<a href="login">login</a>
 	</c:if>
 	
 	<c:if test="${not empty sessionScope.useremail }">
+	${sessionScope.useremail }님아
 		<a href="logout">logout</a>
 	</c:if>
 	
-		
+	<br/><br/>
+	<a href="eduBoard">study board로 가보자</a> <br/>
+	
+	
+	<br/><br/>
+	<a href="InvestigationBoard">자막검증게시판</a> <br/>
+	
+	<br/><br/>
+	<a href="searchTest">Youtube Search테스트</a> <br/>
+	
 	<br/><br/>
 	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
 	
@@ -39,5 +47,13 @@
 	<br/><br/>
 	
 	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
+	<a href="TryRetake?videoNum=9">재시험 테스트</a>
+	<c:if test="${plzLogin!=null}">
+		<script type="text/javascript">
+			$(function(){
+				alert("${plzLogin}");
+			});
+		</script>
+	</c:if>
 </body>
 </html>
