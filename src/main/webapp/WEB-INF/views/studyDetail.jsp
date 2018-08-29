@@ -45,6 +45,8 @@
 </script>
 </head>
 <body>
+	
+	
 	<header>
 	<!-- Dropdown Structure -->
 	<ul id="dropdown1" class="dropdown-content">
@@ -143,133 +145,27 @@
 	
 	<!-- 목록 -->
 	 <div class="container">
-	 	<h3 class="center">공부게시판메인</h3>
-			 <div class="row">
-		    	<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        			</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			        	<div class="card-action">
-			        		<a class="btn-floating btn-small"><i class="material-icons">thumb_up</i>
-			        			<p>숫자</p>
-			        		</a>
-			        		<a class="btn-floating btn-small"><i class="material-icons">thumb_down</i><span>1</span></a>
-			        	</div>
-			  		</div>
-			 	</div>
-	    
-	    		<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        	</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			  		</div>
-			 	</div>
-			 	
-			 	<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        	</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			  		</div>
-			 	</div>
-			 	
-			 	<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        	</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			  		</div>
-			 	</div>
-  			</div>
- 		
- 			 <div class="row">
-		    	<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        	</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			  		</div>
-			 	</div>
-	    
-	    		<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        	</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			  		</div>
-			 	</div>
-			 	
-			 	<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        	</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			  		</div>
-			 	</div>
-			 	
-			 	<div class="col s3 m3">
-		      		<div class="card">
-			      		 <div class="card-image">
-			          		<img src="images/ronaldo.jpg">
-			          			<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-			        	</div>
-			        	<div class="card-content">
-			          		<span class="card-title">Card Title</span>
-			          		<p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-			        	</div>
-			  		</div>
-			 	</div>
-  			</div>
- 		</div>
- 		
- 		<div class="center">
-	 		 <ul class="pagination">
-			    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-			    <li class="active"><a href="#!">1</a></li>
-			    <li class="waves-effect"><a href="#!">2</a></li>
-			    <li class="waves-effect"><a href="#!">3</a></li>
-			    <li class="waves-effect"><a href="#!">4</a></li>
-			    <li class="waves-effect"><a href="#!">5</a></li>
-			    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-	 		 </ul>
- 		 </div>
+	 	<h3 class="center">공부게시판상세</h3>
+			<div class="row">
+		    	<div class="col s4 m8">
+		    		<div class="video-container z-depth-2">
+       					 <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0" allowfullscreen></iframe>
+     				</div>
+		      	</div>
+		      	<div class="col s4 m4">
+		      	<div class="card" style="height:400px;">
+				    
+				    <div class="card-content">
+				      <span class="card-title activator grey-text text-darken-4">이곳에 문제를 넣어보자<i class="material-icons right">more_vert</i></span>
+				    </div>
+				    <div class="card-reveal">
+				      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+				      <p>Here is some more information about this product that is only revealed once clicked on.</p>
+				    </div>
+				 </div>
+		      	</div>
+		     </div>
+	</div>	      		
     	
 	
 	<footer class="page-footer">

@@ -6,20 +6,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="author" content="zisung">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
+    <!--   <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" rel="stylesheet"/>
+       <link href="https://cdn.datatables.net/1.10.19/css/dataTables.material.min.css" rel="stylesheet"/>  -->
+      <link type="text/css" rel="stylesheet" href="css/jquery.dataTables.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="css/materialize1.css"/>
+      
+      <!-- dataTables -->
+      
 
       <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>studyBoard</title>
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<title>subtitlesList</title>
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>	
 <script>
-	
+
 	
 	$(function(){
+	 	//$('#dubbing').DataTable();
+		 $('select').formSelect();
+		
 		//dropdown
 		$(".dropdown-trigger").dropdown();
 		
@@ -27,8 +36,6 @@
 		$(".fixed-action-btn").floatingActionButton({
 			direction:'left'
 		});
-		
-		
 		
 		//modal open
 		$('.modal').modal();
@@ -45,7 +52,7 @@
 </script>
 </head>
 <body>
-	<header>
+<header>
 	<!-- Dropdown Structure -->
 	<ul id="dropdown1" class="dropdown-content">
 	  <li><a href="#!">one</a></li>
@@ -140,10 +147,9 @@
 			</div>
 		</div>	
 	  </div>
-	
-	<!-- 목록 -->
-	 <div class="container">
-	 	<h3 class="center">공부게시판메인</h3>
+	  
+	  <div class="container">
+	 	<h3 class="center">자막검증게시판메인</h3>
 			 <div class="row">
 		    	<div class="col s3 m3">
 		      		<div class="card">
@@ -270,9 +276,8 @@
 			    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
 	 		 </ul>
  		 </div>
-    	
-	
-	<footer class="page-footer">
+            
+        <footer class="page-footer">
           <div class="container">
             <div class="row">
               <div class="col l6 s12">
@@ -297,8 +302,10 @@
             </div>
           </div>
         </footer>
-
-
-<script type="text/javascript" src="js/materialize.js"></script>
+ 
+            
+          
+<script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
 </body>
 </html>
