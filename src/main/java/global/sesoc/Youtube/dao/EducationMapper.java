@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import global.sesoc.Youtube.dto.Education;
+import global.sesoc.Youtube.dto.TestResult;
+import global.sesoc.Youtube.dto.WrongAnswer;
 
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
@@ -23,8 +26,14 @@ public interface EducationMapper {
 	public int updateIncreRecommend(Map<String, Object> map);				          // 추천/비추천수 증가
 	public int updateDecreRecommend(Map<String, Object> map);				          // 추천/비추천수 감소
   
-	String selectSubName(int videoNum);                     // 자막파일 이름가져오기
-	public int updateHitCount(int videoNum);				// 교육 영상 조회수 증가
-	public List<Dubbing> dubbingBoard();	//더빙보드
-	public Dubbing selectOneDub(int dubbingnum);
+ 	public String selectSubName(int videoNum);                     // 자막파일 이름가져오기
+	public String selectSubName2(String url);
+	public String checkUserStudyExist(TestResult tr);  //userstudy 테이블에 기초자료가 존재하는지 체크
+	public int insertUserStudy(TestResult tr);         //userstudy 테이블에 기초자료 생성
+	public int checkLastTestlevel(TestResult tr);      //가장 높은 시험난이도 체크
+	public int updateTestResult(TestResult tr);        // 테스트결과 업데이트
+	public int insertWrongAnswer(WrongAnswer wa);      // 시험결과중 오답리스트 삽입
+	public List<WrongAnswer>selectWrongAnswerList(WrongAnswer wa);//재시험용 문제 리스트 가져오기
+	public int deleteWrongAnswer(WrongAnswer wa); //재시험에서 맞춘 문제는 오답리스트에서 삭제
+
 }

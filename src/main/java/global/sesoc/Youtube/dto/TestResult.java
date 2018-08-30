@@ -7,8 +7,8 @@ public class TestResult {
 	private String url;
 	private String laststudy;
 	private int challengecount;
-	private int successcount;
-	private int failcount;
+	private int successCount;
+	private int failureCount;
 	private int testlevel;
 
 	public TestResult() {
@@ -56,20 +56,20 @@ public class TestResult {
 		this.challengecount = challengecount;
 	}
 
-	public int getSuccesscount() {
-		return successcount;
+	public int getSuccessCount() {
+		return successCount;
 	}
 
-	public void setSuccesscount(int successcount) {
-		this.successcount = successcount;
+	public void setSuccessCount(int successCount) {
+		this.successCount = successCount;
 	}
 
-	public int getFailcount() {
-		return failcount;
+	public int getFailureCount() {
+		return failureCount;
 	}
 
-	public void setFailcount(int failcount) {
-		this.failcount = failcount;
+	public void setFailureCount(int failureCount) {
+		this.failureCount = failureCount;
 	}
 
 	public int getTestlevel() {
@@ -83,8 +83,8 @@ public class TestResult {
 	@Override
 	public String toString() {
 		return "TestResult [studynum=" + studynum + ", useremail=" + useremail + ", url=" + url + ", laststudy="
-				+ laststudy + ", challengecount=" + challengecount + ", successcount=" + successcount + ", failcount="
-				+ failcount + ", testlevel=" + testlevel + "]";
+				+ laststudy + ", challengecount=" + challengecount + ", successCount=" + successCount
+				+ ", failureCount=" + failureCount + ", testlevel=" + testlevel + "]";
 	}
 
 }

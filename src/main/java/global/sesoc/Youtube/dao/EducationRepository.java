@@ -11,49 +11,54 @@ import org.springframework.stereotype.Repository;
 
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
-import global.sesoc.Youtube.dto.Member;
 import global.sesoc.Youtube.dto.Recommendation;
+import global.sesoc.Youtube.dto.TestResult;
+import global.sesoc.Youtube.dto.WrongAnswer;
+
 
 @Repository
 public class EducationRepository {
 	@Autowired
 	SqlSession session;
-	
+
 	/**
 	 * 교육용 동영상을 전부 추출
+	 * 
 	 * @return
 	 */
 
 	public List<Education> selectEduList(String searchType, String searchWord, int startRecord, int countPerPage) {
 		RowBounds bound = new RowBounds(startRecord, countPerPage);
-		
+
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		List<Education> eduList = mapper.selectEduList(bound);
-		
+
 		return eduList;
 	}
 
 	/**
 	 * 교육용 동영상 중 선택된 특정 영상을 추출
+	 * 
 	 * @param videoNum
 	 * @return
 	 */
 	public Education selectOneFromEduVideo(int videoNum) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Education edu = mapper.selectOneFromEduVideo(videoNum);
-		
+
 		return edu;
 	}
-	
+
 	/**
 	 * 교육용 동영상 삽입
+	 * 
 	 * @param education
 	 * @return
 	 */
 	public int insertEduVideo(Education education) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.insertEduVideo(education);
-		
+
 		return result;
 	}
 
@@ -62,16 +67,16 @@ public class EducationRepository {
 		Map<String, Object> map = new HashMap<>();
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
-		
+
 		int result = mapper.getTotalCount(map);
-		
+
 		return result;
 	}
 
 	public int updateHitCount(int videoNum) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.updateHitCount(videoNum);
-		
+
 		return result;
 	}
 
@@ -92,11 +97,16 @@ public class EducationRepository {
 		return result;
 	}
 
-	public int updateIncreRecommend(int videonum, String commendation) {
+	public int updateIncreRecommend(String tableName, String  IDCode, int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
+		System.out.println(tableName);
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
+		map.put("tableName", tableName);
+		map.put("IDCode", IDCode);
+		
+		System.out.println("난 레포지토리 : " +map);
 		
 		int result = mapper.updateIncreRecommend(map);
 		
@@ -110,11 +120,15 @@ public class EducationRepository {
 		return result;
 	}
 
-	public int updateDecreRecommend(int videonum, String commendation) {
+	public int updateDecreRecommend(String tableName, String  IDCode,  int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
+		map.put("tableName", tableName);
+		map.put("IDCode", IDCode);
+		
+		System.out.println("난 레포지토리 : " +map);
 		
 		int result = mapper.updateDecreRecommend(map);
 		
@@ -128,24 +142,63 @@ public class EducationRepository {
 		return result;
 	}
 
-	
 	public String selectSubName(int videoNum) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		String result = mapper.selectSubName(videoNum);
 		return result;
 	}
 	
-	public List<Dubbing> dubbingBoard() {
+
+
+	public String selectSubName2(String url) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
-		List<Dubbing> dubbing = mapper.dubbingBoard();
-		return dubbing;
+		String result = mapper.selectSubName2(url);
+		return result;
 	}
 
-	public Dubbing selectOneDub(int dubbingnum) {
+	public String checkUserStudyExist(TestResult tr) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
-		Dubbing dubbing = mapper.selectOneDub(dubbingnum);
-		return dubbing;
+		String result = mapper.checkUserStudyExist(tr);
+		return result;
 	}
+
+	public int insertUserStudy(TestResult tr) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.insertUserStudy(tr);
+		return result;
+	}
+
+	public int checkLastTestlevel(TestResult tr) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.checkLastTestlevel(tr);
+		return result;
+	}
+
+	public int updateTestResult(TestResult tr) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.updateTestResult(tr);
+		return result;
+	}
+
+	public int insertWrongAnswer(WrongAnswer wa) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.insertWrongAnswer(wa);
+		return result;
+	}
+
+	public List<WrongAnswer> selectWrongAnswerList(WrongAnswer wa) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		List<WrongAnswer> result = mapper.selectWrongAnswerList(wa);
+		return result;
+	}
+
+	public int deleteWrongAnswer(WrongAnswer wa) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		int result = mapper.deleteWrongAnswer(wa);
+		return result;
+	}
+
+	
 
 	
 	

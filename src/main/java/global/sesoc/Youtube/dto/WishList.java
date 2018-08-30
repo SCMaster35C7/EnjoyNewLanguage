@@ -59,6 +59,11 @@ public class WishList {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "WishList [wishnum=" + wishnum + ", useremail=" + useremail + ", url=" + url + ", title=" + title
+				+ ", regDate=" + regDate + "]";
+	}
 	
 }

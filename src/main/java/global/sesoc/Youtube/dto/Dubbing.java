@@ -4,6 +4,7 @@ public class Dubbing {
 	private int dubbingnum;
 	private String title;
 	private String usernick;
+	private String useremail;
 	private String content;
 	private String url;
 	private String voiceFile;
@@ -18,12 +19,13 @@ public class Dubbing {
 	}
 
 
-	public Dubbing(int dubbingnum, String title, String usernick, String content, String url, String voiceFile,
-			int hitcount, String regdate, int recommendation, int decommendation) {
+	public Dubbing(int dubbingnum, String title, String usernick, String useremail, String content, String url,
+			String voiceFile, int hitcount, String regdate, int recommendation, int decommendation) {
 		super();
 		this.dubbingnum = dubbingnum;
 		this.title = title;
 		this.usernick = usernick;
+		this.useremail = useremail;
 		this.content = content;
 		this.url = url;
 		this.voiceFile = voiceFile;
@@ -39,18 +41,8 @@ public class Dubbing {
 	}
 
 
-	public void setDubbingnum(int dubbingnum) {
-		this.dubbingnum = dubbingnum;
-	}
-
-
 	public String getTitle() {
 		return title;
-	}
-
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 
@@ -59,8 +51,8 @@ public class Dubbing {
 	}
 
 
-	public void setUsernick(String usernick) {
-		this.usernick = usernick;
+	public String getUseremail() {
+		return useremail;
 	}
 
 
@@ -69,18 +61,8 @@ public class Dubbing {
 	}
 
 
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-
 	public String getUrl() {
 		return url;
-	}
-
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 
@@ -89,18 +71,8 @@ public class Dubbing {
 	}
 
 
-	public void setVoiceFile(String voiceFile) {
-		this.voiceFile = voiceFile;
-	}
-
-
 	public int getHitcount() {
 		return hitcount;
-	}
-
-
-	public void setHitcount(int hitcount) {
-		this.hitcount = hitcount;
 	}
 
 
@@ -109,23 +81,63 @@ public class Dubbing {
 	}
 
 
-	public void setRegdate(String regdate) {
-		this.regdate = regdate;
-	}
-
-
 	public int getRecommendation() {
 		return recommendation;
 	}
 
 
-	public void setRecommendation(int recommendation) {
-		this.recommendation = recommendation;
+	public int getDecommendation() {
+		return decommendation;
 	}
 
 
-	public int getDecommendation() {
-		return decommendation;
+	public void setDubbingnum(int dubbingnum) {
+		this.dubbingnum = dubbingnum;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public void setUsernick(String usernick) {
+		this.usernick = usernick;
+	}
+
+
+	public void setUseremail(String useremail) {
+		this.useremail = useremail;
+	}
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+
+	public void setVoiceFile(String voiceFile) {
+		this.voiceFile = voiceFile;
+	}
+
+
+	public void setHitcount(int hitcount) {
+		this.hitcount = hitcount;
+	}
+
+
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
+	}
+
+
+	public void setRecommendation(int recommendation) {
+		this.recommendation = recommendation;
 	}
 
 
@@ -136,11 +148,12 @@ public class Dubbing {
 
 	@Override
 	public String toString() {
-		return "Dubbing [dubbingnum=" + dubbingnum + ", title=" + title + ", usernick=" + usernick + ", content="
-				+ content + ", url=" + url + ", voiceFile=" + voiceFile + ", hitcount=" + hitcount + ", regdate="
-				+ regdate + ", recommendation=" + recommendation + ", decommendation=" + decommendation + "]";
+		return "Dubbing [dubbingnum=" + dubbingnum + ", title=" + title + ", usernick=" + usernick + ", useremail="
+				+ useremail + ", content=" + content + ", url=" + url + ", voiceFile=" + voiceFile + ", hitcount="
+				+ hitcount + ", regdate=" + regdate + ", recommendation=" + recommendation + ", decommendation="
+				+ decommendation + "]";
 	}
 
-	
+
 	
 }

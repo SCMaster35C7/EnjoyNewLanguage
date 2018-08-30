@@ -38,13 +38,20 @@
 				var recoCount = Number(target.children("span").text());
 				var decoTarget = target.parent().children(".decommendation").children("#decoCount");
 				var videonum = target.parent().children("input").val();
-				var dataForm = {"useremail":useremail, "identificationnum":videonum, "recommendtable":"0", "recommendation":"0"};
+				var dataForm = {"tableName":"educationvideo", 
+						"idCode":"videonum", 
+						"useremail":useremail, 
+						"identificationnum":videonum,
+						"recommendtable":"0",
+						"recommendation":"0"
+				};
 				
 				$.ajax({
 					method:'post'
 					, url:'insertRecommendation'
 					, data: JSON.stringify(dataForm)
 					, contentType: "application/json; charset=utf-8"
+					, async:false
 					, success:function(resp) {
 						if(resp == "success") {
 							alert("영상을 좋아합니다.");
@@ -75,13 +82,20 @@
 				var decoCount = Number(target.children("span").text());
 				var recoTarget = target.parent().children(".recommendation").children("#recoCount");
 				var videonum = target.parent().children("input").val();
-				var dataForm = {"useremail":useremail, "identificationnum":videonum, "recommendtable":"0", "recommendation":"1"};
+				var dataForm = {"tableName":"educationvideo",
+						"idCode":"videonum",  
+						"useremail":useremail, 
+						"identificationnum":videonum, 
+						"recommendtable":"0", 
+						"recommendation":"1"
+				};
 				
 				$.ajax({
 					method:'post'
 					, url:'insertRecommendation'
 					, data: JSON.stringify(dataForm)
 					, contentType: "application/json; charset=utf-8"
+					, async:false
 					, success:function(resp) {
 						if(resp == "success") {
 							alert("영상을 싫어합니다.");

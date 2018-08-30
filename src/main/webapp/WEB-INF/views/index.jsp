@@ -40,6 +40,7 @@
 	<br/><br/>
 	
 	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
+	<a href="TryRetake?videoNum=9">재시험 테스트</a>
 	<c:if test="${plzLogin!=null}">
 		<script type="text/javascript">
 			$(function(){
@@ -50,5 +51,7 @@
 	
 	<br/><br/>
 	<a href="dubbingBoard">더빙게쉬판  -여름쓰다나-</a> 
+	<br/><br/>
+	<a href="DubbingWrite?videoNum=7">더빙작성 게시판 테스트</a>
 </body>
 </html>
