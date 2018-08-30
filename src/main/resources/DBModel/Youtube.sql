@@ -73,7 +73,7 @@ CREATE TABLE UserStudy(
 	useremail		VARCHAR2(100),																-- 사용자 아이디
 	url				VARCHAR2(1000)	CONSTRAINT userstudy_useremail_nn		NOT NULL,			-- 영상URL
 	lastStudy		DATE			DEFAULT SYSDATE,
-  testlevel       NUMBER                											-- 최종
+ 	testlevel       NUMBER                											-- 최종
 	challengeCount	NUMBER			DEFAULT 0,													-- 도전 횟수
 	successCount	NUMBER			DEFAULT 0,													-- 성공 횟수
 	failureCount	NUMBER			DEFAULT 0,													-- 실패 횟수

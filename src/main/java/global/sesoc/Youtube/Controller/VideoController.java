@@ -2,7 +2,6 @@ package global.sesoc.Youtube.Controller;
 
 
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -41,13 +40,14 @@ public class VideoController {
 	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
+
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
-		System.out.println("로그인해 :  "+plzLogin);
+
+		System.out.println("로그인 해주세요 :  "+plzLogin);
+
 		model.addAttribute("plzLogin", plzLogin);
-
-
-
+    
 		return "index";
 	}
 
@@ -164,14 +164,26 @@ public class VideoController {
 	}
 	
 
+	@RequestMapping(value="/searchTest", method=RequestMethod.GET)
+	public String searchTest() {
+		
+		return "Practice/search";
+	}
+	
+	
 	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
 	public String TryRetake(Model model,int videoNum) {
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
-	 
-		model.addAttribute("edu", edu);
-	     return"EducationBoard/RetakeEduBoard";
-	}
 
+    model.addAttribute("edu", edu);
+		return "EducationBoard/RetakeEduBoard";
+	}
+	
+	/***
+	 * 교육 영상 좋아요/ 싫어요 기능
+	 * @param reco
+	 * @return
+	 */
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
 		System.out.println("난 컨트롤러 : "+reco);
@@ -180,7 +192,7 @@ public class VideoController {
 		//System.out.println(recoTemp);
 		
 		if(recoTemp != null) {
-			System.out.println("이미 있음");
+			//System.out.println("이미 있음");
 			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
 			int reqReco	= reco.getRecommendation();			// 요청온 값
 			
@@ -225,76 +237,5 @@ public class VideoController {
 			
 			return "success";
 		}
-		
 	}
-
-	
-	
-	
-	
-
-	
-	 // 개발중인 메소드 아직 쓰지마셈
-	/*
-	//사용 미정, 컨트롤단에서 사운드 파일을 가져올 경우, 몇가지 기능이 마비
-	@RequestMapping(value = "soundFile", method = RequestMethod.GET)
-	public MultipartFile soundFile(int soundFileNum,HttpServletResponse response) {
-		String fullPath = "C:\\lyr\\Test\\That Time of Year.mp3";
-		System.out.println(soundFileNum);
-
-		FileInputStream fis = null;
-		ServletOutputStream fout = null;
-
-		try {
-			fout = response.getOutputStream();
-			fis = new FileInputStream(fullPath);
-			FileCopyUtils.copy(fis, fout);
-			fout.flush();
-
-		} catch (Exception e) {
-
-		} finally {
-			try {
-				if (fis != null)
-					fis.close();
-				if (fout != null)
-					fout.close();
-			} catch (Exception e) {
-
-			}
-
-
-		if (edu != null) {
-			model.addAttribute("edu", edu);
-			eduRepository.updateHitCount(videoNum);
-		}
-		return "EducationBoard/RetakeEduBoard";
-	}
-
-	
-	// 개발중인 메소드 아직 쓰지마셈
-	/*
-	 * //사용 미정, 컨트롤단에서 사운드 파일을 가져올 경우, 몇가지 기능이 마비
-	 * 
-	 * @RequestMapping(value = "soundFile", method = RequestMethod.GET) public
-	 * MultipartFile soundFile(int soundFileNum,HttpServletResponse response) {
-	 * String fullPath = "C:\\lyr\\Test\\That Time of Year.mp3";
-	 * System.out.println(soundFileNum);
-	 * 
-	 * FileInputStream fis = null; ServletOutputStream fout = null;
-	 * 
-	 * try { fout = response.getOutputStream(); fis = new FileInputStream(fullPath);
-	 * FileCopyUtils.copy(fis, fout); fout.flush();
-	 * 
-	 * } catch (Exception e) {
-	 * 
-	 * } finally { try { if (fis != null) fis.close(); if (fout != null)
-	 * fout.close(); } catch (Exception e) {
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * return null; }
-	 */
 }
