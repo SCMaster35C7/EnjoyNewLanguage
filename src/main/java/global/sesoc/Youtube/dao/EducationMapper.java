@@ -8,6 +8,8 @@ import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.WrongAnswer;
 
+import global.sesoc.Youtube.dto.Dubbing;
+import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Recommendation;
 
 public interface EducationMapper {

@@ -55,5 +55,10 @@
 			});
 		</script>
 	</c:if>
+	
+	<br/><br/>
+	<a href="dubbingBoard">더빙게쉬판  -여름쓰다나-</a> 
+	<br/><br/>
+	<a href="DubbingWrite?videoNum=7">더빙작성 게시판 테스트</a>
 </body>
 </html>

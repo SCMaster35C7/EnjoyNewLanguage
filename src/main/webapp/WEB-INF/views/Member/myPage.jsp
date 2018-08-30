@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,20 +11,44 @@
 <body>
 	<a href="updateMember">회원정보수정</a>
 	<br/><br/>
-	이름 : ${myInfo.usernick}
-	<br/>
-	<br/>
+	이름 : ${usernick}
+	<br/><br/>
+	
+	<c:if test="${myInfo!=null }">
+	
 	승률 : ${myInfo.winningRate} (승 : ${myInfo.allSuccess}/ 패 :  ${myInfo.allFailure}/ 도전: ${myInfo.allChallenge})
 	<br/>
+	</c:if>
+	<c:if test="${myInfo==null }">
+	승률 데이터 없음 하셈	
+	<br/>
+	</c:if>
+	
+	
+	
+	
 	보고있는 영상 : 
+	<c:if test="${not empty notfinished}">
 		<c:forEach var="nf" items="${notfinished}">
 			<a href="detailEduBoard?videoNum=${nf.videoNum}">${nf.title}</a> 
 		</c:forEach>
+	</c:if>
+	
+	<c:if test="${empty notfinished}">
+		없음
+	</c:if> 
 	<br/>
 	완료한 영상 : 
+	
+	<c:if test="${not empty finished}">
 		<c:forEach var="f" items="${finished}">
 			<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br/>
 		</c:forEach>
+	</c:if>
+	<c:if test="${empty finished}">
+		없음
+	</c:if> 
+	
 	<br/>
 	
 	

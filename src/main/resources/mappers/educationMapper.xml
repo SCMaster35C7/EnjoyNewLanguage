@@ -220,11 +220,11 @@
 	
 	<update id="updateIncreRecommend" parameterType="map">
 		update
-			EducationVideo
+			${tableName}
 		set
 			${commendation} = ${commendation}+1
 		where
-			videonum = #{videonum}
+			${IDCode} = #{videonum}
 	</update>
 	
 	<delete id="deleteRecommend" parameterType="Recommendation">
@@ -240,11 +240,11 @@
 	
 	<update id="updateDecreRecommend" parameterType="map">
 		update
-			EducationVideo
+			${tableName}
 		set
 			${commendation} = ${commendation}-1
 		where
-			videonum = #{videonum}
+			${IDCode} = #{videonum}
 	</update>
 	
 	<update id="updateRecommend" parameterType="Recommendation">

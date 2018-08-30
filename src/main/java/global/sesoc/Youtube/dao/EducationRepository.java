@@ -9,11 +9,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
+import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.WrongAnswer;
-import global.sesoc.Youtube.dto.Member;
-import global.sesoc.Youtube.dto.Recommendation;
 
 
 @Repository
@@ -97,11 +97,16 @@ public class EducationRepository {
 		return result;
 	}
 
-	public int updateIncreRecommend(int videonum, String commendation) {
+	public int updateIncreRecommend(String tableName, String  IDCode, int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
+		System.out.println(tableName);
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
+		map.put("tableName", tableName);
+		map.put("IDCode", IDCode);
+		
+		System.out.println("난 레포지토리 : " +map);
 		
 		int result = mapper.updateIncreRecommend(map);
 		
@@ -115,11 +120,15 @@ public class EducationRepository {
 		return result;
 	}
 
-	public int updateDecreRecommend(int videonum, String commendation) {
+	public int updateDecreRecommend(String tableName, String  IDCode,  int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
+		map.put("tableName", tableName);
+		map.put("IDCode", IDCode);
+		
+		System.out.println("난 레포지토리 : " +map);
 		
 		int result = mapper.updateDecreRecommend(map);
 		
@@ -138,6 +147,8 @@ public class EducationRepository {
 		String result = mapper.selectSubName(videoNum);
 		return result;
 	}
+	
+
 
 	public String selectSubName2(String url) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
@@ -187,4 +198,8 @@ public class EducationRepository {
 		return result;
 	}
 
+	
+
+	
+	
 }

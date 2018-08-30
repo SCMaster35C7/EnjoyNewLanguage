@@ -72,7 +72,7 @@ CREATE TABLE UserStudy(
 	useremail		VARCHAR2(100),																-- 사용자 아이디
 	url				VARCHAR2(1000)	CONSTRAINT userstudy_useremail_nn		NOT NULL,			-- 영상URL
 	lastStudy		DATE			DEFAULT SYSDATE,
-        testlevel       NUMBER                											-- 최종학습일
+  testlevel       NUMBER                											-- 최종
 	challengeCount	NUMBER			DEFAULT 0,													-- 도전 횟수
 	successCount	NUMBER			DEFAULT 0,													-- 성공 횟수
 	failureCount	NUMBER			DEFAULT 0,													-- 실패 횟수
@@ -148,8 +148,8 @@ CREATE TABLE  Dubbing(
 	useremail			VARCHAR2(100)	CONSTRAINT dubbing_useremail_nn		NOT NULL,		-- 더빙한 사용자
 	url					VARCHAR2(1000)	CONSTRAINT dubbing_url_nn			NOT NULL,		-- 더빙한 영상
 	voiceFile			VARCHAR2(1000)	CONSTRAINT dubbing_voiceFile_nn		NOT NULL,		-- 더빙 음성  파일
-	regDate				DATE			DEFAULT SYSDATE,									-- 게시글 등록일
-	hitCount			NUMBER			DEFAULT 0,											-- 조회수
+	regdate				DATE			DEFAULT SYSDATE,									-- 게시글 등록일
+	hitcount			NUMBER			DEFAULT 0,											-- 조회수
 	recommendation		NUMBER			DEFAULT 0,											-- 추천수
 	decommendation		NUMBER			DEFAULT 0											-- 비추천수
 );
