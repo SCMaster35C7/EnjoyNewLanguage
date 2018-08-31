@@ -15,6 +15,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dto.Education;
@@ -24,6 +25,7 @@ import global.sesoc.Youtube.dto.SubtitlesList;
 
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
+import global.sesoc.Youtube.util.SubtitlesMaker;
 
 @Controller
 public class VideoController {
@@ -166,6 +168,9 @@ public class VideoController {
 	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
 	public String TryRetake(Model model,int videoNum) {
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
+		model.addAttribute("edu",edu);
+		return"EducationBoard/RetakeEduBoard";
+	}
 
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
@@ -222,78 +227,6 @@ public class VideoController {
 		}
 	}
 
-	@RequestMapping(value="getSubtitlesList",method=RequestMethod.GET)
-	public @ResponseBody SubtitlesList getSubtitlesList(int level, int videoNum) {
-		String jamacName=eduRepository.selectSubName(videoNum);
-		String jamacURL=eduFileRoot+"/"+jamacName;
-		SubtitlesMaker sm = new SubtitlesMaker();
-		SubtitlesList sublist = sm.RandomText(jamacURL, level);
-		
-
-		return sublist;
-
-	}
-	 // 개발중인 메소드 아직 쓰지마셈
-	/*
-	//사용 미정, 컨트롤단에서 사운드 파일을 가져올 경우, 몇가지 기능이 마비
-	@RequestMapping(value = "soundFile", method = RequestMethod.GET)
-	public MultipartFile soundFile(int soundFileNum,HttpServletResponse response) {
-		String fullPath = "C:\\lyr\\Test\\That Time of Year.mp3";
-		System.out.println(soundFileNum);
-
-		FileInputStream fis = null;
-		ServletOutputStream fout = null;
-
-		try {
-			fout = response.getOutputStream();
-			fis = new FileInputStream(fullPath);
-			FileCopyUtils.copy(fis, fout);
-			fout.flush();
-
-		} catch (Exception e) {
-
-		} finally {
-			try {
-				if (fis != null)
-					fis.close();
-				if (fout != null)
-					fout.close();
-			} catch (Exception e) {
-
-			}
-
-
-		if (edu != null) {
-			model.addAttribute("edu", edu);
-			eduRepository.updateHitCount(videoNum);
-		}
-		return "EducationBoard/RetakeEduBoard";
-	}
-
 	
-	// 개발중인 메소드 아직 쓰지마셈
-	/*
-	 * //사용 미정, 컨트롤단에서 사운드 파일을 가져올 경우, 몇가지 기능이 마비
-	 * 
-	 * @RequestMapping(value = "soundFile", method = RequestMethod.GET) public
-	 * MultipartFile soundFile(int soundFileNum,HttpServletResponse response) {
-	 * String fullPath = "C:\\lyr\\Test\\That Time of Year.mp3";
-	 * System.out.println(soundFileNum);
-	 * 
-	 * FileInputStream fis = null; ServletOutputStream fout = null;
-	 * 
-	 * try { fout = response.getOutputStream(); fis = new FileInputStream(fullPath);
-	 * FileCopyUtils.copy(fis, fout); fout.flush();
-	 * 
-	 * } catch (Exception e) {
-	 * 
-	 * } finally { try { if (fis != null) fis.close(); if (fout != null)
-	 * fout.close(); } catch (Exception e) {
-	 * 
-	 * }
-	 * 
-	 * }
-	 * 
-	 * return null; }
-	 */
+	
 }
