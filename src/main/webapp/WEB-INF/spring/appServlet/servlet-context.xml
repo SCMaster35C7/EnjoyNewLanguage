@@ -21,6 +21,7 @@
 	<resources mapping="/images/**" location="/resources/images/" />
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/fonts/**" location="/resources/fonts/" />
+	<resources mapping="/resources/**" location="/resources/" />
 	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -28,7 +29,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<!-- 인터셉터 빈 등록 -->
+		<!-- 인터셉터 빈 등록 -->
 	<beans:bean id="loginInterceptor" class="global.sesoc.Youtube.interceptor.LoginInterceptor"/>
 	
 	<!-- 인터셉터 경로 설정 -->
@@ -41,7 +42,4 @@
 	</interceptors>
 	
 	<context:component-scan base-package="global.sesoc.Youtube" />
-	
-	
-	
 </beans:beans>

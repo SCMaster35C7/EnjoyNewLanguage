@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.dto.SubtitlesList;
@@ -41,7 +42,9 @@ public class VideoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
+
 		System.out.println("로그인 해주세요 :  "+plzLogin);
+
 		model.addAttribute("plzLogin", plzLogin);
     
 		return "index";
@@ -170,8 +173,8 @@ public class VideoController {
 	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
 	public String TryRetake(Model model,int videoNum) {
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
-    
-		model.addAttribute("edu", edu);
+
+    model.addAttribute("edu", edu);
 		return "EducationBoard/RetakeEduBoard";
 	}
 	
@@ -182,7 +185,7 @@ public class VideoController {
 	 */
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
-		//System.out.println(reco);
+		System.out.println("난 컨트롤러 : "+reco);
 		
 		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
 		//System.out.println(recoTemp);
@@ -197,10 +200,10 @@ public class VideoController {
 				
 				if(reqReco == 0) {
 					// 좋아요 상태 취소
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 				}else {
 					// 싫어요 상태 취소
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(),reco.getIdCode(),  reco.getIdentificationnum(), "decommendation");
 				}
 				
 				return "cancel";
@@ -209,13 +212,13 @@ public class VideoController {
 				if(reqReco == 0) {
 					// 좋아요 상태에서 싫어요로 변경
 					result = eduRepository.updateRecommend(reco);
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
-					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 				}else {
 					// 싫어요 상태에서 좋아요로 변경
 					result = eduRepository.updateRecommend(reco);
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
-					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 				}
 			}
 			
@@ -225,29 +228,13 @@ public class VideoController {
 			
 			if(reco.getRecommendation() == 0) {
 				// 좋아요
-				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 			}else {
 				// 싫어요
-				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 			}
 			
 			return "success";
 		}
-	}
-
-	@RequestMapping(value="/addVideo", method=RequestMethod.GET)
-	public String addVideo() {
-		
-		return "Practice/item";
-	
-	}
-	/*
-	 * 더빙게시판
-	 */
-	
-	@RequestMapping(value="/dubbingBoard", method=RequestMethod.GET)
-	public String dubbingBoard() {
-		
-		return "dubbingBoard";
 	}
 }

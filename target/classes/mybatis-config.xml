@@ -13,6 +13,8 @@
 		<typeAlias type="global.sesoc.Youtube.dto.Video" alias="Video"/>
 		<typeAlias type="global.sesoc.Youtube.dto.TestResult" alias="TestResult"/>
 		<typeAlias type="global.sesoc.Youtube.dto.WishList" alias="WishList"/>
+
+		<typeAlias type="global.sesoc.Youtube.dto.Dubbing" alias="Dubbing"/>
 	</typeAliases>
 
 	<mappers>

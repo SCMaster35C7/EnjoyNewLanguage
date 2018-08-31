@@ -53,7 +53,4 @@ public class Video {
 		return "Video [videoNum=" + videoNum + ", title=" + title + ", url=" + url + ", challengecount="
 				+ challengecount + "]";
 	}
-	
-	
-	
 }
