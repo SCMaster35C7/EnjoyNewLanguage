@@ -196,12 +196,6 @@ public class VideoController {
 			return "success";
 		}
 	}
-	
-	@RequestMapping(value="/addVideo", method=RequestMethod.GET)
-	public String addVideo() {
-		
-		return "Practice/item";
-	}
 }
 
 
