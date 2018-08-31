@@ -1,13 +1,16 @@
 package global.sesoc.Youtube.Controller;
 
+import java.io.FileInputStream;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -80,5 +83,38 @@ public class DubbingController {
 				dubRepository.insertDubbing(dub);
 				return "redirect:/";
 			}
+      
+      @RequestMapping(value = "getDubbingSoundFile", method = RequestMethod.GET)
+	public String imagedownload(int dubbingnum, HttpServletResponse response) {
+		
+		System.out.println(dubbingnum);
+		String fileName="testsoundfile(full).mp3";
+		String fullPath = eduFileRoot + "/" + fileName;
+
+		FileInputStream fis = null;
+		ServletOutputStream fout = null;
+
+		try {
+			fout = response.getOutputStream();
+			fis = new FileInputStream(fullPath);
+			FileCopyUtils.copy(fis, fout);
+
+		} catch (Exception e) {
+
+		} finally {
+			try {
+				if (fis != null)
+					fis.close();
+				if (fout != null)
+					fout.close();
+			} catch (Exception e) {
+
+			}
+
+		}
+
+		return null;
+	}
 			
+
 }

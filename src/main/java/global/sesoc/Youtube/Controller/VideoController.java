@@ -173,6 +173,9 @@ public class VideoController {
 	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
 	public String TryRetake(Model model,int videoNum) {
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
+		model.addAttribute("edu",edu);
+		return"EducationBoard/RetakeEduBoard";
+	}
 
     model.addAttribute("edu", edu);
 		return "EducationBoard/RetakeEduBoard";
@@ -237,4 +240,5 @@ public class VideoController {
 			return "success";
 		}
 	}
+
 }
