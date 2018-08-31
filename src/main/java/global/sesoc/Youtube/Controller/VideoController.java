@@ -39,7 +39,6 @@ public class VideoController {
 	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
 		System.out.println("로그인 해주세요 :  "+plzLogin);
@@ -66,7 +65,7 @@ public class VideoController {
 		System.out.println(totalRecordCount);
 
 
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
+		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
 		List<Education> eduList = eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(),
 				navi.getcountPerPage());
 
@@ -240,5 +239,15 @@ public class VideoController {
 	public String addVideo() {
 		
 		return "Practice/item";
+	
+	}
+	/*
+	 * 더빙게시판
+	 */
+	
+	@RequestMapping(value="/dubbingBoard", method=RequestMethod.GET)
+	public String dubbingBoard() {
+		
+		return "dubbingBoard";
 	}
 }

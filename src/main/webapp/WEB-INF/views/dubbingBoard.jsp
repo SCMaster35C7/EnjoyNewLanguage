@@ -21,7 +21,7 @@
       <!--Let browser know website is optimized for mobile-->
 <title>dubbingList</title>
 
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>	
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>	
 <script>
 $(document).ready(function() {
     var table = $('#dubbing').DataTable();
@@ -47,11 +47,14 @@ $(document).ready(function() {
 		
 		//floating actionbutton
 		$(".fixed-action-btn").floatingActionButton({
-			direction:'left'
 		});
 		
 		//modal open
-		$('.modal').modal();
+		$('#modal1').modal();
+		
+		$('#back').on('click', function() {
+			
+		});
 		
 		//side-nav open
 		$('.sidenav').sidenav();
@@ -68,25 +71,38 @@ $(document).ready(function() {
 <header>
 	<!-- Dropdown Structure -->
 	<ul id="dropdown1" class="dropdown-content">
-	  <li><a href="#!">one</a></li>
-	  <li><a href="#!">two</a></li>
+	  <li><a href="myPage">마이페이지</a></li>
+		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
+		  		<c:if test="${plzLogin!=null}">
+					<script type="text/javascript">
+							$(function(){
+								alert("${plzLogin}");
+							});
+					</script>
+				</c:if>
 	  <li class="divider"></li>
-	  <li><a href="#!">three</a></li>
+	  <li><a href="searchTest">Youtube Search테스트</a></li>
 	</ul>
 	
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
-	    <a href="#!" class="brand-logo">Logo</a>
+	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
-	      <li><a href="#">공부게시판</a></li>
-	      <li><a href="#">더빙게시판</a></li>
-	      <li><a href="#">마이페이지</a></li>
-	      <!-- Dropdown Trigger -->
-	      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-	    </ul>
-	  </div>
+		      	<c:if test="${not empty sessionScope.useremail }">
+		      <li>
+						<a href="logout">${sessionScope.useremail }님아logout</a>
+					
+		      </li>
+				</c:if>
+		      <li><a href="eduBoard">영상게시판</a></li>
+		      <li><a href="dubbingBoard">더빙게시판</a></li>
+		      <li><a href="InvestigationBoard">자막검증게시판</a></li>
+		      <!-- Dropdown Trigger -->
+		      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+		    </ul>
+		  </div>
 
 	
 		<div class="nav-content">
@@ -99,9 +115,9 @@ $(document).ready(function() {
 	  
 	  <!-- 창 축소시 사이드 nav -->
 	  <ul class="sidenav" id="small-navi">
-	    <li><a href="#">공부게시판</a></li>
-	    <li><a href="#">더빙게시판</a></li>
-	    <li><a href="#">마이페이지</a></li>
+	    <li><a href="eduBoard.jsp">영상게시판</a></li>
+ 	    <li><a href="dubbingBoard">더빙게시판</a></li>
+	    <li><a href="InvestigationBoard">자막게시판</a></li>
   	  </ul>
 		
 		<!-- 로그인 MODAL -->
@@ -109,50 +125,56 @@ $(document).ready(function() {
 			<div class="modal-content">
 			<div class="container">
 			
-				<form class="col s12">
+				<form class="col s12" id=loginForm action="login" method="POST">
 				<div class="row">
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
 						<div class="input-field col s12">
 							<i class="material-icons prefix">mail</i>
-							<input id="email" type="text" class="validate">
-							<label for="email">EMAIL</label>
+							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+							<label for="useremail">EMAIL</label>
 						</div>
 					</div>
 				
 					<div class="row">
 						<div class="input-field col s12">
 							<i class="material-icons prefix">mode_edit</i>
-							<input id="icon_prefix" type="password" class="validate">
-							<label for="icon_prefix">PASSWORD</label>
+							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+							<label for="userpwd">PASSWORD</label>
 						</div>
 					</div>
 				</div>	
 				
 					<div class="row">
-						<div class="col s8">
-						<span class="flow-text">
-							<button class="btn waves-effect waves-light" type="submit" name="action">ENTER
-							<i class="material-icons right">send</i>
-							</button>
-						</span>
-					
-						<span class="flow-text">
-							<button class="btn waves-effect waves-light" type="submit" name="action">BACK
-							<i class="material-icons right">keyboard_return</i>
-							</button>
+						<div class="col s10">
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+									<i class="material-icons right">send</i>
+								</button>
+							</span>
+						
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+									<i class="material-icons right">keyboard_return</i>
+								</button>
+							</span>
+							
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close">LOGOUT
+									<i class="material-icons right">settings_power</i>
+								</button>
 							</span>
 						</div>
 						
 						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="top" data-tooltip="ACCOUNT?">
+								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
 								<i class="large material-icons">person</i>
 								</a>
 								<ul>
-								    <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
 								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT THIS"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
 				</div>
@@ -582,6 +604,19 @@ $(document).ready(function() {
                   </table>
                 </div>
               </div>
+         
+         	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
+	
+	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
+	<a href="TryRetake?videoNum=9">재시험 테스트</a>
+	<c:if test="${plzLogin!=null}">
+		<script type="text/javascript">
+			$(function(){
+				alert("${plzLogin}");
+			});
+		</script>
+	</c:if>
+	
          
          <footer class="page-footer">
           <div class="container">

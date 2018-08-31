@@ -34,11 +34,15 @@
 		
 		//floating actionbutton
 		$(".fixed-action-btn").floatingActionButton({
-			direction:'left'
+			/* direction:'left' */
 		});
 		
 		//modal open
-		$('.modal').modal();
+		$('#modal1').modal();
+		
+		$('#back').on('click', function() {
+			
+		});
 		
 		//side-nav open
 		$('.sidenav').sidenav();
@@ -118,7 +122,7 @@
 				</div>	
 				
 					<div class="row">
-						<div class="col s8">
+						<div class="col s10">
 						<span class="flow-text">
 							<button class="btn waves-effect waves-light" type="submit" name="action">ENTER
 							<i class="material-icons right">send</i>
@@ -126,20 +130,27 @@
 						</span>
 					
 						<span class="flow-text">
-							<button class="btn waves-effect waves-light" type="submit" name="action">BACK
-							<i class="material-icons right">keyboard_return</i>
+							<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+								<i class="material-icons right">keyboard_return</i>
 							</button>
-							</span>
+						</span>
+						
+						<span class="flow-text">
+							<button class="btn waves-effect waves-light modal-close">LOGOUT
+								<i class="material-icons right">settings_power</i>
+							</button>
+						</span>
 						</div>
 						
+						
 						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="top" data-tooltip="ACCOUNT?">
+								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
 								<i class="large material-icons">person</i>
 								</a>
 								<ul>
 								    <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
 								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT THIS"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
 				</div>
