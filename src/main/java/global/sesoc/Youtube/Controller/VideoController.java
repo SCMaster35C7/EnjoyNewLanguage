@@ -2,27 +2,25 @@ package global.sesoc.Youtube.Controller;
 
 
 import java.util.List;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
-import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.dto.SubtitlesList;
-
+import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
 import global.sesoc.Youtube.util.SubtitlesMaker;
@@ -44,11 +42,11 @@ public class VideoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
-		System.out.println("로그인해임마 :  "+plzLogin);
+
+		System.out.println("로그인 해주세요 :  "+plzLogin);
+
 		model.addAttribute("plzLogin", plzLogin);
-
-
-
+    
 		return "index";
 	}
 
@@ -70,7 +68,7 @@ public class VideoController {
 		System.out.println(totalRecordCount);
 
 
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
+		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
 		List<Education> eduList = eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(),
 				navi.getcountPerPage());
 
@@ -165,6 +163,13 @@ public class VideoController {
 	}
 	
 
+	@RequestMapping(value="/searchTest", method=RequestMethod.GET)
+	public String searchTest() {
+		
+		return "Practice/search";
+	}
+	
+	
 	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
 	public String TryRetake(Model model,int videoNum) {
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
@@ -172,15 +177,24 @@ public class VideoController {
 		return"EducationBoard/RetakeEduBoard";
 	}
 
+    model.addAttribute("edu", edu);
+		return "EducationBoard/RetakeEduBoard";
+	}
+	
+	/***
+	 * 교육 영상 좋아요/ 싫어요 기능
+	 * @param reco
+	 * @return
+	 */
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
-		//System.out.println(reco);
+		System.out.println("난 컨트롤러 : "+reco);
 		
 		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
 		//System.out.println(recoTemp);
 		
 		if(recoTemp != null) {
-			System.out.println("이미 있음");
+			//System.out.println("이미 있음");
 			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
 			int reqReco	= reco.getRecommendation();			// 요청온 값
 			
@@ -189,10 +203,10 @@ public class VideoController {
 				
 				if(reqReco == 0) {
 					// 좋아요 상태 취소
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 				}else {
 					// 싫어요 상태 취소
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(),reco.getIdCode(),  reco.getIdentificationnum(), "decommendation");
 				}
 				
 				return "cancel";
@@ -201,13 +215,13 @@ public class VideoController {
 				if(reqReco == 0) {
 					// 좋아요 상태에서 싫어요로 변경
 					result = eduRepository.updateRecommend(reco);
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
-					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 				}else {
 					// 싫어요 상태에서 좋아요로 변경
 					result = eduRepository.updateRecommend(reco);
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
-					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 				}
 			}
 			
@@ -217,16 +231,14 @@ public class VideoController {
 			
 			if(reco.getRecommendation() == 0) {
 				// 좋아요
-				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 			}else {
 				// 싫어요
-				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 			}
 			
 			return "success";
 		}
 	}
 
-	
-	
 }

@@ -47,13 +47,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			/*RequestDispatcher dispatcher=request.getRequestDispatcher("");
 
 			 dispatcher.forward(request, response);		*/
-
-			
-
-			
 			return false;
-			
-			
 			//
 			
 			//return false;
