@@ -40,7 +40,6 @@ public class VideoController {
 	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
 
@@ -69,7 +68,7 @@ public class VideoController {
 		System.out.println(totalRecordCount);
 
 
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
+		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
 		List<Education> eduList = eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(),
 				navi.getcountPerPage());
 

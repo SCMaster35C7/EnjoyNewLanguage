@@ -15,7 +15,7 @@
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>studyBoard</title>
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script>
 	
 	
@@ -25,13 +25,11 @@
 		
 		//floating actionbutton
 		$(".fixed-action-btn").floatingActionButton({
-			direction:'left'
+			/* direction:'left' */
 		});
 		
-		
-		
 		//modal open
-		$('.modal').modal();
+		$('#modal1').modal();
 		
 		//side-nav open
 		$('.sidenav').sidenav();
@@ -41,8 +39,20 @@
 		
 		//캐러셀
 		$('.carousel').carousel();
+		
+		$('#back').on('click', function() {
+			
+		});
+		
 	});
 </script>
+<style>
+        .scroll-box {
+            overflow-y: scroll;
+            height: 300px;
+            padding: 1rem
+        }
+</style>
 </head>
 <body>
 	
@@ -115,28 +125,34 @@
 					<div class="row">
 						<div class="col s8">
 						<span class="flow-text">
-							<button class="btn waves-effect waves-light" type="submit" name="action">ENTER
-							<i class="material-icons right">send</i>
+							<button class="btn waves-effect waves-light" id="login">ENTER
+								<i class="material-icons right">send</i>
 							</button>
 						</span>
 					
 						<span class="flow-text">
-							<button class="btn waves-effect waves-light" type="submit" name="action">BACK
-							<i class="material-icons right">keyboard_return</i>
+							<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+								<i class="material-icons right">keyboard_return</i>
 							</button>
-							</span>
-						</div>
+						</span>
+					
+						<span class="flow-text">
+							<button class="btn waves-effect waves-light modal-close">LOGOUT
+								<i class="material-icons right">settings_power</i>
+							</button>
+						</span>
+					</div>
 						
-						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="top" data-tooltip="ACCOUNT?">
-								<i class="large material-icons">person</i>
-								</a>
-								<ul>
-								    <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT THIS"><i class="material-icons">clear</i></a></li>
-								</ul>
-						</div>
+					<div class="fixed-action-btn">
+							<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+							<i class="large material-icons">person</i>
+							</a>
+							<ul>
+							    <li><a class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+							    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+							    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT THIS"><i class="material-icons">clear</i></a></li>
+							</ul>
+					</div>
 				</div>
 				</form>
 			</div>
@@ -153,11 +169,22 @@
      				</div>
 		      	</div>
 		      	<div class="col s4 m4">
-		      	<div class="card" style="height:400px;">
+		      	<div class="card" style="height:400px; margin-top:0px;">
 				    
 				    <div class="card-content">
-				      <span class="card-title activator grey-text text-darken-4">이곳에 문제를 넣어보자<i class="material-icons right">more_vert</i></span>
+				      <span class="card-title activator grey-text text-darken-4">이곳에 문제를 넣어보자
+				      <i class="material-icons right tooltipped" data-position="left" data-tooltip="채점" style="color:red">spellcheck</i></span>
 				    </div>
+				    <div class="card-content scroll-box">
+          				<p>I am a very simple card. I am good at containing small bits of information.
+          					I am convenient because I require little markup to use effectively.
+          					I am a very simple card. I am good at containing small bits of information.
+          					I am convenient because I require little markup to use effectively.
+          					I am a very simple card. I am good at containing small bits of information.
+          					I am convenient because I require little markup to use effectively.
+          					I am a very simple card. I am good at containing small bits of information.
+          					I am convenient because I require little markup to use effectively.</p>
+        			</div>
 				    <div class="card-reveal">
 				      <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
 				      <p>Here is some more information about this product that is only revealed once clicked on.</p>
