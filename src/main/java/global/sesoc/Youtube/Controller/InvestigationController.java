@@ -37,7 +37,7 @@ public class InvestigationController {
 		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
 		
 		List<Investigation> invList =  invRepository.selectInvList(searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
-		
+		System.out.println("test 2");
 		model.addAttribute("invList",invList);
 		model.addAttribute("searchType", searchType);
 		model.addAttribute("searchWord", searchWord);

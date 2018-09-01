@@ -8,10 +8,18 @@
 	<typeAliases>
 		<typeAlias type="global.sesoc.Youtube.dto.Member" alias="Member"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Education" alias="Education"/>
+		<typeAlias type="global.sesoc.Youtube.dto.Recommendation" alias="Recommendation"/>
+		<typeAlias type="global.sesoc.Youtube.dto.WrongAnswer" alias="WrongAnswer"/>
+		<typeAlias type="global.sesoc.Youtube.dto.Video" alias="Video"/>
+		<typeAlias type="global.sesoc.Youtube.dto.TestResult" alias="TestResult"/>
+		<typeAlias type="global.sesoc.Youtube.dto.Recommendation" alias="Recommendation"/>
+		<typeAlias type="global.sesoc.Youtube.dto.WishList" alias="WishList"/>
+		<typeAlias type="global.sesoc.Youtube.dto.Dubbing" alias="Dubbing"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mappers/memberMapper.xml"/>
 		<mapper resource="mappers/educationMapper.xml"/>
+		<mapper resource="mappers/DubbingMapper.xml"/>
 	</mappers>
 </configuration>

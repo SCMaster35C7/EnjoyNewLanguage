@@ -59,9 +59,7 @@
     		//닉네임중복검사
 			$('#usernick').keyup(function(){
     			
-    			var usernick = $(this).val();
-    			
-    			
+    			var usernick = $(this).val();   			
     				
     				$.ajax({
     						method	:	'post'
@@ -73,19 +71,15 @@
     		            	 	$("#nickcheck").text(resp);
 						}, error:function(resp, code, error) {
 							alert("resp : "+resp+", code:"+code+", error:"+error);
-						}
-						
-    					
-    				});
-    				
-    			
+						}    					
+    				});    			
     		});
     		
 				$('#InputPassword1').keyup(function(){
     			
     				var pwd1 = $(this).val();
     				
-    				$pattern = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
+    				$pattern = '^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
     				
     				 if(pwd1.match($pattern)){
     					 
@@ -150,9 +144,13 @@
 							alert('생년월일을 다시 한 번 확인해주세요');
 							$("#birth").select();
 							$("#birth").focus();
+							
+							
 							return false;
 						}
 						
+						var InputPassword = $("#InputPassword2").val();
+						$("#userpwd").val(InputPassword); 
 						return true;
 				});	
     		
@@ -218,7 +216,7 @@
               <label for="InputPassword2">* 비밀번호 확인</label>
               <input type="password" class="form-control" id="InputPassword2" placeholder="비밀번호 확인">
               <p class="help-block" style="width:400px;">비밀번호 확인을 위해 다시한번 입력 해 주세요</p>
-              <input type="hidden" name="userpwd" id="userpwd" value="1111"/>
+              <input type="hidden" name="userpwd" id="userpwd" value=""/>
             </div>
             
             

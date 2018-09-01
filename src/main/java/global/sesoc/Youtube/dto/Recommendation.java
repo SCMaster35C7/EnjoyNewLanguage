@@ -1,6 +1,8 @@
 package global.sesoc.Youtube.dto;
 
 public class Recommendation {
+	private String tableName;
+	private String idCode;
 	private String useremail;
 	private int identificationnum;
 	private int recommendtable;
@@ -12,9 +14,11 @@ public class Recommendation {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Recommendation(String useremail, int identificationnum, int recommendtable, int recommendation,
-			String regDate) {
+	public Recommendation(String tableName, String idCode, String useremail, int identificationnum, int recommendtable,
+			int recommendation, String regDate) {
 		super();
+		this.tableName = tableName;
+		this.idCode = idCode;
 		this.useremail = useremail;
 		this.identificationnum = identificationnum;
 		this.recommendtable = recommendtable;
@@ -22,6 +26,12 @@ public class Recommendation {
 		this.regDate = regDate;
 	}
 	
+	public String getTableName() {
+		return tableName;
+	}
+	public String getIdCode() {
+		return idCode;
+	}
 	public String getUseremail() {
 		return useremail;
 	}
@@ -38,6 +48,12 @@ public class Recommendation {
 		return regDate;
 	}
 	
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+	public void setIdCode(String idCode) {
+		this.idCode = idCode;
+	}
 	public void setUseremail(String useremail) {
 		this.useremail = useremail;
 	}
@@ -56,8 +72,8 @@ public class Recommendation {
 	
 	@Override
 	public String toString() {
-		return "Recommendation [useremail=" + useremail + ", identificationnum=" + identificationnum
-				+ ", recommendtable=" + recommendtable + ", recommendation=" + recommendation + ", regDate=" + regDate
-				+ "]";
+		return "Recommendation [tableName=" + tableName + ", idCode=" + idCode + ", useremail=" + useremail
+				+ ", identificationnum=" + identificationnum + ", recommendtable=" + recommendtable
+				+ ", recommendation=" + recommendation + ", regDate=" + regDate + "]";
 	}
 }

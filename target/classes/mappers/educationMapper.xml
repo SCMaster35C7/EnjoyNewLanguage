@@ -20,6 +20,7 @@
 		order by 
 			regdate desc
 	</select>
+  
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum
@@ -36,6 +37,7 @@
 		where
 			videonum = #{videoNum}
 	</select>
+	
 	<insert id="insertEduVideo" parameterType="Education">
 		insert into EducationVideo(
 			videonum
@@ -69,4 +71,159 @@
 		where
 			videonum = #{videonum}
 	</update>
+	
+	<select id="selectSubName" parameterType="int" resultType="String">
+	select  savedfile
+	from EducationVideo
+	where videonum=#{value}
+	</select>
+	
+	<select id="dubbingBoard"  resultType="Dubbing">
+		select d.dubbingnum, d.title, m.usernick, d.hitcount, d.recommendation, d.decommendation, d.regdate
+		from dubbing d, member m
+		where d.useremail = m.useremail
+		order by d.dubbingnum desc
+	</select>
+	
+	<select id="selectOneDub" parameterType="int" resultType="Dubbing">
+		select 
+				  d.dubbingnum
+			  	, d.title
+				, m.usernick
+				, d.content
+				, d.url
+				, d.voiceFile
+				, d.hitcount
+				, d.recommendation
+				, d.decommendation
+				, d.regdate
+		from dubbing d, member m
+		where d.useremail = m.useremail
+		and d.dubbingnum = #{dubbingnum}
+	<update id="updateTestResult" parameterType="TestResult">
+	update userstudy
+	set laststudy=sysdate,
+	challengeCount= challengeCount+1
+	<if test="successCount!=0">
+	,successCount=successCount+1
+	</if>
+	<if test="failureCount!=0">
+	,failureCount=failureCount+1
+	</if>
+	<if test="testlevel!=0">
+	,testlevel=#{testlevel}
+	</if>
+	where  useremail=#{useremail} and url=#{url}
+	
+	
+	</update>
+	
+	<select id="selectOneFromRecommendation" parameterType="Recommendation" resultType="Recommendation">
+		select
+			*
+		from
+			recommendation
+		where
+			useremail = #{useremail}
+		and
+			identificationnum = #{identificationnum}
+		and
+			recommendtable = #{recommendtable}
+	</select>
+	
+	<insert id="insertRecommendation" parameterType="Recommendation">
+		insert into recommendation (
+			useremail
+			, identificationnum
+			, recommendtable
+			, recommendation
+		)values (
+			#{useremail}
+			, #{identificationnum}
+			, #{recommendtable}
+			, #{recommendation}
+		)
+	</insert>
+	
+	<update id="updateIncreRecommend" parameterType="map">
+		update
+			EducationVideo
+		set
+			${commendation} = ${commendation}+1
+		where
+			videonum = #{videonum}
+	</update>
+	
+	<delete id="deleteRecommend" parameterType="Recommendation">
+		delete from
+			recommendation
+		where
+			useremail = #{useremail}
+		and
+			identificationnum = #{identificationnum}
+		and
+			recommendtable = #{recommendtable}
+	</delete>
+	
+	<update id="updateDecreRecommend" parameterType="map">
+		update
+			EducationVideo
+		set
+			${commendation} = ${commendation}-1
+		where
+			videonum = #{videonum}
+	</update>
+	
+	<update id="updateRecommend" parameterType="Recommendation">
+		update
+			recommendation
+		set
+			recommendation = #{recommendation}
+			, regdate = sysdate
+		where
+			useremail = #{useremail}
+		and
+			identificationnum = #{identificationnum}
+		and
+			recommendtable = #{recommendtable}
+	</update>
+
+	<select id="selectSubName" parameterType="int" resultType="String">
+	select  savedfile
+	from EducationVideo
+	where videonum=#{value}
+	</select>
+
+	<insert id="insertWrongAnswer" parameterType="WrongAnswer">
+	insert into wronganswer
+	(
+	answernum,
+	useremail,
+	wrongindex,
+	correctanswer,
+	url,
+	regdate,
+	classification
+	)
+	values
+	(
+	WRONG_ANSWER_SEQ.nextval,
+	#{useremail},
+	#{wrongIndex},
+	#{correctAnswer},
+	#{url},
+	sysdate,
+	#{classification}
+	)
+	</insert>
+	
+	<select id="selectWrongAnswerList" parameterType="WrongAnswer" resultType="WrongAnswer">
+	select *
+	from WrongAnswer
+	where useremail=#{useremail} and url=#{url} and classification=#{classification}
+	order by answernum
+	
+	</select>
+	
+
 </mapper>

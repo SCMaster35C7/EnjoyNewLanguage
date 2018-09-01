@@ -1,6 +1,9 @@
 package global.sesoc.Youtube.Controller;
 
+
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,31 +16,42 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Recommendation;
+import global.sesoc.Youtube.dto.SubtitlesList;
+import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
+import global.sesoc.Youtube.util.SubtitlesMaker;
 
 @Controller
 public class VideoController {
 	@Autowired
 	EducationRepository eduRepository;
-	
-	//교육용 자막파일 경로
+
 	private final String eduFileRoot = "/EducationVideo";
+	// 교육용 자막파일 경로
 	
+
 	/***
 	 * Home 기본 페이지 이동
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home() {
+	public String home(HttpServletRequest request, Model model) {
+		String plzLogin = (String) request.getAttribute("plzLogin");
+
+		System.out.println("로그인 해주세요 :  "+plzLogin);
+
+		model.addAttribute("plzLogin", plzLogin);
+    
 		return "index";
 	}
-	
+
 	/**
-	 * 교육 영상 게시판으로 이동
-	 * 검색 테마와 검색 내용에 합당한 자료를 찾는다.
+	 * 교육 영상 게시판으로 이동 검색 테마와 검색 내용에 합당한 자료를 찾는다.
 	 * 
 	 * @param currentPage
 	 * @param searchType
@@ -45,27 +59,27 @@ public class VideoController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/eduBoard", method=RequestMethod.GET)
-	public String eduBoard(
-			@RequestParam(value="currentPage", defaultValue="1") int currentPage,
-			@RequestParam(value="searchType", defaultValue="title") String searchType,
-			@RequestParam(value="searchWord", defaultValue="") String searchWord,
-			Model model			
-			) {
+	@RequestMapping(value = "/eduBoard", method = RequestMethod.GET)
+	public String eduBoard(@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
+			@RequestParam(value = "searchWord", defaultValue = "") String searchWord, Model model) {
 		int totalRecordCount = eduRepository.getTotalCount(searchType, searchWord);
-		//System.out.println(totalRecordCount);
-		
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
-		List<Education> eduList =  eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
-		
-		model.addAttribute("eduList",eduList);
+
+		System.out.println(totalRecordCount);
+
+
+		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
+		List<Education> eduList = eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(),
+				navi.getcountPerPage());
+
+		model.addAttribute("eduList", eduList);
 		model.addAttribute("searchType", searchType);
 		model.addAttribute("searchWord", searchWord);
 		model.addAttribute("navi", navi);
-		
+
 		return "EducationBoard/eduBoard";
 	}
-	
+
 	/**
 	 * 교육 영상 상세 정보페이지로 넘어간다.
 	 * 
@@ -73,33 +87,51 @@ public class VideoController {
 	 * @param model
 	 * @return
 	 */
+
 	@RequestMapping(value="/detailEduBoard", method=RequestMethod.GET)
-	public String detailEduBoard(int videoNum, int currentPage, String searchType, String searchWord, Model model) {
+	public String detailEduBoard(
+      HttpSession session,
+      int videoNum, 
+			@RequestParam(value="currentPage", defaultValue="0") int currentPage, 
+			@RequestParam(value="searchType", defaultValue="") String searchType, 
+			@RequestParam(value="searchWord", defaultValue="") String searchWord, 
+			Model model) {
+
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
-		
-		if(edu != null) {
+
+		if (edu != null) {
 			model.addAttribute("edu", edu);
 			model.addAttribute("currentPage", currentPage);
 			model.addAttribute("searchType", searchType);
 			model.addAttribute("searchWord", searchWord);
-			
+
 			int result = eduRepository.updateHitCount(videoNum);
 		}
+		String url=edu.getUrl();
+		String useremail=(String)session.getAttribute("useremail");
+		TestResult tr=new TestResult();
+		tr.setUseremail(useremail);
+		tr.setUrl(url);
 		
+		String testresult=eduRepository.checkUserStudyExist(tr);
+		if(testresult==null) 
+			eduRepository.insertUserStudy(tr);
+		
+
 		return "EducationBoard/detailEduBoard";
 	}
-	
+
 	/**
 	 * 교육 영상 추가 페이지로 이동한다.
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/addEduVideo", method=RequestMethod.GET)
+	@RequestMapping(value = "/addEduVideo", method = RequestMethod.GET)
 	public String addEduVideo() {
-		
+
 		return "EducationBoard/addEduVideo";
 	}
-	
+
 	/**
 	 * 교육 영상을 DB에 넣어준다.
 	 * 
@@ -107,35 +139,47 @@ public class VideoController {
 	 * @param subtitle
 	 * @return
 	 */
-	@RequestMapping(value="/addEduVideo", method=RequestMethod.POST)
+	@RequestMapping(value = "/addEduVideo", method = RequestMethod.POST)
 	public String addEduVideo(Education education, MultipartFile subtitle) {
-		//System.out.println(education);
-		//System.out.println(subtitle);
-		if(subtitle.getSize() != 0) {
+		// System.out.println(education);
+		// System.out.println(subtitle);
+		if (subtitle.getSize() != 0) {
 			String originalfile = subtitle.getOriginalFilename();
 			String savedfile = FileService.saveFile(subtitle, eduFileRoot);
-			
+
 			education.setOriginalfile(originalfile);
 			education.setSavedfile(savedfile);
 		}
-		//System.out.println(education);
-		
+		// System.out.println(education);
+
 		int result = eduRepository.insertEduVideo(education);
 		return "EducationBoard/addEduVideo";
 	}
-	
-	@RequestMapping(value="/slide", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/slide", method = RequestMethod.GET)
 	public String slide() {
-		
+
 		return "Practice/slide";
 	}
 	
+
 	@RequestMapping(value="/searchTest", method=RequestMethod.GET)
 	public String searchTest() {
 		
 		return "Practice/search";
 	}
 	
+	
+	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
+	public String TryRetake(Model model,int videoNum) {
+		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
+		model.addAttribute("edu",edu);
+		return"EducationBoard/RetakeEduBoard";
+	}
+
+    model.addAttribute("edu", edu);
+		return "EducationBoard/RetakeEduBoard";
+	}
 	
 	/***
 	 * 교육 영상 좋아요/ 싫어요 기능
@@ -144,7 +188,7 @@ public class VideoController {
 	 */
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
-		//System.out.println(reco);
+		System.out.println("난 컨트롤러 : "+reco);
 		
 		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
 		//System.out.println(recoTemp);
@@ -159,10 +203,10 @@ public class VideoController {
 				
 				if(reqReco == 0) {
 					// 좋아요 상태 취소
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 				}else {
 					// 싫어요 상태 취소
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(),reco.getIdCode(),  reco.getIdentificationnum(), "decommendation");
 				}
 				
 				return "cancel";
@@ -171,13 +215,13 @@ public class VideoController {
 				if(reqReco == 0) {
 					// 좋아요 상태에서 싫어요로 변경
 					result = eduRepository.updateRecommend(reco);
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "decommendation");
-					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 				}else {
 					// 싫어요 상태에서 좋아요로 변경
 					result = eduRepository.updateRecommend(reco);
-					result = eduRepository.updateDecreRecommend(reco.getIdentificationnum(), "recommendation");
-					result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+					result = eduRepository.updateDecreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
+					result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 				}
 			}
 			
@@ -187,15 +231,13 @@ public class VideoController {
 			
 			if(reco.getRecommendation() == 0) {
 				// 좋아요
-				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "recommendation");
+				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 			}else {
 				// 싫어요
-				result = eduRepository.updateIncreRecommend(reco.getIdentificationnum(), "decommendation");
+				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 			}
 			
 			return "success";
 		}
 	}
 }
-
-
