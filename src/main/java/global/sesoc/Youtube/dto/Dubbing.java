@@ -13,23 +13,20 @@ public class Dubbing {
 	private String regdate;
 	private int recommendation;
 	private int decommendation;
-	
-	
+	private String starttime;
+	private String endtime;
+
 	public Dubbing() {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-
-	public void setDubbingnum(int dubbingnum) {
-		this.dubbingnum = dubbingnum;
+	public int getDubbingnum() {
+		return dubbingnum;
 	}
 
 	public void setDubbingnum(int dubbingnum) {
 		this.dubbingnum = dubbingnum;
 	}
-
 
 	public String getTitle() {
 		return title;
@@ -38,7 +35,6 @@ public class Dubbing {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
 
 	public String getUsernick() {
 		return usernick;
@@ -46,23 +42,23 @@ public class Dubbing {
 
 	public void setUsernick(String usernick) {
 		this.usernick = usernick;
-
-
-	public String getContent() {
-		return content;
-
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	public String getUseremail() {
 		return useremail;
+	}
 
 	public void setUseremail(String useremail) {
 		this.useremail = useremail;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
 
 	public String getUrl() {
 		return url;
@@ -71,7 +67,6 @@ public class Dubbing {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
 
 	public String getVoiceFile() {
 		return voiceFile;
@@ -84,8 +79,8 @@ public class Dubbing {
 	public int getHitcount() {
 		return hitcount;
 	}
-    
-  public void setHitcount(int hitcount) {
+
+	public void setHitcount(int hitcount) {
 		this.hitcount = hitcount;
 	}
 
@@ -100,18 +95,33 @@ public class Dubbing {
 	public int getRecommendation() {
 		return recommendation;
 	}
-    
-  public void setRecommendation(int recommendation) {
-		this.recommendation = recommendation;
-	}  
 
+	public void setRecommendation(int recommendation) {
+		this.recommendation = recommendation;
+	}
 
 	public int getDecommendation() {
 		return decommendation;
 	}
-  
-  public void setDecommendation(int decommendation) {
+
+	public void setDecommendation(int decommendation) {
 		this.decommendation = decommendation;
+	}
+
+	public String getStarttime() {
+		return starttime;
+	}
+
+	public void setStarttime(String starttime) {
+		this.starttime = starttime;
+	}
+
+	public String getEndtime() {
+		return endtime;
+	}
+
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
 	}
 
 	@Override
@@ -119,7 +129,9 @@ public class Dubbing {
 		return "Dubbing [dubbingnum=" + dubbingnum + ", title=" + title + ", usernick=" + usernick + ", useremail="
 				+ useremail + ", content=" + content + ", url=" + url + ", voiceFile=" + voiceFile + ", hitcount="
 				+ hitcount + ", regdate=" + regdate + ", recommendation=" + recommendation + ", decommendation="
-				+ decommendation + "]";
+				+ decommendation + ", starttime=" + starttime + ", endtime=" + endtime + "]";
 	}
+
+	
 
 }

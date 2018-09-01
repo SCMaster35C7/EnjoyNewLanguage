@@ -12,7 +12,9 @@
 	content,
     useremail,
     url,
-    voiceFile
+    voiceFile,
+    starttime,
+    endtime
 	)
 	values
 	(
@@ -20,8 +22,10 @@
 	#{title},
 	#{content},
 	#{useremail},
-	#{url},
-	#{voiceFile}
+    #{url},
+	#{voiceFile},
+	#{starttime},
+	#{endtime}
 	)
 	
 	</insert>
@@ -47,8 +51,16 @@
 				, d.recommendation
 				, d.decommendation
 				, d.regdate
+				, d.starttime
+				, d.endtime
 		from dubbing d, member m
 		where d.useremail = m.useremail
 		and d.dubbingnum = #{dubbingnum}
 	</select>
+	
+	<delete id="deleteDubbing">
+	delete from dubbing
+	where useremail=#{useremail} and dubbingnum=#{dubbingnum}
+	
+	</delete>
 </mapper>

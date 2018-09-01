@@ -9,17 +9,8 @@
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script>
 
- //var soundFile=location.href="";
- var soundA=new Audio("getDubbingSoundFile?dubbingnum=1");
- 
-
-
-
-
-
-
-
-	var saveTime=null;     //자막 싱크용 시간저장변수
+var soundA=new Audio("getDubbingSoundFile?voiceFile=${d.voiceFile}");
+var saveTime=null;     //자막 싱크용 시간저장변수
 		
 		$(function() {
 			$('#playYoutube').on('click', playYoutube);
@@ -36,7 +27,7 @@
 			$.ajax({
 				method : 'get',
 				url : 'getSubtitles',
-				data : "savedfileName=" + '${edu.savedfile}',
+				data : "savedfileName=" + '${savedfileName}',
 				contentType : 'application/json; charset=UTF-8',
 				dataType : 'json',
 				success : makeSubList,
@@ -64,10 +55,16 @@
 		}
 		
 		function sinkTime(){
-			var videoTime=0;	
+			var videoTime=(${d.starttime}-1);	
+			 player.playVideo();
+			 player.seekTo(videoTime, true);
 			soundA.play();
 			//var audioTime=0;
 			setInterval(function() {
+				if(player.getCurrentTime().toFixed(2)==${d.endtime}){
+					player.pauseVideo();
+				}
+				
 				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
 				if((player.getCurrentTime()-videoTime)>0.5||(player.getCurrentTime()-videoTime)<-0.5){				
 					soundA.currentTime=player.getCurrentTime();
@@ -86,7 +83,7 @@
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"
-		src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
+		src="http://www.youtube.com/embed/${d.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
 		frameborder="0" allowfullscreen></iframe>
 
 	<script>
@@ -213,7 +210,7 @@
 
 	</div>
 	<div>
-	
+	<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
 	</div>
 
 

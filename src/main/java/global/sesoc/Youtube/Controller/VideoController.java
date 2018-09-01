@@ -177,10 +177,7 @@ public class VideoController {
 		return"EducationBoard/RetakeEduBoard";
 	}
 
-    model.addAttribute("edu", edu);
-		return "EducationBoard/RetakeEduBoard";
-	}
-	
+   
 	/***
 	 * 교육 영상 좋아요/ 싫어요 기능
 	 * @param reco
