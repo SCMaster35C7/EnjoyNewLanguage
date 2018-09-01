@@ -39,5 +39,33 @@ public class InvestigationRepository {
 		
 		return invList;
 	}
+
+	public int insertInvestigation(Investigation inv) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.insertInvestigation(inv);
+		
+		return result;
+	}
+
+	public Investigation selectOneFromInvUseURL(Investigation inv) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		Investigation findInv = mapper.selectOneFromInvUseURL(inv);
+		
+		return findInv;
+	}
+
+	public Investigation selectOneFromInvUseNum(int investigationnum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		Investigation inv = mapper.selectOneFromInvUseNum(investigationnum);
+		
+		return inv;
+	}
+
+	public int updateHitCount(int investigationnum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.updateHitCount(investigationnum);
+		
+		return result;
+	}
 	
 }

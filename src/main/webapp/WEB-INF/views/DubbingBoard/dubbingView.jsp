@@ -73,9 +73,6 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 			}, 10);
 		}
 		
-		
-	
-		
 	</script>
 </head>
 

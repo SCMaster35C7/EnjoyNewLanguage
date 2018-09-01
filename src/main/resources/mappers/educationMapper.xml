@@ -6,19 +6,19 @@
 <mapper namespace="global.sesoc.Youtube.dao.EducationMapper">
 	<select id="selectEduList" resultType="Education">
 		select
-		videonum
-		, title
-		, url
-		, originalfile
-		, savedfile
-		, to_char(regdate, 'YYYY-MM-DD') regdate
-		, hitcount
-		, recommendation
-		, decommendation
+			videonum
+			, title
+			, url
+			, originalfile
+			, savedfile
+			, to_char(regdate, 'YYYY-MM-DD') regdate
+			, hitcount
+			, recommendation
+			, decommendation
 		from
-		EducationVideo
+			EducationVideo
 		order by
-		regdate desc
+			regdate desc
 	</select>
 	
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
@@ -80,6 +80,7 @@
 		where 
 			videonum=#{value}
 	</select>
+	
 	<select id="selectSubName2" parameterType="String" resultType="String">
 		select 
 			savedfile
@@ -88,7 +89,6 @@
 		where 
 			url=#{value}
 	</select>
-
 
 	<select id="checkUserStudyExist" parameterType="TestResult" resultType="String">
 		select 
@@ -122,7 +122,6 @@
 			useremail=#{useremail} and url=#{url}
 	</select>
 	
-	
 	<update id="updateTestResult" parameterType="TestResult">
 	update 
 		userstudy
@@ -140,10 +139,8 @@
 		</if>
 	where  
 		useremail=#{useremail} and url=#{url}
-	
-	
 	</update>
-	
+
 	<insert id="insertWrongAnswer" parameterType="WrongAnswer">
 	insert into wronganswer (
 		answernum,
@@ -217,7 +214,7 @@
 			, #{recommendation}
 		)
 	</insert>
-	
+
 	<update id="updateIncreRecommend" parameterType="map">
 		update
 			${tableName}
@@ -226,7 +223,7 @@
 		where
 			${IDCode} = #{videonum}
 	</update>
-	
+
 	<delete id="deleteRecommend" parameterType="Recommendation">
 		delete from
 			recommendation
@@ -237,7 +234,7 @@
 		and
 			recommendtable = #{recommendtable}
 	</delete>
-	
+
 	<update id="updateDecreRecommend" parameterType="map">
 		update
 			${tableName}
@@ -246,7 +243,7 @@
 		where
 			${IDCode} = #{videonum}
 	</update>
-	
+
 	<update id="updateRecommend" parameterType="Recommendation">
 		update
 			recommendation

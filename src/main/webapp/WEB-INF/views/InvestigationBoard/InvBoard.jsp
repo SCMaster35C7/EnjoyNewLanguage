@@ -116,9 +116,6 @@
             <div><h2>자막 검증 게시판</h2></div>
     </header>
    <br/>
-   
-	<input type="button" id="requestInvestigation" value="자막요청"/>
-	
     <!-- Page Content -->
 	<div class="container">
 		<div class="row">
@@ -129,7 +126,7 @@
 			<div class="col-lg-4 mb-4">
 				<div class="card h-100">
 					<h4 class="card-header" align="center">
-						<a href="detailEduBoard?videoNum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
+						<a href="detailInvBoard?investigationnum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
 					</h4>
 					
 					<div class="card-body">
@@ -162,13 +159,13 @@
 		<div class="row">
 			<ul class="pagination justify-content-center">
 				<li class="page-item">
-					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}"> 
+					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}"> 
 					<span>&laquo;</span>
 					<span class="sr-only">PreviousPage</span>
 					</a>
 				</li>
 				<li class="page-item">
-					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
 					<span>&lt;</span> 
 					<span class="sr-only">Previous</span>
 					</a>
@@ -180,24 +177,25 @@
 					</c:if>
 					<c:if test="${navi.currentPage != page }">
 						<li class="page-item"><a class="page-link"
-							href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+							href="InvestigationBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
 					</c:if>
 				</c:forEach>
 			
 				<li class="page-item">
-					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
 					<span>&gt;</span> 
 					<span class="sr-only">Next</span>
 					</a>
 				</li>
 			
 				<li class="page-item">
-					<a class="page-link" href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 					<span>&raquo;</span> 
 					<span class="sr-only">NextPage</span>
 					</a>
 				</li>
 			</ul>
+			<input type="button" id="requestInvestigation" value="자막요청"/>
 		</div>
 	</div>
 	<!-- /.row -->

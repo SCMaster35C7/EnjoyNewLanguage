@@ -100,5 +100,4 @@ public class EasySubtitlesMaker {
 
 		return resultTime;
 	}
-
 }

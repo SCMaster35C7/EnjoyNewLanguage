@@ -31,6 +31,7 @@ public class DubbingController {
 	@Autowired
 	DubbingRepository dubRepository;
 
+
 	private final String DubbingFileRoot = "/EducationDubbing";
 	private final String eduFileRoot = "/EducationVideo";
 
@@ -45,6 +46,7 @@ public class DubbingController {
 
 	// 더빙 디테일
 
+
 	@RequestMapping(value = "dubDetail", method = RequestMethod.GET)
 	public String dubDetail(int dubbingnum, Model model) {
 		Dubbing dubbing = dubRepository.selectOneDub(dubbingnum);
@@ -53,6 +55,7 @@ public class DubbingController {
 		model.addAttribute("savedfileName", savedfileName);
 
 		return "DubbingBoard/dubbingView";
+
 	}
 
 	@RequestMapping(value = "DubbingWrite", method = RequestMethod.GET)
@@ -64,17 +67,18 @@ public class DubbingController {
 
 	@RequestMapping(value = "getSubtitles", method = RequestMethod.GET)
 	@ResponseBody
+
 	public Map<String, String> getSubtitles(String subFileName) {
 		String jamacURL = eduFileRoot + "/" + subFileName;
 		EasySubtitlesMaker esm = new EasySubtitlesMaker();
 		Map<String, String> result = esm.GetSubtitles(jamacURL);
 		return result;
-
 	}
-
+  
 	@RequestMapping(value = "savedubbing", method = RequestMethod.POST)
 	public String savedubbing(Dubbing dub, MultipartFile saveFile) {
 		if (saveFile.getSize() != 0) {
+
 			String[] timeIfo = saveFile.getOriginalFilename().substring(0, saveFile.getOriginalFilename().length() - 4)
 					.split("-");
 			dub.setStarttime(timeIfo[0]);
@@ -83,15 +87,14 @@ public class DubbingController {
 			dub.setVoiceFile(savedfile);
 			dubRepository.insertDubbing(dub);
 		}
-
 		return "redirect:/";
 	}
 
 	@RequestMapping(value = "getDubbingSoundFile", method = RequestMethod.GET)
+
 	public String imagedownload(String voiceFile, HttpServletResponse response) {
 
 		String fullPath = DubbingFileRoot + "/" + voiceFile;
-
 		FileInputStream fis = null;
 		ServletOutputStream fout = null;
 
@@ -99,9 +102,8 @@ public class DubbingController {
 			fout = response.getOutputStream();
 			fis = new FileInputStream(fullPath);
 			FileCopyUtils.copy(fis, fout);
-
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			try {
 				if (fis != null)
@@ -111,9 +113,7 @@ public class DubbingController {
 			} catch (Exception e) {
 
 			}
-
 		}
-
 		return null;
 	}
 

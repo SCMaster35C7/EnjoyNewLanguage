@@ -28,17 +28,26 @@
 	#{endtime}
 	)
 	
+
 	</insert>
 
-
-
 	<select id="dubbingBoard"  resultType="Dubbing">
-		select d.dubbingnum, d.title, m.usernick, d.hitcount, d.recommendation, d.decommendation, d.regdate
-		from dubbing d, member m
-		where d.useremail = m.useremail
-		order by d.dubbingnum desc
+		select 
+			d.dubbingnum
+			, d.title
+			, m.usernick
+			, d.hitcount
+			, d.recommendation
+			, d.decommendation
+			, d.regdate
+		from 
+			dubbing d, member m
+		where 
+			d.useremail = m.useremail
+		order by 
+			d.dubbingnum desc
 	</select>
-	
+
 	<select id="selectOneDub" parameterType="int" resultType="Dubbing">
 		select 
 				  d.dubbingnum
@@ -56,6 +65,7 @@
 		from dubbing d, member m
 		where d.useremail = m.useremail
 		and d.dubbingnum = #{dubbingnum}
+
 	</select>
 	
 	<delete id="deleteDubbing">

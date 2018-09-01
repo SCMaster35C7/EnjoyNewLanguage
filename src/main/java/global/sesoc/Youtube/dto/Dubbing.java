@@ -1,7 +1,6 @@
 package global.sesoc.Youtube.dto;
 
 public class Dubbing {
-
 	private int dubbingnum;
 	private String title;
 	private String usernick;
@@ -42,6 +41,14 @@ public class Dubbing {
 
 	public void setUsernick(String usernick) {
 		this.usernick = usernick;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public String getUseremail() {

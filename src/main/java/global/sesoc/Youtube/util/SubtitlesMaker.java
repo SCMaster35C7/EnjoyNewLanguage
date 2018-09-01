@@ -12,8 +12,6 @@ import java.util.StringTokenizer;
 import global.sesoc.Youtube.dto.SubtitlesList;
 
 public class SubtitlesMaker {
-
-	
 	ArrayList<Double> playtime;
 	ArrayList<String> playtimeView;
 	ArrayList<String> quizIndex;
@@ -79,8 +77,6 @@ public class SubtitlesMaker {
 					height++;
 				}
 
-				
-
 			}
 			resultlist.setCorrect(correct);
 			resultlist.setFulltext(fulltext);
@@ -88,9 +84,8 @@ public class SubtitlesMaker {
 			resultlist.setQuiz(quiz);
 			resultlist.setPlaytimeView(playtimeView);
 			resultlist.setQuizIndex(quizIndex);
-
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			if (in != null) {
 				try {
@@ -153,5 +148,4 @@ public class SubtitlesMaker {
 
 		return resultTime;
 	}
-
 }

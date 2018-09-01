@@ -8,8 +8,7 @@
 <title>더빙~~~~</title>
 </head>
 <body>
-
-		글번호  &nbsp 글제목 &nbsp 닉넴 &nbsp 조회수 &nbsp 날짜 &nbsp 추천 &nbsp 비추천 <br/>
+	글번호  &nbsp 글제목 &nbsp 닉넴 &nbsp 조회수 &nbsp 날짜 &nbsp 추천 &nbsp 비추천 <br/>
 	<c:forEach var="dub" items="${dubbing}">
 		${dub.dubbingnum} &nbsp
 		 
