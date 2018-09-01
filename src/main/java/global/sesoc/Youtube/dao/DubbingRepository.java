@@ -1,6 +1,5 @@
 package global.sesoc.Youtube.dao;
 
-
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -14,13 +13,13 @@ public class DubbingRepository {
 
 	@Autowired
 	SqlSession session;
-	
+
 	public Dubbing selectOneDub(int dubbingnum) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		Dubbing dubbing = mapper.selectOneDub(dubbingnum);
 		return dubbing;
 	}
-	
+
 	public List<Dubbing> dubbingBoard() {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		List<Dubbing> dubbing = mapper.dubbingBoard();
@@ -32,6 +31,12 @@ public class DubbingRepository {
 		int result = mapper.insertDubbing(dub);
 		return result;
 
+	}
+
+	public int deleteDubbing(Dubbing dub) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.deleteDubbing(dub);
+		return result;
 	}
 
 }

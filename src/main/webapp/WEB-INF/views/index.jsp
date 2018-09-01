@@ -203,6 +203,8 @@
 			});
 		</script>
 	</c:if>
+	<a href="DubbingWrite?videoNum=9">더빙작성 게시판 테스트</a>
+	<a href="dubDetail?dubbingnum=23">더빙 싱크 테스트</a>
 	
 	<footer class="page-footer">
           <div class="container">

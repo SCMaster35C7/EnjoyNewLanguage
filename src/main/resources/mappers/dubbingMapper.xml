@@ -4,22 +4,31 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="global.sesoc.Youtube.dao.DubbingMapper">
-	<insert id="insertDubbing" parameterType="Dubbing">
-		insert into dubbing(
-			dubbingnum,
-			title,
-			content,
-	    	useremail,
-	   		url,
-	    	voiceFile
-		)values(
-			DUBBING_SEQ.nextval,
-			#{title},
-			#{content},
-			#{useremail},
-			#{url},
-			#{voiceFile}
-		)
+<insert id="insertDubbing" parameterType="Dubbing">
+	insert into dubbing
+	(
+	dubbingnum,
+	title,
+	content,
+    useremail,
+    url,
+    voiceFile,
+    starttime,
+    endtime
+	)
+	values
+	(
+	DUBBING_SEQ.nextval,
+	#{title},
+	#{content},
+	#{useremail},
+    #{url},
+	#{voiceFile},
+	#{starttime},
+	#{endtime}
+	)
+	
+
 	</insert>
 
 	<select id="dubbingBoard"  resultType="Dubbing">
@@ -41,21 +50,27 @@
 
 	<select id="selectOneDub" parameterType="int" resultType="Dubbing">
 		select 
-			d.dubbingnum
-			, d.title
-			, m.usernick
-			, d.content
-			, d.url
-			, d.voiceFile
-			, d.hitcount
-			, d.recommendation
-			, d.decommendation
-			, d.regdate
-		from 
-			dubbing d, member m
-		where 
-			d.useremail = m.useremail
-		and 
-			d.dubbingnum = #{dubbingnum}
+				  d.dubbingnum
+			  	, d.title
+				, m.usernick
+				, d.content
+				, d.url
+				, d.voiceFile
+				, d.hitcount
+				, d.recommendation
+				, d.decommendation
+				, d.regdate
+				, d.starttime
+				, d.endtime
+		from dubbing d, member m
+		where d.useremail = m.useremail
+		and d.dubbingnum = #{dubbingnum}
+
 	</select>
+	
+	<delete id="deleteDubbing">
+	delete from dubbing
+	where useremail=#{useremail} and dubbingnum=#{dubbingnum}
+	
+	</delete>
 </mapper>

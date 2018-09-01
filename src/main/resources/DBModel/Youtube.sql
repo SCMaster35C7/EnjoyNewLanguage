@@ -1,4 +1,4 @@
-
+﻿
 DROP TABLE Recommendation;			-- 추천 테이블
 DROP TABLE DubbingReply;			-- 자막요청 게시판 댓글 테이블
 DROP TABLE Dubbing;					-- 더빙 게시판 테이블
@@ -153,6 +153,8 @@ CREATE TABLE  Dubbing(
 	hitcount			NUMBER			DEFAULT 0,											-- 조회수
 	recommendation		NUMBER			DEFAULT 0,											-- 추천수
 	decommendation		NUMBER			DEFAULT 0											-- 비추천수
+        starttime                      varchar2(50)                 -- 더빙파일의 녹화 시작시간(영상 기준)
+        endtime                        varchar2(50)                 -- 더빙파일의 녹화 종료시간(영상 기준)
 );
 
 CREATE SEQUENCE DUBBING_SEQ;

@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 DROP TABLE Recommendation;			-- 추천 테이블
 DROP TABLE DubbingReply;			-- 자막요청 게시판 댓글 테이블
 DROP TABLE Dubbing;					-- 더빙 게시판 테이블

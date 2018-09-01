@@ -4,65 +4,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>DJ DJ 더빙 시작</title>
-	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-	<script>
-	 	var soundA=new Audio("getDubbingSoundFile?dubbingnum=1");
-		var saveTime=null;     //자막 싱크용 시간저장변수
-			
+<meta charset="UTF-8">
+<title>DJ DJ 더빙 시작</title>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+<script>
+
+var soundA=new Audio("getDubbingSoundFile?voiceFile=${d.voiceFile}");
+var saveTime=null;     //자막 싱크용 시간저장변수
+		
 		$(function() {
 			$('#playYoutube').on('click', playYoutube);
 			$('#pauseYoutube').on('click', pauseYoutube);
 			$('#currentTime').on('click', youtubeCurrentTime);
 			$('#mute').on('click', mute);
-			$('#unMute').on('click', unMute);
+			$('#unMute').on('click', unMute);		
 			$('#soundVolum').on('click', soundVolum);
-			$('#seekTo').on('click', seekTo);
+			$('#seekTo').on('click', seekTo);		
 		});
-	
+	  
 		// 자막가져오기
-		function getSubList() {
+		function getSubList() {		
 			$.ajax({
 				method : 'get',
 				url : 'getSubtitles',
-				data : "savedfileName=" + '${edu.savedfile}',
+				data : "savedfileName=" + '${savedfileName}',
 				contentType : 'application/json; charset=UTF-8',
 				dataType : 'json',
 				success : makeSubList,
 				error : function() {
 					console.log('error!!');
 				}
-			});
+
+			})
 		}
-	
+		
 		function makeSubList(s) {
-			console.log(s);
-			var subtitles = "";
+			console.log(s); 
+			var subtitles="";
 			setInterval(function() {
 				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
-				var time = player.getCurrentTime().toFixed(2);
-				var text = s[time];
-				console.log(text);
-				if (text != null) {
-					$('#textbox').html(text);
-				}
-			}, 10);
+			var time=player.getCurrentTime().toFixed(2);
+			//console.log(time);
+			var text=s[time];
+			console.log(text);
+			if(text!=null){
+			$('#textbox').html(text);	
+			}
+			},10);
+			
 		}
-	
-		function sinkTime() {
-			var videoTime = 0;
+		
+		function sinkTime(){
+			var videoTime=(${d.starttime}-1);	
+			 player.playVideo();
+			 player.seekTo(videoTime, true);
 			soundA.play();
 			//var audioTime=0;
 			setInterval(function() {
-				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
-				if ((player.getCurrentTime() - videoTime) > 0.5
-						|| (player.getCurrentTime() - videoTime) < -0.5) {
-					soundA.currentTime = player.getCurrentTime();
+				if(player.getCurrentTime().toFixed(2)==${d.endtime}){
+					player.pauseVideo();
 				}
-				videoTime = player.getCurrentTime();
+				
+				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
+				if((player.getCurrentTime()-videoTime)>0.5||(player.getCurrentTime()-videoTime)<-0.5){				
+					soundA.currentTime=player.getCurrentTime();
+				}
+				videoTime=player.getCurrentTime();
 			}, 10);
 		}
+		
 	</script>
 </head>
 
@@ -70,7 +80,7 @@
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"
-		src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
+		src="http://www.youtube.com/embed/${d.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
 		frameborder="0" allowfullscreen></iframe>
 
 	<script>
@@ -197,7 +207,7 @@
 
 	</div>
 	<div>
-	
+	<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
 	</div>
 
 
