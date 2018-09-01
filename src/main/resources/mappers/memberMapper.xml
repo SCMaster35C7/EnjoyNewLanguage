@@ -30,26 +30,43 @@
 			, point, warningCount, admin, status
 		from
 			member
-		where usernick = #{usernick}
+		where 
+			usernick = #{usernick}
 	</select>
 	
 	
 	<insert id = "insertMember" parameterType="Member">
-		insert into member (useremail, usernick, userpwd, gender, birth)
-		values(#{useremail}, #{usernick}, #{userpwd}, #{gender} , #{birth})
+		insert into member (
+			useremail
+			, usernick
+			, userpwd
+			, gender
+			, birth)
+		values(
+			#{useremail}
+			, #{usernick}
+			, #{userpwd}
+			, #{gender}
+			, #{birth}
+		)
 	</insert>
 	
 	<update id="updateStatus" parameterType="string">
-		update member
-		set status = 1
-		where useremail=#{useremail}
+		update 
+			member
+		set 
+			status = 1
+		where 
+			useremail=#{useremail}
 	</update>
-	
 
 	<update id="updateLastAccess" parameterType="string">
-		update member
-		set lastAccess = sysdate
-		where useremail=#{useremail}
+		update 
+			member
+		set 
+			lastAccess = sysdate
+		where 
+			useremail=#{useremail}
 	</update>
 	
 	<!-- 회원정보 수정 -->
@@ -66,31 +83,44 @@
 	<!-- 마이페이지 처음 정보 -->
 	<select id="selectMyInfo" parameterType="string" resultType="Member">
 		select 
-				   m.useremail
-   				 , m.usernick
-   				 , sum(s.SUCCESSCOUNT) as allSuccess
-   				 , sum(s.FAILURECOUNT) as allFailure 
-   				 , sum(s.CHALLENGECOUNT) as allChallenge  
-   				 ,(sum(s.SUCCESSCOUNT)/sum(s.CHALLENGECOUNT))*100 as winningRate
-		from member m, userstudy s
-		where m.useremail = s.useremail
-		and m.useremail = #{useremail}
-		group by m.useremail, m.usernick, m.point
+			m.useremail
+   			, m.usernick
+   			, sum(s.SUCCESSCOUNT) as allSuccess
+   			, sum(s.FAILURECOUNT) as allFailure 
+   			, sum(s.CHALLENGECOUNT) as allChallenge  
+   			,(sum(s.SUCCESSCOUNT)/sum(s.CHALLENGECOUNT))*100 as winningRate
+		from 
+			member m, userstudy s
+		where 
+			m.useremail = s.useremail
+		and 
+			m.useremail = #{useremail}
+		group by 
+			m.useremail, m.usernick, m.point
 	</select>
 	
 	<!-- 마이페이지 레벨 누적 -->
 	<select id="selectLevels" parameterType="string" resultType="TestResult">
-		select testlevel
-		from userstudy
-		where useremail = #{useremail}
+		select 
+			testlevel
+		from 
+			userstudy
+		where 
+			useremail = #{useremail}
 	</select>
 	
 	<!-- 마이페이지 영상목록 -->
 	<select id="selectMyVideo" parameterType="string" resultType="Video">
 		select
-   			 s.url, s.challengecount, e.title, e.videonum
-		from userstudy s, educationvideo e
-		where s.url = e.url
-		and useremail = #{useremail}
+   			s.url
+   			, s.challengecount
+   			, e.title
+   			, e.videonum
+		from 
+			userstudy s, educationvideo e
+		where 
+			s.url = e.url
+		and 
+			useremail = #{useremail}
 	</select> 
 </mapper>

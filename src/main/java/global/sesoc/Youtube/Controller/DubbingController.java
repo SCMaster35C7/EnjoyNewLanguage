@@ -25,70 +25,64 @@ import global.sesoc.Youtube.util.FileService;
 
 @Controller
 public class DubbingController {
-		@Autowired
-		EducationRepository eduRepository;
+	@Autowired
+	EducationRepository eduRepository;
 
-		@Autowired
-		DubbingRepository dubRepository;
-		
-		private final String eduFileRoot = "/EducationDubbing";
-		
-		//더빙겟
+	@Autowired
+	DubbingRepository dubRepository;
 
-		@RequestMapping(value="/dubbingBoard", method=RequestMethod.GET)
-		public String dubbingBoard(HttpSession session, Model model) {
-			//System.out.println("들어오냐");
-			List<Dubbing> dubbing =  dubRepository.dubbingBoard();
-			model.addAttribute("dubbing", dubbing);
-			return "DubbingBoard/dubbingBoard";
+	private final String eduFileRoot = "/EducationDubbing";
+
+	// 더빙겟
+	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
+	public String dubbingBoard(HttpSession session, Model model) {
+		// System.out.println("들어오냐");
+		List<Dubbing> dubbing = dubRepository.dubbingBoard();
+		model.addAttribute("dubbing", dubbing);
+		return "DubbingBoard/dubbingBoard";
+	}
+
+	// 더빙 디테일
+	@RequestMapping(value = "/dubDetail", method = RequestMethod.GET)
+	public String dubDetail(int dubbingnum, Model model) {
+		System.out.println("더빙넘은,,,,,," + dubbingnum);
+
+		Dubbing dubbing = dubRepository.selectOneDub(dubbingnum);
+		model.addAttribute("dubbing", dubbing);
+
+		return "DubbingBoard/dubDetail";
+	}
+
+	@RequestMapping(value = "DubbingWrite", method = RequestMethod.GET)
+	public String DubbingWrite(Model model, int videoNum) {
+		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
+		model.addAttribute("edu", edu);
+		return "DubbingBoard/dubbingWrite";
+	}
+
+	@RequestMapping(value = "getSubtitles", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, String> getSubtitles(Dubbing dub) {
+		String jamacURL = eduFileRoot + "/" + dub.getVoiceFile();
+		EasySubtitlesMaker esm = new EasySubtitlesMaker();
+		Map<String, String> result = esm.GetSubtitles(jamacURL);
+		return result;
+	}
+
+	@RequestMapping(value = "savedubbing", method = RequestMethod.POST)
+	public String savedubbing(Dubbing dub, MultipartFile saveFile) {
+		if (saveFile.getSize() != 0) {
+			String savedfile = FileService.saveFile(saveFile, eduFileRoot);
+			dub.setVoiceFile(savedfile);
 		}
-		
-		
-		//더빙 디테일
+		dubRepository.insertDubbing(dub);
+		return "redirect:/";
+	}
 
-			@RequestMapping(value="/dubDetail", method=RequestMethod.GET)
-			public String dubDetail(int dubbingnum, Model model) {
-				System.out.println("더빙넘은,,,,,,"+dubbingnum);
-				
-				Dubbing dubbing = dubRepository.selectOneDub(dubbingnum);
-				model.addAttribute("dubbing", dubbing);
-			
-				return "DubbingBoard/dubDetail";
-			}
-			
-			@RequestMapping(value="DubbingWrite",method=RequestMethod.GET)
-			public String DubbingWrite(Model model,int videoNum) {
-				Education edu = eduRepository.selectOneFromEduVideo(videoNum);
-				model.addAttribute("edu",edu);
-				return"DubbingBoard/dubbingWrite";
-			}
-			
-			
-			@RequestMapping(value="getSubtitles",method=RequestMethod.GET)
-			@ResponseBody
-			public Map<String,String> getSubtitles(Dubbing dub){
-				String jamacURL = eduFileRoot + "/" + dub.getVoiceFile();
-				EasySubtitlesMaker esm=new EasySubtitlesMaker();
-				Map<String,String>result=esm.GetSubtitles(jamacURL);
-				return result;
-				
-			}
-			
-			@RequestMapping(value="savedubbing",method=RequestMethod.POST)
-			public String savedubbing(Dubbing dub, MultipartFile saveFile) {
-				if(saveFile.getSize()!=0) {
-					String savedfile = FileService.saveFile(saveFile, eduFileRoot);
-					dub.setVoiceFile(savedfile);
-				}
-				dubRepository.insertDubbing(dub);
-				return "redirect:/";
-			}
-      
-      @RequestMapping(value = "getDubbingSoundFile", method = RequestMethod.GET)
+	@RequestMapping(value = "getDubbingSoundFile", method = RequestMethod.GET)
 	public String imagedownload(int dubbingnum, HttpServletResponse response) {
-		
 		System.out.println(dubbingnum);
-		String fileName="testsoundfile(full).mp3";
+		String fileName = "testsoundfile(full).mp3";
 		String fullPath = eduFileRoot + "/" + fileName;
 
 		FileInputStream fis = null;
@@ -98,9 +92,8 @@ public class DubbingController {
 			fout = response.getOutputStream();
 			fis = new FileInputStream(fullPath);
 			FileCopyUtils.copy(fis, fout);
-
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			try {
 				if (fis != null)
@@ -110,11 +103,7 @@ public class DubbingController {
 			} catch (Exception e) {
 
 			}
-
 		}
-
 		return null;
 	}
-			
-
 }

@@ -87,7 +87,6 @@ public class VideoController {
 	 * @param model
 	 * @return
 	 */
-
 	@RequestMapping(value="/detailEduBoard", method=RequestMethod.GET)
 	public String detailEduBoard(
       HttpSession session,
@@ -162,23 +161,12 @@ public class VideoController {
 		return "Practice/slide";
 	}
 	
-
-	@RequestMapping(value="/searchTest", method=RequestMethod.GET)
-	public String searchTest() {
-		
-		return "Practice/search";
-	}
-	
-	
 	@RequestMapping(value="TryRetake",method=RequestMethod.GET)
 	public String TryRetake(Model model,int videoNum) {
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
 		model.addAttribute("edu",edu);
+		
 		return"EducationBoard/RetakeEduBoard";
-	}
-
-    model.addAttribute("edu", edu);
-		return "EducationBoard/RetakeEduBoard";
 	}
 	
 	/***
@@ -188,13 +176,9 @@ public class VideoController {
 	 */
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
-		System.out.println("난 컨트롤러 : "+reco);
-		
 		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
-		//System.out.println(recoTemp);
 		
 		if(recoTemp != null) {
-			//System.out.println("이미 있음");
 			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
 			int reqReco	= reco.getRecommendation();			// 요청온 값
 			
