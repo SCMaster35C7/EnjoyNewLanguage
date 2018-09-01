@@ -1,7 +1,6 @@
 package global.sesoc.Youtube.dto;
 
 public class Dubbing {
-
 	private int dubbingnum;
 	private String title;
 	private String usernick;
@@ -14,22 +13,13 @@ public class Dubbing {
 	private int recommendation;
 	private int decommendation;
 	
-	
 	public Dubbing() {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-
 	public void setDubbingnum(int dubbingnum) {
 		this.dubbingnum = dubbingnum;
 	}
-
-	public void setDubbingnum(int dubbingnum) {
-		this.dubbingnum = dubbingnum;
-	}
-
 
 	public String getTitle() {
 		return title;
@@ -46,11 +36,11 @@ public class Dubbing {
 
 	public void setUsernick(String usernick) {
 		this.usernick = usernick;
-
+	}
 
 	public String getContent() {
 		return content;
-
+	}
 
 	public void setContent(String content) {
 		this.content = content;
@@ -58,7 +48,8 @@ public class Dubbing {
 
 	public String getUseremail() {
 		return useremail;
-
+	}
+	
 	public void setUseremail(String useremail) {
 		this.useremail = useremail;
 	}
