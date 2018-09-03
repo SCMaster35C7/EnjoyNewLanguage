@@ -58,7 +58,7 @@ public class TestResult {
 	public int getSuccessCount() {
 		return successCount;
 	}
-  
+
 	public void setSuccessCount(int successCount) {
 		this.successCount = successCount;
 	}
@@ -70,7 +70,6 @@ public class TestResult {
   public void setFailureCount(int failureCount) {
 		this.failureCount = failureCount;
 	}
-  
 	
 	public int getTestlevel() {
 		return testlevel;

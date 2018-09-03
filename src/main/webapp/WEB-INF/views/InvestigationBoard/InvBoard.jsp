@@ -2,26 +2,58 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="author" content="zisung">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
+      
 <title>자막검증게시판</title>
-   <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Custom styles for this template -->
-    <link href="css/modern-business.css" rel="stylesheet">
     
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="YoutubeAPI/auth.js"></script>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+<script src="YoutubeAPI/auth.js"></script>
     
-    <script type="text/javascript">
+<script type="text/javascript">
+// css용
+$(function(){
+	//dropdown
+	$(".dropdown-trigger").dropdown();
+	
+	//floating actionbutton
+	$(".fixed-action-btn").floatingActionButton({
+		/* direction:'left' */
+	});
+	
+	//modal open
+	$('#modal1').modal();
+	
+	//side-nav open
+	$('.sidenav').sidenav();
+	
+	//tooltip
+	$('.tooltipped').tooltip();
+	
+	//캐러셀
+	$('.carousel').carousel();
+	
+	$('#back').on('click', function() {
+		
+	});
+	
+	$('#loginBtn').on('click',function(){
+		var useremail = $('#useremail');
+		var userpwd = $('#userpwd');
+		
+		$('#loginForm').submit();
+	});
+});
+		
 		$(function() {
 			$('#requestInvestigation').on('click', function() {
 				var useremail = "${sessionScope.useremail}";
@@ -113,61 +145,176 @@
 </head>
 <body>
     <header>
-            <div><h2>자막 검증 게시판</h2></div>
-    </header>
-   <br/>
+	<!-- Dropdown Structure -->
+	<ul id="dropdown1" class="dropdown-content">
+	  <li><a href="myPage">마이페이지</a></li>
+		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
+		  		<c:if test="${plzLogin!=null}">
+					<script type="text/javascript">
+							$(function(){
+								alert("${plzLogin}");
+							});
+					</script>
+				</c:if>
+		  </li>
+		  <li class="divider"></li>
+		  <li><a href="searchTest">Youtube Search테스트</a></li>
+	</ul>
+	
+	<!-- nav -->
+	<nav class="nav-extended">
+	  <div class="nav-wrapper">
+	    <a href="index" class="brand-logo">Logo</a>
+	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+	    <ul class="right hide-on-med-and-down">
+		      	<c:if test="${not empty sessionScope.useremail }">
+		      <li>
+						<a href="logout">${sessionScope.useremail }님아logout</a>
+					
+		      </li>
+				</c:if>
+		      <li><a href="eduBoard">영상게시판</a></li>
+		      <li><a href="dubbingBoard">더빙게시판</a></li>
+		      <li><a href="InvestigationBoard">자막검증게시판</a></li>
+		      <!-- Dropdown Trigger -->
+		      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+		    </ul>
+	  </div>
+
+	
+		<div class="nav-content">
+			<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
+        	<i class="medium material-icons">person</i>
+     		 </a>
+		</div>
+	</nav>
+	</header>
+   
+   	<ul class="sidenav" id="small-navi">
+	    <li><a href="eduBoard.jsp">영상게시판</a></li>
+		<li><a href="dubbingBoard">더빙게시판</a></li>
+		<li><a href="InvestigationBoard">자막게시판</a></li>
+  	  </ul>
+		
+		<!-- 로그인 MODAL -->
+		<div id="modal1" class="modal">
+			<div class="modal-content">
+			<div class="container">
+			
+				<form class="col s12" id=loginForm action="login" method="POST">
+				<div class="row">
+					<h4 class="center-align">LOGIN</h4>
+				
+					<div class="row">
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+							<label for="useremail">EMAIL</label>
+						</div>
+					</div>
+				
+					<div class="row">
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mode_edit</i>
+							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+							<label for="userpwd">PASSWORD</label>
+						</div>
+					</div>
+				</div>	
+				
+					<div class="row">
+						<div class="col s10">
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+									<i class="material-icons right">send</i>
+								</button>
+							</span>
+						
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+									<i class="material-icons right">keyboard_return</i>
+								</button>
+							</span>
+							
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close">LOGOUT
+									<i class="material-icons right">settings_power</i>
+								</button>
+							</span>
+						</div>
+						
+						<div class="fixed-action-btn">
+								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+								<i class="large material-icons">person</i>
+								</a>
+								<ul>
+								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+								</ul>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>	
+	  </div>
+   
+	<input type="button" id="requestInvestigation" value="자막요청"/>
+	
     <!-- Page Content -->
 	<div class="container">
+		<h3 class="center">자막검증게시판</h3>
 		<div class="row">
+		
 		<c:if test="${not empty invList}">
 			<c:forEach var="invList" items="${invList}">
-		<!-- <h1 class="my-4">Welcome to Modern Business</h1>-->
-		<!-- Marketing Icons Section -->
-			<div class="col-lg-4 mb-4">
-				<div class="card h-100">
-					<h4 class="card-header" align="center">
-						<a href="detailInvBoard?investigationnum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
-					</h4>
-					
-					<div class="card-body">
-						<p class="card-text" align="center">
+			
+			<div class="col s3 m3">
+				<div class="card" style="height:400px margin-bottom:10px;">
+					<div class="card-image">
 							<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
-						</p>
+							<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
 					</div>
 					
-					<div class="card-footer" align="center">
+						<div class="card-content" style="height:150px;">
+						<a href="detailEduBoard?videoNum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
+					</div>
+					
+					<div class="card-action" style="height:70px">
 						<input type="hidden" value="${invList.investigationnum}">
-						<button class="btn recommendation">
-							<img alt="" src="images/tup.png">
-							<span id="recoCount">${invList.recommendation}</span>
-						</button>
-						
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btn decommendation">
-							<img alt="" src="images/tdown.png">
-							<span id="decoCount">${invList.decommendation}</span>
-						</button>
-						
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						조회수 ${invList.hitcount}
+						<div class="row">
+							<button class="btn recommendation">
+								<i class="material-icons">thumb_up</i>
+								<span id="recoCount">${invList.recommendation}</span>
+							</button>
+							
+							<button class="btn decommendation">
+								<i class="material-icons">thumb_down</i>
+								<span id="decoCount">${invList.decommendation}</span>
+							</button>
+							<button class="btn disabled right decommendation" style="width:80px">
+								<i class="material-icons">touch_app</i>
+								<span>${invList.hitcount}</span>
+							</button>	 
+						</div>
 					</div>
 				</div>
 			</div>
 			</c:forEach>
 		</c:if>
 		</div>
-		<div class="row">
-			<ul class="pagination justify-content-center">
-				<li class="page-item">
-					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}"> 
-					<span>&laquo;</span>
-					<span class="sr-only">PreviousPage</span>
-					</a>
-				</li>
-				<li class="page-item">
-					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
-					<span>&lt;</span> 
-					<span class="sr-only">Previous</span>
+		
+		<div class="center">
+			<ul class="pagination">
+			<li class="waves-effect">
+				<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+					<i class="material-icons">first_page</i>
+				</a>
+			</li>
+			
+				<li class="waves-effect">
+					<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+						<i class="material-icons">chevron_left</i>
 					</a>
 				</li>
 			
@@ -177,31 +324,54 @@
 					</c:if>
 					<c:if test="${navi.currentPage != page }">
 						<li class="page-item"><a class="page-link"
-							href="InvestigationBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+							href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
 					</c:if>
 				</c:forEach>
 			
-				<li class="page-item">
-					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
-					<span>&gt;</span> 
-					<span class="sr-only">Next</span>
+				<li class="waves-effect">
+					<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+						<i class="material-icons">chevron_right</i> 
 					</a>
 				</li>
 			
-				<li class="page-item">
-					<a class="page-link" href="InvestigationBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-					<span>&raquo;</span> 
-					<span class="sr-only">NextPage</span>
+				<li class="waves-effect">
+					<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+						<i class="material-icons">last_page</i> 
 					</a>
 				</li>
 			</ul>
-			<input type="button" id="requestInvestigation" value="자막요청"/>
 		</div>
 	</div>
-	<!-- /.row -->
-  	<br/><br/><br/><br/>
-
+	
+	<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
+	
+	
+	<script type="text/javascript" src="js/materialize.min.js"></script>
 	<script type="text/javascript" src="YoutubeAPI/search.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
-  </body>
+</body>
 </html>
