@@ -213,7 +213,8 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 
 	<div id="textbox"></div>
 	
-
+	
+	
 
 </body>
 </html>

@@ -59,14 +59,6 @@ public class Dubbing {
 		this.useremail = useremail;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
 	public String getUrl() {
 		return url;
 	}
