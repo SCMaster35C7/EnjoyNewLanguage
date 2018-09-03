@@ -53,10 +53,10 @@ public class DubbingController {
 	public String dubDetail(int dubbingnum, Model model) {
 		Dubbing dubbing = dubRepository.selectOneDub(dubbingnum);
 		String savedfileName = eduRepository.selectSubName2(dubbing.getUrl());
-		model.addAttribute("d", dubbing);
+		model.addAttribute("dubbing", dubbing);
 		model.addAttribute("savedfileName", savedfileName);
 
-		return "DubbingBoard/dubbingView";
+		return "DubbingBoard/dubDetail";
 
 	}
 
