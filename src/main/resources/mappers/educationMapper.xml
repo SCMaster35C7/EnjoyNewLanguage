@@ -123,69 +123,69 @@
 	</select>
 	
 	<update id="updateTestResult" parameterType="TestResult">
-	update 
-		userstudy
-	set 
-		laststudy=sysdate,
-		challengeCount= challengeCount+1
-		<if test="successCount!=0">
-		,successCount=successCount+1
-		</if>
-		<if test="failureCount!=0">
-		,failureCount=failureCount+1
-		</if>
-		<if test="testlevel!=0">
-		,testlevel=#{testlevel}
-		</if>
-	where  
-		useremail=#{useremail} and url=#{url}
+		update 
+			userstudy
+		set 
+			laststudy=sysdate,
+			challengeCount= challengeCount+1
+			<if test="successCount!=0">
+			,successCount=successCount+1
+			</if>
+			<if test="failureCount!=0">
+			,failureCount=failureCount+1
+			</if>
+			<if test="testlevel!=0">
+			,testlevel=#{testlevel}
+			</if>
+		where  
+			useremail=#{useremail} and url=#{url}
 	</update>
 
 	<insert id="insertWrongAnswer" parameterType="WrongAnswer">
-	insert into wronganswer (
-		answernum,
-		useremail,
-		wrongindex,
-		correctanswer,
-		url,
-		regdate,
-		classification
-	)values(
-		WRONG_ANSWER_SEQ.nextval,
-		#{useremail},
-		#{wrongIndex},
-		#{correctAnswer},
-		#{url},
-		sysdate,
-		#{classification}
-	)
+		insert into wronganswer (
+			answernum,
+			useremail,
+			wrongindex,
+			correctanswer,
+			url,
+			regdate,
+			classification
+		)values(
+			WRONG_ANSWER_SEQ.nextval,
+			#{useremail},
+			#{wrongIndex},
+			#{correctAnswer},
+			#{url},
+			sysdate,
+			#{classification}
+		)
 	</insert>
 	
 	<select id="selectWrongAnswerList" parameterType="WrongAnswer" resultType="WrongAnswer">
-	select 
-		*
-	from 
-		WrongAnswer
-	where 
-		useremail=#{useremail} 
-	and 
-		url=#{url} 
-	and 
-		classification=#{classification}
-	order by answernum
+		select 
+			*
+		from 
+			WrongAnswer
+		where 
+			useremail=#{useremail} 
+		and 
+			url=#{url} 
+		and 
+			classification=#{classification}
+		order by answernum
 	</select>
 	
 	<delete id="deleteWrongAnswer" parameterType="WrongAnswer">
-	delete from 
-		wronganswer
-	where 
-		useremail=#{useremail} 
-	and 
-		url=#{url} 
-	and 
-		classification=#{classification} 
-	and 
-		wrongindex=#{wrongIndex}
+		delete from 
+			wronganswer
+		where 
+			useremail=#{useremail} 
+		and 
+			url=#{url} 
+		and 
+			classification=#{classification} 
+		and 
+			wrongindex=#{wrongIndex}
 	</delete>
 
 	<select id="selectOneFromRecommendation" parameterType="Recommendation" resultType="Recommendation">

@@ -120,15 +120,15 @@
 					method:'post'
 					, url: 'requestInvestigation'
 					, data: JSON.stringify(dataForm)
-					, dataType: "text"
+					, dataType: "json"
 					, contentType:"application/json; charset=utf-8"
 					, success:function(resp) {
-						if(resp == "success") {
+						
+						if(resp.result == "success") {
 							location.href="InvestigationBoard";
-						}else if(resp == "failure") {
+						}else if(resp.result == "failure") {
 							if(confirm("이미 자막 요청된 영상입니다. 해당 영상으로 이동하시겠습니까?")) {
-								// 이동하는 부분을 만들자!!!!!!!!!!
-								alert("응 아직 이동 못해~");
+								location.href = "detailInvBoard?investigationnum="+resp.investigationnum;
 							}
 						}
 					}
@@ -137,7 +137,6 @@
 					}
 				});
        		});
-       		
         });
 	</script>
 </body>

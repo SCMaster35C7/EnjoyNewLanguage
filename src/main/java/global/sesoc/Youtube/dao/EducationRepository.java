@@ -106,8 +106,6 @@ public class EducationRepository {
 		map.put("tableName", tableName);
 		map.put("IDCode", IDCode);
 		
-		System.out.println("난 레포지토리 : " +map);
-		
 		int result = mapper.updateIncreRecommend(map);
 		
 		return result;

@@ -79,8 +79,6 @@ public class MemberContoller {
 				session.setAttribute("gender", member.getGender());
 				session.setAttribute("birth", member.getBirth());
 				
-				System.out.println("로그인한넘"+ member);
-				
 				//접속일 업뎃
 				mRepository.updateLastAccess(member.getUseremail());
 				
@@ -128,9 +126,6 @@ public class MemberContoller {
 	 */
 	@RequestMapping(value="/emailCheck", method=RequestMethod.POST, produces="application/json; charset=utf-8")
 	public @ResponseBody String emailCheck(String useremail) {
-		//System.out.println("이메일 아이디 : "+useremail);
-		
-		
 		Member m = new Member();
 		m.setUseremail(useremail);
 		if (mRepository.selectOneFromMember(m)==null) {
@@ -141,35 +136,17 @@ public class MemberContoller {
 	
 	@RequestMapping(value="/nickCheck", method=RequestMethod.POST, produces="application/json; charset=utf-8")
 	public @ResponseBody String nickCheck(String usernick) {
-		/*String a="true";
-		String b="false";*/
 		if (mRepository.selectByNick(usernick)==null) {
 			return "사용 가능한 닉네임 입니다";
-			/*return a;*/
 		} else 	return "중복된 닉네임 입니다.";
-			/*return b;	*/
-		
 	}
-	
-	
-	
-	
 	@RequestMapping(value = "mailSending", method=RequestMethod.POST)
-	  public String mailSending(HttpServletRequest request, Member member, HttpSession session) {
-	   System.out.println("횐갑하는넘**********"+member);
-		
+	public String mailSending(HttpServletRequest request, Member member, HttpSession session) {
 		mRepository.insertMember(member);
 		session.setAttribute("waitingEmail", member.getUseremail());
 		
-		
 	    String setfrom = "timetravelwithdoctor@gmail.com";         
-	   // String tomail  = request.getParameter("tomail");     // 받는 사람 이메일
 	    String tomail  = member.getUseremail();    // 받는 사람 이메일
-	    
-	    //String title   = request.getParameter("[앤죠애캉] 회원 가입 인증");      // 제목
-	    //String content = request.getParameter("content");    // 내용
-	    //String content ="안녕하세요~ 인증하시려면 아래 버튼을 누르셈\n\r";
-	    
 	    
 	    try {
 	      MimeMessage message = mailSender.createMimeMessage();
@@ -184,9 +161,7 @@ public class MemberContoller {
 	      
 	      messageHelper.setText("", " <h2>앤죠애캉 회원가입 인증</h2><br/>"
 	      		+ "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>"+"<a href="+host+">" +"<button style=\"color: white;background-color: #4c586f;border: none;width:200px;height:50px;text-align: center;text-decoration: none;  font-size: 25px;border-radius:10px;\">인증하기♥</button>");  // 메일 내용
-	      //messageHelper.setText("안녕하세요 인증하시려면 아래 버튼을 누르셈", " <a href="+host+">" +"<img src=\"images/tup.png\"/></a>"); 
-	      
-	     
+
 	      mailSender.send(message);
 	    } catch(Exception e){
 	      System.out.println(e);
@@ -233,9 +208,7 @@ public class MemberContoller {
 		model.addAttribute("myInfo", member);
 		model.addAttribute("finished", finished);
 		model.addAttribute("notfinished", notfinished);
-		//System.out.println("완료 영상*******"+finished);
-		//System.out.println("아직 영상*******"+notfinished);
-		
+
 		//map
 		Map<Integer, Integer> levelMap = new HashMap<>();
 		
@@ -258,14 +231,11 @@ public class MemberContoller {
 				five++;
 			}
 		}
-		
 		levelMap.put(1, one);
 		levelMap.put(2, two);
 		levelMap.put(3, three);
 		levelMap.put(4, four);
 		levelMap.put(5, five);
-		
-		
 		
 		model.addAttribute("levelMap", levelMap);
 		
@@ -275,11 +245,8 @@ public class MemberContoller {
 	@RequestMapping(value="/updateMember", method=RequestMethod.GET)
 	public String updateMember() {
 		
-		
 		return "Member/updateMember";
 	}
-	
-	
 	
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
 	public String updateMember(Model model, HttpSession session, String usernick, String currpwd, String newpwd) {

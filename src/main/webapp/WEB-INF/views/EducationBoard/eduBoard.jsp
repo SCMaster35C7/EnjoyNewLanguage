@@ -8,51 +8,50 @@
 <meta charset="UTF-8">
 <meta name="author" content="zisung">
 
- 	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>공부영상게시판</title>
+ 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>공부영상게시판</title>
+	    
+	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<script src="YoutubeAPI/auth.js"></script>
+	    
+	<script type="text/javascript">
     
-<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-<script src="YoutubeAPI/auth.js"></script>
-    
-<script type="text/javascript">
-    
-    // css용
-    $(function(){
-		//dropdown
-		$(".dropdown-trigger").dropdown();
-		
-		//floating actionbutton
-		$(".fixed-action-btn").floatingActionButton({
-			/* direction:'left' */
-		});
-		
-		//modal open
-		$('#modal1').modal();
-		
-		//side-nav open
-		$('.sidenav').sidenav();
-		
-		//tooltip
-		$('.tooltipped').tooltip();
-		
-		//캐러셀
-		$('.carousel').carousel();
-		
-		$('#back').on('click', function() {
+	    // css용
+	    $(function(){
+			//dropdown
+			$(".dropdown-trigger").dropdown();
 			
-		});
-		
-		$('#loginBtn').on('click',function(){
-			var useremail = $('#useremail');
-			var userpwd = $('#userpwd');
+			//floating actionbutton
+			$(".fixed-action-btn").floatingActionButton({
+				/* direction:'left' */
+			});
 			
-			$('#loginForm').submit();
+			//modal open
+			$('#modal1').modal();
+			
+			//side-nav open
+			$('.sidenav').sidenav();
+			
+			//tooltip
+			$('.tooltipped').tooltip();
+			
+			//캐러셀
+			$('.carousel').carousel();
+			
+			$('#back').on('click', function() {
+				
+			});
+			
+			$('#loginBtn').on('click',function(){
+				var useremail = $('#useremail');
+				var userpwd = $('#userpwd');
+				
+				$('#loginForm').submit();
+			});
 		});
-	});
-    
     
     	$(function() {
 			$('#addEduVideo').on('click', function() {

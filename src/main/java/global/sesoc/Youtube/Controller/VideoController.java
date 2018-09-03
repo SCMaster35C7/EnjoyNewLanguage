@@ -2,6 +2,7 @@ package global.sesoc.Youtube.Controller;
 
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -16,14 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.EducationRepository;
-import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Recommendation;
-import global.sesoc.Youtube.dto.SubtitlesList;
 import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
-import global.sesoc.Youtube.util.SubtitlesMaker;
 
 @Controller
 public class VideoController {
