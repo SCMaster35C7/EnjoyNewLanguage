@@ -42,6 +42,7 @@
 				dataType : 'json',
 				success : makeSubList,
 				error : function() {
+					alert('자막파일이 준비되있지 않은 영상입니다.');
 					console.log('error!!');
 				}
 
@@ -49,7 +50,6 @@
 		}
 		
 		function makeSubList(s) {
-			console.log(s); 
 			var subtitles="";
 			setInterval(function() {
 				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
