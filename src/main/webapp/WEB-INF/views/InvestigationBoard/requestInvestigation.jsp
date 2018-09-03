@@ -48,6 +48,7 @@
 	<script type="text/javascript" src="YoutubeAPI/search.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
     <script>
+    var pageName='requestInvestigation';
     	$(function() {
        		$("#searchBtn").on('click', function() {
        			if($('#search').val().length == 0) {
