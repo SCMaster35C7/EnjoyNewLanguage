@@ -51,9 +51,7 @@ public class RetakeMaker {
 				if (textlist != null) {
 					quiz.add(textlist);
 				}
-				
 			}
-
 			
 			for (int i = 0; i < WrongList.size(); i++) {
 				correct.add(WrongList.get(i).getCorrectAnswer()); //정답 저장

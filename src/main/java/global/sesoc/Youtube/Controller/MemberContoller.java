@@ -151,9 +151,6 @@ public class MemberContoller {
 		
 	}
 	
-	
-	
-	
 	@RequestMapping(value = "mailSending", method=RequestMethod.POST)
 	  public String mailSending(HttpServletRequest request, Member member, HttpSession session) {
 	   System.out.println("횐갑하는넘**********"+member);
@@ -258,14 +255,11 @@ public class MemberContoller {
 				five++;
 			}
 		}
-		
 		levelMap.put(1, one);
 		levelMap.put(2, two);
 		levelMap.put(3, three);
 		levelMap.put(4, four);
 		levelMap.put(5, five);
-		
-		
 		
 		model.addAttribute("levelMap", levelMap);
 		
@@ -275,21 +269,13 @@ public class MemberContoller {
 	@RequestMapping(value="/updateMember", method=RequestMethod.GET)
 	public String updateMember() {
 		
-		
 		return "Member/updateMember";
 	}
 	
-	
-	
 	@RequestMapping(value="/updateMember", method=RequestMethod.POST)
 	public String updateMember(Model model, HttpSession session, String usernick, String currpwd, String newpwd) {
-		
 		String useremail = (String) session.getAttribute("useremail");
-		System.out.println("현재비번 : "+currpwd +"새 비번 : " +newpwd + "새 닉네임 : " +usernick);
 		int result  = mRepository.updateMember(useremail, currpwd, newpwd, usernick);
-						
-		System.out.println(result);
-		
 		String message = null;		
 				
 		if(result == 1) {
@@ -300,10 +286,8 @@ public class MemberContoller {
 		} else {
 			message = "비밀번호가 수정되지 않았습니다.";
 		}
-		
 		model.addAttribute("msg", message);
 		
 		return "redirect:/";
-
 	}
 }

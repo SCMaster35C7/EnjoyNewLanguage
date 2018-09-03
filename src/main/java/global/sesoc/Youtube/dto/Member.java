@@ -1,7 +1,6 @@
 package global.sesoc.Youtube.dto;
 
 public class Member {
-	
 	private String useremail;
 	private String usernick;
 	private String userpwd;
@@ -18,6 +17,7 @@ public class Member {
 	private int allFailure;
 	private int allChallenge;
 	private int winningRate;
+	
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub

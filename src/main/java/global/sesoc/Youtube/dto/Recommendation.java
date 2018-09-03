@@ -69,7 +69,7 @@ public class Recommendation {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Recommendation [tableName=" + tableName + ", idCode=" + idCode + ", useremail=" + useremail

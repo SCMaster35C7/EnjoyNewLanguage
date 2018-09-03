@@ -43,14 +43,6 @@ public class Dubbing {
 		this.usernick = usernick;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
 	public String getUseremail() {
 		return useremail;
 	}

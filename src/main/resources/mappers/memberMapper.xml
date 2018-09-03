@@ -10,7 +10,10 @@
 			, to_char(birth, 'YYYY-MM-DD') birth
 			, to_char(joinDate, 'YYYY-MM-DD') joinDate
 			, to_char(lastAccess, 'YYYY-MM-DD') lastAccess
-			, point, warningCount, admin, status
+			, point
+			, warningCount
+			, admin
+			, status
 		from
 			member
 		where
@@ -27,7 +30,10 @@
 			, to_char(birth, 'YYYY-MM-DD') birth
 			, to_char(joinDate, 'YYYY-MM-DD') joinDate
 			, to_char(lastAccess, 'YYYY-MM-DD') lastAccess
-			, point, warningCount, admin, status
+			, point
+			, warningCount
+			, admin
+			, status
 		from
 			member
 		where 
@@ -71,12 +77,15 @@
 	
 	<!-- 회원정보 수정 -->
 	<update id="updateMember" parameterType="map" >
-	update member
-	set
-		userpwd = #{newpwd}
-		, usernick = #{usernick}
-	where
-		userpwd = #{currpwd} and useremail = #{useremail}
+		update 
+			member
+		set
+			userpwd = #{newpwd}
+			, usernick = #{usernick}
+		where
+			userpwd = #{currpwd} 
+		and 
+			useremail = #{useremail}
 	</update>
 	
 	

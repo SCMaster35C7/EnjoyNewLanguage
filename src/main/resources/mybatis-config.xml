@@ -6,7 +6,7 @@
   
 <configuration>
 	<typeAliases>
-    <typeAlias type="global.sesoc.Youtube.dto.Reply" alias="Reply"/> 
+    	<typeAlias type="global.sesoc.Youtube.dto.Reply" alias="Reply"/> 
 		<typeAlias type="global.sesoc.Youtube.dto.Video" alias="Video"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Member" alias="Member"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Dubbing" alias="Dubbing"/>
@@ -17,7 +17,6 @@
 		<typeAlias type="global.sesoc.Youtube.dto.Investigation" alias="Investigation"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Recommendation" alias="Recommendation"/>
 	</typeAliases>
-
 	<mappers>
 		<mapper resource="mappers/memberMapper.xml"/>
 		<mapper resource="mappers/dubbingMapper.xml"/>
