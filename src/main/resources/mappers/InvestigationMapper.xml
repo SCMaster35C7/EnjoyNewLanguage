@@ -29,4 +29,63 @@
 		where
 			${searchType} like '%' || #{searchWord} || '%'
 	</select>
+	
+	<insert id="insertInvestigation" parameterType="Investigation">
+		insert into investigation (
+			investigationnum
+			, url
+			, title
+			, content
+			, useremail
+		)values(
+			INVESTIGATION_SEQ.nextval
+			, #{url}
+			, #{title}
+			, #{content, jdbcType=VARCHAR}
+			, #{useremail}
+		)
+	</insert>
+	
+	<select id="selectOneFromInvUseURL" parameterType="Investigation" resultType="Investigation">
+		select
+			investigationnum
+			, url
+			, title
+			, content
+			, useremail
+			, to_char(regdate, 'YYYY-MM-DD') regdate
+			, hitcount
+			, recommendation
+			, decommendation
+		from
+			investigation
+		where
+			url = #{url}
+	</select>
+	
+	<select id="selectOneFromInvUseNum" parameterType="int" resultType="Investigation">
+		select
+			investigationnum
+			, url
+			, title
+			, content
+			, useremail
+			, to_char(regdate, 'YYYY-MM-DD') regdate
+			, hitcount
+			, recommendation
+			, decommendation
+		from
+			investigation
+		where
+			investigationnum = #{investigationnum}
+	</select>
+	
+	<update id="updateHitCount" parameterType="int">
+		update
+			investigation
+		set
+			hitcount = hitcount+1
+		where
+			investigationnum = #{investigationnum}
+	</update>
 </mapper>

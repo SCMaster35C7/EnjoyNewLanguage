@@ -1,13 +1,16 @@
 package global.sesoc.Youtube.Controller;
 
+import java.io.FileInputStream;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,63 +25,102 @@ import global.sesoc.Youtube.util.FileService;
 
 @Controller
 public class DubbingController {
-		@Autowired
-		EducationRepository eduRepository;
+	@Autowired
+	EducationRepository eduRepository;
 
-		@Autowired
-		DubbingRepository dubRepository;
-		
-		private final String eduFileRoot = "/EducationDubbing";
-		
-		//더빙겟
+	@Autowired
+	DubbingRepository dubRepository;
 
-		@RequestMapping(value="/dubbingBoard", method=RequestMethod.GET)
-		public String dubbingBoard(HttpSession session, Model model) {
-			//System.out.println("들어오냐");
-			List<Dubbing> dubbing =  dubRepository.dubbingBoard();
-			model.addAttribute("dubbing", dubbing);
-			return "DubbingBoard/dubbingBoard";
+
+	private final String DubbingFileRoot = "/EducationDubbing";
+	private final String eduFileRoot = "/EducationVideo";
+
+	// 더빙겟
+
+	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
+	public String dubbingBoard(HttpSession session, Model model) {
+		List<Dubbing> dubbing = dubRepository.dubbingBoard();
+		model.addAttribute("dubbing", dubbing);
+		return "DubbingBoard/dubbingBoard";
+	}
+
+	// 더빙 디테일
+
+
+	@RequestMapping(value = "dubDetail", method = RequestMethod.GET)
+	public String dubDetail(int dubbingnum, Model model) {
+		Dubbing dubbing = dubRepository.selectOneDub(dubbingnum);
+		String savedfileName = eduRepository.selectSubName2(dubbing.getUrl());
+		model.addAttribute("d", dubbing);
+		model.addAttribute("savedfileName", savedfileName);
+
+		return "DubbingBoard/dubbingView";
+
+	}
+
+	@RequestMapping(value = "DubbingWrite", method = RequestMethod.GET)
+	public String DubbingWrite(Model model, int videoNum) {
+		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
+		model.addAttribute("edu", edu);
+		return "DubbingBoard/dubbingWrite";
+	}
+
+	@RequestMapping(value = "getSubtitles", method = RequestMethod.GET)
+	@ResponseBody
+
+	public Map<String, String> getSubtitles(String subFileName) {
+		String jamacURL = eduFileRoot + "/" + subFileName;
+		EasySubtitlesMaker esm = new EasySubtitlesMaker();
+		Map<String, String> result = esm.GetSubtitles(jamacURL);
+		return result;
+	}
+  
+	@RequestMapping(value = "savedubbing", method = RequestMethod.POST)
+	public String savedubbing(Dubbing dub, MultipartFile saveFile) {
+		if (saveFile.getSize() != 0) {
+
+			String[] timeIfo = saveFile.getOriginalFilename().substring(0, saveFile.getOriginalFilename().length() - 4)
+					.split("-");
+			dub.setStarttime(timeIfo[0]);
+			dub.setEndtime(timeIfo[1]);
+			String savedfile = FileService.saveFile(saveFile, DubbingFileRoot);
+			dub.setVoiceFile(savedfile);
+			dubRepository.insertDubbing(dub);
 		}
-		
-		
-		//더빙 디테일
+		return "redirect:/";
+	}
 
-			@RequestMapping(value="/dubDetail", method=RequestMethod.GET)
-			public String dubDetail(int dubbingnum, Model model) {
-				System.out.println("더빙넘은,,,,,,"+dubbingnum);
-				
-				Dubbing dubbing = dubRepository.selectOneDub(dubbingnum);
-				model.addAttribute("dubbing", dubbing);
-			
-				return "DubbingBoard/dubDetail";
+	@RequestMapping(value = "getDubbingSoundFile", method = RequestMethod.GET)
+
+	public String imagedownload(String voiceFile, HttpServletResponse response) {
+
+		String fullPath = DubbingFileRoot + "/" + voiceFile;
+		FileInputStream fis = null;
+		ServletOutputStream fout = null;
+
+		try {
+			fout = response.getOutputStream();
+			fis = new FileInputStream(fullPath);
+			FileCopyUtils.copy(fis, fout);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (fis != null)
+					fis.close();
+				if (fout != null)
+					fout.close();
+			} catch (Exception e) {
+
 			}
-			
-			@RequestMapping(value="DubbingWrite",method=RequestMethod.GET)
-			public String DubbingWrite(Model model,int videoNum) {
-				Education edu = eduRepository.selectOneFromEduVideo(videoNum);
-				model.addAttribute("edu",edu);
-				return"DubbingBoard/dubbingWrite";
-			}
-			
-			
-			@RequestMapping(value="getSubtitles",method=RequestMethod.GET)
-			@ResponseBody
-			public Map<String,String> getSubtitles(Dubbing dub){
-				String jamacURL = eduFileRoot + "/" + dub.getVoiceFile();
-				EasySubtitlesMaker esm=new EasySubtitlesMaker();
-				Map<String,String>result=esm.GetSubtitles(jamacURL);
-				return result;
-				
-			}
-			
-			@RequestMapping(value="savedubbing",method=RequestMethod.POST)
-			public String savedubbing(Dubbing dub, MultipartFile saveFile) {
-				if(saveFile.getSize()!=0) {
-					String savedfile = FileService.saveFile(saveFile, eduFileRoot);
-					dub.setVoiceFile(savedfile);
-				}
-				dubRepository.insertDubbing(dub);
-				return "redirect:/";
-			}
-			
+		}
+		return null;
+	}
+
+	@RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
+	public String deleteDubbing(Dubbing dub) {
+		dubRepository.deleteDubbing(dub);
+		return "redirect:dubbingBoard";
+	}
+
 }

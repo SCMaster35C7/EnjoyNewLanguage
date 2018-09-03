@@ -61,7 +61,8 @@
 	where
 		userpwd = #{currpwd} and useremail = #{useremail}
 	</update>
-
+	
+	
 	<!-- 마이페이지 처음 정보 -->
 	<select id="selectMyInfo" parameterType="string" resultType="Member">
 		select 

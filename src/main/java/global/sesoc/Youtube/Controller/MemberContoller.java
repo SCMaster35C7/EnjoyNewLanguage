@@ -63,7 +63,6 @@ public class MemberContoller {
 		
 		//아이디 비번 같은 계정이 있음
 		if(member != null) {
-
 			//인증상태 확인
 			if (member.getStatus()==0) {
 				model.addAttribute("useremail", useremail);
@@ -87,7 +86,6 @@ public class MemberContoller {
 				
 				return "redirect:/";
 			}
-
 		}else {
 			model.addAttribute("useremail", useremail);
 			model.addAttribute("userpwd",userpwd);

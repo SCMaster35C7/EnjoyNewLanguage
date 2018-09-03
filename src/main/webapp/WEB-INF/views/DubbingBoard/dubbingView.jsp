@@ -8,9 +8,9 @@
 <title>DJ DJ 더빙 시작</title>
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script>
-	var saveTime=null;     //자막 싱크용 시간저장변수
-	var videoStartTime=0;
-	var cherkPoint=true;
+
+var soundA=new Audio("getDubbingSoundFile?voiceFile=${d.voiceFile}");
+var saveTime=null;     //자막 싱크용 시간저장변수
 		
 		$(function() {
 			$('#playYoutube').on('click', playYoutube);
@@ -20,24 +20,14 @@
 			$('#unMute').on('click', unMute);		
 			$('#soundVolum').on('click', soundVolum);
 			$('#seekTo').on('click', seekTo);		
-			$('#record').on('click',function(){
-				saveVideoStartTime();	
-				cherkPoint=(!cherkPoint);
-			})
 		});
-		function saveVideoStartTime(){
-			if(cherkPoint){
-				player.playVideo();
-			videoStartTime=player.getCurrentTime().toFixed(2);;
-			}
-		}
 	  
 		// 자막가져오기
 		function getSubList() {		
 			$.ajax({
 				method : 'get',
 				url : 'getSubtitles',
-				data : "subFileName=" + '${edu.savedfile}',
+				data : "savedfileName=" + '${savedfileName}',
 				contentType : 'application/json; charset=UTF-8',
 				dataType : 'json',
 				success : makeSubList,
@@ -64,33 +54,33 @@
 			
 		}
 		
-		
-		function submitDubbing(){
-			var fileValue = $("#saveFile").val().split("\\");
-			var fileName = fileValue[fileValue.length-1];
-            var fileType=fileName.substring(fileName.length-3);
-            if(!(fileType=='mp3'||fileType=='wav')){
-            	alert('mp3 또는 wav 타입의 음성파일만 올려주세요!!');
-            	return;
-            }
-            var submitForm=document.getElementById('savedubbing');
-            submitForm.submit();
-            
-             
+		function sinkTime(){
+			var videoTime=(${d.starttime}-1);	
+			 player.playVideo();
+			 player.seekTo(videoTime, true);
+			soundA.play();
+			//var audioTime=0;
+			setInterval(function() {
+				if(player.getCurrentTime().toFixed(2)==${d.endtime}){
+					player.pauseVideo();
+				}
+				
+				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
+				if((player.getCurrentTime()-videoTime)>0.5||(player.getCurrentTime()-videoTime)<-0.5){				
+					soundA.currentTime=player.getCurrentTime();
+				}
+				videoTime=player.getCurrentTime();
+			}, 10);
 		}
 		
-		
-	
-		
 	</script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 
 <body>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"
-		src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
+		src="http://www.youtube.com/embed/${d.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
 		frameborder="0" allowfullscreen></iframe>
 
 	<script>
@@ -136,13 +126,17 @@
         // youtube 기능 함수 나열 =======================================================
         
 		function playYoutube() {
+        	
             // 플레이어 자동실행 (주의: 모바일에서는 자동실행되지 않음)
             player.playVideo();
+            sinkTime();
+            //soundA.play();
             console.log( player.getVideoEmbedCode());
         }
 		
         function pauseYoutube() {
         	player.pauseVideo();
+        	soundA.pause();
         	// player.stopVideo();	완전 멈춰서 처음부터 시작함
         }
         
@@ -170,8 +164,13 @@
 			player.setVolume(soundValue.value, true);
 		}
 		
-		function seekTo(start) {
+		function seekTo() {
+			var start=$('#start').val();
+			console.log(start);
+			//soundA.pause();
+			//soundA.currentTime=(start-1.5);
 			player.seekTo(start, true);
+			//soundA.play();
 		}
 	</script>
 
@@ -207,51 +206,13 @@
 		<input type="button" onclick="getSubList()" value="자막보기">
 
 	</div>
+	<div>
+	<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
+	</div>
 
 
 	<div id="textbox"></div>
-	<div>
-	<form id="savedubbing" action="savedubbing" method="post" enctype="multipart/form-data">
-	<input type="file" id="saveFile" name="saveFile"><br>
-	<input type="text" name="title" placeholder="더빙제목"><br>
-	<input type="text" name="content" placeholder="간단한 코맨트를 남겨주세요."><br>
-	<input type="button" onclick="submitDubbing()" value="등록!">
-	<input type="hidden" name="url" value="${edu.url}">
-	<input type="hidden" name="useremail" value="${sessionScope.useremail}">
 	
-	</form>
-	
-	</div>
-	<div class="container">
-      
-      <div class="form-horizontal">
-        <div class="form-group">
-          <div class="col-sm-3"></div>
-          <div class="col-sm-2">
-            <input id="microphone" type="checkbox"> Microphone
-          </div>
-          <div class="col-sm-3">
-            <input id="microphone-level" type="range" min="0" max="100" value="0" class="hidden">
-          </div>
-        </div><br>
-        <div class="form-group">
-          <div class="col-sm-3 control-label"><span id="recording" class="text-danger hidden"><strong>RECORDING</strong></span>&nbsp; <span id="time-display">00:00</span></div>
-          <div class="col-sm-3">
-            <button id="record" class="btn btn-danger">RECORD</button>
-            <button id="cancel" class="btn btn-default hidden">CANCEL</button>
-          </div>
-          <div class="col-sm-6"><span id="date-time" class="text-info"></span></div>
-        </div>
-      </div>
-      <hr>
-      <h3>Recordings</h3>
-      <div id="recording-list"></div>
-    </div>
-  
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script>Mp3LameEncoderConfig = { memoryInitializerPrefixURL: "js/" };</script>
-    <script src="audio/Mp3LameEncoder.min.js"></script>
-    <script src="audio/EncoderEasy.js"></script>
 
 
 </body>

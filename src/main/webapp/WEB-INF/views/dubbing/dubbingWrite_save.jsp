@@ -9,8 +9,6 @@
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script>
 	var saveTime=null;     //자막 싱크용 시간저장변수
-	var videoStartTime=0;
-	var cherkPoint=true;
 		
 		$(function() {
 			$('#playYoutube').on('click', playYoutube);
@@ -20,24 +18,14 @@
 			$('#unMute').on('click', unMute);		
 			$('#soundVolum').on('click', soundVolum);
 			$('#seekTo').on('click', seekTo);		
-			$('#record').on('click',function(){
-				saveVideoStartTime();	
-				cherkPoint=(!cherkPoint);
-			})
 		});
-		function saveVideoStartTime(){
-			if(cherkPoint){
-				player.playVideo();
-			videoStartTime=player.getCurrentTime().toFixed(2);;
-			}
-		}
 	  
 		// 자막가져오기
 		function getSubList() {		
 			$.ajax({
 				method : 'get',
 				url : 'getSubtitles',
-				data : "subFileName=" + '${edu.savedfile}',
+				data : "savedfileName=" + '${edu.savedfile}',
 				contentType : 'application/json; charset=UTF-8',
 				dataType : 'json',
 				success : makeSubList,
@@ -65,25 +53,9 @@
 		}
 		
 		
-		function submitDubbing(){
-			var fileValue = $("#saveFile").val().split("\\");
-			var fileName = fileValue[fileValue.length-1];
-            var fileType=fileName.substring(fileName.length-3);
-            if(!(fileType=='mp3'||fileType=='wav')){
-            	alert('mp3 또는 wav 타입의 음성파일만 올려주세요!!');
-            	return;
-            }
-            var submitForm=document.getElementById('savedubbing');
-            submitForm.submit();
-            
-             
-		}
-		
-		
 	
 		
 	</script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -212,46 +184,16 @@
 	<div id="textbox"></div>
 	<div>
 	<form id="savedubbing" action="savedubbing" method="post" enctype="multipart/form-data">
-	<input type="file" id="saveFile" name="saveFile"><br>
+	<input type="file" name="saveFile"><br>
 	<input type="text" name="title" placeholder="더빙제목"><br>
 	<input type="text" name="content" placeholder="간단한 코맨트를 남겨주세요."><br>
-	<input type="button" onclick="submitDubbing()" value="등록!">
+	<input type="submit" value="등록!">
 	<input type="hidden" name="url" value="${edu.url}">
 	<input type="hidden" name="useremail" value="${sessionScope.useremail}">
 	
 	</form>
 	
 	</div>
-	<div class="container">
-      
-      <div class="form-horizontal">
-        <div class="form-group">
-          <div class="col-sm-3"></div>
-          <div class="col-sm-2">
-            <input id="microphone" type="checkbox"> Microphone
-          </div>
-          <div class="col-sm-3">
-            <input id="microphone-level" type="range" min="0" max="100" value="0" class="hidden">
-          </div>
-        </div><br>
-        <div class="form-group">
-          <div class="col-sm-3 control-label"><span id="recording" class="text-danger hidden"><strong>RECORDING</strong></span>&nbsp; <span id="time-display">00:00</span></div>
-          <div class="col-sm-3">
-            <button id="record" class="btn btn-danger">RECORD</button>
-            <button id="cancel" class="btn btn-default hidden">CANCEL</button>
-          </div>
-          <div class="col-sm-6"><span id="date-time" class="text-info"></span></div>
-        </div>
-      </div>
-      <hr>
-      <h3>Recordings</h3>
-      <div id="recording-list"></div>
-    </div>
-  
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script>Mp3LameEncoderConfig = { memoryInitializerPrefixURL: "js/" };</script>
-    <script src="audio/Mp3LameEncoder.min.js"></script>
-    <script src="audio/EncoderEasy.js"></script>
 
 
 </body>

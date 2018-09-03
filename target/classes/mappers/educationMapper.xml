@@ -20,7 +20,11 @@
 		order by 
 			regdate desc
 	</select>
+<<<<<<< Updated upstream
   
+=======
+
+>>>>>>> Stashed changes
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum
@@ -225,5 +229,75 @@
 	
 	</select>
 	
+
+	<select id="selectOneFromRecommendation" parameterType="Recommendation" resultType="Recommendation">
+		select
+			*
+		from
+			recommendation
+		where
+			useremail = #{useremail}
+		and
+			identificationnum = #{identificationnum}
+		and
+			recommendtable = #{recommendtable}
+	</select>
+	
+	<insert id="insertRecommendation" parameterType="Recommendation">
+		insert into recommendation (
+			useremail
+			, identificationnum
+			, recommendtable
+			, recommendation
+		)values (
+			#{useremail}
+			, #{identificationnum}
+			, #{recommendtable}
+			, #{recommendation}
+		)
+	</insert>
+	
+	<update id="updateIncreRecommend" parameterType="map">
+		update
+			EducationVideo
+		set
+			${commendation} = ${commendation}+1
+		where
+			videonum = #{videonum}
+	</update>
+	
+	<delete id="deleteRecommend" parameterType="Recommendation">
+		delete from
+			recommendation
+		where
+			useremail = #{useremail}
+		and
+			identificationnum = #{identificationnum}
+		and
+			recommendtable = #{recommendtable}
+	</delete>
+	
+	<update id="updateDecreRecommend" parameterType="map">
+		update
+			EducationVideo
+		set
+			${commendation} = ${commendation}-1
+		where
+			videonum = #{videonum}
+	</update>
+	
+	<update id="updateRecommend" parameterType="Recommendation">
+		update
+			recommendation
+		set
+			recommendation = #{recommendation}
+			, regdate = sysdate
+		where
+			useremail = #{useremail}
+		and
+			identificationnum = #{identificationnum}
+		and
+			recommendtable = #{recommendtable}
+	</update>
 
 </mapper>

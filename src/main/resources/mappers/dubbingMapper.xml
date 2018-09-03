@@ -12,7 +12,9 @@
 	content,
     useremail,
     url,
-    voiceFile
+    voiceFile,
+    starttime,
+    endtime
 	)
 	values
 	(
@@ -20,21 +22,32 @@
 	#{title},
 	#{content},
 	#{useremail},
-	#{url},
-	#{voiceFile}
+    #{url},
+	#{voiceFile},
+	#{starttime},
+	#{endtime}
 	)
 	
+
 	</insert>
 
-
-
 	<select id="dubbingBoard"  resultType="Dubbing">
-		select d.dubbingnum, d.title, m.usernick, d.hitcount, d.recommendation, d.decommendation, d.regdate
-		from dubbing d, member m
-		where d.useremail = m.useremail
-		order by d.dubbingnum desc
+		select 
+			d.dubbingnum
+			, d.title
+			, m.usernick
+			, d.hitcount
+			, d.recommendation
+			, d.decommendation
+			, d.regdate
+		from 
+			dubbing d, member m
+		where 
+			d.useremail = m.useremail
+		order by 
+			d.dubbingnum desc
 	</select>
-	
+
 	<select id="selectOneDub" parameterType="int" resultType="Dubbing">
 		select 
 				  d.dubbingnum
@@ -47,8 +60,17 @@
 				, d.recommendation
 				, d.decommendation
 				, d.regdate
+				, d.starttime
+				, d.endtime
 		from dubbing d, member m
 		where d.useremail = m.useremail
 		and d.dubbingnum = #{dubbingnum}
+
 	</select>
+	
+	<delete id="deleteDubbing">
+	delete from dubbing
+	where useremail=#{useremail} and dubbingnum=#{dubbingnum}
+	
+	</delete>
 </mapper>
