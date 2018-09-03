@@ -8,7 +8,7 @@ import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.Video;
 
 public interface MemberMapper {
-	public Member selectOneFromMember(Member member);		// 아이디 중복 검사, 아이디 검사
+	public Member selectOneFromMember(Member member); 				// 아이디 중복 검사, 아이디 검사
 
 	public int insertMember(Member member);
 
@@ -18,11 +18,11 @@ public interface MemberMapper {
 
 	public int updateLastAccess(String useremail);
 
-  public int updateMember(Map<String, String> map);		//회원정보 수정
+	public int updateMember(Map<String, String> map); 				// 회원정보 수정
 
-  public Member selectMyInfo(String useremail); //마이페이지 처음 정보
+	public Member selectMyInfo(String useremail); 					// 마이페이지 처음 정보
 
-  public List<Video> selectMyVideo(String useremail); //마이페이지 처음 영상제목
+	public List<Video> selectMyVideo(String useremail); 			// 마이페이지 처음 영상제목
 
-  public List<TestResult> selectLevels(String useremail); //마이페이지 레벨스
+	public List<TestResult> selectLevels(String useremail); 		// 마이페이지 레벨스
 }

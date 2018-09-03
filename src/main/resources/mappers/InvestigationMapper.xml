@@ -79,7 +79,6 @@
 		where
 			investigationnum = #{investigationnum}
 	</select>
-	
 	<update id="updateHitCount" parameterType="int">
 		update
 			investigation

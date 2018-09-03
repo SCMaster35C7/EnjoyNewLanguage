@@ -4,25 +4,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>DJ DJ 더빙 시작</title>
-	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-	<script>
-	 	var soundA=new Audio("getDubbingSoundFile?dubbingnum=1");
-		var saveTime=null;     //자막 싱크용 시간저장변수
-			
+<meta charset="UTF-8">
+<title>DJ DJ 더빙 시작</title>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+<script>
+
+ //var soundFile=location.href="";
+ var soundA=new Audio("getDubbingSoundFile?dubbingnum=1");
+ 
+
+
+
+
+
+
+
+	var saveTime=null;     //자막 싱크용 시간저장변수
+		
 		$(function() {
 			$('#playYoutube').on('click', playYoutube);
 			$('#pauseYoutube').on('click', pauseYoutube);
 			$('#currentTime').on('click', youtubeCurrentTime);
 			$('#mute').on('click', mute);
-			$('#unMute').on('click', unMute);
+			$('#unMute').on('click', unMute);		
 			$('#soundVolum').on('click', soundVolum);
-			$('#seekTo').on('click', seekTo);
+			$('#seekTo').on('click', seekTo);		
 		});
-	
+	  
 		// 자막가져오기
-		function getSubList() {
+		function getSubList() {		
 			$.ajax({
 				method : 'get',
 				url : 'getSubtitles',
@@ -33,36 +43,42 @@
 				error : function() {
 					console.log('error!!');
 				}
-			});
+
+			})
 		}
-	
+		
 		function makeSubList(s) {
-			console.log(s);
-			var subtitles = "";
+			console.log(s); 
+			var subtitles="";
 			setInterval(function() {
 				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
-				var time = player.getCurrentTime().toFixed(2);
-				var text = s[time];
-				console.log(text);
-				if (text != null) {
-					$('#textbox').html(text);
-				}
-			}, 10);
+			var time=player.getCurrentTime().toFixed(2);
+			//console.log(time);
+			var text=s[time];
+			console.log(text);
+			if(text!=null){
+			$('#textbox').html(text);	
+			}
+			},10);
+			
 		}
-	
-		function sinkTime() {
-			var videoTime = 0;
+		
+		function sinkTime(){
+			var videoTime=0;	
 			soundA.play();
 			//var audioTime=0;
 			setInterval(function() {
 				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
-				if ((player.getCurrentTime() - videoTime) > 0.5
-						|| (player.getCurrentTime() - videoTime) < -0.5) {
-					soundA.currentTime = player.getCurrentTime();
+				if((player.getCurrentTime()-videoTime)>0.5||(player.getCurrentTime()-videoTime)<-0.5){				
+					soundA.currentTime=player.getCurrentTime();
 				}
-				videoTime = player.getCurrentTime();
+				videoTime=player.getCurrentTime();
 			}, 10);
 		}
+		
+		
+	
+		
 	</script>
 </head>
 
