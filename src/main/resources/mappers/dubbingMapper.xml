@@ -51,4 +51,33 @@
 		where d.useremail = m.useremail
 		and d.dubbingnum = #{dubbingnum}
 	</select>
+	
+	
+	
+	<!-- 주말 -->
+	<select id="replyAll" parameterType="int" resultType="Reply">
+			select d.replynum, d.dubbingnum, d.useremail, d.content, d.regdate, d.blackcount, m.usernick
+			from dubbingreply d, member m
+			where dubbingnum = #{dubbingnum}
+			and d.useremail = m.useremail
+			order by replynum
+	</select>
+	
+	<insert id="insertReply" parameterType="Reply">
+		insert into dubbingreply
+		(replynum, dubbingnum, useremail, content)
+		values 
+		(DUBBING_REPLY_SEQ.NEXTVAL, #{dubbingnum},#{useremail}, #{content})
+	</insert>
+	
+	<delete id="replyDelete" parameterType="int">
+		delete from dubbingreply
+		where replynum = #{replynum}
+	</delete>
+	
+	<update id="replyUpdate" parameterType="Reply">
+		update dubbingreply
+		set content = #{content} , regdate = sysdate
+		where replynum = #{replynum}
+	</update>
 </mapper>

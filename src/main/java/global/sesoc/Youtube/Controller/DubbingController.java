@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +18,7 @@ import global.sesoc.Youtube.dao.DubbingRepository;
 import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
+import global.sesoc.Youtube.dto.Reply;
 import global.sesoc.Youtube.util.EasySubtitlesMaker;
 import global.sesoc.Youtube.util.FileService;
 
@@ -79,6 +81,36 @@ public class DubbingController {
 				}
 				dubRepository.insertDubbing(dub);
 				return "redirect:/";
+			}
+			
+			
+			// 주말
+			@RequestMapping(value="/replyAll", method=RequestMethod.POST)
+			public @ResponseBody List<Reply> replyAll(int dubbingnum) {
+				//System.out.println(dubbingnum);
+				List<Reply> replyList = dubRepository.replyAll(dubbingnum);
+				return replyList;
+			}
+			
+			@RequestMapping(value="/replyInsert", method=RequestMethod.POST)
+			public @ResponseBody Integer replyInsert(@RequestBody Reply reply ) {
+				int result = dubRepository.insertReply(reply);
+				return result;
+				/*System.out.println(reply);
+				return 1;*/
+			}
+			
+			@RequestMapping(value="/replyDelete", method=RequestMethod.GET)
+			public @ResponseBody Integer replyDelete(int replynum) {
+				int result = dubRepository.replyDelete(replynum);
+				return result;
+			}
+			
+			@RequestMapping(value="/replyUpdate", method=RequestMethod.POST)
+			public @ResponseBody Integer replyUpdate(@RequestBody Reply reply) {
+				
+				int result = dubRepository.replyUpdate(reply);
+				return result;
 			}
 			
 }
