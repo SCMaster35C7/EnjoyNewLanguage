@@ -8,7 +8,7 @@ public class Recommendation {
 	private int recommendtable;
 	private int recommendation;
 	private String regDate;
-	
+	 
 	public Recommendation() {
 		super();
 		// TODO Auto-generated constructor stub

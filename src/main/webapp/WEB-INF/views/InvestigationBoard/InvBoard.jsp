@@ -277,7 +277,7 @@ $(function(){
 					</div>
 					
 						<div class="card-content" style="height:150px;">
-						<a href="detailEduBoard?videoNum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
+						<a href="detailInvBoard?investigationnum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
 					</div>
 					
 					<div class="card-action" style="height:70px">

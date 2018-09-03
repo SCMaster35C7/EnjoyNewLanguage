@@ -1,6 +1,8 @@
 package global.sesoc.Youtube.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,13 +33,12 @@ public class InvestigationController {
 			@RequestParam(value="searchWord", defaultValue="") String searchWord,
 			Model model
 			) {
-		// System.out.println(currentPage+", "+searchType+", "+searchWord);
 		
 		int totalRecordCount = invRepository.getTotalCount(searchType, searchWord);
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 6);
+		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
 		
 		List<Investigation> invList =  invRepository.selectInvList(searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
-		System.out.println("test 2");
+
 		model.addAttribute("invList",invList);
 		model.addAttribute("searchType", searchType);
 		model.addAttribute("searchWord", searchWord);
@@ -61,19 +62,22 @@ public class InvestigationController {
 	 * @return
 	 */
 	@RequestMapping(value="/requestInvestigation", method=RequestMethod.POST)
-	public @ResponseBody String requestInvestigation(@RequestBody Investigation inv) {
+	public @ResponseBody Map requestInvestigation(@RequestBody Investigation inv) {
 		Investigation finInv = invRepository.selectOneFromInvUseURL(inv);
+		Map<String, Object> map = new HashMap<>();
 		
 		if(finInv == null) {
 			int result = invRepository.insertInvestigation(inv);
-			
-			return "success";
+			map.put("result", "success");
 		}else {
-			return "failure";
+			map.put("result", "failure");
+			map.put("investigationnum", finInv.getInvestigationnum());
 		}
+		
+		return map;
 	}
 	
-	@RequestMapping(value="/detailInvBoard", method=RequestMethod.GET)
+	@RequestMapping(value="/detailInvBoard", method= RequestMethod.GET)
 	public String detailInvBoard(
 		int investigationnum,
 		@RequestParam(value="currentPage", defaultValue="1" ) int currentPage,
@@ -81,6 +85,7 @@ public class InvestigationController {
 		@RequestParam(value="searchWord", defaultValue="") String searchWord,
 		Model model
 		) {
+		// System.out.println(investigationnum+", "+currentPage+", "+searchType+", "+searchWord);
 		Investigation inv = invRepository.selectOneFromInvUseNum(investigationnum);
 		
 		if(inv != null) {

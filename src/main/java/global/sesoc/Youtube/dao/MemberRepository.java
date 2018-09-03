@@ -19,11 +19,11 @@ public class MemberRepository {
 
 	/**
 	 * 사용자 아이디 중복 검사 or 사용자 아이디 확인
+	 * 
 	 * @param useremail
 	 * @param userpwd
 	 * @return
 	 */
-
 	public Member selectOneFromMember(Member m) {
 		/*Map<String, Object> map = new HashMap<>();
 		map.put("useremail", useremail);
@@ -67,9 +67,7 @@ public class MemberRepository {
 
 	public int updateMember(String useremail, String currpwd, String newpwd, String usernick/*, Member member*/) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		
 		int result = 0;
-		
 		Map<String, String> map = new HashMap<>();
 		
 		map.put("useremail", useremail);
@@ -86,28 +84,28 @@ public class MemberRepository {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-	  return result;
+		return result;
 	}
 
-		public Member selectMyInfo(String useremail) {
-			
-			MemberMapper mapper = session.getMapper(MemberMapper.class);
-			Member member = mapper.selectMyInfo(useremail);
-			
-			return member;
-		}
+	public Member selectMyInfo(String useremail) {
 
-		public List<Video> selectMyVideo(String useremail) {
-			MemberMapper mapper = session.getMapper(MemberMapper.class);
-			List<Video> video= mapper.selectMyVideo(useremail);
-			
-			return video;
-		}
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		Member member = mapper.selectMyInfo(useremail);
 
-		public List<TestResult> selectLevels(String useremail){
-			MemberMapper mapper = session.getMapper(MemberMapper.class);
-			List<TestResult> levelList= mapper.selectLevels(useremail);
-			return levelList;
-		}
+		return member;
+	}
+
+	public List<Video> selectMyVideo(String useremail) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		List<Video> video = mapper.selectMyVideo(useremail);
+
+		return video;
+	}
+
+	public List<TestResult> selectLevels(String useremail) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		List<TestResult> levelList = mapper.selectLevels(useremail);
+		return levelList;
+	}
 }
 

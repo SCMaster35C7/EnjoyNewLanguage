@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import global.sesoc.Youtube.dto.SubtitlesList;
-
+ 
 public class EasySubtitlesMaker {
 
 	ArrayList<Double> playtime;
@@ -47,7 +47,7 @@ public class EasySubtitlesMaker {
 			}
 
 		} catch (Exception e) {
-
+			
 		} finally {
 			if (in != null) {
 				try {

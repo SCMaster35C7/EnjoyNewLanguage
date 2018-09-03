@@ -17,7 +17,7 @@ public class Member {
 	private int allFailure;
 	private int allChallenge;
 	private int winningRate;
-	
+	 
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub

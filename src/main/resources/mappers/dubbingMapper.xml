@@ -12,7 +12,7 @@
 	    	useremail,
 	    	url,
 	    	voiceFile
-		)values(
+		) values(
 			DUBBING_SEQ.nextval
 			, #{title}
 			, #{content}

@@ -23,7 +23,7 @@
 			userpwd=#{userpwd}
 		</if>
 	</select>
-	
+
 	<select id="selectByNick" parameterType="string" resultType="Member">
 		select
 			useremail, usernick, userpwd, gender
@@ -39,8 +39,7 @@
 		where 
 			usernick = #{usernick}
 	</select>
-	
-	
+
 	<insert id = "insertMember" parameterType="Member">
 		insert into member (
 			useremail
@@ -56,7 +55,7 @@
 			, #{birth}
 		)
 	</insert>
-	
+
 	<update id="updateStatus" parameterType="string">
 		update 
 			member
@@ -74,7 +73,7 @@
 		where 
 			useremail=#{useremail}
 	</update>
-	
+
 	<!-- 회원정보 수정 -->
 	<update id="updateMember" parameterType="map" >
 		update 
@@ -87,8 +86,7 @@
 		and 
 			useremail = #{useremail}
 	</update>
-	
-	
+
 	<!-- 마이페이지 처음 정보 -->
 	<select id="selectMyInfo" parameterType="string" resultType="Member">
 		select 
@@ -107,7 +105,7 @@
 		group by 
 			m.useremail, m.usernick, m.point
 	</select>
-	
+
 	<!-- 마이페이지 레벨 누적 -->
 	<select id="selectLevels" parameterType="string" resultType="TestResult">
 		select 
@@ -117,7 +115,7 @@
 		where 
 			useremail = #{useremail}
 	</select>
-	
+
 	<!-- 마이페이지 영상목록 -->
 	<select id="selectMyVideo" parameterType="string" resultType="Video">
 		select

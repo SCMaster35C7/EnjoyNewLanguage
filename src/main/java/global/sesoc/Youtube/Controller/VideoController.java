@@ -33,7 +33,6 @@ public class VideoController {
 	private final String eduFileRoot = "/EducationVideo";
 	// 교육용 자막파일 경로
 	
-
 	/***
 	 * Home 기본 페이지 이동
 	 * 
@@ -42,9 +41,7 @@ public class VideoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
-
-		System.out.println("로그인 해주세요 :  "+plzLogin);
-
+		
 		model.addAttribute("plzLogin", plzLogin);
     
 		return "index";

@@ -18,6 +18,7 @@ public class Dubbing {
 	public Dubbing() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	public int getDubbingnum() {
 		return dubbingnum;

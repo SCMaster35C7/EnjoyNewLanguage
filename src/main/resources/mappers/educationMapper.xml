@@ -21,6 +21,7 @@
 			regdate desc
 	</select>
 
+
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum
@@ -162,7 +163,7 @@
 			#{classification}
 		)
 	</insert>
-	
+
 	<select id="selectWrongAnswerList" parameterType="WrongAnswer" resultType="WrongAnswer">
 		select 
 			*
@@ -202,7 +203,7 @@
 		and
 			recommendtable = #{recommendtable}
 	</select>
-	
+
 	<insert id="insertRecommendation" parameterType="Recommendation">
 		insert into recommendation (
 			useremail

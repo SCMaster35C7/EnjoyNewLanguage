@@ -1,5 +1,5 @@
 package global.sesoc.Youtube.util;
-
+ 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,7 +27,6 @@ public class RetakeMaker {
 		List<ArrayList<String>> quiz = new ArrayList<>(); // 문제지
 		ArrayList<String> correct = new ArrayList<>(); // 정답 리스트
 		playtimeView = new ArrayList<>(); // 자막 타임 시각용
-
 		playtime = new ArrayList<>(); // 각 자막 줄별 시작타임 저장
 		quizIndex = new ArrayList<>(); // 각 퀴즈들의 인덱스 정보
 

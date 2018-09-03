@@ -10,7 +10,7 @@ public class Education {
 	private int hitCount;
 	private int recommendation;
 	private int decommendation;
-	
+	 
 	public Education() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -92,4 +92,5 @@ public class Education {
 				+ originalfile + ", savedfile=" + savedfile + ", regDate=" + regDate + ", hitCount=" + hitCount
 				+ ", recommendation=" + recommendation + ", decommendation=" + decommendation + "]";
 	}
+	
 }

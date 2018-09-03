@@ -21,7 +21,6 @@ public class InvestigationRepository {
 		Map<String, String> map =new HashMap<>();
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
-		
 		int result = mapper.getTotalCount(map);
 				
 		return result;
@@ -67,5 +66,4 @@ public class InvestigationRepository {
 		
 		return result;
 	}
-	
 }
