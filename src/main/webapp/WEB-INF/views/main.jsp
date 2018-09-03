@@ -27,7 +27,11 @@
 		});
 		
 		//modal open
-		$('.modal').modal();
+		$('#modal1').modal();
+		
+		$('#back').on('click', function() {
+			
+		});
 		
 		//side-nav open
 		$('.sidenav').sidenav();
@@ -44,10 +48,18 @@
 	<header>
 	<!-- Dropdown Structure -->
 	<ul id="dropdown1" class="dropdown-content">
-	  <li><a href="#!">one</a></li>
-	  <li><a href="#!">two</a></li>
+	  <li><a href="myPage">마이페이지</a></li>
+	  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
+	  		<c:if test="${plzLogin!=null}">
+				<script type="text/javascript">
+						$(function(){
+							alert("${plzLogin}");
+						});
+				</script>
+			</c:if>
+	  </li>
 	  <li class="divider"></li>
-	  <li><a href="#!">three</a></li>
+	  <li><a href="searchTest">Youtube Search테스트</a></li>
 	</ul>
 	
 	<!-- nav -->
@@ -56,9 +68,9 @@
 	    <a href="#!" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
-	      <li><a href="#">공부게시판</a></li>
-	      <li><a href="#">더빙게시판</a></li>
-	      <li><a href="#">마이페이지</a></li>
+	      <li><a href="eduboard">영상게시판</a></li>
+	      <li><a href="dubbingBoard">더빙게시판</a></li>
+	      <li><a href="InvestigationBoard">자막게시판</a></li>
 	      <!-- Dropdown Trigger -->
 	      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
 	    </ul>
@@ -115,10 +127,10 @@
 						</span>
 					
 						<span class="flow-text">
-							<button class="btn waves-effect waves-light" type="submit" name="action">BACK
-							<i class="material-icons right">keyboard_return</i>
+							<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+								<i class="material-icons right">keyboard_return</i>
 							</button>
-							</span>
+						</span>
 						</div>
 						
 						<div class="col s2 offset-s2">
@@ -135,7 +147,7 @@
 		</div>	
 	  </div>
 	
-	
+	 <!-- 메인 -->
 	  <div class="container">
 	  	<h3 class="center">인기 항목</h3>
 	  </div>

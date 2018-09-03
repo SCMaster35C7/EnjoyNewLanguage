@@ -87,10 +87,7 @@ public class EducationController {
 	public @ResponseBody SubtitlesList MakeRetakeTest(HttpSession session, String url, boolean testType,
 			String savedfileName) {
 		String useremail = (String) session.getAttribute("useremail");
-		//System.out.println("url: "+url+", testType: "+testType+", savefile"+savedfileName+",useremail: "+useremail);
-
-		WrongAnswer wa = new WrongAnswer();
-		// String jamacName = eduRepository.selectSubName2(url);
+    	WrongAnswer wa = new WrongAnswer();
 		String jamacURL = eduFileRoot + "/" + savedfileName;
 		wa.setUseremail(useremail);
 		wa.setUrl(url);

@@ -3903,6 +3903,8 @@ table span.badge {
   }
 }
 
+
+
 @media only screen and (min-width: 993px) {
   .row .col.l1 {
     width: 8.3333333333%;
@@ -5343,8 +5345,8 @@ button.btn-floating {
 
 .fixed-action-btn {
   position: fixed;
-  right: 23px;
-  bottom: 23px;
+  right: 35px;
+  bottom: 35px;
   padding-top: 15px;
   margin-bottom: 0;
   z-index: 997;
@@ -7727,6 +7729,8 @@ input[type=range]::-ms-thumb {
   }
 }
 
+
+
 .sidenav .collapsible-body > ul:not(.collapsible) > li.active,
 .sidenav.sidenav-fixed .collapsible-body > ul:not(.collapsible) > li.active {
   background-color: #ee6e73;
@@ -9066,7 +9070,7 @@ input[type=range]::-ms-thumb {
     margin-top: 1.2rem;
   }
 }
-  body {
+body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
