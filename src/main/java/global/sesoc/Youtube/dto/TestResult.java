@@ -46,8 +46,7 @@ public class TestResult {
 	public int getSuccessCount() {
 		return successCount;
 	}
-		return failureCount;
-	}
+
 	public int getTestlevel() {
 		return testlevel;
 	}

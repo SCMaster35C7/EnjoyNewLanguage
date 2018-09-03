@@ -7,11 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="author" content="zisung">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
  	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>공부영상게시판</title>
     
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
@@ -265,9 +265,7 @@
 		</div>	
 	  </div>
    
-   	<c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
-		<input type="button" id="addEduVideo" value="영상추가"/>
-	</c:if>
+  
 	
     <!-- Page Content -->
 	<div class="container">
@@ -276,13 +274,12 @@
 			
 		<c:if test="${not empty eduList}">
 			<c:forEach var="eduList" items="${eduList}">
-		<!-- <h1 class="my-4">Welcome to Modern Business</h1>-->
-		<!-- Marketing Icons Section -->
-			<div class="col s3 m3">
+			
+			<div class="col s12 m3 l3">
 				<div class="card" style="height:400px margin-bottom:10px;">
 					<div class="card-image">
 						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-						<a class="btn-floating halfway-fab swaves-effect waves-light red"><i class="material-icons">add</i></a>
+						<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
 					</div>
 					<div class="card-content" style="height:150px;">
 							<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
@@ -312,6 +309,15 @@
 			</c:forEach>
 		</c:if>
 		</div>
+	
+	<!-- admin 영상추가 -->	
+	<c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
+		<div class="fixed-action-btn">
+		  <a class="btn-floating btn-large red tooltipped" href="addEduVideo" data-position="top" data-tooltip="ADD VIDEO">
+		    <i class="large material-icons">add_a_photo</i>
+		  </a>
+		</div>
+	</c:if>
 		
 		<div class="center">
 			<ul class="pagination">
@@ -351,8 +357,6 @@
 			</ul>
 		</div>
 	</div>
-	<!-- /.row -->
-
 
 
 	<footer class="page-footer">
@@ -383,5 +387,5 @@
 
 
 <script type="text/javascript" src="js/materialize.min.js"></script>
-  </body>
+</body>
 </html>
