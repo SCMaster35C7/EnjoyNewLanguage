@@ -2,34 +2,28 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="global.sesoc.Youtube.dao.DubbingMapper">
-<insert id="insertDubbing" parameterType="Dubbing">
-	insert into dubbing
-	(
-	dubbingnum,
-	title,
-	content,
-    useremail,
-    url,
-    voiceFile,
-    starttime,
-    endtime
-	)
-	values
-	(
-	DUBBING_SEQ.nextval,
-	#{title},
-	#{content},
-	#{useremail},
-    #{url},
-	#{voiceFile},
-	#{starttime},
-	#{endtime}
-	)
-	
-
-	</insert>
+  <mapper namespace="global.sesoc.Youtube.dao.DubbingMapper">
+  <insert id="insertDubbing" parameterType="Dubbing">
+    insert into dubbing(
+      dubbingnum,
+      title,
+      content,
+      useremail,
+      url,
+      voiceFile,
+      starttime,
+      endtime
+    )values(
+      DUBBING_SEQ.nextval
+      , #{title}
+      ,	#{content}
+      , #{useremail}
+      , #{url}
+      , #{voiceFile}
+      , #{starttime}
+      , #{endtime}
+    )
+  </insert>
 
 	<select id="dubbingBoard"  resultType="Dubbing">
 		select 
@@ -50,8 +44,8 @@
 
 	<select id="selectOneDub" parameterType="int" resultType="Dubbing">
 		select 
-				  d.dubbingnum
-			  	, d.title
+				d.dubbingnum
+			  , d.title
 				, m.usernick
 				, d.content
 				, d.url
@@ -62,15 +56,73 @@
 				, d.regdate
 				, d.starttime
 				, d.endtime
-		from dubbing d, member m
-		where d.useremail = m.useremail
-		and d.dubbingnum = #{dubbingnum}
-
+		from 
+      dubbing d, member m
+		where 
+      d.useremail = m.useremail
+		and 
+      d.dubbingnum = #{dubbingnum}
 	</select>
 	
+	<!-- 주말 -->
+	<select id="replyAll" parameterType="int" resultType="Reply">
+			select 
+        d.replynum
+        , d.dubbingnum
+        , d.useremail
+        , d.content
+        , d.regdate
+        , d.blackcount
+        , m.usernick
+			from 
+        dubbingreply d
+        , member m
+			where 
+        dubbingnum = #{dubbingnum}
+			and 
+        d.useremail = m.useremail
+			order by 
+        replynum
+	</select>
+	
+	<insert id="insertReply" parameterType="Reply">
+		insert into dubbingreply (
+      replynum
+      , dubbingnum
+      , useremail
+      , content
+    )values (
+      DUBBING_REPLY_SEQ.NEXTVAL
+      , #{dubbingnum}
+      , #{useremail}
+      , #{content}
+    )
+	</insert>
+	
+	<delete id="replyDelete" parameterType="int">
+		delete from 
+      dubbingreply
+		where 
+      replynum = #{replynum}
+	</delete>
+	
+	<update id="replyUpdate" parameterType="Reply">
+		update 
+      dubbingreply
+		set 
+      content = #{content}
+      , regdate = sysdate
+		where 
+      replynum = #{replynum}
+	</update>
+  
 	<delete id="deleteDubbing">
-	delete from dubbing
-	where useremail=#{useremail} and dubbingnum=#{dubbingnum}
+	  delete from 
+      dubbing
+	  where 
+      useremail=#{useremail} 
+    and 
+      dubbingnum=#{dubbingnum}
 	
 	</delete>
 </mapper>
