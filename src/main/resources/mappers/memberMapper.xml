@@ -21,6 +21,8 @@
 		<if test="userpwd != null">
 		and
 			userpwd=#{userpwd}
+		and
+		    useremail not in(select useremail from confirmmember)
 		</if>
 	</select>
 
@@ -88,14 +90,16 @@
 	</update>
 
 	<!-- 마이페이지 처음 정보 -->
-	<select id="selectMyInfo" parameterType="string" resultType="Member">
+	<select id="selectMyInfo" parameterType="Member" resultType="Member">
 		select 
 			m.useremail
    			, m.usernick
    			, sum(s.SUCCESSCOUNT) as allSuccess
    			, sum(s.FAILURECOUNT) as allFailure 
-   			, sum(s.CHALLENGECOUNT) as allChallenge  
+   			, sum(s.CHALLENGECOUNT) as allChallenge
+   			<if test="allChallenge!=0">  
    			,(sum(s.SUCCESSCOUNT)/sum(s.CHALLENGECOUNT))*100 as winningRate
+   			</if>
 		from 
 			member m, userstudy s
 		where 
@@ -104,6 +108,19 @@
 			m.useremail = #{useremail}
 		group by 
 			m.useremail, m.usernick, m.point
+	</select>
+
+	<select id="checkChallengeCount" parameterType="String" resultType="int"> 
+	select 
+	 sum(s.CHALLENGECOUNT)
+	 from
+	    member m, userstudy s
+	 	where 
+			m.useremail = s.useremail
+		and 
+			m.useremail = #{useremail}
+		group by 
+			m.useremail
 	</select>
 
 	<!-- 마이페이지 레벨 누적 -->
@@ -130,4 +147,23 @@
 		and 
 			useremail = #{useremail}
 	</select> 
+	
+	<!-- 회원탈퇴 정보 입력(삭제 예정 회원정보에 저장) -->
+	<insert id="insertCloseID" parameterType="String">
+	insert into confirmmember
+	(
+	useremail
+	,outdate
+	 )
+	values
+	(
+	#{value}
+	,sysdate
+	)
+	</insert>
+	
+	<delete id="recoveryID" parameterType="String">
+	delete from confirmmember
+	where userid=#{value}
+	</delete>
 </mapper>

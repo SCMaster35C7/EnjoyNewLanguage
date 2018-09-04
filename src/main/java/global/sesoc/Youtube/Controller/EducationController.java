@@ -150,4 +150,9 @@ public class EducationController {
 		}
 
 	}
+	
+	@RequestMapping(value="dictionaryBoard",method=RequestMethod.GET)
+	public String dicionaryBoard() {
+		return "EducationBoard/dictionaryBoard";
+	}
 }

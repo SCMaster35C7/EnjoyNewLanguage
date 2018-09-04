@@ -124,6 +124,4 @@ public class Dubbing {
 				+ decommendation + ", starttime=" + starttime + ", endtime=" + endtime + "]";
 	}
 
-	
-
 }
