@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="global.sesoc.Youtube.dao.WishMapper">
+	<!-- 영상 위시리스트 데이터 수 세기 -->
+	<select id="videoWishCount" parameterType="String" resultType="int">
+		select
+			count(*)
+		from
+			videowishlist w, educationvideo v
+		where
+			w.videowishnum = a.videonum
+		and
+			useremail=#{useremail}
+	</select>
+	<!-- 영상 위시리스트 조회 -->
+	<select id="selectVideoWish" parameterType="string" resultType="VideoWishList">
+		<!-- select distinct * 
+		from videowishlist 
+		where useremail=#{useremail} -->
+		
+		select
+			*
+		from
+			videowishlist w, educationvideo a
+		where
+			w.videonum = a.videonum
+		and
+			useremail=#{useremail}
+	</select>
+	
+	<!-- 영상 위시리스트 등록 -->	
+	<insert id="insertVideoWish" parameterType="map">
+	insert into videowishlist
+		values (
+			#{useremail}
+			, #{videowishnum}
+		)
+		<!-- insert into wishlist(
+			wishnum
+			, url
+			, title
+			, regDate
+			, to_char(regDate, 'YYYY-MM-DD') regDate
+		)values(
+			wish_list_seq.nextval
+			#{useremail}
+			, #{url}
+			, #{title}
+			, sysdate			
+		) -->
+	</insert>
+	
+	<!-- 영상 위시리스트 삭제 -->
+	<delete id="deleteVideoWish" parameterType="int">
+		delete from
+			videowishlist
+		where
+			videowishnum = #{videowishnum}
+	</delete>
+	
+	<!-- 자막 위시리스트 데이터 수 세기 -->
+	<select id="subWishCount" parameterType="String" resultType="int">
+		select
+			count(*)
+		from
+			subwishlist w, sublist v
+		where
+			w.subnum = a.subnum
+		and
+			useremail=#{useremail}
+	</select>
+	
+	<!-- 자막 위시리스트 조회 -->
+	<select id="selectSubWish" resultType="SubWishList" parameterType="string">
+		
+	</select>
+	
+	<!-- 자막 위시리스트 등록 -->
+
+	<insert id="insertSubWish">
+
+
+	</insert>
+	
+	<!-- 자막 위시리스트 삭제 -->
+
+	<delete id="deleteSubWish">
+	
+	
+	</delete>
+	
+	<!-- 자막 위시리스트 데이터 수 세기 -->
+	<select id="dubWishCount" parameterType="String" resultType="int">
+		select
+			count(*)
+		from
+			dubwishlist w, dubbing v
+		where
+			w.dubnum = a.dubnum
+		and
+			useremail=#{useremail}
+	</select>
+	
+	<!-- 더빙 위시리스트 조회 -->
+	<select id="selectDubWish" resultType="Wishlist" parameterType="string">
+	
+	</select>
+	
+	<!-- 더빙 위시리스트 등록 -->
+	<insert id="insertDubWish">
+
+	</insert>
+	
+	<!-- 더빙 위시리스트 삭제 -->
+	<delete id="deleteDubWish">
+
+	</delete>
+</mapper>

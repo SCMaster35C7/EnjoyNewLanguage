@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: gkdlt
 Build-Jdk: 1.8.0_162
+=======
+Built-By: SCITMASTER
+Build-Jdk: 1.8.0_181
+>>>>>>> Muk
 Created-By: Maven Integration for Eclipse
 
