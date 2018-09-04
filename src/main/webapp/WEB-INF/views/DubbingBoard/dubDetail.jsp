@@ -30,8 +30,6 @@
 			$("#replyInsert").on('click', replyInsert);
 			
 			$('.recommendation').on('click', function() {
-				var useremail = "${sessionScope.useremail}";
-				
 				if(useremail.trim().length == 0) {
 					location.href="login";
 					return;
@@ -74,8 +72,6 @@
 			});
 			
 			$('.decommendation').on('click', function() {
-				var useremail = "${sessionScope.useremail}";
-				
 				if(useremail.trim().length == 0) {
 					location.href="login";
 					return;
@@ -291,9 +287,6 @@
 	</script>
 </head>
 <body>
-	${dubbing}
-	<br/>
-	<body>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"

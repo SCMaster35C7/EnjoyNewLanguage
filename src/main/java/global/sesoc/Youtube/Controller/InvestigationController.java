@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import global.sesoc.Youtube.dao.InvestigationRepository;
 import global.sesoc.Youtube.dto.Investigation;
+import global.sesoc.Youtube.dto.Reply;
 import global.sesoc.Youtube.util.PageNavigator;
 
 @Controller
@@ -98,5 +99,35 @@ public class InvestigationController {
 		}
 		
 		return "InvestigationBoard/detailInvBoard";
+	}
+	
+	@RequestMapping(value="/replyInvAll", method=RequestMethod.POST)
+	public @ResponseBody List<Reply> replyInvAll(int idnum) {
+		List<Reply> replyList = invRepository.replyAllFromInv(idnum);
+		
+		return replyList;
+	}
+	
+	@RequestMapping(value="/replyInvInsert", method=RequestMethod.POST)
+	public @ResponseBody String replyInvInsert(@RequestBody Reply reply) {
+		//System.out.println(reply);
+		int result = invRepository.insertReplyToInv(reply);
+		
+		return "success";
+	}
+	
+	@RequestMapping(value="/replyInvUpdate", method=RequestMethod.POST)
+	public @ResponseBody String replyInvUpdate(@RequestBody Reply reply) {
+		System.out.println(reply);
+		int result = invRepository.replyInvUpdate(reply);
+		
+		return "success";
+	}
+	
+	@RequestMapping(value="/replyInvDelete", method=RequestMethod.GET)
+	public @ResponseBody String replyInvDelete(int replynum) {
+		int result = invRepository.replyInvDelete(replynum);
+		
+		return "success";
 	}
 }
