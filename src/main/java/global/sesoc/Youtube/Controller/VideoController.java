@@ -174,7 +174,7 @@ public class VideoController {
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
 		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
-		
+		System.out.println(reco);
 		if(recoTemp != null) {
 			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
 			int reqReco	= reco.getRecommendation();			// 요청온 값

@@ -94,14 +94,13 @@ public class EducationRepository {
 		return result;
 	}
 
-	public int updateIncreRecommend(String tableName, String  IDCode, int videonum, String commendation) {
+	public int updateIncreRecommend(String tableName, String  idCode, int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
-		System.out.println(tableName);
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
 		map.put("tableName", tableName);
-		map.put("IDCode", IDCode);
+		map.put("idCode", idCode);
 		
 		int result = mapper.updateIncreRecommend(map);
 		
@@ -115,13 +114,13 @@ public class EducationRepository {
 		return result;
 	}
 
-	public int updateDecreRecommend(String tableName, String  IDCode,  int videonum, String commendation) {
+	public int updateDecreRecommend(String tableName, String  idCode,  int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
 		map.put("tableName", tableName);
-		map.put("IDCode", IDCode);
+		map.put("idCode", idCode);
 		
 		int result = mapper.updateDecreRecommend(map);
 		
@@ -141,8 +140,6 @@ public class EducationRepository {
 		
 		return result;
 	}
-	
-
 
 	public String selectSubName2(String url) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
@@ -197,9 +194,4 @@ public class EducationRepository {
 		int result = mapper.deleteWrongAnswer(wa);
 		return result;
 	}
-
-	
-
-	
-	
 }

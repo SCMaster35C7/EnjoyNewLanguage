@@ -26,30 +26,24 @@ function search(pageCode) {
 	}
 
 	// Request 실행
-	request
-			.execute(function(response) {
+	request.execute(function(response) {
 				var results = response.result;
 				// console.log(response);
 				$("#results").empty();
-				$
-						.each(
-								results.items,
-								function(index, item) {
-									var title = item.snippet.title;
-									var videoId = item.id.videoId;
+				$.each(results.items,function(index, item) {
+					var title = item.snippet.title;
+					var videoId = item.id.videoId;
 
-									var addVideo = '<div class="item">';
-									addVideo += '<h2>' + title + '</h2>';
-									addVideo += '<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/'
-											+ videoId
-											+ '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
-									addVideo += '</div>';
-									addVideo += '<input type="button" class="decideURL" data-rno="http://www.youtube.com/embed/'
-											+ videoId
-											+ '" value="영상 선택"/> <br/>';
+					var addVideo = '<div class="item">';
+					addVideo += '<h2>' + title + '</h2>';
+					addVideo += '<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/'+ videoId
+								+ '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
+					addVideo += '</div>';
+					addVideo += '<input type="button" class="decideURL" data-rno="http://www.youtube.com/embed/'
+								+ videoId + '" value="영상 선택"/> <br/>';
 
-									$("#results").append(addVideo);
-								});
+					$("#results").append(addVideo);
+				});
 				var prevPage = response.prevPageToken;
 				var nextPage = response.nextPageToken;
 
@@ -70,14 +64,10 @@ function search(pageCode) {
 						search(nextPage);
 					});
 				}
-
 				resetVideoHeight();
 				// 비디오 선택시 videoId URL란에 추가해줌
-
 				addEventDecideURL();
-
 			});
-
 	$(window).on("resize", resetVideoHeight);
 }
 
@@ -102,6 +92,5 @@ function addEventDecideURL() {
 function init() {
 	gapi.client.setApiKey("AIzaSyDRzWYGUmo0xtzfb1F-aW4hTHMwuKT4cRg");
 	gapi.client.load("youtube", "v3", function() {
-		// yt api is ready
 	});
 }

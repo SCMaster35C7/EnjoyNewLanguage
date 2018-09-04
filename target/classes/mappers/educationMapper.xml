@@ -224,7 +224,7 @@
 		set
 			${commendation} = ${commendation}+1
 		where
-			${IDCode} = #{videonum}
+			${idCode} = #{videonum}
 	</update>
 
 	<delete id="deleteRecommend" parameterType="Recommendation">
@@ -244,7 +244,7 @@
 		set
 			${commendation} = ${commendation}-1
 		where
-			${IDCode} = #{videonum}
+			${idCode} = #{videonum}
 	</update>
 
 	<update id="updateRecommend" parameterType="Recommendation">
