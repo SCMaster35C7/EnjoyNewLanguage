@@ -5,53 +5,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="author" content="zisung">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta charset="UTF-8">
+	<meta name="author" content="zisung">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
- 	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-<title>공부영상게시판</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
+	<title>공부영상게시판</title>
     
-<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-<script src="YoutubeAPI/auth.js"></script>
-    
-<script type="text/javascript">
-    
-    // css용
-    $(function(){
-		//dropdown
-		$(".dropdown-trigger").dropdown();
-		
-		//floating actionbutton
-		$(".fixed-action-btn").floatingActionButton({
-			/* direction:'left' */
-		});
-		
-		//modal open
-		$('#modal1').modal();
-		
-		//side-nav open
-		$('.sidenav').sidenav();
-		
-		//tooltip
-		$('.tooltipped').tooltip();
-		
-		//캐러셀
-		$('.carousel').carousel();
-		
-		$('#back').on('click', function() {
+	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<script src="YoutubeAPI/auth.js"></script>
+	    
+	<script type="text/javascript">
+	    // css용
+	    $(function(){
+			//dropdown
+			$(".dropdown-trigger").dropdown();
 			
-		});
-		
-		$('#loginBtn').on('click',function(){
-			var useremail = $('#useremail');
-			var userpwd = $('#userpwd');
+			//floating actionbutton
+			$(".fixed-action-btn").floatingActionButton({
+				/* direction:'left' */
+			});
 			
-			$('#loginForm').submit();
+			//modal open
+			$('#modal1').modal();
+			
+			//side-nav open
+			$('.sidenav').sidenav();
+			
+			//tooltip
+			$('.tooltipped').tooltip();
+			
+			//캐러셀
+			$('.carousel').carousel();
+			
+			$('#back').on('click', function() {
+				
+			});
+			
+			$('#loginBtn').on('click',function(){
+				var useremail = $('#useremail');
+				var userpwd = $('#userpwd');
+				
+				$('#loginForm').submit();
+			});
 		});
-	});
     
     
     	$(function() {
@@ -70,7 +69,8 @@
 				var recoCount = Number(target.children("span").text());
 				var decoTarget = target.parent().children(".decommendation").children("#decoCount");
 				var videonum = target.parent().children("input").val();
-				var dataForm = {"tableName":"educationvideo", 
+				var dataForm = {
+						"tableName":"educationvideo", 
 						"idCode":"videonum", 
 						"useremail":useremail, 
 						"identificationnum":videonum,
@@ -114,7 +114,9 @@
 				var decoCount = Number(target.children("span").text());
 				var recoTarget = target.parent().children(".recommendation").children("#recoCount");
 				var videonum = target.parent().children("input").val();
-				var dataForm = {"tableName":"educationvideo",
+				alert(videonum);
+				var dataForm = {
+						"tableName":"educationvideo",
 						"idCode":"videonum",  
 						"useremail":useremail, 
 						"identificationnum":videonum, 
@@ -175,8 +177,7 @@
 	    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
 		      <li>
-						<a href="logout">${sessionScope.useremail }님아logout</a>
-					
+					<a href="logout">${sessionScope.useremail }님아logout</a>
 		      </li>
 				</c:if>
 		      <li><a href="eduBoard">영상게시판</a></li>
@@ -286,24 +287,24 @@
 					</div>
 						
 					<div class="card-action" style="height:70px">
-						<input type="hidden" value="${eduList.videoNum}"/>
 						<div class="row">
-								<button class="btn recommendation">
-									<i class="material-icons">thumb_up</i>
-									<span id="recoCount">${eduList.recommendation}</span>
-								</button>
+							<input type="hidden" value="${eduList.videoNum}"/>
+							<button class="btn recommendation">
+								<i class="material-icons">thumb_up</i>
+								<span id="recoCount">${eduList.recommendation}</span>
+							</button>
+														
+							<button class="btn decommendation">
+								<i class="material-icons">thumb_down</i>
+								<span id="decoCount">${eduList.decommendation}</span>
+							</button>
 							
-									<button class="btn decommendation">
-										<i class="material-icons">thumb_down</i>
-										<span id="decoCount">${eduList.decommendation}</span>
-									</button>
-									
-									<button class="btn disabled right decommendation" style="width:80px">
-										<i class="material-icons">touch_app</i>
-										<span>${eduList.hitCount}</span>
-									</button>
-							</div>
+							<button class="btn disabled right decommendation" style="width:80px">
+								<i class="material-icons">touch_app</i>
+								<span>${eduList.hitCount}</span>
+							</button>
 						</div>
+					</div>
 				</div>
 			</div>
 			</c:forEach>

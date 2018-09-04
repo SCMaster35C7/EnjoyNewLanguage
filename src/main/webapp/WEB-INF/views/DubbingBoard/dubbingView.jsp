@@ -207,14 +207,11 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 		<input type="button" onclick="getSubList()" value="자막보기">
 
 	</div>
+	
 	<div>
 	<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
 	</div>
 
-
 	<div id="textbox"></div>
-	
-
-
 </body>
 </html>

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubtitlesList {
-
 	private List<ArrayList<String>> fulltext; // 2차원 배열로 가공한 전체 택스트
 	private List<ArrayList<String>> quiz;     // 2차원 배열로 가공한 퀴즈
 	private ArrayList<Double> playtime;       // 문장별 재생시간(계산용)
@@ -63,5 +62,4 @@ public class SubtitlesList {
 	public void setQuizIndex(ArrayList<String> quizIndex) {
 		this.quizIndex = quizIndex;
 	}
-
 }

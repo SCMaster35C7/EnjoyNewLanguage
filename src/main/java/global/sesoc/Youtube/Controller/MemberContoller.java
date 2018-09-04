@@ -228,7 +228,6 @@ public class MemberContoller {
 				notfinished.add(item);
 			} else {
 				finished.add(item);
-
 			}
 		}
 
@@ -237,7 +236,6 @@ public class MemberContoller {
 		model.addAttribute("notfinished", notfinished);
 		// System.out.println("완료 영상*******"+finished);
 		// System.out.println("아직 영상*******"+notfinished);
-
 		// map
 		Map<Integer, Integer> levelMap = new HashMap<>();
 
@@ -282,11 +280,7 @@ public class MemberContoller {
 	public String updateMember(Model model, HttpSession session, String usernick, String currpwd, String newpwd) {
 
 		String useremail = (String) session.getAttribute("useremail");
-		System.out.println("현재비번 : " + currpwd + "새 비번 : " + newpwd + "새 닉네임 : " + usernick);
 		int result = mRepository.updateMember(useremail, currpwd, newpwd, usernick);
-
-		System.out.println(result);
-
 		String message = null;
 
 		if (result == 1) {
@@ -297,11 +291,10 @@ public class MemberContoller {
 		} else {
 			message = "비밀번호가 수정되지 않았습니다.";
 		}
-
 		model.addAttribute("msg", message);
 
-		return "redirect:/";
 
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "recovery", method = RequestMethod.GET)

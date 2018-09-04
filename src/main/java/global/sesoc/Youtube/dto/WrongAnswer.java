@@ -8,7 +8,7 @@ public class WrongAnswer {
 	String url;
 	String regdate;
 	int classification;
-
+ 
 	public WrongAnswer() {
 	}
 

@@ -24,7 +24,6 @@ public class MemberRepository {
 	 * @param userpwd
 	 * @return
 	 */
-
 	public Member selectOneFromMember(Member m) {
 		/*
 		 * Map<String, Object> map = new HashMap<>(); map.put("useremail", useremail);
@@ -69,9 +68,7 @@ public class MemberRepository {
 
 	public int updateMember(String useremail, String currpwd, String newpwd, String usernick/* , Member member */) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
-
 		int result = 0;
-
 		Map<String, String> map = new HashMap<>();
 
 		map.put("useremail", useremail);
@@ -96,6 +93,7 @@ public class MemberRepository {
 		Member result = mapper.selectMyInfo(member);
 
 		return result;
+
 	}
 
 	public List<Video> selectMyVideo(String useremail) {

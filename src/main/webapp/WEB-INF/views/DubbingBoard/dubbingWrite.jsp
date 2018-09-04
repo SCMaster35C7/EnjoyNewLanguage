@@ -23,12 +23,13 @@
 			$('#record').on('click',function(){
 				saveVideoStartTime();	
 				cherkPoint=(!cherkPoint);
-			})
+			});
 		});
+		
 		function saveVideoStartTime(){
 			if(cherkPoint){
 				player.playVideo();
-			videoStartTime=player.getCurrentTime().toFixed(2);;
+				videoStartTime=player.getCurrentTime().toFixed(2);
 			}
 		}
 	  
@@ -45,7 +46,6 @@
 					alert('자막파일이 준비되있지 않은 영상입니다.');
 					console.log('error!!');
 				}
-
 			})
 		}
 		
@@ -53,17 +53,15 @@
 			var subtitles="";
 			setInterval(function() {
 				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
-			var time=player.getCurrentTime().toFixed(2);
-			//console.log(time);
-			var text=s[time];
-			console.log(text);
-			if(text!=null){
-			$('#textbox').html(text);	
-			}
+				var time=player.getCurrentTime().toFixed(2);
+				//console.log(time);
+				var text=s[time];
+				//console.log(text);
+				if(text!=null){
+					$('#textbox').html(text);	
+				}
 			},10);
-			
 		}
-		
 		
 		function submitDubbing(){
 			var fileValue = $("#saveFile").val().split("\\");
@@ -75,13 +73,7 @@
             }
             var submitForm=document.getElementById('savedubbing');
             submitForm.submit();
-            
-             
 		}
-		
-		
-	
-		
 	</script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
@@ -205,7 +197,6 @@
 
 	<div>
 		<input type="button" onclick="getSubList()" value="자막보기">
-
 	</div>
 
 
@@ -218,7 +209,6 @@
 	<input type="button" onclick="submitDubbing()" value="등록!">
 	<input type="hidden" name="url" value="${edu.url}">
 	<input type="hidden" name="useremail" value="${sessionScope.useremail}">
-	
 	</form>
 	
 	</div>
@@ -252,7 +242,5 @@
     <script>Mp3LameEncoderConfig = { memoryInitializerPrefixURL: "js/" };</script>
     <script src="audio/Mp3LameEncoder.min.js"></script>
     <script src="audio/EncoderEasy.js"></script>
-
-
 </body>
 </html>

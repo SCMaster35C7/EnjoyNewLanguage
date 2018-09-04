@@ -33,7 +33,6 @@ public class VideoController {
 	private final String eduFileRoot = "/EducationVideo";
 	// 교육용 자막파일 경로
 	
-
 	/***
 	 * Home 기본 페이지 이동
 	 * 
@@ -42,9 +41,7 @@ public class VideoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
-
-		System.out.println("로그인 해주세요 :  "+plzLogin);
-
+		
 		model.addAttribute("plzLogin", plzLogin);
     
 		return "index";
@@ -177,7 +174,7 @@ public class VideoController {
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
 		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
-		
+		System.out.println(reco);
 		if(recoTemp != null) {
 			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
 			int reqReco	= reco.getRecommendation();			// 요청온 값
@@ -214,10 +211,8 @@ public class VideoController {
 			int result = eduRepository.insertRecommendation(reco);
 			
 			if(reco.getRecommendation() == 0) {
-				// 좋아요
 				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 			}else {
-				// 싫어요
 				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 			}
 			

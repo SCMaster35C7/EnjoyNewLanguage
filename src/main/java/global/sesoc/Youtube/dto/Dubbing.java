@@ -18,6 +18,7 @@ public class Dubbing {
 	public Dubbing() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	public int getDubbingnum() {
 		return dubbingnum;
@@ -49,14 +50,6 @@ public class Dubbing {
 
 	public void setUseremail(String useremail) {
 		this.useremail = useremail;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	public String getUrl() {

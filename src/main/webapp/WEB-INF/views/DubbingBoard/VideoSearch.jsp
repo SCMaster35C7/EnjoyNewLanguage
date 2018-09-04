@@ -9,8 +9,7 @@
 </head>
 <body>
 	
-			    <input type="hidden" id="url" /> 
-	
+	<input type="hidden" id="url" /> 
 
 	<hr/>
 	 <h1 class="w100 text-center"><a href="index.html">YouTube Viral Search</a></h1>
@@ -43,10 +42,12 @@
          	
        		
         });
+    	
     	function DubbingWrite(){
    			var originalURL = $('#url').val();				// 원본 URL
        		var findVideoId = "";
        		var embedIndex = originalURL.indexOf("embed")+6;
+       		
    			findVideoId = originalURL.substring(embedIndex);	//iframe에서 선택시 VideoId추출
        		location.href="DubbingWrite?url="+findVideoId;
        		
