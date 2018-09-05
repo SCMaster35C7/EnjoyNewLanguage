@@ -17,12 +17,21 @@ public class WishRepository {
 	@Autowired
 	SqlSession session;
 	
+	public int getTotalCount(String searchType, String searchWord) {
+		WishMapper wMapper = session.getMapper(WishMapper.class);
+		Map<String, String> map =new HashMap<>();
+		map.put("searchType", searchType);
+		map.put("searchWord", searchWord);
+		int result = wMapper.getTotalCount(map);
+				
+		return result;
+	}
 	
-	public WishList findVideoWish(String useremail, int videowishnum) {
+	public WishList findVideoWish(String useremail, int videoNum) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		Map<String, Object> map = new HashMap<>();
 		map.put("useremail", useremail);
-		map.put("videowishnum", videowishnum);
+		map.put("videoNum", videoNum);
 		
 		WishList videoWishList = wMapper.findVideoWish(map);
 		
@@ -37,11 +46,16 @@ public class WishRepository {
 	}
 
 
-	public int insertVideoWish(String useremail, int videowishnum) {
+	public int insertVideoWish(String useremail, String videoNum, String title, String url, int subtitlenum, int dubbingnum) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		Map<String, Object> map = new HashMap<>();
+		
 		map.put("useremail", useremail);
-		map.put("videowishnum", videowishnum);
+		map.put("videoNum", videoNum);
+		map.put("title", title);
+		map.put("url", url);
+		map.put("subtitlenum", subtitlenum);
+		map.put("dubbingnum", dubbingnum);
 		
 		int result = wMapper.insertVideoWish(map);
 		
@@ -56,16 +70,23 @@ public class WishRepository {
 		return vList;
 	}
 
-	public int deleteVideoWish(int videowishnum) {
+	public int deleteVideoWish(int videoNum) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		int result = wMapper.deleteVideoWish(videowishnum);
+		int result = wMapper.deleteVideoWish(videoNum);
 		
 		return result;
 	}
 	
-	public WishList findSubWish(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+	public WishList findSubWish(String useremail, int subtitlenum) {
+		WishMapper wMapper = session.getMapper(WishMapper.class);
+		Map<String, Object> map = new HashMap<>();
+		map.put("useremail", useremail);
+		map.put("subtitlenum", subtitlenum);
+		
+		
+		WishList subWishList = wMapper.findSubWish(map);
+		
+		return subWishList;		
 	}
 	
 	public int subWishCount(String useremail) {
@@ -89,16 +110,20 @@ public class WishRepository {
 		return sList;
 	}
 
-	public int deleteSubWish(int subwishnum) {
+	public int deleteSubWish(int subtitlenum) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		int result = wMapper.deleteSubWish(subwishnum);
+		int result = wMapper.deleteSubWish(subtitlenum);
 		return result;
 	}
-
 	
-	public WishList findDubWish(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+	public WishList findDubWish(String useremail, int dubbingnum) {
+		WishMapper wMapper = session.getMapper(WishMapper.class);
+		Map<String, Object> map = new HashMap<>();
+		map.put("useremail", useremail);
+		map.put("dubbingnum", dubbingnum);
+		
+		WishList dWishList = wMapper.findDubWish(map);
+		return dWishList;
 		
 	}
 	public int dubWishCount(String useremail) {

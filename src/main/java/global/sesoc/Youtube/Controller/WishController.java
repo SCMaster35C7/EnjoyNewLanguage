@@ -12,24 +12,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import global.sesoc.Youtube.dao.WishRepository;
+import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.WishList;
+import global.sesoc.Youtube.util.PageNavigator;
 
 public class WishController {
 
 	@Autowired
 	WishRepository wRepository;
 	
+	final int COUNT_PER_PAGE = 10;
 	/**
-	 * 종합위시리스트 화면으로 이동	 * 
+	 * 영상위시리스트 화면으로 이동	 * 
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="/wishList", method=RequestMethod.GET, produces="application/text; charset=UTF8")
-	public String wishList(int wishnum, int videowishnum, HttpSession session) {
+	@RequestMapping(value="/videoWish", method=RequestMethod.GET, produces="application/text; charset=UTF8")
+	public String videoWish(int wishnum, int videoNum, HttpSession session) {
 		
 		String useremail = (String) session.getAttribute("useremail");
 		
-		WishList videoWishList = wRepository.findVideoWish(useremail, videowishnum);
+		WishList videoWishList = wRepository.findVideoWish(useremail, videoNum);
 		/*SubWishList subWishList		= wRepository.findSubWish(useremail, subwishnum);
 		DubWishList dubWishList		= wRepository.findDubWish(useremail, dubwishnum);*/
 		
@@ -40,7 +43,55 @@ public class WishController {
 		}else {
 			return "취소";
 		}*/
-		return "Member/wishList";
+		return "Member/videoWish";
+	}
+	
+	/**
+	 * 자막위시리스트 화면으로 이동	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/subWish", method=RequestMethod.GET, produces="application/text; charset=UTF8")
+	public String subWish(int wishnum, int subtitlenum, HttpSession session) {
+		
+		String useremail = (String) session.getAttribute("useremail");
+		
+		WishList subWishList = wRepository.findSubWish(useremail, subtitlenum);
+		/*SubWishList subWishList		= wRepository.findSubWish(useremail, subwishnum);
+		DubWishList dubWishList		= wRepository.findDubWish(useremail, dubwishnum);*/
+		
+		/*if(videoWishList == null) {
+			int result = wRepository.insertVideoWish(map);
+			
+			return "확인";
+		}else {
+			return "취소";
+		}*/
+		return "Member/subWish";
+	}
+		
+	/**
+	 * 더빙위시리스트 화면으로 이동	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/dubWish", method=RequestMethod.GET, produces="application/text; charset=UTF8")
+	public String dubWish(int wishnum, int dubbingnum, HttpSession session) {
+		
+		String useremail = (String) session.getAttribute("useremail");
+		
+		WishList dubWishList = wRepository.findDubWish(useremail, dubbingnum);
+		/*SubWishList subWishList		= wRepository.findSubWish(useremail, subwishnum);
+		DubWishList dubWishList		= wRepository.findDubWish(useremail, dubwishnum);*/
+		
+		/*if(videoWishList == null) {
+			int result = wRepository.insertVideoWish(map);
+			
+			return "확인";
+		}else {
+			return "취소";
+		}*/
+		return "Member/dubWish";
 	}
 	/**
 	 * 영상위시리스트 등록
@@ -52,7 +103,7 @@ public class WishController {
 	public int insertWish(WishList wlist, HttpSession session) {
 		
 		return 0;
-		/*int result = wRepository.insertVideoWish(wishlist);*/
+		/*int result = wRepository.insertVideoWish(wishlist);
 
 		/*String useremail = (String) session.getAttribute("useremail");
 		wishlist.setUseremail(useremail);
@@ -72,12 +123,27 @@ public class WishController {
 	 * 영상위시리스트 조회
 	 * @return
 	 */
-	
-	@RequestMapping(value = "/selectVideoWish", method = RequestMethod.POST)
-	public List<WishList> selectWishlist() {
-		/*List<VideoWishList> result = wRepository.selectVideoWish(useremail, bound);*/
+	@RequestMapping(value="/videoWish", method=RequestMethod.GET)
+	public String videoWish(
+			@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+			@RequestParam(value="searchType", defaultValue="title") String searchType,
+			@RequestParam(value="searchWord", defaultValue="") String searchWord,
+			Model model
+			) {
 		
-		return null;
+		int totalRecordCount = wRepository.getTotalCount(searchType, searchWord);
+		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
+		
+		List<WishList> wList =  wRepository.selectVideoWish(useremail, startRecord, countPerPage)   
+				
+		/*selectInvList(searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());*/
+
+		model.addAttribute("wList",wList);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("navi", navi);
+		
+		return "Member/videoWish";
 	}
 	
 	/**

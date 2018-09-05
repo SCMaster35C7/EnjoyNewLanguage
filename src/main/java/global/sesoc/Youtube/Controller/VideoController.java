@@ -211,8 +211,10 @@ public class VideoController {
 			int result = eduRepository.insertRecommendation(reco);
 			
 			if(reco.getRecommendation() == 0) {
+				// 좋아요
 				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "recommendation");
 			}else {
+				// 싫어요
 				result = eduRepository.updateIncreRecommend(reco.getTableName(), reco.getIdCode(), reco.getIdentificationnum(), "decommendation");
 			}
 			

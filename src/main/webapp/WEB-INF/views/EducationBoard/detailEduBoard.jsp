@@ -4,53 +4,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="author" content="zisung">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="author" content="zisung">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
+	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
-	<title>공부게시판 상세</title>
+<title>공부게시판 상세</title>
+
+<script
+	src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+<script>
+//css용
+$(function(){
+	//dropdown
+	$(".dropdown-trigger").dropdown();
 	
-	<script
-		src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
-	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-	<script>
-	//css용
-	$(function(){
-		//dropdown
-		$(".dropdown-trigger").dropdown();
+	//floating actionbutton
+	$(".fixed-action-btn").floatingActionButton({
+		/* direction:'left' */
+	});
+	
+	//modal open
+	$('#modal1').modal();
+	
+	//side-nav open
+	$('.sidenav').sidenav();
+	
+	//tooltip
+	$('.tooltipped').tooltip();
+	
+	//캐러셀
+	$('.carousel').carousel();
+	
+	$('#back').on('click', function() {
 		
-		//floating actionbutton
-		$(".fixed-action-btn").floatingActionButton({
-			/* direction:'left' */
-		});
+	});
+	
+	$('#loginBtn').on('click',function(){
+		var useremail = $('#useremail');
+		var userpwd = $('#userpwd');
 		
-		//modal open
-		$('#modal1').modal();
-		
-		//side-nav open
-		$('.sidenav').sidenav();
-		
-		//tooltip
-		$('.tooltipped').tooltip();
-		
-		//캐러셀
-		$('.carousel').carousel();
-		
-		$('#back').on('click', function() {
-			
-		});
-		
-		$('#loginBtn').on('click',function(){
-			var useremail = $('#useremail');
-			var userpwd = $('#userpwd');
-			
-			$('#loginForm').submit();
-		});
-	});	
+		$('#loginForm').submit();
+	});
+});	
 	
 	var correct="";
 	var quizIndex="";

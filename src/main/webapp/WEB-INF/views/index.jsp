@@ -53,11 +53,6 @@
 				$('#loginForm').submit();
 			});
 		});
-		
-		function dictionary(){
-			var win= window.open('dictionaryBoard','_black',"width=340px,height=250px");
-			win.focus();
-		}
 	</script>
 </head>
 
@@ -77,7 +72,6 @@
 		  </li>
 		  <li class="divider"></li>
 		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		  <li><a onclick="dictionary()">Dictionary</a></li>
 		</ul>
 	
 	<!-- nav -->
@@ -168,8 +162,8 @@
 								</a>
 								<ul>
 								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
 					</div>
@@ -211,7 +205,6 @@
 	</c:if>
 	<a href="DubbingWrite?videoNum=9">더빙작성 게시판 테스트</a>
 	<a href="dubDetail?dubbingnum=23">더빙 싱크 테스트</a>
-	<a href="tester">테스트...코드</a>
 	
 	<footer class="page-footer">
           <div class="container">
