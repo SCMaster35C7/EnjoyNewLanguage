@@ -12,7 +12,7 @@
 		where
 			${searchType} like '%' || #{searchWord} || '%' 
 	</select>
-
+	
 	<select resultType="Investigation" parameterType="map" id="selectInvList">
 		select
 			investigationnum

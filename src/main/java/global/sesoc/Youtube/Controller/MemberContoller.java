@@ -287,7 +287,7 @@ public class MemberContoller {
 
 			message = "비밀번호 수정 완료. 다시 로그인해 주세요";
 			session.invalidate();
-
+			
 		} else {
 			message = "비밀번호가 수정되지 않았습니다.";
 		}

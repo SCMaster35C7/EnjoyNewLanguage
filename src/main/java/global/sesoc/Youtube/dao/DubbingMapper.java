@@ -13,4 +13,5 @@ public interface DubbingMapper {
 	public int insertReply(Reply reply);          // 댓글 삽입
 	public int replyDelete(int replynum);         // 댓글 삭제
 	public int replyUpdate(Reply reply);          // 댓글 수정
+	
 }

@@ -12,7 +12,7 @@
 		var usernick = "${sessionScope.usernick}";
 		var dubbingnum = "${dubbing.dubbingnum}"
 		
-		//var soundA=new Audio("getDubbingSoundFile?voiceFile=${dubbing.voiceFile}");
+		var soundA=new Audio("getDubbingSoundFile?voiceFile=${dubbing.voiceFile}");
 		var saveTime=null;     //자막 싱크용 시간저장변수
 	
 		$(function() {
@@ -270,8 +270,8 @@
 			var videoTime=(${dubbing.starttime}-1);	
 			 player.playVideo();
 			 player.seekTo(videoTime, true);
-			//잠시만 주석 soundA.play();
-			//var audioTime=0;
+			soundA.play();
+			var audioTime=0;
 			setInterval(function() {
 				if(player.getCurrentTime().toFixed(2)=='${dubbing.endtime}'){
 					player.pauseVideo();
@@ -279,7 +279,7 @@
 				
 				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
 				if((player.getCurrentTime()-videoTime)>0.5||(player.getCurrentTime()-videoTime)<-0.5){				
-					//soundA.currentTime=player.getCurrentTime();
+					soundA.currentTime=player.getCurrentTime();
 				}
 				videoTime=player.getCurrentTime();
 			}, 10);
@@ -374,57 +374,20 @@
 		}
 		
 		function seekTo() {
-			var start=$('#start').val();
-			console.log(start);
-			//soundA.pause();
-			//soundA.currentTime=(start-1.5);
+			var start=$('#start').val();		
 			player.seekTo(start, true);
-			//soundA.play();
 		}
 	</script>
 
 	<hr />
-	<table border="1">
-		<tr>
-			<th>동영상 재생/멈춤</th>
-			<td>
-				<input type="button" id="playYoutube" value="재생"> 
-				<input type="button" id="pauseYoutube" value="멈춤">
-			</td>
-		</tr>
-		<tr>
-			<th>동영상 현재 시간 출력</th>
-			<td>
-				<input type="button" id="currentTime" value="영상 시간 출력" />
-			</td>
-		</tr>
-		<tr>
-			<th>동영상 음소거/음소거 제거</th>
-			<td>
-				<input type="button" id="mute" value="음소거" />
-				<input type="button" id="unMute" value="음소거 제거" />
-			</td>
-		</tr>
-		<tr>
-			<th>동영상 소리 설정</th>
-			<td>
-				<input type="number" id="soundValue" max="100" min="0" /> 
-				<input type="button" id="soundVolum" value="소리조절" />
-			</td>
-		</tr>
-		<tr>
-			<th>동영상 재생시간 이동</th>
-			<td><input type="text" id="start" /> <input type="button"
-				id="seekTo" value="영상이동" /></td>
-		</tr>
-	</table>
+	
 
 	<div>
 		<input type="button" onclick="getSubList()" value="자막보기">
 	</div>
 	
 	<div>
-		<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
+		더빙타임: ${dubbing.starttime} ~ ${dubbing.endtime} <input type="button" value="더빙 재생하기" onclick="sinkTime()"> 
 	</div>
 
 	<div id="textbox"></div>

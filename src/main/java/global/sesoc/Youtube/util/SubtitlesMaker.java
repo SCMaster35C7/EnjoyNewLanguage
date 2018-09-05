@@ -25,8 +25,7 @@ public class SubtitlesMaker {
 		List<ArrayList<String>> fulltext = new ArrayList<>(); // 본문 풀 텍스트
 		List<ArrayList<String>> quiz = new ArrayList<>(); // 문제지
 		ArrayList<String> correct = new ArrayList<>(); // 정답 리스트
-		playtimeView = new ArrayList<>(); // 자막 타임 시각용
-
+		playtimeView = new ArrayList<>(); // 자막 타임 시각용	
 		playtime = new ArrayList<>(); // 각 자막 줄별 시작타임 저장
 		quizIndex = new ArrayList<>(); // 각 퀴즈들의 인덱스 정보
 		int height = 0; // [][] 정보중 [?][]부분
@@ -35,10 +34,8 @@ public class SubtitlesMaker {
 		try {
 			fileReader = new FileReader(url);
 			in = new BufferedReader(fileReader);
-
 			while (true) {
 				str = in.readLine();
-
 				if (str == null)
 					break;
 				if (cut == 0) {
@@ -58,25 +55,22 @@ public class SubtitlesMaker {
 					}
 					Collections.shuffle(numberlist);
 					int[] sortlist = new int[block];
-
-					for (int i = 0; i < block; i++) {
+					for (int i = 0; i < block; i++) 
 						sortlist[i] = numberlist.get(i);
 
-					}
 					Arrays.sort(sortlist);
-
+					//빈칸을 뚫을 칸을 랜덤으로 선택하되 랜덤으로 뽑은칸을 순서대로 뚫어야 하므로(채점의 문제)
+					//랜덤숫자 추출 후 sort를 통해 정렬한다.
 					for (int i = 0; i < block; i++) {
 						String Index = height + ":" + sortlist[i];
 						quizIndex.add(Index);
 						correct.add(textlist.get(sortlist[i]));
 						quiztext.set(sortlist[i], "★★" + textlist.get(sortlist[i]).length());
-
 					}
 
 					quiz.add(quiztext);
 					height++;
 				}
-
 			}
 			resultlist.setCorrect(correct);
 			resultlist.setFulltext(fulltext);
@@ -94,11 +88,8 @@ public class SubtitlesMaker {
 					e.printStackTrace();
 				}
 			}
-
 		}
-
 		return resultlist;
-
 	}
 
 	// 한줄의 문장을 받아서 이를 단어단위로 쪼개고, 특수문자등을 걸러냄
@@ -110,19 +101,19 @@ public class SubtitlesMaker {
 		if (textLen == 0)
 			return null;
 
-		// 위에 적힌 1, 2, 3 이런거 지우기
+		// 자막 순번 숫자 제거
 		if ((text.charAt(0)) >= '0' && text.charAt(0) <= '9') {
 			// 뒤에 . 이 붙은 숫자는 대본임으로 삭제하지 않는다.
 			if (!text.contains(".") && text.length() < 5)
 				return null;
 		}
-		// ??:??:??,??? --> ??:??:??,??? 지우기
+		//시간정보 거르고 대신 시간정보를 분석 메소드로 보냄
 		if (text.contains("-->")) {
 			double resultTime = analysisTime(text);
 			playtime.add(resultTime);
 			return null;
 		}
-
+        //단어단위로 문장을 쪼개고 특수문자 거름
 		StringTokenizer st = new StringTokenizer(replacedText, " -?!♪.,:—–^\"[]{}()<>");
 
 		while (st.hasMoreTokens()) {

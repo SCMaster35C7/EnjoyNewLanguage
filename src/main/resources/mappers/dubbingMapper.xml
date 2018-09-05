@@ -11,7 +11,9 @@
 			content,
 	    	useremail,
 	    	url,
-	    	voiceFile
+	    	voiceFile,
+	    	starttime,
+	    	endtime
 		) values(
 			DUBBING_SEQ.nextval
 			, #{title}
@@ -19,9 +21,11 @@
 			, #{useremail}
 			, #{url}
 			, #{voiceFile}
+			, #{starttime}
+			, #{endtime}
 		)
 	</insert>
-
+	
 	<select id="dubbingBoard"  resultType="Dubbing">
 		select 
 			d.dubbingnum
@@ -51,6 +55,8 @@
 			, d.recommendation
 			, d.decommendation
 			, d.regdate
+			, d.starttime
+			, d.endtime
 		from 
 			dubbing d, member m
 		where 
