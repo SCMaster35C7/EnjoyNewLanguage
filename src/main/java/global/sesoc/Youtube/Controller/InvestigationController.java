@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.InvestigationRepository;
 import global.sesoc.Youtube.dto.Investigation;
+import global.sesoc.Youtube.dto.InvSubtitle;
 import global.sesoc.Youtube.dto.Reply;
+import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
 
 @Controller
@@ -23,6 +26,7 @@ public class InvestigationController {
 	@Autowired
 	InvestigationRepository invRepository;
 	
+	private final String subtitleFileRoot ="/YoutubeEduCenter/InvSubtitle";
 	/***
 	 * 자막 검증 게시판 
 	 * @return
@@ -78,6 +82,15 @@ public class InvestigationController {
 		return map;
 	}
 	
+	/**
+	 * 자막 검증 상세페이지로 이동
+	 * @param investigationnum
+	 * @param currentPage
+	 * @param searchType
+	 * @param searchWord
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/detailInvBoard", method= RequestMethod.GET)
 	public String detailInvBoard(
 		int investigationnum,
@@ -101,6 +114,11 @@ public class InvestigationController {
 		return "InvestigationBoard/detailInvBoard";
 	}
 	
+	/**
+	 * 자막 검증 상세페이지 모든 댓글가져오기
+	 * @param idnum
+	 * @return
+	 */
 	@RequestMapping(value="/replyInvAll", method=RequestMethod.POST)
 	public @ResponseBody List<Reply> replyInvAll(int idnum) {
 		List<Reply> replyList = invRepository.replyAllFromInv(idnum);
@@ -108,6 +126,11 @@ public class InvestigationController {
 		return replyList;
 	}
 	
+	/**
+	 * 자막 검증 게시판 댓글 삽입
+	 * @param reply
+	 * @return
+	 */
 	@RequestMapping(value="/replyInvInsert", method=RequestMethod.POST)
 	public @ResponseBody String replyInvInsert(@RequestBody Reply reply) {
 		//System.out.println(reply);
@@ -116,6 +139,11 @@ public class InvestigationController {
 		return "success";
 	}
 	
+	/**
+	 * 자먹 검증 게시판 댓글 없데이트
+	 * @param reply
+	 * @return
+	 */
 	@RequestMapping(value="/replyInvUpdate", method=RequestMethod.POST)
 	public @ResponseBody String replyInvUpdate(@RequestBody Reply reply) {
 		System.out.println(reply);
@@ -124,10 +152,35 @@ public class InvestigationController {
 		return "success";
 	}
 	
+	/**
+	 * 자막 검증 게시판 댓글 삭제
+	 * @param replynum
+	 * @return
+	 */
 	@RequestMapping(value="/replyInvDelete", method=RequestMethod.GET)
 	public @ResponseBody String replyInvDelete(int replynum) {
 		int result = invRepository.replyInvDelete(replynum);
 		
+		return "success";
+	}
+	
+	/**
+	 * 자막 검증 게시판 자막파일 등록
+	 * @param file
+	 * @return
+	 */
+	@RequestMapping(value="/registSubtitle", method=RequestMethod.POST)
+	public @ResponseBody String registSubtitle(MultipartFile file, InvSubtitle invSub) {
+		if(file.getSize() == 0) {
+			return "failure";
+		}else {
+			String originalFile = file.getName();
+			String savedFile = FileService.saveFile(file, subtitleFileRoot);
+			invSub.setSavedFile(savedFile);
+			invSub.setOriginalFile(originalFile);
+			
+			InvSubtitle result = invRepository.insertInvSubtitle(invSub);
+		}
 		return "success";
 	}
 }

@@ -136,5 +136,23 @@
 			investigationreply
 		where
 			replynum = #{replynum}
-	</delete> 
+	</delete>
+	
+	<insert id="insertInvSubtitle" parameterType="InvSubtitle">
+		insert into InvestigationSubtitle (
+			subtitlenum
+			, subtitleName
+			, originalFile
+			, savedFile
+			, useremail
+			, investigationnum
+		)values(
+			INVESTIGATION_SUBTITLE_SEQ.nextval
+			, #{subtitleName}
+			, #{originalFile}
+			, #{savedFile}
+			, #{useremail}
+			, #{investigationnum}
+		)
+	</insert>
 </mapper>

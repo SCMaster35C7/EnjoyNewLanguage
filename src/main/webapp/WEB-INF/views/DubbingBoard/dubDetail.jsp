@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -113,16 +114,20 @@
 					}
 				});
 			});
+			
+			$("#cancelUpdate").on('click', function() {
+				$("#replytext").val('');
+			});
 		});
 			
 		//주말
 		function init() {
-			$.ajax({
-				method : 'post',
-				url : 'replyAll',
-				data : 'dubbingnum=${dubbing.dubbingnum}',
-				success : output
-			});
+			 $.ajax({
+		            method : 'post',
+		            url : 'replyDubAll',
+		            data : 'idnum=${dubbing.dubbingnum}',
+		            success : output
+		    	});
 		}
 		
 		function output(resp) {
@@ -136,8 +141,10 @@
 				result += ' <p class="text" >' + resp[i].content + '</p>';
 				result += '<p class="date" >' + resp[i].regdate + '</p>';
 				result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-				result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-				result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+				if (usernick==resp[i].usernick) {
+					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+				}
 				result += ' </div>';
 			}
 			
@@ -190,7 +197,7 @@
 		
 				$.ajax({
 					method : 'post',
-					url : 'replyUpdate',
+					url : 'replyDubUpdate',
 					data : JSON.stringify(sendData),
 					dataType:'json',
 					contentType: "application/json; charset=UTF-8",
@@ -199,6 +206,7 @@
 		
 				$("#replytext").val('');
 				$("#replyInsert").val("리뷰등록");
+				$("#cancelUpdate").css("visibility", "hidden");
 			}
 		}
 
@@ -211,7 +219,7 @@
 			replynum = $(this).attr('data-rno');
 			$.ajax({
 				method : 'get',
-				url : 'replyDelete',
+				url : 'replyDubDelete',
 				data : 'replynum=' + replynum,
 				success : init
 			});
@@ -232,7 +240,10 @@
 			$("#replytext").val(replytext);
 			$("#replyInsert").val("댓글수정");
 			$("#usernick").prop('readonly', 'readonly');
+			$("#cancelUpdate").css("visibility", "visible");
 
+				
+			
 			$("#replynum").val(replynum);
 		}
 		
@@ -406,6 +417,11 @@
 		</button>
 	</div>
 	
+	<%-- <c:if test="${sessionScope.usernick==resp[i].usernick}">
+	
+	</c:if> --%>
+	
+	
 	<hr/>
 	<!--주말 댓글-->
 	<div> 
@@ -417,6 +433,7 @@
 			<input hidden="replynum" id="replynum" name="replynum" value=""/>
 			
 			<input id="replyInsert" type="button" value="댓글등록"/>
+			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
 		</form>
 		
 		<hr/>

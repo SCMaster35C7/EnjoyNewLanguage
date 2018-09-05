@@ -33,8 +33,10 @@ public class DubbingController {
 	@Autowired
 	DubbingRepository dubRepository;
 
-	private final String DubbingFileRoot = "/YoutubeEducenter/EducationDubbing";
-	private final String eduFileRoot = "/YoutubeEducenter/EducationVideo";
+
+	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
+	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
+
 
 	// 더빙겟
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
@@ -133,9 +135,12 @@ public class DubbingController {
 		return "redirect:dubbingBoard";
 	}
   
-	@RequestMapping(value="/replyAll", method=RequestMethod.POST)
-	public @ResponseBody List<Reply> replyAll(int dubbingnum) {
-		List<Reply> replyList = dubRepository.replyAll(dubbingnum);
+
+	@RequestMapping(value="/replyDubAll", method=RequestMethod.POST)
+	public @ResponseBody List<Reply> replyDubAll(int idnum) {
+		//System.out.println(dubbingnum);
+		List<Reply> replyList = dubRepository.replyDubAll(idnum);
+
 		return replyList;
 	}
 			
@@ -145,15 +150,15 @@ public class DubbingController {
 		return result;
 	}
 			
-	@RequestMapping(value="/replyDelete", method=RequestMethod.GET)
-	public @ResponseBody Integer replyDelete(int replynum) {
-		int result = dubRepository.replyDelete(replynum);
+	@RequestMapping(value="/replyDubDelete", method=RequestMethod.GET)
+	public @ResponseBody Integer replyDubDelete(int replynum) {
+		int result = dubRepository.replyDubDelete(replynum);
 		return result;
 	}
 			
-	@RequestMapping(value="/replyUpdate", method=RequestMethod.POST)
-	public @ResponseBody Integer replyUpdate(@RequestBody Reply reply) {
-		int result = dubRepository.replyUpdate(reply);
+	@RequestMapping(value="/replyDubUpdate", method=RequestMethod.POST)
+	public @ResponseBody Integer replyDubUpdate(@RequestBody Reply reply) {
+		int result = dubRepository.replyDubUpdate(reply);
 		return result;
 	}
 }

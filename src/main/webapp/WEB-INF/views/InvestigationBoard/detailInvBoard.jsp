@@ -108,8 +108,45 @@
 	            	}
 	        	});
 	    	});
+	   		
+			$('#registSubtitle').on('click', function() {
+				var form = $('#fileForm')[0];
+				var formData = new FormData(form);
+				var subtitleName = $('#subtitleName');
+				
+				if(subtitleName.val().trim().length == 0) {
+					alert("자막 파일명을 입력해주세요.");
+					subtitleName.focus();
+					return;
+				}
+				
+				formData.append("file", $('#subtitleFile')[0].files[0]);
+				formData.append("useremail", useremail);
+				formData.append("investigationNum", investigationnum);
+				formData.append("subtitleName", subtitleName.val());
+				
+				$.ajax({
+					url:'registSubtitle'
+					, type:'post'
+					, processData: false
+					, contentType: false
+					, data: formData
+					, success: function(resp) {
+						if(resp == 'failure') {
+							alert("파일을 넣어주세요.")
+							return;
+						}else if(resp == 'success') {
+							subtitleName.val('');
+							$('#subtitleFile').val('');
+						}
+					}
+					, error: function(resp, code, error) {
+	                  	alert("resp : "+resp+", code : "+code+", error : "+error);
+	            	}
+				});
+			});
 		});
-	      
+		
 		function init() {
 	        $.ajax({
 	            method : 'post',
@@ -232,7 +269,8 @@
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"
 		src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
-		frameborder="0" allowfullscreen></iframe>
+		frameborder="0" allowfullscreen>
+	</iframe>
 
 	<script>
       // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -246,9 +284,6 @@
       var player;
       function onYouTubeIframeAPIReady() {
          player = new YT.Player('youtube', {
-            //height : '490',
-            //width : '960',
-            //videoId : '3MteSlpxCpo',
             events : {
                'onReady' : onPlayerReady,
                'onStateChange' : onPlayerStateChange
@@ -364,8 +399,21 @@
 			<img alt="" src="images/tdown.png"> <span id="decoCount">${inv.decommendation}</span>
 		</button>
 	</div>
-	
 	<hr />
+	
+	<div>
+		<form id="fileForm" method="post" enctype="multipart/form-data" action="">
+			파일명<input type="text" id="subtitleName"/>
+			<input type="file" id="subtitleFile"/>
+			<input type="button" id="registSubtitle" value="자막 등록"/>
+		</form>
+	</div>
+	
+	<div id="subtitle">
+		
+	</div>
+	<hr />
+	
 	<div>
 		<form id="replyform" method="post">
 			<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
