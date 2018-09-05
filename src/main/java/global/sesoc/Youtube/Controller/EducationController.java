@@ -23,7 +23,7 @@ public class EducationController {
 	@Autowired
 	EducationRepository eduRepository;
 
-	private final String eduFileRoot = "/EducationVideo";
+	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 	
 	@RequestMapping(value = "getSubtitlesList", method = RequestMethod.GET)
 	public @ResponseBody SubtitlesList getSubtitlesList(int level, String savedfileName) {

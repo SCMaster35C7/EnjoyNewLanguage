@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import global.sesoc.Youtube.dto.Investigation;
+import global.sesoc.Youtube.dto.InvSubtitle;
 import global.sesoc.Youtube.dto.Reply;
 
 public interface InvestigationMapper {
@@ -20,4 +21,6 @@ public interface InvestigationMapper {
 	public int insertReplyToInv(Reply reply);											// 자막 요청 게시글 댓글 추가	
 	public int replyInvUpdate(Reply reply);												// 자막 요청 게시글 댓글 수정
 	public int replyInvDelete(int replynum);											// 자막 요청 게시글 댓글 삭제
+	
+	public InvSubtitle insertInvSubtitle(InvSubtitle invSub);		// 자막 요청 게시글 자막 등록
 }

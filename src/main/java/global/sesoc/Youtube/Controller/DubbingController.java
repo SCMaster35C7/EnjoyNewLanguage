@@ -33,8 +33,8 @@ public class DubbingController {
 	@Autowired
 	DubbingRepository dubRepository;
 
-	private final String DubbingFileRoot = "/EducationDubbing";
-	private final String eduFileRoot = "/EducationVideo";
+	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
+	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 
 	// 더빙겟
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
