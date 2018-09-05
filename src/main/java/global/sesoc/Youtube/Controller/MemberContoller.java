@@ -155,7 +155,7 @@ public class MemberContoller {
 
 		mRepository.insertMember(member);
 		session.setAttribute("waitingEmail", member.getUseremail());
-
+		
 		String setfrom = "timetravelwithdoctor@gmail.com";
 		// String tomail = request.getParameter("tomail"); // 받는 사람 이메일
 		String tomail = member.getUseremail(); // 받는 사람 이메일

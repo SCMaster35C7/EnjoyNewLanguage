@@ -9,9 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import global.sesoc.Youtube.dto.DubWishList;
-import global.sesoc.Youtube.dto.SubWishList;
-import global.sesoc.Youtube.dto.VideoWishList;
+import global.sesoc.Youtube.dto.WishList;
 
 @Repository
 public class WishRepository {
@@ -20,13 +18,13 @@ public class WishRepository {
 	SqlSession session;
 	
 	
-	public VideoWishList findVideoWish(String useremail, int videowishnum) {
+	public WishList findVideoWish(String useremail, int videowishnum) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		Map<String, Object> map = new HashMap<>();
 		map.put("useremail", useremail);
 		map.put("videowishnum", videowishnum);
 		
-		VideoWishList videoWishList = wMapper.findVideoWish(map);
+		WishList videoWishList = wMapper.findVideoWish(map);
 		
 		return videoWishList;
 	}
@@ -50,10 +48,10 @@ public class WishRepository {
 		return result;
 	}
 
-	public List<VideoWishList> selectVideoWish(String useremail, int startRecord, int countPerPage) {
+	public List<WishList> selectVideoWish(String useremail, int startRecord, int countPerPage) {
 		RowBounds bound = new RowBounds(startRecord, countPerPage);
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		List<VideoWishList> vList = wMapper.selectVideoWish(useremail, bound);
+		List<WishList> vList = wMapper.selectVideoWish(useremail, bound);
 				
 		return vList;
 	}
@@ -65,7 +63,7 @@ public class WishRepository {
 		return result;
 	}
 	
-	public SubWishList findSubWish(Map<String, Object> map) {
+	public WishList findSubWish(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -84,9 +82,9 @@ public class WishRepository {
 		return result;
 	}
 
-	public List<SubWishList> selectSubWish(String useremail, RowBounds bound) {
+	public List<WishList> selectSubWish(String useremail, RowBounds bound) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		List<SubWishList> sList = wMapper.selectSubWish(useremail, bound);
+		List<WishList> sList = wMapper.selectSubWish(useremail, bound);
 		
 		return sList;
 	}
@@ -98,7 +96,7 @@ public class WishRepository {
 	}
 
 	
-	public DubWishList findDubWish(Map<String, Object> map) {
+	public WishList findDubWish(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return null;
 		
@@ -116,16 +114,16 @@ public class WishRepository {
 		return result;
 	}
 
-	public List<DubWishList> selectDubWish(String useremail, RowBounds bound) {
+	public List<WishList> selectDubWish(String useremail, RowBounds bound) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		List<DubWishList> dList = wMapper.selectDubWish(useremail, bound);
+		List<WishList> dList = wMapper.selectDubWish(useremail, bound);
 		
 		return dList;
 	}
 
-	public int deleteDubWish(int dubwishnum) {
+	public int deleteDubWish(int dubbingnum) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		int result = wMapper.deleteDubWish(dubwishnum);
+		int result = wMapper.deleteDubWish(dubbingnum);
 		
 		return result;
 	}	

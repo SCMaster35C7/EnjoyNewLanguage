@@ -1,8 +1,6 @@
 package global.sesoc.Youtube.Controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import global.sesoc.Youtube.dao.WishRepository;
-import global.sesoc.Youtube.dto.DubWishList;
-import global.sesoc.Youtube.dto.SubWishList;
-import global.sesoc.Youtube.dto.VideoWishList;
+import global.sesoc.Youtube.dto.WishList;
 
 public class WishController {
 
@@ -29,11 +25,11 @@ public class WishController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/wishList", method=RequestMethod.GET, produces="application/text; charset=UTF8")
-	public String wishList(int videowishnum, int subwishnum, int dubwishnum, HttpSession session) {
+	public String wishList(int wishnum, int videowishnum, HttpSession session) {
 		
 		String useremail = (String) session.getAttribute("useremail");
 		
-		VideoWishList videoWishList = wRepository.findVideoWish(useremail, videowishnum);
+		WishList videoWishList = wRepository.findVideoWish(useremail, videowishnum);
 		/*SubWishList subWishList		= wRepository.findSubWish(useremail, subwishnum);
 		DubWishList dubWishList		= wRepository.findDubWish(useremail, dubwishnum);*/
 		
@@ -53,7 +49,7 @@ public class WishController {
 	 * @return
 	 */
 	@RequestMapping(value = "/insertVideoWish", method = RequestMethod.POST)
-	public int insertWish(VideoWishList vWishlist, HttpSession session) {
+	public int insertWish(WishList wlist, HttpSession session) {
 		
 		return 0;
 		/*int result = wRepository.insertVideoWish(wishlist);*/
@@ -78,7 +74,7 @@ public class WishController {
 	 */
 	
 	@RequestMapping(value = "/selectVideoWish", method = RequestMethod.POST)
-	public List<VideoWishList> selectWishlist() {
+	public List<WishList> selectWishlist() {
 		/*List<VideoWishList> result = wRepository.selectVideoWish(useremail, bound);*/
 		
 		return null;

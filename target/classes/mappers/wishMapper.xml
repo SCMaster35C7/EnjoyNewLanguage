@@ -9,56 +9,50 @@
 		select
 			count(*)
 		from
-			videowishlist w, educationvideo v
+			wishlist w, educationvideo e
 		where
-			w.videowishnum = a.videonum
+			w.videonum = e.videonum
 		and
 			useremail=#{useremail}
 	</select>
 	<!-- 영상 위시리스트 조회 -->
 	<select id="selectVideoWish" parameterType="string" resultType="VideoWishList">
-		<!-- select distinct * 
-		from videowishlist 
-		where useremail=#{useremail} -->
-		
+	
 		select
 			*
 		from
-			videowishlist w, educationvideo a
+			wishlist w, educationvideo e
 		where
-			w.videonum = a.videonum
+			w.videonum = e.videonum
 		and
 			useremail=#{useremail}
 	</select>
 	
 	<!-- 영상 위시리스트 등록 -->	
 	<insert id="insertVideoWish" parameterType="map">
-	insert into videowishlist
-		values (
+	insert into wishlist
+	<!-- (
+		wishnum
+		, url
+		, title
+		, regDate
+		, to_char(regDate, 'YYYY-MM-DD') regDate
+	
+	) -->
+	values(
 			#{useremail}
-			, #{videowishnum}
+			, #{wishnum}
+			, #{videoNum}
 		)
-		<!-- insert into wishlist(
-			wishnum
-			, url
-			, title
-			, regDate
-			, to_char(regDate, 'YYYY-MM-DD') regDate
-		)values(
-			wish_list_seq.nextval
-			#{useremail}
-			, #{url}
-			, #{title}
-			, sysdate			
-		) -->
+		
 	</insert>
 	
 	<!-- 영상 위시리스트 삭제 -->
 	<delete id="deleteVideoWish" parameterType="int">
 		delete from
-			videowishlist
+			wishlist
 		where
-			videowishnum = #{videowishnum}
+			wishnum = #{videonum}
 	</delete>
 	
 	<!-- 자막 위시리스트 데이터 수 세기 -->
@@ -66,29 +60,52 @@
 		select
 			count(*)
 		from
-			subwishlist w, sublist v
+			wishlist w, InvestigationSubtitle i
 		where
-			w.subnum = a.subnum
+			w.subtitlenum = i.subtitlenum
 		and
 			useremail=#{useremail}
 	</select>
 	
 	<!-- 자막 위시리스트 조회 -->
 	<select id="selectSubWish" resultType="SubWishList" parameterType="string">
-		
+		select
+			*
+		from
+			wishlist w, educationvideo e
+		where
+			w.videonum = e.videonum
+		and
+			useremail=#{useremail}
 	</select>
 	
 	<!-- 자막 위시리스트 등록 -->
 
 	<insert id="insertSubWish">
-
+		insert into wishlist
+	<!-- (
+		wishnum
+		, url
+		, title
+		, regDate
+		, to_char(regDate, 'YYYY-MM-DD') regDate
+	
+	) -->
+	values(
+			#{useremail}
+			, #{wishnum}
+			, #{subtitlenum}
+		)
 
 	</insert>
 	
 	<!-- 자막 위시리스트 삭제 -->
 
 	<delete id="deleteSubWish">
-	
+		delete from
+			wishlist
+		where
+			wishnum = #{subtitlenum}
 	
 	</delete>
 	
@@ -97,25 +114,39 @@
 		select
 			count(*)
 		from
-			dubwishlist w, dubbing v
+			wishlist w, dubbing d
 		where
-			w.dubnum = a.dubnum
+			w.dubbingnum = d.dubbingnum
 		and
 			useremail=#{useremail}
 	</select>
 	
 	<!-- 더빙 위시리스트 조회 -->
 	<select id="selectDubWish" resultType="Wishlist" parameterType="string">
-	
+		select
+			*
+		from
+			wishlist w, Dubbing d
+		where
+			w.dubbingnum = d.dubbingnum
+		and
+			useremail = #{useremail}
 	</select>
 	
 	<!-- 더빙 위시리스트 등록 -->
 	<insert id="insertDubWish">
-
+		insert into wishlist(
+			
+		)values(
+		
+		)
 	</insert>
 	
 	<!-- 더빙 위시리스트 삭제 -->
 	<delete id="deleteDubWish">
-
+		delete from
+			wishlist
+		where
+			wishnum = #{dubbingnum}	
 	</delete>
 </mapper>
