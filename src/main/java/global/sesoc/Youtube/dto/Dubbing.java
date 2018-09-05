@@ -18,6 +18,7 @@ public class Dubbing {
 	public Dubbing() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	public int getDubbingnum() {
 		return dubbingnum;
@@ -41,14 +42,6 @@ public class Dubbing {
 
 	public void setUsernick(String usernick) {
 		this.usernick = usernick;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	public String getUseremail() {
@@ -130,7 +123,5 @@ public class Dubbing {
 				+ hitcount + ", regdate=" + regdate + ", recommendation=" + recommendation + ", decommendation="
 				+ decommendation + ", starttime=" + starttime + ", endtime=" + endtime + "]";
 	}
-
-	
 
 }

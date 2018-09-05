@@ -20,7 +20,8 @@
 		order by
 			regdate desc
 	</select>
-	
+
+
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum
@@ -37,7 +38,7 @@
 		where
 			videonum = #{videoNum}
 	</select>
-	
+
 	<insert id="insertEduVideo" parameterType="Education">
 		insert into EducationVideo(
 			videonum
@@ -80,7 +81,7 @@
 		where 
 			videonum=#{value}
 	</select>
-	
+
 	<select id="selectSubName2" parameterType="String" resultType="String">
 		select 
 			savedfile
@@ -98,7 +99,7 @@
 		where 
 			useremail=#{useremail} and url=#{url}
 	</select>
-	
+
 	<insert id="insertUserStudy" parameterType="TestResult">
 		insert into userstudy (
 			studynum,
@@ -112,7 +113,7 @@
 			0
 		)
 	</insert>
-	
+
 	<select id="checkLastTestlevel" parameterType="TestResult" resultType="int">
 		select 
 			testlevel
@@ -121,71 +122,73 @@
 		where 
 			useremail=#{useremail} and url=#{url}
 	</select>
-	
+
 	<update id="updateTestResult" parameterType="TestResult">
-	update 
-		userstudy
-	set 
-		laststudy=sysdate,
-		challengeCount= challengeCount+1
-		<if test="successCount!=0">
-		,successCount=successCount+1
-		</if>
-		<if test="failureCount!=0">
-		,failureCount=failureCount+1
-		</if>
-		<if test="testlevel!=0">
-		,testlevel=#{testlevel}
-		</if>
-	where  
-		useremail=#{useremail} and url=#{url}
+		update 
+			userstudy
+		set 
+			laststudy=sysdate,
+			challengeCount= challengeCount+1
+			<if test="successCount!=0">
+			,successCount=successCount+1
+			</if>
+			<if test="failureCount!=0">
+			,failureCount=failureCount+1
+			</if>
+			<if test="testlevel!=0">
+			,testlevel=#{testlevel}
+			</if>
+		where  
+			useremail=#{useremail} 
+		and 
+			url=#{url}
 	</update>
 
 	<insert id="insertWrongAnswer" parameterType="WrongAnswer">
-	insert into wronganswer (
-		answernum,
-		useremail,
-		wrongindex,
-		correctanswer,
-		url,
-		regdate,
-		classification
-	)values(
-		WRONG_ANSWER_SEQ.nextval,
-		#{useremail},
-		#{wrongIndex},
-		#{correctAnswer},
-		#{url},
-		sysdate,
-		#{classification}
-	)
+		insert into wronganswer (
+			answernum,
+			useremail,
+			wrongindex,
+			correctanswer,
+			url,
+			regdate,
+			classification
+		)values(
+			WRONG_ANSWER_SEQ.nextval,
+			#{useremail},
+			#{wrongIndex},
+			#{correctAnswer},
+			#{url},
+			sysdate,
+			#{classification}
+		)
 	</insert>
-	
+
 	<select id="selectWrongAnswerList" parameterType="WrongAnswer" resultType="WrongAnswer">
-	select 
-		*
-	from 
-		WrongAnswer
-	where 
-		useremail=#{useremail} 
-	and 
-		url=#{url} 
-	and 
-		classification=#{classification}
-	order by answernum
+		select 
+			*
+		from 
+			WrongAnswer
+		where 
+			useremail=#{useremail} 
+		and 
+			url=#{url} 
+		and 
+			classification=#{classification}
+		order by answernum
 	</select>
-	
+
 	<delete id="deleteWrongAnswer" parameterType="WrongAnswer">
-	delete from 
-		wronganswer
-	where 
-		useremail=#{useremail} 
-	and 
-		url=#{url} 
-	and 
-		classification=#{classification} 
-	and 
-		wrongindex=#{wrongIndex}
+		delete from 
+			wronganswer
+		where 
+			useremail=#{useremail} 
+		and 
+			url=#{url} 
+		and 
+			classification=#{classification} 
+		and 
+			wrongindex=#{wrongIndex}
 	</delete>
 
 	<select id="selectOneFromRecommendation" parameterType="Recommendation" resultType="Recommendation">
@@ -200,7 +203,7 @@
 		and
 			recommendtable = #{recommendtable}
 	</select>
-	
+
 	<insert id="insertRecommendation" parameterType="Recommendation">
 		insert into recommendation (
 			useremail
@@ -221,7 +224,7 @@
 		set
 			${commendation} = ${commendation}+1
 		where
-			${IDCode} = #{videonum}
+			${idCode} = #{videonum}
 	</update>
 
 	<delete id="deleteRecommend" parameterType="Recommendation">
@@ -241,7 +244,7 @@
 		set
 			${commendation} = ${commendation}-1
 		where
-			${IDCode} = #{videonum}
+			${idCode} = #{videonum}
 	</update>
 
 	<update id="updateRecommend" parameterType="Recommendation">

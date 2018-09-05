@@ -32,6 +32,7 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 				dataType : 'json',
 				success : makeSubList,
 				error : function() {
+					alert('자막파일이 준비되있지 않은 영상입니다.');
 					console.log('error!!');
 				}
 
@@ -61,7 +62,7 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 			soundA.play();
 			//var audioTime=0;
 			setInterval(function() {
-				if(player.getCurrentTime().toFixed(2)==${d.endtime}){
+				if(player.getCurrentTime().toFixed(2)=='${d.endtime}'){
 					player.pauseVideo();
 				}
 				
@@ -206,15 +207,11 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 		<input type="button" onclick="getSubList()" value="자막보기">
 
 	</div>
+	
 	<div>
 	<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
 	</div>
 
-
 	<div id="textbox"></div>
-	
-	
-	
-
 </body>
 </html>

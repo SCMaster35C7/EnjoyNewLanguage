@@ -19,14 +19,14 @@ public class DubbingRepository {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		Dubbing dubbing = mapper.selectOneDub(dubbingnum);
 		
-    return dubbing;
+		return dubbing;
 	}
 
 	public List<Dubbing> dubbingBoard() {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		List<Dubbing> dubbing = mapper.dubbingBoard();
 		
-    return dubbing;
+		return dubbing;
 	}
 
 	public int insertDubbing(Dubbing dub) {
@@ -64,6 +64,6 @@ public class DubbingRepository {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		int result = mapper.replyUpdate(reply);
     
-    return result;
-  }
+		return result;
+	}
 }

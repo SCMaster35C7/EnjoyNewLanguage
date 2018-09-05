@@ -26,7 +26,6 @@ public class EducationRepository {
 	 * 
 	 * @return
 	 */
-
 	public List<Education> selectEduList(String searchType, String searchWord, int startRecord, int countPerPage) {
 		RowBounds bound = new RowBounds(startRecord, countPerPage);
 
@@ -83,7 +82,6 @@ public class EducationRepository {
 
 	public Recommendation selectOneFromRecommendation(Recommendation reco) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
-		
 		Recommendation result = mapper.selectOneFromRecommendation(reco);
 		
 		return result;
@@ -91,22 +89,18 @@ public class EducationRepository {
 
 	public int insertRecommendation(Recommendation reco) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
-		
 		int result = mapper.insertRecommendation(reco);
 		
 		return result;
 	}
 
-	public int updateIncreRecommend(String tableName, String  IDCode, int videonum, String commendation) {
+	public int updateIncreRecommend(String tableName, String  idCode, int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
-		System.out.println(tableName);
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
 		map.put("tableName", tableName);
-		map.put("IDCode", IDCode);
-		
-		System.out.println("난 레포지토리 : " +map);
+		map.put("idCode", idCode);
 		
 		int result = mapper.updateIncreRecommend(map);
 		
@@ -120,15 +114,13 @@ public class EducationRepository {
 		return result;
 	}
 
-	public int updateDecreRecommend(String tableName, String  IDCode,  int videonum, String commendation) {
+	public int updateDecreRecommend(String tableName, String  idCode,  int videonum, String commendation) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		Map<String,Object> map = new HashMap<>();
 		map.put("videonum", videonum);
 		map.put("commendation", commendation);
 		map.put("tableName", tableName);
-		map.put("IDCode", IDCode);
-		
-		System.out.println("난 레포지토리 : " +map);
+		map.put("idCode", idCode);
 		
 		int result = mapper.updateDecreRecommend(map);
 		
@@ -145,44 +137,49 @@ public class EducationRepository {
 	public String selectSubName(int videoNum) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		String result = mapper.selectSubName(videoNum);
+		
 		return result;
 	}
-	
-
 
 	public String selectSubName2(String url) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		String result = mapper.selectSubName2(url);
+		
 		return result;
 	}
 
 	public String checkUserStudyExist(TestResult tr) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		String result = mapper.checkUserStudyExist(tr);
+		
 		return result;
 	}
 
 	public int insertUserStudy(TestResult tr) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.insertUserStudy(tr);
+		
 		return result;
 	}
 
 	public int checkLastTestlevel(TestResult tr) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.checkLastTestlevel(tr);
+		
 		return result;
 	}
 
 	public int updateTestResult(TestResult tr) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.updateTestResult(tr);
+		
 		return result;
 	}
 
 	public int insertWrongAnswer(WrongAnswer wa) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.insertWrongAnswer(wa);
+		
 		return result;
 	}
 
@@ -197,9 +194,4 @@ public class EducationRepository {
 		int result = mapper.deleteWrongAnswer(wa);
 		return result;
 	}
-
-	
-
-	
-	
 }

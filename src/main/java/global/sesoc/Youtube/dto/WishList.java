@@ -6,7 +6,7 @@ public class WishList {
 	private String url;			
 	private String title;
 	private String regDate;
-	
+	 
 	public WishList() {
 		// TODO Auto-generated constructor stub
 	}

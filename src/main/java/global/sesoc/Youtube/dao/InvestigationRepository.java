@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import global.sesoc.Youtube.dto.Investigation;
+import global.sesoc.Youtube.dto.Reply;
 
 @Repository
 public class InvestigationRepository {
@@ -21,7 +22,6 @@ public class InvestigationRepository {
 		Map<String, String> map =new HashMap<>();
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
-		
 		int result = mapper.getTotalCount(map);
 				
 		return result;
@@ -67,5 +67,32 @@ public class InvestigationRepository {
 		
 		return result;
 	}
+
+	public List<Reply> replyAllFromInv(int investigationnum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		List<Reply> rList = mapper.replyAllFromInv(investigationnum);
+		
+		return rList;
+	}
 	
+	public int insertReplyToInv(Reply reply) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.insertReplyToInv(reply);
+		
+		return result;
+	}
+
+	public int replyInvUpdate(Reply reply) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.replyInvUpdate(reply);
+		
+		return result;
+	}
+
+	public int replyInvDelete(int replynum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.replyInvDelete(replynum);
+		
+		return result;
+	}
 }

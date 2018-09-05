@@ -24,7 +24,7 @@ public class EducationController {
 	EducationRepository eduRepository;
 
 	private final String eduFileRoot = "/EducationVideo";
-
+	
 	@RequestMapping(value = "getSubtitlesList", method = RequestMethod.GET)
 	public @ResponseBody SubtitlesList getSubtitlesList(int level, String savedfileName) {
 		// String jamacName = eduRepository.selectSubName(videoNum);
@@ -32,7 +32,8 @@ public class EducationController {
 		String jamacURL = eduFileRoot + "/" + savedfileName;
 		SubtitlesMaker sm = new SubtitlesMaker();
 		SubtitlesList sublist = sm.RandomText(jamacURL, level);
-
+		System.out.println(sublist);
+		
 		return sublist;
 	}
 
@@ -148,5 +149,10 @@ public class EducationController {
 			return "fail"; // 시험 실패
 		}
 
+	}
+	
+	@RequestMapping(value="dictionaryBoard",method=RequestMethod.GET)
+	public String dicionaryBoard() {
+		return "EducationBoard/dictionaryBoard";
 	}
 }

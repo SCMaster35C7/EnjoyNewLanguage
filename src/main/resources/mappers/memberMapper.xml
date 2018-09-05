@@ -10,7 +10,10 @@
 			, to_char(birth, 'YYYY-MM-DD') birth
 			, to_char(joinDate, 'YYYY-MM-DD') joinDate
 			, to_char(lastAccess, 'YYYY-MM-DD') lastAccess
-			, point, warningCount, admin, status
+			, point
+			, warningCount
+			, admin
+			, status
 		from
 			member
 		where
@@ -18,23 +21,27 @@
 		<if test="userpwd != null">
 		and
 			userpwd=#{userpwd}
+		and
+		    useremail not in(select useremail from confirmmember)
 		</if>
 	</select>
-	
+
 	<select id="selectByNick" parameterType="string" resultType="Member">
 		select
 			useremail, usernick, userpwd, gender
 			, to_char(birth, 'YYYY-MM-DD') birth
 			, to_char(joinDate, 'YYYY-MM-DD') joinDate
 			, to_char(lastAccess, 'YYYY-MM-DD') lastAccess
-			, point, warningCount, admin, status
+			, point
+			, warningCount
+			, admin
+			, status
 		from
 			member
 		where 
 			usernick = #{usernick}
 	</select>
-	
-	
+
 	<insert id = "insertMember" parameterType="Member">
 		insert into member (
 			useremail
@@ -50,7 +57,7 @@
 			, #{birth}
 		)
 	</insert>
-	
+
 	<update id="updateStatus" parameterType="string">
 		update 
 			member
@@ -68,27 +75,31 @@
 		where 
 			useremail=#{useremail}
 	</update>
-	
+
 	<!-- 회원정보 수정 -->
 	<update id="updateMember" parameterType="map" >
-	update member
-	set
-		userpwd = #{newpwd}
-		, usernick = #{usernick}
-	where
-		userpwd = #{currpwd} and useremail = #{useremail}
+		update 
+			member
+		set
+			userpwd = #{newpwd}
+			, usernick = #{usernick}
+		where
+			userpwd = #{currpwd} 
+		and 
+			useremail = #{useremail}
 	</update>
-	
-	
+
 	<!-- 마이페이지 처음 정보 -->
-	<select id="selectMyInfo" parameterType="string" resultType="Member">
+	<select id="selectMyInfo" parameterType="Member" resultType="Member">
 		select 
 			m.useremail
    			, m.usernick
    			, sum(s.SUCCESSCOUNT) as allSuccess
    			, sum(s.FAILURECOUNT) as allFailure 
-   			, sum(s.CHALLENGECOUNT) as allChallenge  
+   			, sum(s.CHALLENGECOUNT) as allChallenge
+   			<if test="allChallenge!=0">  
    			,(sum(s.SUCCESSCOUNT)/sum(s.CHALLENGECOUNT))*100 as winningRate
+   			</if>
 		from 
 			member m, userstudy s
 		where 
@@ -98,7 +109,20 @@
 		group by 
 			m.useremail, m.usernick, m.point
 	</select>
-	
+
+	<select id="checkChallengeCount" parameterType="String" resultType="int"> 
+	select 
+	 sum(s.CHALLENGECOUNT)
+	 from
+	    member m, userstudy s
+	 	where 
+			m.useremail = s.useremail
+		and 
+			m.useremail = #{useremail}
+		group by 
+			m.useremail
+	</select>
+
 	<!-- 마이페이지 레벨 누적 -->
 	<select id="selectLevels" parameterType="string" resultType="TestResult">
 		select 
@@ -108,7 +132,7 @@
 		where 
 			useremail = #{useremail}
 	</select>
-	
+
 	<!-- 마이페이지 영상목록 -->
 	<select id="selectMyVideo" parameterType="string" resultType="Video">
 		select
@@ -123,4 +147,23 @@
 		and 
 			useremail = #{useremail}
 	</select> 
+	
+	<!-- 회원탈퇴 정보 입력(삭제 예정 회원정보에 저장) -->
+	<insert id="insertCloseID" parameterType="String">
+	insert into confirmmember
+	(
+	useremail
+	,outdate
+	 )
+	values
+	(
+	#{value}
+	,sysdate
+	)
+	</insert>
+	
+	<delete id="recoveryID" parameterType="String">
+	delete from confirmmember
+	where userid=#{value}
+	</delete>
 </mapper>
