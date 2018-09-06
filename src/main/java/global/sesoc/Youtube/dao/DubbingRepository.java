@@ -42,9 +42,9 @@ public class DubbingRepository {
 		return result;
 	}
 
-	public List<Reply> replyAll(int dubbingnum) {
+	public List<Reply> replyDubAll(int idnum) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
-		List<Reply> replyList = mapper.replyAll(dubbingnum);
+		List<Reply> replyList = mapper.replyDubAll(idnum);
 		return replyList;
 	}
 
@@ -54,15 +54,15 @@ public class DubbingRepository {
 		return result;
 	}
 
-	public int replyDelete(int replynum) {
+	public int replyDubDelete(int replynum) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
-		int result = mapper.replyDelete(replynum);
+		int result = mapper.replyDubDelete(replynum);
 		return result;
 	}
 
-	public int replyUpdate(Reply reply) {
+	public int replyDubUpdate(Reply reply) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
-		int result = mapper.replyUpdate(reply);
+		int result = mapper.replyDubUpdate(reply);
     
 		return result;
 	}

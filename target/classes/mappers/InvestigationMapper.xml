@@ -4,17 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="global.sesoc.Youtube.dao.InvestigationMapper">
-<<<<<<< Updated upstream
 	<select resultType="int" parameterType="map" id="getTotalCount">
-=======
-	<select id="getTotalCount" parameterType="map" resultType="int">
->>>>>>> Stashed changes
+
 		select
 			count(*)
 		from
 			investigation
 		where
-<<<<<<< Updated upstream
 			${searchType} like '%' || #{searchWord} || '%' 
 	</select>
 
@@ -70,12 +66,10 @@
 	</select>
 	
 	<select resultType="Investigation" parameterType="int" id="selectOneFromInvUseNum">
-=======
 			${searchType} like '%' || #{searchWord} || '%'
 	</select>
 	
 	<select id="selectInvList" parameterType="map" resultType="Investigation">
->>>>>>> Stashed changes
 		select
 			investigationnum
 			, url
@@ -89,7 +83,6 @@
 		from
 			investigation
 		where
-<<<<<<< Updated upstream
 			investigationnum = #{investigationnum} 
 	</select>
 	
@@ -149,8 +142,22 @@
 		where
 			replynum = #{replynum}
 	</delete> 
-=======
-			${searchType} like '%' || #{searchWord} || '%'
-	</select>
->>>>>>> Stashed changes
+	
+	<insert id="insertInvSubtitle" parameterType="InvSubtitle">
+		insert into InvestigationSubtitle (
+			subtitlenum
+			, subtitleName
+			, originalFile
+			, savedFile
+			, useremail
+			, investigationnum
+		)values(
+			INVESTIGATION_SUBTITLE_SEQ.nextval
+			, #{subtitleName}
+			, #{originalFile}
+			, #{savedFile}
+			, #{useremail}
+			, #{investigationnum}
+		)
+	</insert>
 </mapper>
