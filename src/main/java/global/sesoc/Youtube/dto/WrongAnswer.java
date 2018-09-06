@@ -1,7 +1,6 @@
 package global.sesoc.Youtube.dto;
 
 public class WrongAnswer {
-
 	int answernum;
 	String useremail;
 	String wrongIndex;
@@ -9,11 +8,8 @@ public class WrongAnswer {
 	String url;
 	String regdate;
 	int classification;
-	
-	
-
+ 
 	public WrongAnswer() {
-		
 	}
 
 	public int getAnswernum() {
@@ -78,8 +74,5 @@ public class WrongAnswer {
 				+ ", correctAnswer=" + correctAnswer + ", url=" + url + ", regdate=" + regdate + ", classification="
 				+ classification + "]";
 	}
-
-	
-	
 
 }

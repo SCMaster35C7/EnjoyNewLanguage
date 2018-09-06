@@ -1,5 +1,5 @@
 package global.sesoc.Youtube.util;
-
+ 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,8 +12,6 @@ import java.util.StringTokenizer;
 import global.sesoc.Youtube.dto.SubtitlesList;
 
 public class SubtitlesMaker {
-
-	
 	ArrayList<Double> playtime;
 	ArrayList<String> playtimeView;
 	ArrayList<String> quizIndex;
@@ -32,7 +30,7 @@ public class SubtitlesMaker {
 		playtime = new ArrayList<>(); // 각 자막 줄별 시작타임 저장
 		quizIndex = new ArrayList<>(); // 각 퀴즈들의 인덱스 정보
 		int height = 0; // [][] 정보중 [?][]부분
-
+		
 		int cut = 0; // srt 자막의 첫 문장은 보이지 않는 문자로 글 압축타입을 지정한다. 그러므로 무조건 첫줄은 걸러야 한다.
 		try {
 			fileReader = new FileReader(url);
@@ -79,8 +77,6 @@ public class SubtitlesMaker {
 					height++;
 				}
 
-				
-
 			}
 			resultlist.setCorrect(correct);
 			resultlist.setFulltext(fulltext);
@@ -88,9 +84,8 @@ public class SubtitlesMaker {
 			resultlist.setQuiz(quiz);
 			resultlist.setPlaytimeView(playtimeView);
 			resultlist.setQuizIndex(quizIndex);
-
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		} finally {
 			if (in != null) {
 				try {
@@ -153,5 +148,4 @@ public class SubtitlesMaker {
 
 		return resultTime;
 	}
-
 }

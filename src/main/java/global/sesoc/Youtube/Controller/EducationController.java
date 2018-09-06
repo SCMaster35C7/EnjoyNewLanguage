@@ -23,8 +23,8 @@ public class EducationController {
 	@Autowired
 	EducationRepository eduRepository;
 
-	private final String eduFileRoot = "/EducationVideo";
-
+	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
+	
 	@RequestMapping(value = "getSubtitlesList", method = RequestMethod.GET)
 	public @ResponseBody SubtitlesList getSubtitlesList(int level, String savedfileName) {
 		// String jamacName = eduRepository.selectSubName(videoNum);
@@ -32,7 +32,8 @@ public class EducationController {
 		String jamacURL = eduFileRoot + "/" + savedfileName;
 		SubtitlesMaker sm = new SubtitlesMaker();
 		SubtitlesList sublist = sm.RandomText(jamacURL, level);
-
+		System.out.println(sublist);
+		
 		return sublist;
 	}
 
@@ -87,10 +88,7 @@ public class EducationController {
 	public @ResponseBody SubtitlesList MakeRetakeTest(HttpSession session, String url, boolean testType,
 			String savedfileName) {
 		String useremail = (String) session.getAttribute("useremail");
-		//System.out.println("url: "+url+", testType: "+testType+", savefile"+savedfileName+",useremail: "+useremail);
-
-		WrongAnswer wa = new WrongAnswer();
-		// String jamacName = eduRepository.selectSubName2(url);
+    	WrongAnswer wa = new WrongAnswer();
 		String jamacURL = eduFileRoot + "/" + savedfileName;
 		wa.setUseremail(useremail);
 		wa.setUrl(url);
@@ -151,5 +149,10 @@ public class EducationController {
 			return "fail"; // 시험 실패
 		}
 
+	}
+	
+	@RequestMapping(value="dictionaryBoard",method=RequestMethod.GET)
+	public String dicionaryBoard() {
+		return "EducationBoard/dictionaryBoard";
 	}
 }

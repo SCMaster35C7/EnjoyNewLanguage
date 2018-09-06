@@ -46,7 +46,7 @@ public class Video {
 
 	public void setChallengecount(int challengecount) {
 		this.challengecount = challengecount;
-	}
+	} 
 
 	@Override
 	public String toString() {

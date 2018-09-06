@@ -8,7 +8,7 @@ public class Recommendation {
 	private int recommendtable;
 	private int recommendation;
 	private String regDate;
-	
+	 
 	public Recommendation() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -69,7 +69,7 @@ public class Recommendation {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Recommendation [tableName=" + tableName + ", idCode=" + idCode + ", useremail=" + useremail
