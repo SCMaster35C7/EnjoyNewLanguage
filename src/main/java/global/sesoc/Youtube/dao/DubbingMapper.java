@@ -1,6 +1,8 @@
 package global.sesoc.Youtube.dao;
 
 import java.util.List;
+
+import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Reply;
 
@@ -13,4 +15,9 @@ public interface DubbingMapper {
 	public int insertReply(Reply reply);          // 댓글 삽입
 	public int replyDubDelete(int replynum);         // 댓글 삭제
 	public int replyDubUpdate(Reply reply);          // 댓글 수정
+	public Black existedBlack(Black black);
+	public int insertBlack(Black black);
+	public int updateBlack(Black black);
+	public Reply selectReply(Black black);
+	public int reportDelete(Black black);
 }
