@@ -38,11 +38,11 @@
 		없음
 	</c:if> 
 	<br/>
-	완료한 영상 : 
-	
+	완료한 영상 : 	
 	<c:if test="${not empty finished}">
 		<c:forEach var="f" items="${finished}">
-			<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br/>
+			<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a>
+			<a href="TryRetake?videoNum=${f.videoNum}">재시험보기</a><br>
 		</c:forEach>
 	</c:if>
 	<c:if test="${empty finished}">
