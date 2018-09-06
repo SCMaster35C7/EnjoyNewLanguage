@@ -233,10 +233,7 @@ $(document).ready(function() {
                 </div>
               </div>
          
-         	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
-	
-	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
-	<a href="TryRetake?videoNum=9">재시험 테스트</a>
+         <a href="VideoSearch">더빙할 영상 찾기</a>
 	<c:if test="${plzLogin!=null}">
 		<script type="text/javascript">
 			$(function(){
@@ -272,15 +269,6 @@ $(document).ready(function() {
         
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>        
-	글번호  &nbsp 글제목 &nbsp 닉넴 &nbsp 조회수 &nbsp 날짜 &nbsp 추천 &nbsp 비추천 <br/>
-	<c:forEach var="dub" items="${dubbing}">
-		${dub.dubbingnum} &nbsp
-		 
-		 <a href="dubDetail?dubbingnum=${dub.dubbingnum}"> ${dub.title} </a>
-		 
-		 &nbsp ${dub.usernick}  &nbsp ${dub.hitcount}  &nbsp ${dub.regdate} 
-		 &nbsp ${dub.recommendation}  &nbsp ${dub.decommendation}<br/>
-	</c:forEach>
-	<a href="VideoSearch">더빙할 영상 찾기</a>
+	
 </body>
 </html>

@@ -5,6 +5,7 @@
   
 <mapper namespace="global.sesoc.Youtube.dao.InvestigationMapper">
 	<select resultType="int" parameterType="map" id="getTotalCount">
+
 		select
 			count(*)
 		from
@@ -65,6 +66,10 @@
 	</select>
 	
 	<select resultType="Investigation" parameterType="int" id="selectOneFromInvUseNum">
+			${searchType} like '%' || #{searchWord} || '%'
+	</select>
+	
+	<select id="selectInvList" parameterType="map" resultType="Investigation">
 		select
 			investigationnum
 			, url
@@ -136,7 +141,7 @@
 			investigationreply
 		where
 			replynum = #{replynum}
-	</delete>
+	</delete> 
 	
 	<insert id="insertInvSubtitle" parameterType="InvSubtitle" >
 		insert into InvestigationSubtitle (

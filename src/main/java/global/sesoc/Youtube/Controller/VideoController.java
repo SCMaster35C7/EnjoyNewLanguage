@@ -30,7 +30,9 @@ public class VideoController {
 	@Autowired
 	EducationRepository eduRepository;
 
+
 	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
+
 	// 교육용 자막파일 경로
 	
 	/***
@@ -45,6 +47,11 @@ public class VideoController {
 		model.addAttribute("plzLogin", plzLogin);
     
 		return "index";
+	}
+	
+	@RequestMapping(value="index",method=RequestMethod.GET)
+	public String index() {
+		return"index";
 	}
 
 	/**
@@ -61,9 +68,6 @@ public class VideoController {
 			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
 			@RequestParam(value = "searchWord", defaultValue = "") String searchWord, Model model) {
 		int totalRecordCount = eduRepository.getTotalCount(searchType, searchWord);
-
-		System.out.println(totalRecordCount);
-
 
 		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
 		List<Education> eduList = eduRepository.selectEduList(searchType, searchWord, navi.getStartRecord(),
@@ -137,8 +141,6 @@ public class VideoController {
 	 */
 	@RequestMapping(value = "/addEduVideo", method = RequestMethod.POST)
 	public String addEduVideo(Education education, MultipartFile subtitle) {
-		// System.out.println(education);
-		// System.out.println(subtitle);
 		if (subtitle.getSize() != 0) {
 			String originalfile = subtitle.getOriginalFilename();
 			String savedfile = FileService.saveFile(subtitle, eduFileRoot);
@@ -146,8 +148,7 @@ public class VideoController {
 			education.setOriginalfile(originalfile);
 			education.setSavedfile(savedfile);
 		}
-		// System.out.println(education);
-
+		
 		int result = eduRepository.insertEduVideo(education);
 		return "EducationBoard/addEduVideo";
 	}

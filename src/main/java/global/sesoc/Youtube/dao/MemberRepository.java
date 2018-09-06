@@ -32,7 +32,7 @@ public class MemberRepository {
 
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		Member member = mapper.selectOneFromMember(m);
-
+		
 		return member;
 	}
 

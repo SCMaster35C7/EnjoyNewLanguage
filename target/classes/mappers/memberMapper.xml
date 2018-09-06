@@ -109,7 +109,7 @@
 		group by 
 			m.useremail, m.usernick, m.point
 	</select>
-
+	
 	<select id="checkChallengeCount" parameterType="String" resultType="int"> 
 	select 
 	 sum(s.CHALLENGECOUNT)
@@ -122,6 +122,7 @@
 		group by 
 			m.useremail
 	</select>
+
 
 	<!-- 마이페이지 레벨 누적 -->
 	<select id="selectLevels" parameterType="string" resultType="TestResult">
