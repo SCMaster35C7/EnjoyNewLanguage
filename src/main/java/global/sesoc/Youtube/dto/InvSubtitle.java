@@ -6,7 +6,7 @@ public class InvSubtitle {
 	private String originalFile;
 	private String savedFile;
 	private String useremail;
-	private String investigationNum;
+	private int investigationNum;
 	private String regDate;
 	private int useCount;
 	private int recommendation;
@@ -18,7 +18,7 @@ public class InvSubtitle {
 	}
 	
 	public InvSubtitle(int subtitleNum, String subtitleName, String originalFile, String savedFile,
-			String useremail, String investigationNum, String regDate, int useCount, int recommendation,
+			String useremail, int investigationNum, String regDate, int useCount, int recommendation,
 			int decommendation) {
 		super();
 		this.subtitleNum = subtitleNum;
@@ -48,7 +48,7 @@ public class InvSubtitle {
 	public String getUseremail() {
 		return useremail;
 	}
-	public String getInvestigationNum() {
+	public int getInvestigationNum() {
 		return investigationNum;
 	}
 	public String getRegDate() {
@@ -79,7 +79,7 @@ public class InvSubtitle {
 	public void setUseremail(String useremail) {
 		this.useremail = useremail;
 	}
-	public void setInvestigationNum(String investigationNum) {
+	public void setInvestigationNum(int investigationNum) {
 		this.investigationNum = investigationNum;
 	}
 	public void setRegDate(String regDate) {

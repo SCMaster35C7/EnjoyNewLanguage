@@ -171,16 +171,29 @@ public class InvestigationController {
 	 */
 	@RequestMapping(value="/registSubtitle", method=RequestMethod.POST)
 	public @ResponseBody String registSubtitle(MultipartFile file, InvSubtitle invSub) {
-		if(file.getSize() == 0) {
-			return "failure";
-		}else {
-			String originalFile = file.getName();
-			String savedFile = FileService.saveFile(file, subtitleFileRoot);
-			invSub.setSavedFile(savedFile);
-			invSub.setOriginalFile(originalFile);
-			
-			InvSubtitle result = invRepository.insertInvSubtitle(invSub);
+		// System.out.println("file : "+file);
+		// System.out.println("data : "+invSub);
+		
+		if(file != null) {
+			if(file.getSize() == 0) {
+				return "failure";
+			}else {
+				String originalFile = file.getName();
+				String savedFile = FileService.saveFile(file, subtitleFileRoot);
+				invSub.setSavedFile(savedFile);
+				invSub.setOriginalFile(originalFile);
+				
+				int result = invRepository.insertInvSubtitle(invSub);
+			}
 		}
+		
 		return "success";
+	}
+	
+	@RequestMapping(value="/invSubtitleAll", method=RequestMethod.POST)
+	public @ResponseBody List<InvSubtitle> invSubtitleAll(int investigationnum) {
+		List<InvSubtitle> subList = invRepository.subtitleAllFromInv(investigationnum);
+		
+		return subList;
 	}
 }

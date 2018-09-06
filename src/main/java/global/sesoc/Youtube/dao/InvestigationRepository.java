@@ -69,9 +69,9 @@ public class InvestigationRepository {
 		return result;
 	}
 
-	public List<Reply> replyAllFromInv(int investigationnum) {
+	public List<Reply> replyAllFromInv(int idnum) {
 		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		List<Reply> rList = mapper.replyAllFromInv(investigationnum);
+		List<Reply> rList = mapper.replyAllFromInv(idnum);
 		
 		return rList;
 	}
@@ -97,10 +97,17 @@ public class InvestigationRepository {
 		return result;
 	}
 
-	public InvSubtitle insertInvSubtitle(InvSubtitle invSub) {
+	public int insertInvSubtitle(InvSubtitle invSub) {
 		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		InvSubtitle result = mapper.insertInvSubtitle(invSub);
+		int result = mapper.insertInvSubtitle(invSub);
 		
 		return result;
+	}
+
+	public List<InvSubtitle> subtitleAllFromInv(int investigationnum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		List<InvSubtitle> subList = mapper.subtitleAllFromInv(investigationnum);
+		
+		return subList;
 	}
 }

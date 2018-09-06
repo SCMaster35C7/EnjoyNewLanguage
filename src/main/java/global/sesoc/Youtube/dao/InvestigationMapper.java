@@ -22,5 +22,6 @@ public interface InvestigationMapper {
 	public int replyInvUpdate(Reply reply);												// 자막 요청 게시글 댓글 수정
 	public int replyInvDelete(int replynum);											// 자막 요청 게시글 댓글 삭제
 	
-	public InvSubtitle insertInvSubtitle(InvSubtitle invSub);		// 자막 요청 게시글 자막 등록
+	public int insertInvSubtitle(InvSubtitle invSub);									// 자막 요청 게시글 자막 파일 등록
+	public List<InvSubtitle> subtitleAllFromInv(int investigationnum);					// 자막 요청 게시글 자막 파일 목록 가져오기
 }
