@@ -25,7 +25,7 @@
 		    useremail not in(select useremail from confirmmember)
 		</if>
 	</select>
-
+	
 	<select id="selectByNick" parameterType="string" resultType="Member">
 		select
 			useremail, usernick, userpwd, gender

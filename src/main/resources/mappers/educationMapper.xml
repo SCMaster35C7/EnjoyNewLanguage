@@ -21,7 +21,6 @@
 			regdate desc
 	</select>
 
-
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum

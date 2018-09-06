@@ -135,20 +135,28 @@ $(document).ready(function() {
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mail</i>
-							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-							<label for="useremail">EMAIL</label>
-						</div>
+						<c:if test="${empty sessionScope.useremail }">
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mail</i>
+								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+								<label for="useremail">EMAIL</label>
+							</div>
+						</c:if>
 					</div>
 				
 					<div class="row">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mode_edit</i>
-							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-							<label for="userpwd">PASSWORD</label>
-						</div>
+					<c:if test="${empty sessionScope.useremail }">
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mode_edit</i>
+								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+								<label for="userpwd">PASSWORD</label>
+							</div>
+						</c:if>
 					</div>
+					
+					<c:if test="${not empty sessionScope.useremail }">
+						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+					</c:if>
 				</div>	
 				
 					<div class="row">
@@ -164,12 +172,13 @@ $(document).ready(function() {
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light modal-close">LOGOUT
-									<i class="material-icons right">settings_power</i>
-								</button>
-							</span>
+							<c:if test="${not empty sessionScope.useremail }">
+								<span class="flow-text">
+									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
+										<i class="material-icons right">power_settings_new</i>
+									</a>
+								</span>
+							</c:if>
 						</div>
 						
 						<div class="fixed-action-btn">
@@ -224,10 +233,7 @@ $(document).ready(function() {
                 </div>
               </div>
          
-         	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
-	
-	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
-	<a href="TryRetake?videoNum=9">재시험 테스트</a>
+         <a href="VideoSearch">더빙할 영상 찾기</a>
 	<c:if test="${plzLogin!=null}">
 		<script type="text/javascript">
 			$(function(){
@@ -263,15 +269,6 @@ $(document).ready(function() {
         
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>        
-	글번호  &nbsp 글제목 &nbsp 닉넴 &nbsp 조회수 &nbsp 날짜 &nbsp 추천 &nbsp 비추천 <br/>
-	<c:forEach var="dub" items="${dubbing}">
-		${dub.dubbingnum} &nbsp
-		 
-		 <a href="dubDetail?dubbingnum=${dub.dubbingnum}"> ${dub.title} </a>
-		 
-		 &nbsp ${dub.usernick}  &nbsp ${dub.hitcount}  &nbsp ${dub.regdate} 
-		 &nbsp ${dub.recommendation}  &nbsp ${dub.decommendation}<br/>
-	</c:forEach>
-	<a href="VideoSearch">더빙할 영상 찾기</a>
+	
 </body>
 </html>

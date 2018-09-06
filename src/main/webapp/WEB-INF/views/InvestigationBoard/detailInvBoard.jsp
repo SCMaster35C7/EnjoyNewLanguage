@@ -108,18 +108,69 @@
 	            	}
 	        	});
 	    	});
+	   		
+			$('#registSubtitle').on('click', function() {
+				var form = $('#fileForm')[0];
+				var formData = new FormData(form);
+				var subtitleName = $('#subtitleName');
+				
+				if(subtitleName.val().trim().length == 0) {
+					alert("자막 파일명을 입력해주세요.");
+					subtitleName.focus();
+					return;
+				}
+				
+				var fileName = $('#subtitleFile')[0].files[0].name;
+				if(fileName.substring(fileName.lastIndexOf('.')+1) != "srt") {
+					alert("srt 파일만 자막 등록이 가능합니다.");
+					$('#subtitleFile').focus();
+					return;
+				}
+				
+				formData.append("file", $('#subtitleFile')[0].files[0]);
+				formData.append("useremail", useremail);
+				formData.append("investigationNum", investigationnum);
+				formData.append("subtitleName", subtitleName.val());
+				
+				$.ajax({
+					url:'registSubtitle'
+					, type:'post'
+					, processData: false
+					, contentType: false
+					, data: formData
+					, success: function(resp) {
+						if(resp == 'failure') {
+							alert("파일을 넣어주세요.")
+						}else if(resp == 'success') {
+							subtitleName.val('');
+							$('#subtitleFile').val('');
+							init();
+						}
+					}
+					, error: function(resp, code, error) {
+	                  	alert("resp : "+resp+", code : "+code+", error : "+error);
+	            	}
+				});
+			});
 		});
-	      
+		
 		function init() {
 	        $.ajax({
 	            method : 'post',
 	            url : 'replyInvAll',
 	            data : 'idnum=${inv.investigationnum}',
-	            success : output
+	            success : outputReply
 	    	});
+	        
+	        $.ajax({
+	            method : 'post',
+	            url : 'invSubAll',
+	            data : 'investigationnum=${inv.investigationnum}',
+	            success : outputSubtitle
+	        });
 	    }
 	      
-	    function output(resp) {
+	    function outputReply(resp) {
 	       var result = '';
 	    
 	       for ( var i in resp) {
@@ -138,93 +189,227 @@
 	       $("input:button.replyDelete").click(replyDelete);
 	       $("input:button.replyUpdate").click(replyUpdate); 
 	    }
-	      
+	    
+	    function outputSubtitle(resp) {
+	    	console.log(resp);
+	    	
+	    	var result = '';
+			for ( var i in resp) {
+				result += '<div class="subtitle">'
+				result += ' <span class="">'+resp[i].usernick+'</span>'
+				result += ' <span class="">'+resp[i].subtitleName+'</span>'
+				result += '	<input class="subStart" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
+				if(useremail == resp[i].useremail) {
+					result += '	<input class="subDelete" type="button" value="자막 삭제" data-rno="'+resp[i].subtitleNum+'"/>';
+				}
+				result += '	<button class="btn subRecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		<img alt="" src="images/tup.png"> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
+				result += '	</button>';
+				result += '	<button class="btn subDecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		<img alt="" src="images/tdown.png"> <span class="subDecoCount">'+resp[i].decommendation+'</span>';
+				result += '	</button>';
+				result += '</div>';
+			}
+
+			$("#subtitleList").html(result);
+			$(".subStart").on('click', subStart);
+			$(".subDelete").on('click', subDelete);
+			$(".subRecommendation").on('click', subRecommendation);
+			$(".subDecommendation").on('click', subDecommendation);
+		}
+	    
+	   	function subStart() {
+	   		alert("나는 자막 실행");
+	   		subnum = $(this).attr('data-rno');
+	   	}
+	    
+	    function subDelete() {
+	    	subnum = $(this).attr('data-rno');
+	    	
+	    	$.ajax({
+	    		method: 'get'
+	    		, url: 'invSubDelete'
+	    		, data: 'subtitleNum='+subnum
+	    		, success: function(resp) {
+	    			alert(resp);
+	    		}
+	    	});
+	    	
+	    	init();
+	    }
+	    
+	    function subRecommendation() {
+	    	if(useremail.trim().length == 0) {
+            	location.href="login";
+            	return;
+           	}
+           	var target = $(this);
+           	var subRecoCount = Number(target.children("span").text());
+           	var subDecoTarget = target.parent().children(".subDecommendation").children(".subDecoCount");
+           	var subnum = $(this).attr('data-rno');
+           	var dataForm = {
+                "tableName":"InvestigationSubtitle", 
+                "idCode":"subtitleNum", 
+                "useremail":useremail, 
+                "identificationnum":subnum, 
+                "recommendtable":"3", 
+                "recommendation":"0"
+           	};
+           
+            $.ajax({
+            	method:'post'
+               	, url:'insertRecommendation'
+               	, data: JSON.stringify(dataForm)
+               	, contentType: "application/json; charset=utf-8"
+               	, async: false
+               	, success:function(resp) {
+                	if(resp == "success") {
+                     	alert("영상을 좋아합니다.");
+                     	target.children("span").html(subRecoCount+1);
+                  	}else if(resp == "cancel") {
+                     	alert("좋아요를 취소합니다.");
+                     	target.children("span").html(subRecoCount-1);
+                  	}else if(resp == "change") {
+                     	alert("좋아요로 변경하셨습니다.");
+                     	subDecoTarget.html(Number(subDecoTarget.text())-1);
+                     	target.children("span").html(subRecoCount+1);
+                  	}
+               	}
+               	, error:function(resp, code, error) {
+                  	alert("resp : "+resp+", code : "+code+", error : "+error);
+               	}
+            });
+	    }
+	    
+	    function subDecommendation() {
+	    	if(useremail.trim().length == 0) {
+               	location.href="login";
+               	return;
+            }
+            var target = $(this);
+            var subDecoCount = Number(target.children("span").text());
+            var subRecoTarget = target.parent().children(".subRecommendation").children(".subRecoCount");
+	    	var subnum = $(this).attr('data-rno');
+            var dataForm = {
+            	"tableName":"InvestigationSubtitle", 
+                "idCode":"subtitleNum", 
+                "useremail":useremail, 
+                "identificationnum":subnum, 
+                "recommendtable":"3", 
+                "recommendation":"1"
+            };
+            
+            $.ajax({
+               	method:'post'
+               	, url:'insertRecommendation'
+               	, data: JSON.stringify(dataForm)
+               	, contentType: "application/json; charset=utf-8"
+               	, async: false
+               	, success:function(resp) {
+                  	if(resp == "success") {
+                     	alert("영상을 싫어합니다.");
+                     	target.children("span").html(subDecoCount+1);
+                  	}else if(resp == "cancel") {
+                     	alert("싫어요를 취소합니다.");
+                     	target.children("span").html(subDecoCount-1);
+                  	}else if(resp == "change"){
+                     	alert("싫어요로 변경하셨습니다.");
+                     	subRecoTarget.html(Number(subRecoTarget.text())-1);
+                     	target.children("span").html(subDecoCount+1);
+                  	}
+                 }
+               	, error:function(resp, code, error) {
+                  	alert("resp : "+resp+", code : "+code+", error : "+error);
+            	}
+        	});
+	    }
+
 		function replyInsert() {
-	     	$("#useremail").val(useremail);
-	         
-	        var btnname = $("#replyInsert").val();
-	
-	        if (btnname == '댓글등록') {
-	           var replytext = $("#replytext").val();
-	            
-	           if (replytext.length == 0) {
-	              alert("댓글을 작성해주세요!");
-	              return;
-	           }
-	     
-	           var sendData = {   
-	           		"idnum":investigationnum
-	                , "useremail":useremail
-	                , "content":replytext
-	           };
-	           
-	           $.ajax({
-	              type : 'post',
-	              url : 'replyInvInsert',
-	              data : JSON.stringify(sendData),
-	              dataType:'text',
-	              contentType: "application/json; charset=UTF-8",
-	              success : init
-	           });
-	            //돌려놓기
-	           $("#replytext").val('');
-	        }else if (btnname == '댓글수정') {
-	        	var replytext = $("#replytext").val();
-	           	var replynum = $("#replynum").val();
-	           	var sendData = {
-	           		"replynum" : replynum,
-	           		"content" : replytext,
-	           	} 
-	        
-		       	$.ajax({
-			        method : 'post',
-			        url : 'replyInvUpdate',
-			        data : JSON.stringify(sendData),
-			        dataType:'text',
-			        contentType: "application/json; charset=UTF-8",
-			        success : init
-		     	}); 
-		      	
-	           	$("#replytext").val('');
-	      		$("#replyInsert").val("리뷰등록");
-	      	}
-	      }
-	
-	      function replyDelete() {
-	         var nick = $(this).parent().children('.nick').text();
-	         if ("${usernick}" != nick) {
-	            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-	            return;
-	         }
-	         replynum = $(this).attr('data-rno');
-	         $.ajax({
-	            method : 'get',
-	            url : 'replyInvDelete',
-	            data : 'replynum='+replynum,
-	            dataType: 'text',
-	            success : init
-	         });
-	      }
-	
-	      function replyUpdate() {
-	         replynum = $(this).attr('data-rno');
-	
-	         var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
-	         var replytext = $(this).parent().children('.text').text();
-	
-	         if ("${usernick}" != nick) {
-	            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-	            return;
-	         }
-	
-	         $("#usernick").val(nick);
-	         $("#replytext").val(replytext);
-	         $("#replyInsert").val("댓글수정");
-	         $("#usernick").prop('readonly', 'readonly');
-	
-	         //히든에 리뷰넘버 넣어주기
-	         $("#replynum").val(replynum);
-	      }
+			$("#useremail").val(useremail);
+
+			var btnname = $("#replyInsert").val();
+
+			if (btnname == '댓글등록') {
+				var replytext = $("#replytext").val();
+
+				if (replytext.length == 0) {
+					alert("댓글을 작성해주세요!");
+					return;
+				}
+
+				var sendData = {
+					"idnum" : investigationnum,
+					"useremail" : useremail,
+					"content" : replytext
+				};
+
+				$.ajax({
+					type : 'post',
+					url : 'replyInvInsert',
+					data : JSON.stringify(sendData),
+					dataType : 'text',
+					contentType : "application/json; charset=UTF-8",
+					success : init
+				});
+				//돌려놓기
+				$("#replytext").val('');
+			} else if (btnname == '댓글수정') {
+				var replytext = $("#replytext").val();
+				var replynum = $("#replynum").val();
+				var sendData = {
+					"replynum" : replynum,
+					"content" : replytext,
+				}
+
+				$.ajax({
+					method : 'post',
+					url : 'replyInvUpdate',
+					data : JSON.stringify(sendData),
+					dataType : 'text',
+					contentType : "application/json; charset=UTF-8",
+					success : init
+				});
+
+				$("#replytext").val('');
+				$("#replyInsert").val("리뷰등록");
+			}
+		}
+
+		function replyDelete() {
+			var nick = $(this).parent().children('.nick').text();
+			if ("${usernick}" != nick) {
+				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
+				return;
+			}
+			replynum = $(this).attr('data-rno');
+			$.ajax({
+				method : 'get',
+				url : 'replyInvDelete',
+				data : 'replynum=' + replynum,
+				dataType : 'text',
+				success : init
+			});
+		}
+
+		function replyUpdate() {
+			replynum = $(this).attr('data-rno');
+
+			var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
+			var replytext = $(this).parent().children('.text').text();
+
+			if ("${usernick}" != nick) {
+				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
+				return;
+			}
+
+			$("#usernick").val(nick);
+			$("#replytext").val(replytext);
+			$("#replyInsert").val("댓글수정");
+			$("#usernick").prop('readonly', 'readonly');
+
+			//히든에 리뷰넘버 넣어주기
+			$("#replynum").val(replynum);
+		}
 	</script>
 </head>
 <body>
@@ -232,7 +417,8 @@
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"
 		src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
-		frameborder="0" allowfullscreen></iframe>
+		frameborder="0" allowfullscreen>
+	</iframe>
 
 	<script>
       // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -246,9 +432,6 @@
       var player;
       function onYouTubeIframeAPIReady() {
          player = new YT.Player('youtube', {
-            //height : '490',
-            //width : '960',
-            //videoId : '3MteSlpxCpo',
             events : {
                'onReady' : onPlayerReady,
                'onStateChange' : onPlayerStateChange
@@ -355,17 +538,30 @@
 
 	<div class="card-footer" align="center">
 		<input type="hidden" value="${inv.investigationnum}">
-		<button class="btn recommendation">
+		<button class="btn recommendation" type="button">
 			<img alt="" src="images/tup.png"> <span id="recoCount">${inv.recommendation}</span>
 		</button>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button class="btn decommendation">
+		<button class="btn decommendation" type="button">
 			<img alt="" src="images/tdown.png"> <span id="decoCount">${inv.decommendation}</span>
 		</button>
 	</div>
-	
 	<hr />
+	
+	<div>
+		<form id="fileForm" method="post" enctype="multipart/form-data" action="">
+			파일명<input type="text" id="subtitleName"/>
+			<input type="file" id="subtitleFile"/>
+			<input type="button" id="registSubtitle" value="자막 등록"/>
+		</form>
+	</div>
+	
+	<div id="subtitleList">
+		
+	</div>
+	<hr />
+	
 	<div>
 		<form id="replyform" method="post">
 			<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 

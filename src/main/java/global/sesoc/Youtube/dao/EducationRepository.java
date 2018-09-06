@@ -28,7 +28,7 @@ public class EducationRepository {
 	 */
 	public List<Education> selectEduList(String searchType, String searchWord, int startRecord, int countPerPage) {
 		RowBounds bound = new RowBounds(startRecord, countPerPage);
-
+		
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		List<Education> eduList = mapper.selectEduList(bound);
 

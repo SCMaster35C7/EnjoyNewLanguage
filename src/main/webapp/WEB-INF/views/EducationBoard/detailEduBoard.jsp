@@ -7,15 +7,11 @@
 	<meta charset="UTF-8">
 	<meta name="author" content="zisung">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-
 	<title>공부게시판 상세</title>
-	
-	<script
-		src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 	//css용
@@ -51,7 +47,6 @@
 			$('#loginForm').submit();
 		});
 	});	
-	
 	var correct="";
 	var quizIndex="";
 	var TestType=false;  //문제유형용 변수 false : text, true : mic
@@ -128,7 +123,7 @@
 			//음성입력일시 input 창을 readonly로, 텍스트 입력일시 입력가능하게	
 			for (var i = 0; i < s.quiz.length; i++) {		
 				// <a> 태그 : 자막 줄 별 시간정보, 클릭시 해당시간으로 영상 이동
-				 subtitles+='<div id="T'+s.playtime[i]+'"><a onclick='+'"'+'seekTo('+s.playtime[i]+')'+'"'+'>'+s.playtimeView[i]+'</a> ';
+				 subtitles+='<a onclick='+'"'+'seekTo('+s.playtime[i]+')'+'"'+'>'+s.playtimeView[i]+'</a><div id="T'+s.playtime[i]+'"> ';
 				for (var j = 0; j < s.quiz[i].length; j++) {
 					if(s.quiz[i][j].indexOf('★')==0){
 						var longer=s.quiz[i][j].replace("★★", "");  //controller 에서 별처리한 문제 빈칸을 입력칸으로 가공
@@ -150,14 +145,14 @@
 			setInterval(function() {
 				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
 			var time='T'+parseFloat(player.getCurrentTime().toFixed(2));
-			//console.log(time);
-			
 			var TimeText=document.getElementById(time);
 			if(TimeText!=null){
 				if(saveTime!=null){
 		    saveTime.style.backgroundColor="";
 				}
-			TimeText.style.backgroundColor="red";
+			TimeText.style.backgroundColor="#8dabfe";
+			TimeText.tabIndex=-1;
+			TimeText.focus();
 			saveTime=TimeText;
 			}
 			},10);
@@ -269,7 +264,7 @@
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
-	    <a href="index" class="brand-logo">Logo</a>
+	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
@@ -311,20 +306,28 @@
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mail</i>
-							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-							<label for="useremail">EMAIL</label>
-						</div>
+						<c:if test="${empty sessionScope.useremail }">
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mail</i>
+								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+								<label for="useremail">EMAIL</label>
+							</div>
+						</c:if>
 					</div>
 				
 					<div class="row">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mode_edit</i>
-							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-							<label for="userpwd">PASSWORD</label>
-						</div>
+					<c:if test="${empty sessionScope.useremail }">
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mode_edit</i>
+								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+								<label for="userpwd">PASSWORD</label>
+							</div>
+						</c:if>
 					</div>
+					
+					<c:if test="${not empty sessionScope.useremail }">
+						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+					</c:if>
 				</div>	
 				
 					<div class="row">
@@ -340,12 +343,13 @@
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light modal-close">LOGOUT
-									<i class="material-icons right">settings_power</i>
-								</button>
-							</span>
+							<c:if test="${not empty sessionScope.useremail }">
+								<span class="flow-text">
+									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
+										<i class="material-icons right">power_settings_new</i>
+									</a>
+								</span>
+							</c:if>
 						</div>
 						
 						<div class="fixed-action-btn">
@@ -492,6 +496,7 @@
 		}
 	</script>
 	<div class="container">
+	<!-- 
 		<table class="responsive-table centered" style="width:30%;">
 			<tr>
 				<th>동영상 재생/멈춤</th>
@@ -518,7 +523,7 @@
 					id="seekToinput" value="영상이동" /></td>
 			</tr>
 		</table>
-
+ -->
 			<div>
 				<label>
 					<input type="radio" class="TestType" name="TestType" value="text">
@@ -527,7 +532,7 @@
 				<label>
 					<input type="radio" class="TestType" name="TestType" value="mic">
 					<span>음성입력</span> 
-					<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level">
+					<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level" size="50px">
 				</label>
 				<input type="button" onclick="getSubList()" value="문제생성"> 
 				<input type="button" onclick="mark()" value="채점하기">

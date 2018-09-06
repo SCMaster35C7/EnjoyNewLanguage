@@ -12,7 +12,7 @@
 		where
 			${searchType} like '%' || #{searchWord} || '%' 
 	</select>
-
+	
 	<select resultType="Investigation" parameterType="map" id="selectInvList">
 		select
 			investigationnum
@@ -136,5 +136,53 @@
 			investigationreply
 		where
 			replynum = #{replynum}
-	</delete> 
+	</delete>
+	
+	<insert id="insertInvSubtitle" parameterType="InvSubtitle" >
+		insert into InvestigationSubtitle (
+			subtitlenum
+			, subtitleName
+			, originalFile
+			, savedFile
+			, useremail
+			, investigationnum
+		)values(
+			INVESTIGATION_SUBTITLE_SEQ.nextval
+			, #{subtitleName}
+			, #{originalFile}
+			, #{savedFile}
+			, #{useremail}
+			, #{investigationNum}
+		)
+	</insert>
+	
+	<select id="subtitleAllFromInv" parameterType="int" resultType="InvSubtitle">
+		select
+			i.subtitlenum
+			, i.subtitleName
+			, i.originalfile
+			, i.savedfile
+			, i.useremail
+			, i.investigationnum
+			, to_char(i.regdate, 'YYYY-MM-DD') regdate
+			, i.usecount
+			, i.recommendation
+			, i.decommendation
+			, m.usernick
+		from
+			InvestigationSubtitle i, member m
+		where
+			i.investigationnum = #{investigationnum}
+		and
+			i.useremail = m.useremail
+		order by
+			i.recommendation
+	</select>
+	
+	<delete id="deleteInvSubtitle" parameterType="int">
+		delete from
+			InvestigationSubtitle
+		where
+			subtitleNum = #{subtitleNum}
+	</delete>
 </mapper>

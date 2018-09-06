@@ -34,8 +34,10 @@ public class DubbingController {
 	@Autowired
 	DubbingRepository dubRepository;
 
-	private final String DubbingFileRoot = "/EducationDubbing";
-	private final String eduFileRoot = "/EducationVideo";
+
+	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
+	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
+
 
 	// 더빙겟
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
@@ -64,7 +66,6 @@ public class DubbingController {
 
 	@RequestMapping(value = "DubbingWrite", method = RequestMethod.GET)
 	public String DubbingWrite(Model model, Integer videoNum, String url) {
-		System.out.println(videoNum + "," + url);
 		Education edu = null;
 		if (videoNum != null) {
 			edu = eduRepository.selectOneFromEduVideo(videoNum);
@@ -132,14 +133,15 @@ public class DubbingController {
   @RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
 	public String deleteDubbing(Dubbing dub) {
 		dubRepository.deleteDubbing(dub);
-		
 		return "redirect:dubbingBoard";
 	}
   
+
 	@RequestMapping(value="/replyDubAll", method=RequestMethod.POST)
 	public @ResponseBody List<Reply> replyDubAll(int idnum) {
 		//System.out.println(dubbingnum);
 		List<Reply> replyList = dubRepository.replyDubAll(idnum);
+
 		return replyList;
 	}
 			

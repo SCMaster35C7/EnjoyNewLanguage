@@ -20,4 +20,5 @@ public interface DubbingMapper {
 	public int updateBlack(Black black);
 	public Reply selectReply(Black black);
 	public int reportDelete(Black black);
+
 }

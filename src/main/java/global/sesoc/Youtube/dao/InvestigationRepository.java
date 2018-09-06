@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import global.sesoc.Youtube.dto.Investigation;
+import global.sesoc.Youtube.dto.InvSubtitle;
 import global.sesoc.Youtube.dto.Reply;
 
 @Repository
@@ -23,7 +24,7 @@ public class InvestigationRepository {
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
 		int result = mapper.getTotalCount(map);
-				
+		
 		return result;
 	}
 
@@ -68,9 +69,9 @@ public class InvestigationRepository {
 		return result;
 	}
 
-	public List<Reply> replyAllFromInv(int investigationnum) {
+	public List<Reply> replyAllFromInv(int idnum) {
 		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		List<Reply> rList = mapper.replyAllFromInv(investigationnum);
+		List<Reply> rList = mapper.replyAllFromInv(idnum);
 		
 		return rList;
 	}
@@ -92,6 +93,27 @@ public class InvestigationRepository {
 	public int replyInvDelete(int replynum) {
 		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
 		int result = mapper.replyInvDelete(replynum);
+		
+		return result;
+	}
+
+	public int insertInvSubtitle(InvSubtitle invSub) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.insertInvSubtitle(invSub);
+		
+		return result;
+	}
+
+	public List<InvSubtitle> subtitleAllFromInv(int investigationnum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		List<InvSubtitle> subList = mapper.subtitleAllFromInv(investigationnum);
+		
+		return subList;
+	}
+
+	public int deleteInvSubtitle(int subtitleNum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.deleteInvSubtitle(subtitleNum);
 		
 		return result;
 	}
