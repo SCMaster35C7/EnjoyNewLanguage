@@ -120,6 +120,13 @@
 					return;
 				}
 				
+				var fileName = $('#subtitleFile')[0].files[0].name;
+				if(fileName.substring(fileName.lastIndexOf('.')+1) != "srt") {
+					alert("srt 파일만 자막 등록이 가능합니다.");
+					$('#subtitleFile').focus();
+					return;
+				}
+				
 				formData.append("file", $('#subtitleFile')[0].files[0]);
 				formData.append("useremail", useremail);
 				formData.append("investigationNum", investigationnum);
@@ -157,7 +164,7 @@
 	        
 	        $.ajax({
 	            method : 'post',
-	            url : 'invSubtitleAll',
+	            url : 'invSubAll',
 	            data : 'investigationnum=${inv.investigationnum}',
 	            success : outputSubtitle
 	        });
@@ -184,23 +191,138 @@
 	    }
 	    
 	    function outputSubtitle(resp) {
-	    	alert("안녕! 나는 자막이야!");
+	    	console.log(resp);
 	    	
 	    	var result = '';
 			for ( var i in resp) {
-				result += '<div class="content">'
-				result += ' <p class="email" >' + resp[i].useremail + '</p>';
-				result += ' <p class="nick" >' + resp[i].usernick + '</p>';
-				result += ' <p class="text" >' + resp[i].content + '</p>';
-				result += ' <p class="date" >' + resp[i].regdate + '</p>';
-				result += ' <p class="blackcount" >' + resp[i].blackcount+ '</p>';
-				result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].subtitleNum+'" value="실행" />';
-				result += '<input class="replyDelete" type="button" data-rno="'+resp[i].subtitleNum+'" value="삭제" />';
-				result += ' </div>';
+				result += '<div class="subtitle">'
+				result += ' <span class="">'+resp[i].usernick+'</span>'
+				result += ' <span class="">'+resp[i].subtitleName+'</span>'
+				result += '	<input class="subStart" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
+				if(useremail == resp[i].useremail) {
+					result += '	<input class="subDelete" type="button" value="자막 삭제" data-rno="'+resp[i].subtitleNum+'"/>';
+				}
+				result += '	<button class="btn subRecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		<img alt="" src="images/tup.png"> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
+				result += '	</button>';
+				result += '	<button class="btn subDecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		<img alt="" src="images/tdown.png"> <span class="subDecoCount">'+resp[i].decommendation+'</span>';
+				result += '	</button>';
+				result += '</div>';
 			}
 
 			$("#subtitleList").html(result);
+			$(".subStart").on('click', subStart);
+			$(".subDelete").on('click', subDelete);
+			$(".subRecommendation").on('click', subRecommendation);
+			$(".subDecommendation").on('click', subDecommendation);
 		}
+	    
+	   	function subStart() {
+	   		alert("나는 자막 실행");
+	   		subnum = $(this).attr('data-rno');
+	   	}
+	    
+	    function subDelete() {
+	    	subnum = $(this).attr('data-rno');
+	    	
+	    	$.ajax({
+	    		method: 'get'
+	    		, url: 'invSubDelete'
+	    		, data: 'subtitleNum='+subnum
+	    		, success: function(resp) {
+	    			alert(resp);
+	    		}
+	    	});
+	    	
+	    	init();
+	    }
+	    
+	    function subRecommendation() {
+	    	if(useremail.trim().length == 0) {
+            	location.href="login";
+            	return;
+           	}
+           	var target = $(this);
+           	var subRecoCount = Number(target.children("span").text());
+           	var subDecoTarget = target.parent().children(".subDecommendation").children(".subDecoCount");
+           	var subnum = $(this).attr('data-rno');
+           	var dataForm = {
+                "tableName":"InvestigationSubtitle", 
+                "idCode":"subtitleNum", 
+                "useremail":useremail, 
+                "identificationnum":subnum, 
+                "recommendtable":"3", 
+                "recommendation":"0"
+           	};
+           
+            $.ajax({
+            	method:'post'
+               	, url:'insertRecommendation'
+               	, data: JSON.stringify(dataForm)
+               	, contentType: "application/json; charset=utf-8"
+               	, async: false
+               	, success:function(resp) {
+                	if(resp == "success") {
+                     	alert("영상을 좋아합니다.");
+                     	target.children("span").html(subRecoCount+1);
+                  	}else if(resp == "cancel") {
+                     	alert("좋아요를 취소합니다.");
+                     	target.children("span").html(subRecoCount-1);
+                  	}else if(resp == "change") {
+                     	alert("좋아요로 변경하셨습니다.");
+                     	subDecoTarget.html(Number(subDecoTarget.text())-1);
+                     	target.children("span").html(subRecoCount+1);
+                  	}
+               	}
+               	, error:function(resp, code, error) {
+                  	alert("resp : "+resp+", code : "+code+", error : "+error);
+               	}
+            });
+	    }
+	    
+	    function subDecommendation() {
+	    	if(useremail.trim().length == 0) {
+               	location.href="login";
+               	return;
+            }
+            var target = $(this);
+            var subDecoCount = Number(target.children("span").text());
+            var subRecoTarget = target.parent().children(".subRecommendation").children(".subRecoCount");
+	    	var subnum = $(this).attr('data-rno');
+            var dataForm = {
+            	"tableName":"InvestigationSubtitle", 
+                "idCode":"subtitleNum", 
+                "useremail":useremail, 
+                "identificationnum":subnum, 
+                "recommendtable":"3", 
+                "recommendation":"1"
+            };
+            
+            $.ajax({
+               	method:'post'
+               	, url:'insertRecommendation'
+               	, data: JSON.stringify(dataForm)
+               	, contentType: "application/json; charset=utf-8"
+               	, async: false
+               	, success:function(resp) {
+                  	if(resp == "success") {
+                     	alert("영상을 싫어합니다.");
+                     	target.children("span").html(subDecoCount+1);
+                  	}else if(resp == "cancel") {
+                     	alert("싫어요를 취소합니다.");
+                     	target.children("span").html(subDecoCount-1);
+                  	}else if(resp == "change"){
+                     	alert("싫어요로 변경하셨습니다.");
+                     	subRecoTarget.html(Number(subRecoTarget.text())-1);
+                     	target.children("span").html(subDecoCount+1);
+                  	}
+                 }
+               	, error:function(resp, code, error) {
+                  	alert("resp : "+resp+", code : "+code+", error : "+error);
+            	}
+        	});
+	    }
 
 		function replyInsert() {
 			$("#useremail").val(useremail);
@@ -416,12 +538,12 @@
 
 	<div class="card-footer" align="center">
 		<input type="hidden" value="${inv.investigationnum}">
-		<button class="btn recommendation">
+		<button class="btn recommendation" type="button">
 			<img alt="" src="images/tup.png"> <span id="recoCount">${inv.recommendation}</span>
 		</button>
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button class="btn decommendation">
+		<button class="btn decommendation" type="button">
 			<img alt="" src="images/tdown.png"> <span id="decoCount">${inv.decommendation}</span>
 		</button>
 	</div>

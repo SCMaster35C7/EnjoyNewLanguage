@@ -158,18 +158,31 @@
 	
 	<select id="subtitleAllFromInv" parameterType="int" resultType="InvSubtitle">
 		select
-			subtitlenum
-			, originalfile
-			, savedfile
-			, useremail
-			, investigationnum
-			, to_char(regdate, 'YYYY-MM-DD')
-			, usecount
-			, recommendation
-			, decommendation
+			i.subtitlenum
+			, i.subtitleName
+			, i.originalfile
+			, i.savedfile
+			, i.useremail
+			, i.investigationnum
+			, to_char(i.regdate, 'YYYY-MM-DD') regdate
+			, i.usecount
+			, i.recommendation
+			, i.decommendation
+			, m.usernick
 		from
+			InvestigationSubtitle i, member m
+		where
+			i.investigationnum = #{investigationnum}
+		and
+			i.useremail = m.useremail
+		order by
+			i.recommendation
+	</select>
+	
+	<delete id="deleteInvSubtitle" parameterType="int">
+		delete from
 			InvestigationSubtitle
 		where
-			investigationnum = #{investigationnum}
-	</select>
+			subtitleNum = #{subtitleNum}
+	</delete>
 </mapper>
