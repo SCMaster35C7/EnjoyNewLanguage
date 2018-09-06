@@ -143,7 +143,7 @@
 			replynum = #{replynum}
 	</delete> 
 	
-	<insert id="insertInvSubtitle" parameterType="InvSubtitle">
+	<insert id="insertInvSubtitle" parameterType="InvSubtitle" >
 		insert into InvestigationSubtitle (
 			subtitlenum
 			, subtitleName
@@ -157,7 +157,24 @@
 			, #{originalFile}
 			, #{savedFile}
 			, #{useremail}
-			, #{investigationnum}
+			, #{investigationNum}
 		)
 	</insert>
+	
+	<select id="subtitleAllFromInv" parameterType="int" resultType="InvSubtitle">
+		select
+			subtitlenum
+			, originalfile
+			, savedfile
+			, useremail
+			, investigationnum
+			, to_char(regdate, 'YYYY-MM-DD')
+			, usecount
+			, recommendation
+			, decommendation
+		from
+			InvestigationSubtitle
+		where
+			investigationnum = #{investigationnum}
+	</select>
 </mapper>

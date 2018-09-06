@@ -134,10 +134,10 @@
 					, success: function(resp) {
 						if(resp == 'failure') {
 							alert("파일을 넣어주세요.")
-							return;
 						}else if(resp == 'success') {
 							subtitleName.val('');
 							$('#subtitleFile').val('');
+							init();
 						}
 					}
 					, error: function(resp, code, error) {
@@ -152,11 +152,18 @@
 	            method : 'post',
 	            url : 'replyInvAll',
 	            data : 'idnum=${inv.investigationnum}',
-	            success : output
+	            success : outputReply
 	    	});
+	        
+	        $.ajax({
+	            method : 'post',
+	            url : 'invSubtitleAll',
+	            data : 'investigationnum=${inv.investigationnum}',
+	            success : outputSubtitle
+	        });
 	    }
 	      
-	    function output(resp) {
+	    function outputReply(resp) {
 	       var result = '';
 	    
 	       for ( var i in resp) {
@@ -175,93 +182,112 @@
 	       $("input:button.replyDelete").click(replyDelete);
 	       $("input:button.replyUpdate").click(replyUpdate); 
 	    }
-	      
+	    
+	    function outputSubtitle(resp) {
+	    	alert("안녕! 나는 자막이야!");
+	    	
+	    	var result = '';
+			for ( var i in resp) {
+				result += '<div class="content">'
+				result += ' <p class="email" >' + resp[i].useremail + '</p>';
+				result += ' <p class="nick" >' + resp[i].usernick + '</p>';
+				result += ' <p class="text" >' + resp[i].content + '</p>';
+				result += ' <p class="date" >' + resp[i].regdate + '</p>';
+				result += ' <p class="blackcount" >' + resp[i].blackcount+ '</p>';
+				result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].subtitleNum+'" value="실행" />';
+				result += '<input class="replyDelete" type="button" data-rno="'+resp[i].subtitleNum+'" value="삭제" />';
+				result += ' </div>';
+			}
+
+			$("#subtitleList").html(result);
+		}
+
 		function replyInsert() {
-	     	$("#useremail").val(useremail);
-	         
-	        var btnname = $("#replyInsert").val();
-	
-	        if (btnname == '댓글등록') {
-	           var replytext = $("#replytext").val();
-	            
-	           if (replytext.length == 0) {
-	              alert("댓글을 작성해주세요!");
-	              return;
-	           }
-	     
-	           var sendData = {   
-	           		"idnum":investigationnum
-	                , "useremail":useremail
-	                , "content":replytext
-	           };
-	           
-	           $.ajax({
-	              type : 'post',
-	              url : 'replyInvInsert',
-	              data : JSON.stringify(sendData),
-	              dataType:'text',
-	              contentType: "application/json; charset=UTF-8",
-	              success : init
-	           });
-	            //돌려놓기
-	           $("#replytext").val('');
-	        }else if (btnname == '댓글수정') {
-	        	var replytext = $("#replytext").val();
-	           	var replynum = $("#replynum").val();
-	           	var sendData = {
-	           		"replynum" : replynum,
-	           		"content" : replytext,
-	           	} 
-	        
-		       	$.ajax({
-			        method : 'post',
-			        url : 'replyInvUpdate',
-			        data : JSON.stringify(sendData),
-			        dataType:'text',
-			        contentType: "application/json; charset=UTF-8",
-			        success : init
-		     	}); 
-		      	
-	           	$("#replytext").val('');
-	      		$("#replyInsert").val("리뷰등록");
-	      	}
-	      }
-	
-	      function replyDelete() {
-	         var nick = $(this).parent().children('.nick').text();
-	         if ("${usernick}" != nick) {
-	            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-	            return;
-	         }
-	         replynum = $(this).attr('data-rno');
-	         $.ajax({
-	            method : 'get',
-	            url : 'replyInvDelete',
-	            data : 'replynum='+replynum,
-	            dataType: 'text',
-	            success : init
-	         });
-	      }
-	
-	      function replyUpdate() {
-	         replynum = $(this).attr('data-rno');
-	
-	         var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
-	         var replytext = $(this).parent().children('.text').text();
-	
-	         if ("${usernick}" != nick) {
-	            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-	            return;
-	         }
-	
-	         $("#usernick").val(nick);
-	         $("#replytext").val(replytext);
-	         $("#replyInsert").val("댓글수정");
-	         $("#usernick").prop('readonly', 'readonly');
-	
-	         //히든에 리뷰넘버 넣어주기
-	         $("#replynum").val(replynum);
-	      }
+			$("#useremail").val(useremail);
+
+			var btnname = $("#replyInsert").val();
+
+			if (btnname == '댓글등록') {
+				var replytext = $("#replytext").val();
+
+				if (replytext.length == 0) {
+					alert("댓글을 작성해주세요!");
+					return;
+				}
+
+				var sendData = {
+					"idnum" : investigationnum,
+					"useremail" : useremail,
+					"content" : replytext
+				};
+
+				$.ajax({
+					type : 'post',
+					url : 'replyInvInsert',
+					data : JSON.stringify(sendData),
+					dataType : 'text',
+					contentType : "application/json; charset=UTF-8",
+					success : init
+				});
+				//돌려놓기
+				$("#replytext").val('');
+			} else if (btnname == '댓글수정') {
+				var replytext = $("#replytext").val();
+				var replynum = $("#replynum").val();
+				var sendData = {
+					"replynum" : replynum,
+					"content" : replytext,
+				}
+
+				$.ajax({
+					method : 'post',
+					url : 'replyInvUpdate',
+					data : JSON.stringify(sendData),
+					dataType : 'text',
+					contentType : "application/json; charset=UTF-8",
+					success : init
+				});
+
+				$("#replytext").val('');
+				$("#replyInsert").val("리뷰등록");
+			}
+		}
+
+		function replyDelete() {
+			var nick = $(this).parent().children('.nick').text();
+			if ("${usernick}" != nick) {
+				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
+				return;
+			}
+			replynum = $(this).attr('data-rno');
+			$.ajax({
+				method : 'get',
+				url : 'replyInvDelete',
+				data : 'replynum=' + replynum,
+				dataType : 'text',
+				success : init
+			});
+		}
+
+		function replyUpdate() {
+			replynum = $(this).attr('data-rno');
+
+			var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
+			var replytext = $(this).parent().children('.text').text();
+
+			if ("${usernick}" != nick) {
+				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
+				return;
+			}
+
+			$("#usernick").val(nick);
+			$("#replytext").val(replytext);
+			$("#replyInsert").val("댓글수정");
+			$("#usernick").prop('readonly', 'readonly');
+
+			//히든에 리뷰넘버 넣어주기
+			$("#replynum").val(replynum);
+		}
 	</script>
 </head>
 <body>
@@ -409,7 +435,7 @@
 		</form>
 	</div>
 	
-	<div id="subtitle">
+	<div id="subtitleList">
 		
 	</div>
 	<hr />

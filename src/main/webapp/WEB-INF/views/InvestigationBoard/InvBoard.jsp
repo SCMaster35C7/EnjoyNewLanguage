@@ -177,12 +177,12 @@
 	
 	<!-- nav -->
 	<nav class="nav-extended">
-		<div class="nav-wrapper">
-		    <a href="index" class="brand-logo">Logo</a>
-		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
-		    <ul class="right hide-on-med-and-down">
-			    <c:if test="${not empty sessionScope.useremail }">
-					<li>
+	  <div class="nav-wrapper">
+	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+	    <ul class="right hide-on-med-and-down">
+		      	<c:if test="${not empty sessionScope.useremail }">
+		      <li>
 						<a href="logout">${sessionScope.useremail }님아logout</a>
 			    	</li>
 				</c:if>
@@ -214,24 +214,31 @@
 			<div class="container">
 				<form class="col s12" id=loginForm action="login" method="POST">
 					<div class="row">
-						<h4 class="center-align">LOGIN</h4>
-					
-						<div class="row">
+            	<h4 class="center-align">LOGIN</h4>
+            	<div class="row">
+						  <c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mail</i>
 								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
 								<label for="useremail">EMAIL</label>
 							</div>
-						</div>
-					
-						<div class="row">
+						</c:if>
+					</div>
+				
+					<div class="row">
+					<c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mode_edit</i>
 								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
 								<label for="userpwd">PASSWORD</label>
 							</div>
-						</div>
-					</div>	
+						</c:if>
+					</div>
+					
+					<c:if test="${not empty sessionScope.useremail }">
+						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+					</c:if>
+				</div>	
 				
 					<div class="row">
 						<div class="col s10">
@@ -246,12 +253,13 @@
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light modal-close">LOGOUT
-									<i class="material-icons right">settings_power</i>
-								</button>
-							</span>
+							<c:if test="${not empty sessionScope.useremail }">
+								<span class="flow-text">
+									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
+										<i class="material-icons right">power_settings_new</i>
+									</a>
+								</span>
+							</c:if>
 						</div>
 						
 						<div class="fixed-action-btn">
@@ -270,11 +278,15 @@
 		</div>	
 	  </div>
    
-	<input type="button" id="requestInvestigation" value="자막요청"/>
+   	  <div class="fixed-action-btn">
+		  <a class="btn-floating btn-large red tooltipped" id="requestInvestigation" data-position="top" data-tooltip="+SUBTITLE">
+		    <i class="large material-icons">subtitles</i>
+		  </a>
+	  </div>
 	
     <!-- Page Content -->
 	<div class="container">
-		<h3 class="center">자막검증게시판</h3>
+		<h4 class="center">자막검증게시판</h4>
 		<div class="row">
 		
 		<c:if test="${not empty invList}">
@@ -284,7 +296,7 @@
 				<div class="card" style="height:400px margin-bottom:10px;">
 					<div class="card-image">
 							<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
-							<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+							<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="wishlist"><i class="material-icons">add</i></a>
 					</div>
 					
 						<div class="card-content" style="height:150px;">

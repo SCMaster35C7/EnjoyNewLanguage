@@ -135,20 +135,28 @@ $(document).ready(function() {
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mail</i>
-							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-							<label for="useremail">EMAIL</label>
-						</div>
+						<c:if test="${empty sessionScope.useremail }">
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mail</i>
+								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+								<label for="useremail">EMAIL</label>
+							</div>
+						</c:if>
 					</div>
 				
 					<div class="row">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mode_edit</i>
-							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-							<label for="userpwd">PASSWORD</label>
-						</div>
+					<c:if test="${empty sessionScope.useremail }">
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mode_edit</i>
+								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+								<label for="userpwd">PASSWORD</label>
+							</div>
+						</c:if>
 					</div>
+					
+					<c:if test="${not empty sessionScope.useremail }">
+						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+					</c:if>
 				</div>	
 				
 					<div class="row">
@@ -164,12 +172,13 @@ $(document).ready(function() {
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light modal-close">LOGOUT
-									<i class="material-icons right">settings_power</i>
-								</button>
-							</span>
+							<c:if test="${not empty sessionScope.useremail }">
+								<span class="flow-text">
+									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
+										<i class="material-icons right">power_settings_new</i>
+									</a>
+								</span>
+							</c:if>
 						</div>
 						
 						<div class="fixed-action-btn">
