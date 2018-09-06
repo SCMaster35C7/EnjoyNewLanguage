@@ -103,7 +103,7 @@
 		      	  <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
 		    </ul>
 		  </div>
-	
+
 		  <div class="nav-content">
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 	        		<i class="medium material-icons">person</i>
@@ -192,6 +192,7 @@
 			</div>
 		</div>	
 	  </div>
+
 	
 		<div class="wrapper">
 			 <!-- sidenav -->	  
