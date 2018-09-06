@@ -33,8 +33,10 @@ public class DubbingController {
 	@Autowired
 	DubbingRepository dubRepository;
 
+
 	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
 	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
+
 
 	// 더빙겟
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
@@ -63,7 +65,6 @@ public class DubbingController {
 
 	@RequestMapping(value = "DubbingWrite", method = RequestMethod.GET)
 	public String DubbingWrite(Model model, Integer videoNum, String url) {
-		System.out.println(videoNum + "," + url);
 		Education edu = null;
 		if (videoNum != null) {
 			edu = eduRepository.selectOneFromEduVideo(videoNum);
@@ -131,14 +132,15 @@ public class DubbingController {
   @RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
 	public String deleteDubbing(Dubbing dub) {
 		dubRepository.deleteDubbing(dub);
-		
 		return "redirect:dubbingBoard";
 	}
   
-	@RequestMapping(value="/replyAll", method=RequestMethod.POST)
-	public @ResponseBody List<Reply> replyAll(int dubbingnum) {
+
+	@RequestMapping(value="/replyDubAll", method=RequestMethod.POST)
+	public @ResponseBody List<Reply> replyDubAll(int idnum) {
 		//System.out.println(dubbingnum);
-		List<Reply> replyList = dubRepository.replyAll(dubbingnum);
+		List<Reply> replyList = dubRepository.replyDubAll(idnum);
+
 		return replyList;
 	}
 			
@@ -148,15 +150,15 @@ public class DubbingController {
 		return result;
 	}
 			
-	@RequestMapping(value="/replyDelete", method=RequestMethod.GET)
-	public @ResponseBody Integer replyDelete(int replynum) {
-		int result = dubRepository.replyDelete(replynum);
+	@RequestMapping(value="/replyDubDelete", method=RequestMethod.GET)
+	public @ResponseBody Integer replyDubDelete(int replynum) {
+		int result = dubRepository.replyDubDelete(replynum);
 		return result;
 	}
 			
-	@RequestMapping(value="/replyUpdate", method=RequestMethod.POST)
-	public @ResponseBody Integer replyUpdate(@RequestBody Reply reply) {
-		int result = dubRepository.replyUpdate(reply);
+	@RequestMapping(value="/replyDubUpdate", method=RequestMethod.POST)
+	public @ResponseBody Integer replyDubUpdate(@RequestBody Reply reply) {
+		int result = dubRepository.replyDubUpdate(reply);
 		return result;
 	}
 }

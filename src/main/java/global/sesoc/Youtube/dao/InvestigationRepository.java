@@ -24,7 +24,7 @@ public class InvestigationRepository {
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
 		int result = mapper.getTotalCount(map);
-				
+		
 		return result;
 	}
 
