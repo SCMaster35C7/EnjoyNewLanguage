@@ -145,6 +145,7 @@
 					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
 					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
+				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
 				result += ' </div>';
 			}
 			
@@ -153,6 +154,35 @@
 			//여기서(output) 나가기 전에 이벤트 걸어야함
 			 $("input:button.replyDelete").click(replyDelete);
 			 $("input:button.replyUpdate").click(replyUpdate); 
+			 $("img.report").click(reportReply); 
+		}
+		
+		function reportReply() {
+			//alert('신고');
+			var useremail = "${sessionScope.useremail}";
+			//alert(useremail);
+			replynum = $(this).attr('data-rno');
+			//alert(replynum);
+			var sendData = {
+					"useremail":useremail
+					,"whichboard":  "0"
+					,"replynum":  replynum
+				};
+				
+				$.ajax({
+					type : 'post',
+					url : 'insertBlack',
+					data : JSON.stringify(sendData),
+					dataType:'text',
+					contentType: "application/json; charset=UTF-8",
+					success : function(resp){
+						alert(JSON.stringify(resp));
+						init();
+					},
+					error:function(resp, code, error) {
+						alert("resp : "+resp+", code : "+code+", error : "+error);
+					}
+				}); 
 		}
 		
 		function replyInsert() {
@@ -435,6 +465,8 @@
 			<input id="replyInsert" type="button" value="댓글등록"/>
 			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
 		</form>
+		
+		
 		
 		<hr/>
 		<div id="result"> 
