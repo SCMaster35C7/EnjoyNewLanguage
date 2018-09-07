@@ -117,6 +117,8 @@
 			
 			$("#cancelUpdate").on('click', function() {
 				$("#replytext").val('');
+				$("#replyInsert").val("댓글등록");
+				$("#cancelUpdate").css("visibility", "hidden");
 			});
 		});
 			
@@ -238,7 +240,7 @@
 				}); 
 		
 				$("#replytext").val('');
-				$("#replyInsert").val("리뷰등록");
+				$("#replyInsert").val("댓글등록");
 				$("#cancelUpdate").css("visibility", "hidden");
 			}
 		}
