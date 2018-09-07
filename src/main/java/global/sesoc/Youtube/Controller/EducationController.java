@@ -32,7 +32,7 @@ public class EducationController {
 		String jamacURL = eduFileRoot + "/" + savedfileName;
 		SubtitlesMaker sm = new SubtitlesMaker();
 		SubtitlesList sublist = sm.RandomText(jamacURL, level);
-	
+		
 		return sublist;
 	}
 

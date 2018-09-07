@@ -48,7 +48,7 @@ public class SubtitlesMaker {
 					fulltext.add(textlist);
 					ArrayList<String> quiztext = new ArrayList<>();
 					quiztext = (ArrayList<String>) textlist.clone();
-					int block = quiztext.size() / (6 - level);
+					int block = quiztext.size() / (6 - level); //난이도는 1~5단계(5단계: 완전 빈칸)
 					ArrayList<Integer> numberlist = new ArrayList<>();
 					for (int i = 0; i < textlist.size(); i++) {
 						numberlist.add(i);

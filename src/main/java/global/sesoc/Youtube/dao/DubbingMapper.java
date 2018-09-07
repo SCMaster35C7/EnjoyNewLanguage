@@ -15,6 +15,7 @@ public interface DubbingMapper {
 	public int insertReply(Reply reply);          // 댓글 삽입
 	public int replyDubDelete(int replynum);         // 댓글 삭제
 	public int replyDubUpdate(Reply reply);          // 댓글 수정
+	public int replysDelete(Reply reply);
 	public Black existedBlack(Black black);
 	public int insertBlack(Black black);
 	public int updateBlack(Black black);

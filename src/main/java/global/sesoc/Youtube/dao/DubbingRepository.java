@@ -61,6 +61,11 @@ public class DubbingRepository {
     
 		return result;
 	}
+	
+	public int replysDelete(Reply reply) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.replysDelete(reply);
+
 
 	public Black existedBlack(Black black) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
@@ -97,6 +102,7 @@ public class DubbingRepository {
 	public int replyDubInsert(Reply reply) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		int result = mapper.replyDubInsert(reply);
+
 		return result;
 	}
 }

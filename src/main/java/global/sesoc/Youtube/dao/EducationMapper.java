@@ -25,6 +25,7 @@ public interface EducationMapper {
 	public int updateRecommend(Recommendation reco); 						// 추천/비추천 변경
 	public int updateIncreRecommend(Map<String, Object> map); 				// 추천/비추천수 증가
 	public int updateDecreRecommend(Map<String, Object> map); 				// 추천/비추천수 감소
+	public int deleteAllRecommend(Map<String, Object> map);   
 	
 	public String selectSubName(int videoNum); 								// 자막파일 이름가져오기
 	public String selectSubName2(String url);
