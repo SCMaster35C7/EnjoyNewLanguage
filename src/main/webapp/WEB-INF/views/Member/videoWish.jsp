@@ -12,16 +12,26 @@ $(function () {
 	
 });
 
+<<<<<<< HEAD
 /* var dataFormVideo = {
+=======
+var dataFormVideo = {
+>>>>>>> Muk
 		"tableName":"videowish", 
 		"idCode":"videonum", 
 		"useremail":useremail, 
 		"title":title,			
 		"url":url,	
 		"wishnum":videonum,		
+<<<<<<< HEAD
 }; */
 
 /* $.ajax({
+=======
+};
+
+$.ajax({
+>>>>>>> Muk
 	method:'post'
 	, url:'videoWish'
 	, data: JSON.stringify(dataFormVideo)
@@ -29,6 +39,7 @@ $(function () {
 	, async : false
 	, success:function(resp) {
 		
+<<<<<<< HEAD
 		for(var i in )
 		
 			if(==0){
@@ -41,6 +52,12 @@ $(function () {
 	, error:function(resp, code, error) {
 		alert("resp : "+resp+", code : "+code+", error : "+error);
 	} */
+=======
+	 }
+	, error:function(resp, code, error) {
+		alert("resp : "+resp+", code : "+code+", error : "+error);
+	}
+>>>>>>> Muk
 });
 </script>
 </head>
@@ -63,7 +80,11 @@ $(function () {
 					</tr>
 				</c:if>
 
+<<<<<<< HEAD
 			<%-- 글 목록  뿌리기 --%>
+=======
+				<%-- 글 목록  뿌리기 --%>
+>>>>>>> Muk
 				<c:if test="${not empty list}">
 					<c:forEach var="WishList" items="${WishList}" varStatus="status">
 						<tr>
