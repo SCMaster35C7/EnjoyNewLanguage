@@ -25,7 +25,7 @@
 		    useremail not in(select useremail from confirmmember)
 		</if>
 	</select>
-
+	
 	<select id="selectByNick" parameterType="string" resultType="Member">
 		select
 			useremail, usernick, userpwd, gender
@@ -109,12 +109,12 @@
 		group by 
 			m.useremail, m.usernick, m.point
 	</select>
-	
+
 	<select id="checkChallengeCount" parameterType="String" resultType="int"> 
-	select 
-	 sum(s.CHALLENGECOUNT)
-	 from
-	    member m, userstudy s
+		select 
+	 		sum(s.CHALLENGECOUNT)
+	 	from
+	    	member m, userstudy s
 	 	where 
 			m.useremail = s.useremail
 		and 
@@ -122,7 +122,6 @@
 		group by 
 			m.useremail
 	</select>
-
 
 	<!-- 마이페이지 레벨 누적 -->
 	<select id="selectLevels" parameterType="string" resultType="TestResult">
@@ -151,20 +150,19 @@
 	
 	<!-- 회원탈퇴 정보 입력(삭제 예정 회원정보에 저장) -->
 	<insert id="insertCloseID" parameterType="String">
-	insert into confirmmember
-	(
-	useremail
-	,outdate
-	 )
-	values
-	(
-	#{value}
-	,sysdate
-	)
+		insert into confirmmember (
+			useremail
+			,outdate
+		)values(
+			#{value}
+			,sysdate
+		)
 	</insert>
 	
 	<delete id="recoveryID" parameterType="String">
-	delete from confirmmember
-	where userid=#{value}
+		delete from 
+			confirmmember
+		where 
+			userid=#{value}
 	</delete>
 </mapper>

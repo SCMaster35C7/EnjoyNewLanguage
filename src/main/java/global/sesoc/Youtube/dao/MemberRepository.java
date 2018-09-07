@@ -126,4 +126,10 @@ public class MemberRepository {
 		int result = mapper.recoveryID(useremail);
 		return result;
 	}
+
+	public Member selectInConfirm(String useremail) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		Member member = mapper.selectInConfirm(useremail);
+		return member;
+	}
 }

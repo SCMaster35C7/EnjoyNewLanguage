@@ -182,3 +182,13 @@ CREATE TABLE Recommendation(
 	regDate				Date 			DEFAULT SYSDATE,									-- 추천일
 	CONSTRAINT recomend_fk PRIMARY KEY(useremail, identificationnum, recommendtable) 
 );
+
+-- 12. 신고 테이블
+CREATE TABLE Blacklist(
+	useremail			VARCHAR2(100),
+	whichboard			NUMBER,																-- 테이블 식별코드(0-더빙리플, 1-자막리플)
+	replynum				NUMBER,
+	regDate				Date 			DEFAULT SYSDATE,	
+	CONSTRAINT blacklist_fk PRIMARY KEY(useremail, whichboard, replynum) 
+);
+

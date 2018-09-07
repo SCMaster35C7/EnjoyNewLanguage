@@ -6,6 +6,7 @@ public class InvSubtitle {
 	private String originalFile;
 	private String savedFile;
 	private String useremail;
+	private String usernick;
 	private int investigationNum;
 	private String regDate;
 	private int useCount;
@@ -17,8 +18,8 @@ public class InvSubtitle {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public InvSubtitle(int subtitleNum, String subtitleName, String originalFile, String savedFile,
-			String useremail, int investigationNum, String regDate, int useCount, int recommendation,
+	public InvSubtitle(int subtitleNum, String subtitleName, String originalFile, String savedFile, String useremail,
+			String usernick, int investigationNum, String regDate, int useCount, int recommendation,
 			int decommendation) {
 		super();
 		this.subtitleNum = subtitleNum;
@@ -26,6 +27,7 @@ public class InvSubtitle {
 		this.originalFile = originalFile;
 		this.savedFile = savedFile;
 		this.useremail = useremail;
+		this.usernick = usernick;
 		this.investigationNum = investigationNum;
 		this.regDate = regDate;
 		this.useCount = useCount;
@@ -47,6 +49,9 @@ public class InvSubtitle {
 	}
 	public String getUseremail() {
 		return useremail;
+	}
+	public String getUsernick() {
+		return usernick;
 	}
 	public int getInvestigationNum() {
 		return investigationNum;
@@ -79,6 +84,9 @@ public class InvSubtitle {
 	public void setUseremail(String useremail) {
 		this.useremail = useremail;
 	}
+	public void setUsernick(String usernick) {
+		this.usernick = usernick;
+	}
 	public void setInvestigationNum(int investigationNum) {
 		this.investigationNum = investigationNum;
 	}
@@ -97,9 +105,9 @@ public class InvSubtitle {
 	
 	@Override
 	public String toString() {
-		return "InvestigationSubtitle [subtitleNum=" + subtitleNum + ", subtitleName=" + subtitleName + ", originalFile="
-				+ originalFile + ", savedFile=" + savedFile + ", useremail=" + useremail + ", investigationNum="
-				+ investigationNum + ", regDate=" + regDate + ", useCount=" + useCount + ", recommendation="
-				+ recommendation + ", decommendation=" + decommendation + "]";
+		return "InvSubtitle [subtitleNum=" + subtitleNum + ", subtitleName=" + subtitleName + ", originalFile="
+				+ originalFile + ", savedFile=" + savedFile + ", useremail=" + useremail + ", usernick=" + usernick
+				+ ", investigationNum=" + investigationNum + ", regDate=" + regDate + ", useCount=" + useCount
+				+ ", recommendation=" + recommendation + ", decommendation=" + decommendation + "]";
 	}
 }

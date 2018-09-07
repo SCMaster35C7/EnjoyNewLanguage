@@ -110,4 +110,18 @@ public class InvestigationRepository {
 		
 		return subList;
 	}
+
+	public int deleteInvSubtitle(int subtitleNum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.deleteInvSubtitle(subtitleNum);
+		
+		return result;
+	}
+
+	public InvSubtitle selectOneFromSubUseNum(int subtitleNum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		InvSubtitle sub = mapper.selectOneFromSubUseNum(subtitleNum);
+		
+		return sub;
+	}
 }
