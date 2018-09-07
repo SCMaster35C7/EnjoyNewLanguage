@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Reply;
 
@@ -48,12 +49,6 @@ public class DubbingRepository {
 		return replyList;
 	}
 
-	public int insertReply(Reply reply) {
-		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
-		int result = mapper.insertReply(reply);
-		return result;
-	}
-
 	public int replyDubDelete(int replynum) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		int result = mapper.replyDubDelete(replynum);
@@ -64,6 +59,44 @@ public class DubbingRepository {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		int result = mapper.replyDubUpdate(reply);
     
+		return result;
+	}
+
+	public Black existedBlack(Black black) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		Black b = mapper.existedBlack(black);
+		return b;
+	}
+
+	public int insertBlack(Black black) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.insertBlack(black);
+    
+		return result;
+	}
+
+	public int updateBlack(Black black) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.updateBlack(black);
+		return result;
+	}
+
+
+	public Reply selectReply(Black black) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		Reply reply = mapper.selectReply(black);
+		return reply;
+	}
+
+	public int reportDelete(Black black) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.reportDelete(black);
+		return result;
+	}
+
+	public int replyDubInsert(Reply reply) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.replyDubInsert(reply);
 		return result;
 	}
 }
