@@ -190,10 +190,20 @@ public class InvestigationController {
 		return "success";
 	}
 	
-	@RequestMapping(value="/invSubtitleAll", method=RequestMethod.POST)
-	public @ResponseBody List<InvSubtitle> invSubtitleAll(int investigationnum) {
+	@RequestMapping(value="/invSubAll", method=RequestMethod.POST)
+	public @ResponseBody List<InvSubtitle> invSubAll(int investigationnum) {
 		List<InvSubtitle> subList = invRepository.subtitleAllFromInv(investigationnum);
-		
+
 		return subList;
+	}
+	
+	@RequestMapping(value="/invSubDelete", method=RequestMethod.GET)
+	public @ResponseBody String invSubDelete(int subtitleNum) {
+		int result = invRepository.deleteInvSubtitle(subtitleNum);
+		
+		if(result == 1)
+			return "success";
+		else
+			return "failure";
 	}
 }
