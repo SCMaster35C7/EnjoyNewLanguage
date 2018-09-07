@@ -180,7 +180,10 @@
 						init();
 					},
 					error:function(resp, code, error) {
-						alert("resp : "+resp+", code : "+code+", error : "+error);
+						//alert("resp : "+resp+", code : "+code+", error : "+error);
+						alert("로그인이 필요합니다.");
+						location.href="./";
+
 					}
 				}); 
 		}
@@ -199,14 +202,14 @@
 				}
 				
 				var sendData = {
-					"dubbingnum":dubbingnum
+					"idnum":dubbingnum
 					,"useremail":  useremail
 					,"content":replytext 
 				};
 				
 				$.ajax({
 					type : 'post',
-					url : 'replyInsert',
+					url : 'replyDubInsert',
 					data : JSON.stringify(sendData),
 					dataType:'json',
 					contentType: "application/json; charset=UTF-8",
@@ -459,8 +462,8 @@
 			<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly"/>
 			<input id=replytext name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^"/>
 		
-			<input hidden="useremail" id="useremail" name="useremail" value=""/>
-			<input hidden="replynum" id="replynum" name="replynum" value=""/>
+			<input type="hidden" id="useremail" name="useremail" value=""/>
+			<input type="hidden" id="replynum" name="replynum" value=""/>
 			
 			<input id="replyInsert" type="button" value="댓글등록"/>
 			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>

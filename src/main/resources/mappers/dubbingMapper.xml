@@ -80,6 +80,7 @@
 			dubbingnum = #{dubbingnum}
 		and
 			d.useremail =m.useremail
+		order by d.replynum
 	</select>
 	
 	<delete id="replyDubDelete" parameterType="int">
@@ -170,5 +171,20 @@
 			</if>
 		where replynum = #{replynum}
 	</delete>
+	
+	<insert id="replyDubInsert" parameterType="Reply">
+		insert into dubbingreply (
+			replynum,
+			dubbingnum,
+			useremail,
+			content
+		) values(
+			dubbing_reply_seq.nextval		
+			, #{idnum}
+			, #{useremail}
+			, #{content}
+		)
+	</insert>
+	
 	
 </mapper>

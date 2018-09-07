@@ -164,6 +164,12 @@
 	
 	<delete id="recoveryID" parameterType="String">
 	delete from confirmmember
-	where userid=#{value}
+	where useremail=#{value}
 	</delete>
+	
+	<select id="selectInConfirm" parameterType="String" resultType="Member">
+		select useremail
+		from confirmmember
+		where useremail = #{value}
+	</select>
 </mapper>

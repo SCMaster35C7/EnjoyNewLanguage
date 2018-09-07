@@ -145,9 +145,9 @@ public class DubbingController {
 		return replyList;
 	}
 			
-	@RequestMapping(value="/replyInsert", method=RequestMethod.POST)
-	public @ResponseBody Integer replyInsert(@RequestBody Reply reply ) {
-		int result = dubRepository.insertReply(reply);
+	@RequestMapping(value="/replyDubInsert", method=RequestMethod.POST)
+	public @ResponseBody Integer replyDubInsert(@RequestBody Reply reply ) {
+		int result = dubRepository.replyDubInsert(reply);
 		return result;
 	}
 			
