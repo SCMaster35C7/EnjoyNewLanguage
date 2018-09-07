@@ -33,10 +33,8 @@ public class DubbingController {
 	@Autowired
 	DubbingRepository dubRepository;
 
-
 	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
 	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
-
 
 	// 더빙겟
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
@@ -75,18 +73,6 @@ public class DubbingController {
 		model.addAttribute("edu", edu);
 		
 		return "DubbingBoard/dubbingWrite";
-	}
-
-	@RequestMapping(value = "getSubtitles", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, String> getSubtitles(String subFileName) {
-		String jamacURL = eduFileRoot + "/" + subFileName;
-		EasySubtitlesMaker esm = new EasySubtitlesMaker();
-		Map<String, String> result = esm.GetSubtitles(jamacURL);
-		if (result.isEmpty())
-			return null;
-		else
-			return result;
 	}
 
 	@RequestMapping(value = "savedubbing", method = RequestMethod.POST)
