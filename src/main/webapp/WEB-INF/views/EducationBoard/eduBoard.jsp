@@ -114,6 +114,7 @@
 				var decoCount = Number(target.children("span").text());
 				var recoTarget = target.parent().children(".recommendation").children("#recoCount");
 				var videonum = target.parent().children("input").val();
+				alert(videonum);
 				var dataForm = {
 						"tableName":"educationvideo",
 						"idCode":"videonum",  
@@ -171,7 +172,7 @@
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
-	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+	    <a href="index" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
@@ -212,28 +213,20 @@
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+							<label for="useremail">EMAIL</label>
+						</div>
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mode_edit</i>
+							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+							<label for="userpwd">PASSWORD</label>
+						</div>
 					</div>
-					
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
 				</div>	
 				
 					<div class="row">
@@ -249,13 +242,12 @@
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							<c:if test="${not empty sessionScope.useremail }">
-								<span class="flow-text">
-									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
-										<i class="material-icons right">power_settings_new</i>
-									</a>
-								</span>
-							</c:if>
+							
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close">LOGOUT
+									<i class="material-icons right">settings_power</i>
+								</button>
+							</span>
 						</div>
 						
 						<div class="fixed-action-btn">
@@ -278,7 +270,7 @@
 	
     <!-- Page Content -->
 	<div class="container">
-		<h4 class="center">공부게시판메인</h4>
+		<h3 class="center">공부게시판메인</h3>
 		<div class="row">
 			
 		<c:if test="${not empty eduList}">
@@ -288,7 +280,7 @@
 				<div class="card" style="height:400px margin-bottom:10px;">
 					<div class="card-image">
 						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="wishlist"><i class="material-icons">add</i></a>
+						<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
 					</div>
 					<div class="card-content" style="height:150px;">
 							<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
@@ -297,7 +289,6 @@
 					<div class="card-action" style="height:70px">
 						<div class="row">
 							<input type="hidden" value="${eduList.videoNum}"/>
-              
 							<button class="btn recommendation">
 								<i class="material-icons">thumb_up</i>
 								<span id="recoCount">${eduList.recommendation}</span>

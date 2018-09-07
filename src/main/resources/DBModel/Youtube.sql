@@ -84,13 +84,20 @@ CREATE SEQUENCE USER_STUDY_SEQ;
 
 -- 5. 찜한 목록 테이블
 CREATE TABLE WishList(	
-	wishnum			NUMBER			CONSTRAINT wishlist_wishnum_pk		PRIMARY KEY,			-- 찜목록 번호
-	useremail		VARCHAR2(100),																-- 사용자 아이디
-	url				VARCHAR2(1000) 	CONSTRAINT wishlist_url_nn			NOT NULL,				-- 영상URL
-	title			VARCHAR2(1000) 	CONSTRAINT wishlist_title_nn		NOT NULL,				-- 영상제목
-	regDate			DATE			DEFAULT SYSDATE,											-- 등록일
-	CONSTRAINT wishlist_useremail_fk FOREIGN KEY(useremail) REFERENCES Member(useremail) ON DELETE CASCADE
-);
+	wishnum				NUMBER				CONSTRAINT wishlist_wishnum_pk		PRIMARY KEY,			-- 찜목록 번호
+	videoNum			NUMBER,
+	subtitlenum			NUMBER,	
+	dubbingnum			NUMBER,		
+	useremail			VARCHAR2(100),																-- 사용자 아이디
+	url					VARCHAR2(1000) 		CONSTRAINT wishlist_url_nn			NOT NULL,				-- 영상URL
+	title				VARCHAR2(1000) 		CONSTRAINT wishlist_title_nn		NOT NULL,				-- 영상제목
+	regDate				DATE				DEFAULT SYSDATE,											-- 등록일
+	
+	CONSTRAINT wishlist_useremail_fk 	FOREIGN KEY(useremail)		REFERENCES Member(useremail) 					ON DELETE CASCADE,	
+	CONSTRAINT wishlist_videoNum_fk 	FOREIGN KEY(videoNum) 		REFERENCES EducationVideo(videoNum) 			ON DELETE CASCADE,
+	CONSTRAINT wishlist_subtitlenum_fk 	FOREIGN KEY(subtitlenum)	REFERENCES InvestigationSubtitle(subtitlenum) 	ON DELETE CASCADE,
+	CONSTRAINT wishlist_dubbingnum_fk 	FOREIGN KEY(dubbingnum) 	REFERENCES Dubbing(dubbingnum) 					ON DELETE CASCADE
+	);
 
 CREATE SEQUENCE WISH_LIST_SEQ;
 
@@ -182,13 +189,3 @@ CREATE TABLE Recommendation(
 	regDate				Date 			DEFAULT SYSDATE,									-- 추천일
 	CONSTRAINT recomend_fk PRIMARY KEY(useremail, identificationnum, recommendtable) 
 );
-
--- 12. 신고 테이블
-CREATE TABLE Blacklist(
-	useremail			VARCHAR2(100),
-	whichboard			NUMBER,																-- 테이블 식별코드(0-더빙리플, 1-자막리플)
-	replynum				NUMBER,
-	regDate				Date 			DEFAULT SYSDATE,	
-	CONSTRAINT blacklist_fk PRIMARY KEY(useremail, whichboard, replynum) 
-);
-

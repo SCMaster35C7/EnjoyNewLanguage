@@ -53,11 +53,6 @@
 				$('#loginForm').submit();
 			});
 		});
-		
-		function dictionary(){
-			var win= window.open('dictionaryBoard','_black',"width=340px,height=250px");
-			win.focus();
-		}
 	</script>
 </head>
 
@@ -77,7 +72,6 @@
 		  </li>
 		  <li class="divider"></li>
 		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		  <li><a onclick="dictionary()">Dictionary</a></li>
 		</ul>
 	
 	<!-- nav -->
@@ -125,28 +119,20 @@
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+							<label for="useremail">EMAIL</label>
+						</div>
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mode_edit</i>
+							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+							<label for="userpwd">PASSWORD</label>
+						</div>
 					</div>
-					
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
 				</div>	
 				
 					<div class="row">
@@ -162,13 +148,12 @@
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							<c:if test="${not empty sessionScope.useremail }">
-								<span class="flow-text">
-									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
-										<i class="material-icons right">power_settings_new</i>
-									</a>
-								</span>
-							</c:if>
+							
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close">LOGOUT
+									<i class="material-icons right">settings_power</i>
+								</button>
+							</span>
 						</div>
 						
 						<div class="fixed-action-btn">
@@ -177,8 +162,8 @@
 								</a>
 								<ul>
 								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
 					</div>
@@ -220,7 +205,6 @@
 	</c:if>
 	<a href="DubbingWrite?videoNum=9">더빙작성 게시판 테스트</a>
 	<a href="dubDetail?dubbingnum=23">더빙 싱크 테스트</a>
-	<a href="tester">테스트...코드</a>
 	
 	<footer class="page-footer">
           <div class="container">

@@ -11,9 +11,7 @@
 			content,
 	    	useremail,
 	    	url,
-	    	voiceFile,
-	    	starttime,
-	    	endtime
+	    	voiceFile
 		) values(
 			DUBBING_SEQ.nextval
 			, #{title}
@@ -21,11 +19,9 @@
 			, #{useremail}
 			, #{url}
 			, #{voiceFile}
-			, #{starttime}
-			, #{endtime}
 		)
 	</insert>
-	
+
 	<select id="dubbingBoard"  resultType="Dubbing">
 		select 
 			d.dubbingnum
@@ -55,8 +51,6 @@
 			, d.recommendation
 			, d.decommendation
 			, d.regdate
-			, d.starttime
-			, d.endtime
 		from 
 			dubbing d, member m
 		where 
@@ -64,39 +58,4 @@
 		and 
 			d.dubbingnum = #{dubbingnum}
 	</select>
-	
-	<select id="replyDubAll" parameterType="int" resultType="Reply">
-		select
-			d.replynum
-			, d.dubbingnum idnum
-			, d.useremail
-			, d.content
-			, d.regDate
-			, d.blackCount
-			, m.usernick
-		from 
-			dubbingreply d, member m
-		where
-			dubbingnum = #{dubbingnum}
-		and
-			d.useremail =m.useremail
-	</select>
-	
-	<delete id="replyDubDelete" parameterType="int">
-		delete from
-			dubbingreply
-		where
-			replynum = #{replynum}
-	</delete> 
-	
-	
-	<update id="replyDubUpdate" parameterType="Reply">
-		update 
-			dubbingreply
-		set
-			content = #{content}
-			, regdate = sysdate
-		where
-			replynum = #{replynum}
-	</update>
 </mapper>

@@ -32,7 +32,6 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 				dataType : 'json',
 				success : makeSubList,
 				error : function() {
-					alert('자막파일이 준비되있지 않은 영상입니다.');
 					console.log('error!!');
 				}
 
@@ -62,7 +61,7 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 			soundA.play();
 			//var audioTime=0;
 			setInterval(function() {
-				if(player.getCurrentTime().toFixed(2)=='${d.endtime}'){
+				if(player.getCurrentTime().toFixed(2)==${d.endtime}){
 					player.pauseVideo();
 				}
 				
@@ -176,7 +175,32 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 	</script>
 
 	<hr />
-	
+	<table border="1">
+		<tr>
+			<th>동영상 재생/멈춤</th>
+			<td><input type="button" id="playYoutube" value="재생"> <input
+				type="button" id="pauseYoutube" value="멈춤"></td>
+		</tr>
+		<tr>
+			<th>동영상 현재 시간 출력</th>
+			<td><input type="button" id="currentTime" value="영상 시간 출력" /></td>
+		</tr>
+		<tr>
+			<th>동영상 음소거/음소거 제거</th>
+			<td><input type="button" id="mute" value="음소거" /> <input
+				type="button" id="unMute" value="음소거 제거" /></td>
+		</tr>
+		<tr>
+			<th>동영상 소리 설정</th>
+			<td><input type="number" id="soundValue" max="100" min="0" /> <input
+				type="button" id="soundVolum" value="소리조절" /></td>
+		</tr>
+		<tr>
+			<th>동영상 재생시간 이동</th>
+			<td><input type="text" id="start" /> <input type="button"
+				id="seekTo" value="영상이동" /></td>
+		</tr>
+	</table>
 
 	<div>
 		<input type="button" onclick="getSubList()" value="자막보기">
@@ -184,7 +208,7 @@ var saveTime=null;     //자막 싱크용 시간저장변수
 	</div>
 	
 	<div>
-	더빙타임: ${d.starttime}~${d.endtime}<input type="button" value="더빙 재생하기" onclick="sinkTime()"> 
+	<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
 	</div>
 
 	<div id="textbox"></div>

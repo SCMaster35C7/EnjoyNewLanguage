@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,7 +12,7 @@
 		var usernick = "${sessionScope.usernick}";
 		var dubbingnum = "${dubbing.dubbingnum}"
 		
-		var soundA=new Audio("getDubbingSoundFile?voiceFile=${dubbing.voiceFile}");
+		//var soundA=new Audio("getDubbingSoundFile?voiceFile=${dubbing.voiceFile}");
 		var saveTime=null;     //자막 싱크용 시간저장변수
 	
 		$(function() {
@@ -31,6 +30,8 @@
 			$("#replyInsert").on('click', replyInsert);
 			
 			$('.recommendation').on('click', function() {
+				var useremail = "${sessionScope.useremail}";
+				
 				if(useremail.trim().length == 0) {
 					location.href="login";
 					return;
@@ -73,6 +74,8 @@
 			});
 			
 			$('.decommendation').on('click', function() {
+				var useremail = "${sessionScope.useremail}";
+				
 				if(useremail.trim().length == 0) {
 					location.href="login";
 					return;
@@ -114,20 +117,16 @@
 					}
 				});
 			});
-			
-			$("#cancelUpdate").on('click', function() {
-				$("#replytext").val('');
-			});
 		});
 			
 		//주말
 		function init() {
-			 $.ajax({
-		            method : 'post',
-		            url : 'replyDubAll',
-		            data : 'idnum=${dubbing.dubbingnum}',
-		            success : output
-		    	});
+			$.ajax({
+				method : 'post',
+				url : 'replyAll',
+				data : 'dubbingnum=${dubbing.dubbingnum}',
+				success : output
+			});
 		}
 		
 		function output(resp) {
@@ -141,11 +140,8 @@
 				result += ' <p class="text" >' + resp[i].content + '</p>';
 				result += '<p class="date" >' + resp[i].regdate + '</p>';
 				result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-				if (usernick==resp[i].usernick) {
-					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
-				}
-				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
+				result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+				result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				result += ' </div>';
 			}
 			
@@ -154,35 +150,6 @@
 			//여기서(output) 나가기 전에 이벤트 걸어야함
 			 $("input:button.replyDelete").click(replyDelete);
 			 $("input:button.replyUpdate").click(replyUpdate); 
-			 $("img.report").click(reportReply); 
-		}
-		
-		function reportReply() {
-			//alert('신고');
-			var useremail = "${sessionScope.useremail}";
-			//alert(useremail);
-			replynum = $(this).attr('data-rno');
-			//alert(replynum);
-			var sendData = {
-					"useremail":useremail
-					,"whichboard":  "0"
-					,"replynum":  replynum
-				};
-				
-				$.ajax({
-					type : 'post',
-					url : 'insertBlack',
-					data : JSON.stringify(sendData),
-					dataType:'text',
-					contentType: "application/json; charset=UTF-8",
-					success : function(resp){
-						alert(JSON.stringify(resp));
-						init();
-					},
-					error:function(resp, code, error) {
-						alert("resp : "+resp+", code : "+code+", error : "+error);
-					}
-				}); 
 		}
 		
 		function replyInsert() {
@@ -227,7 +194,7 @@
 		
 				$.ajax({
 					method : 'post',
-					url : 'replyDubUpdate',
+					url : 'replyUpdate',
 					data : JSON.stringify(sendData),
 					dataType:'json',
 					contentType: "application/json; charset=UTF-8",
@@ -236,7 +203,6 @@
 		
 				$("#replytext").val('');
 				$("#replyInsert").val("리뷰등록");
-				$("#cancelUpdate").css("visibility", "hidden");
 			}
 		}
 
@@ -249,7 +215,7 @@
 			replynum = $(this).attr('data-rno');
 			$.ajax({
 				method : 'get',
-				url : 'replyDubDelete',
+				url : 'replyDelete',
 				data : 'replynum=' + replynum,
 				success : init
 			});
@@ -270,10 +236,7 @@
 			$("#replytext").val(replytext);
 			$("#replyInsert").val("댓글수정");
 			$("#usernick").prop('readonly', 'readonly');
-			$("#cancelUpdate").css("visibility", "visible");
 
-				
-			
 			$("#replynum").val(replynum);
 		}
 		
@@ -311,8 +274,8 @@
 			var videoTime=(${dubbing.starttime}-1);	
 			 player.playVideo();
 			 player.seekTo(videoTime, true);
-			soundA.play();
-			var audioTime=0;
+			//잠시만 주석 soundA.play();
+			//var audioTime=0;
 			setInterval(function() {
 				if(player.getCurrentTime().toFixed(2)=='${dubbing.endtime}'){
 					player.pauseVideo();
@@ -320,7 +283,7 @@
 				
 				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
 				if((player.getCurrentTime()-videoTime)>0.5||(player.getCurrentTime()-videoTime)<-0.5){				
-					soundA.currentTime=player.getCurrentTime();
+					//soundA.currentTime=player.getCurrentTime();
 				}
 				videoTime=player.getCurrentTime();
 			}, 10);
@@ -328,6 +291,9 @@
 	</script>
 </head>
 <body>
+	${dubbing}
+	<br/>
+	<body>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"
@@ -415,20 +381,57 @@
 		}
 		
 		function seekTo() {
-			var start=$('#start').val();		
+			var start=$('#start').val();
+			console.log(start);
+			//soundA.pause();
+			//soundA.currentTime=(start-1.5);
 			player.seekTo(start, true);
+			//soundA.play();
 		}
 	</script>
 
 	<hr />
-	
+	<table border="1">
+		<tr>
+			<th>동영상 재생/멈춤</th>
+			<td>
+				<input type="button" id="playYoutube" value="재생"> 
+				<input type="button" id="pauseYoutube" value="멈춤">
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 현재 시간 출력</th>
+			<td>
+				<input type="button" id="currentTime" value="영상 시간 출력" />
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 음소거/음소거 제거</th>
+			<td>
+				<input type="button" id="mute" value="음소거" />
+				<input type="button" id="unMute" value="음소거 제거" />
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 소리 설정</th>
+			<td>
+				<input type="number" id="soundValue" max="100" min="0" /> 
+				<input type="button" id="soundVolum" value="소리조절" />
+			</td>
+		</tr>
+		<tr>
+			<th>동영상 재생시간 이동</th>
+			<td><input type="text" id="start" /> <input type="button"
+				id="seekTo" value="영상이동" /></td>
+		</tr>
+	</table>
 
 	<div>
 		<input type="button" onclick="getSubList()" value="자막보기">
 	</div>
 	
 	<div>
-		더빙타임: ${dubbing.starttime} ~ ${dubbing.endtime} <input type="button" value="더빙 재생하기" onclick="sinkTime()"> 
+		<input type="button" value="더빙 구경하기!" onclick="sinkTime()"> 
 	</div>
 
 	<div id="textbox"></div>
@@ -447,11 +450,6 @@
 		</button>
 	</div>
 	
-	<%-- <c:if test="${sessionScope.usernick==resp[i].usernick}">
-	
-	</c:if> --%>
-	
-	
 	<hr/>
 	<!--주말 댓글-->
 	<div> 
@@ -463,10 +461,7 @@
 			<input hidden="replynum" id="replynum" name="replynum" value=""/>
 			
 			<input id="replyInsert" type="button" value="댓글등록"/>
-			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
 		</form>
-		
-		
 		
 		<hr/>
 		<div id="result"> 

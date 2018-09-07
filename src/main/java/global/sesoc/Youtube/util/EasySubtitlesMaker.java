@@ -4,21 +4,27 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import global.sesoc.Youtube.dto.SubtitlesList;
+ 
 public class EasySubtitlesMaker {
 
 	ArrayList<Double> playtime;
 	ArrayList<String> fullsentence;
 
-	public Map<String, String> GetSubtitles(String url) {
+	public Map<String,String> GetSubtitles(String url) {
 		FileReader fileReader = null;
 		BufferedReader in = null;
 		String str = null;
 		fullsentence = new ArrayList<>(); // 본문 풀 텍스트
-		Map<String, String> result = new HashMap<>(); // key: time정보(1/100초까지) value: 해당시간 텍스트 문장
+		Map<String,String> result=new HashMap<>();
+
 		playtime = new ArrayList<>(); // 각 자막 줄별 시작타임 저장
 		int cut = 0; // srt 자막의 첫 문장은 보이지 않는 문자로 글 압축타입을 지정한다. 그러므로 무조건 첫줄은 걸러야 한다.
 		try {
@@ -34,12 +40,14 @@ public class EasySubtitlesMaker {
 					cut++;
 					continue;
 				}
-				analysisText(str);
+				analysisText(str);			
 			}
-			for (int i = 0; i < fullsentence.size(); i++)
-				result.put(playtime.get(i) + "", fullsentence.get(i));
+			for(int i=0;i<fullsentence.size();i++) {
+				result.put(playtime.get(i)+"", fullsentence.get(i));
+			}
 
 		} catch (Exception e) {
+			
 		} finally {
 			if (in != null) {
 				try {
@@ -48,24 +56,29 @@ public class EasySubtitlesMaker {
 					e.printStackTrace();
 				}
 			}
+
 		}
+
 		return result;
+
 	}
 
 	// 한줄의 문장을 받아서 이를 단어단위로 쪼개고, 특수문자등을 걸러냄
 	public void analysisText(String text) {
 		int textLen = text.trim().length();
+		String replacedText = new String(text);
+		List<String> result = new ArrayList<>();
 		// 앤터 지우기, 앤터가 있는 문장의 길이가 0다.
 		if (textLen == 0)
 			return;
 
-		// 자막 순번 숫자 제거
+		// 위에 적힌 1, 2, 3 이런거 지우기
 		if ((text.charAt(0)) >= '0' && text.charAt(0) <= '9') {
 			// 뒤에 . 이 붙은 숫자는 대본임으로 삭제하지 않는다.
 			if (!text.contains(".") && text.length() < 5)
 				return;
 		}
-		// 시간정보 제거, 분석
+		// ??:??:??,??? --> ??:??:??,??? 지우기
 		if (text.contains("-->")) {
 			double resultTime = analysisTime(text);
 			playtime.add(resultTime);

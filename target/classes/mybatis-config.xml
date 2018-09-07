@@ -14,7 +14,6 @@
 		<typeAlias type="global.sesoc.Youtube.dto.Education" alias="Education"/>
 		<typeAlias type="global.sesoc.Youtube.dto.TestResult" alias="TestResult"/>
 		<typeAlias type="global.sesoc.Youtube.dto.WrongAnswer" alias="WrongAnswer"/>
-		<typeAlias type="global.sesoc.Youtube.dto.InvSubtitle" alias="InvSubtitle"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Investigation" alias="Investigation"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Recommendation" alias="Recommendation"/>
 	</typeAliases>
