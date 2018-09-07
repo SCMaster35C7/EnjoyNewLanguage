@@ -66,4 +66,11 @@ public class DubbingRepository {
     
 		return result;
 	}
+	
+	public int replysDelete(Reply reply) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.replysDelete(reply);
+		
+		return result;
+	}
 }

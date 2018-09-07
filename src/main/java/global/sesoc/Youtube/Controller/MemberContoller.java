@@ -39,7 +39,7 @@ public class MemberContoller {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
-
+		
 		return "Member/login";
 	}
 

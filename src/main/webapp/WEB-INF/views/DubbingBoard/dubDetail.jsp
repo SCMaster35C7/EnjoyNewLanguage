@@ -17,17 +17,12 @@
 		var saveTime=null;     //자막 싱크용 시간저장변수
 	
 		$(function() {
-			// 주말
-			init();
-				
-			$('#playYoutube').on('click', playYoutube);
-			$('#pauseYoutube').on('click', pauseYoutube);
-			$('#currentTime').on('click', youtubeCurrentTime);
-			$('#mute').on('click', mute);
-			$('#unMute').on('click', unMute);		
-			$('#soundVolum').on('click', soundVolum);
-			$('#seekTo').on('click', seekTo);		
+			$('#deletedub').on('click',function(){
+				$('#deletedubbing').submit();
+			})
 			
+			// 주말
+			init();		
 			$("#replyInsert").on('click', replyInsert);
 			
 			$('.recommendation').on('click', function() {
@@ -246,49 +241,22 @@
 			
 			$("#replynum").val(replynum);
 		}
-		
-		// 자막가져오기
-		function getSubList() {		
-			$.ajax({
-				method : 'get',
-				url : 'getSubtitles',
-				data : "savedfileName=" + '${savedfileName}',
-				contentType : 'application/json; charset=UTF-8',
-				dataType : 'json',
-				success : makeSubList,
-				error : function() {
-					console.log('error!!');
-				}
-			});
-		}
-		
-		function makeSubList(s) {
-			console.log(s); 
-			var subtitles="";
-			setInterval(function() {
-				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
-				var time=player.getCurrentTime().toFixed(2);
-				//console.log(time);
-				var text=s[time];
-				console.log(text);
-				if(text!=null){
-					$('#textbox').html(text);	
-				}
-			},10);
-		}
-		
+
 		function sinkTime(){
-			var videoTime=(${dubbing.starttime}-1);	
+			var videoTime=(${dubbing.starttime});
 			 player.playVideo();
 			 player.seekTo(videoTime, true);
-			soundA.play();
+			 var checkpoint=true;
 			var audioTime=0;
-			setInterval(function() {
+			var inter=setInterval(function() {
+				if(player.getPlayerState()==1&&checkpoint){
+					soundA.play();
+					checkpoint=false; //위의 if문은 최초재생시 1번만 작동시키면 되므로
+				}
 				if(player.getCurrentTime().toFixed(2)=='${dubbing.endtime}'){
 					player.pauseVideo();
+					clearInterval(inter);
 				}
-				
-				//console.log(player.getCurrentTime()+" , "+soundA.currentTime);
 				if((player.getCurrentTime()-videoTime)>0.5||(player.getCurrentTime()-videoTime)<-0.5){				
 					soundA.currentTime=player.getCurrentTime();
 				}
@@ -343,63 +311,17 @@
             
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
-        
-        // youtube 기능 함수 나열 =======================================================
-		function playYoutube() {
-        	
-            // 플레이어 자동실행 (주의: 모바일에서는 자동실행되지 않음)
-            player.playVideo();
-            sinkTime();
-            //soundA.play();
-            console.log( player.getVideoEmbedCode());
-        }
-		
-        function pauseYoutube() {
-        	player.pauseVideo();
-        	//잠시만 soundA.pause();
-        	// player.stopVideo();	완전 멈춰서 처음부터 시작함
-        }
-        
-		function youtubeCurrentTime() {
-			//console.log('재생률: '+(player.getCurrentTime()/player.getDuration()));	// 현재 상영 시간 출력
-			// console.log(player.getDuration());	// 총 시간 출력
-		}
-		
-		function mute() {
-			player.mute();
-		}
-		
-		function unMute() {
-			player.unMute();
-		}
-		
-		function soundVolum() {
-			var soundValue = document.getElementById("soundValue");
-			
-			if(isNaN(soundValue.value) == true) {
-				alert("볼륨 값을 입력해주세요.");
-				soundValue.focus();
-				return;
-			}
-			player.setVolume(soundValue.value, true);
-		}
-		
-		function seekTo() {
-			var start=$('#start').val();		
-			player.seekTo(start, true);
-		}
 	</script>
-
-	<hr />
-	
-
-	<div>
-		<input type="button" onclick="getSubList()" value="자막보기">
-	</div>
-	
+	<hr />	
 	<div>
 		더빙타임: ${dubbing.starttime} ~ ${dubbing.endtime} <input type="button" value="더빙 재생하기" onclick="sinkTime()"> 
+	<c:if test="${sessionScope.useremail eq dubbing.useremail}">
+	<input type="button" id="deletedub" value="삭제">
+	</c:if>
 	</div>
+	<form id="deletedubbing" action="deleteDubbing" method="post">
+	<input type="hidden" value="${dubbing.dubbingnum}" name="dubbingnum">
+	</form>
 
 	<div id="textbox"></div>
 	

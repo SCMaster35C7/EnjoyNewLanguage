@@ -33,17 +33,15 @@ public class DubbingController {
 	@Autowired
 	DubbingRepository dubRepository;
 
-
 	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
 	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
-
 
 	// 더빙겟
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
 	public String dubbingBoard(HttpSession session, Model model) {
 		List<Dubbing> dubbing = dubRepository.dubbingBoard();
 		model.addAttribute("dubbing", dubbing);
-		
+
 		return "DubbingBoard/dubbingBoard";
 	}
 
@@ -73,7 +71,7 @@ public class DubbingController {
 			edu.setUrl(url);
 		}
 		model.addAttribute("edu", edu);
-		
+
 		return "DubbingBoard/dubbingWrite";
 	}
 
@@ -100,7 +98,7 @@ public class DubbingController {
 			dub.setVoiceFile(savedfile);
 			dubRepository.insertDubbing(dub);
 		}
-		
+
 		return "redirect:dubbingBoard";
 	}
 
@@ -128,37 +126,48 @@ public class DubbingController {
 		}
 		return null;
 	}
-  
-  @RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
-	public String deleteDubbing(Dubbing dub) {
+
+	@RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
+	public String deleteDubbing(int dubbingnum) {
+		Dubbing dub = dubRepository.selectOneDub(dubbingnum);
+		String fullPath = DubbingFileRoot + "/" + dub.getVoiceFile();
+		FileService.deleteFile(fullPath);
+		Reply reply=new Reply();
+		reply.setUseremail(dub.getUseremail());
+		reply.setIdnum(dub.getDubbingnum());
+		dubRepository.replysDelete(reply);
+		eduRepository.deleteAllRecommend(dub.getDubbingnum(), 2);
 		dubRepository.deleteDubbing(dub);
 		return "redirect:dubbingBoard";
 	}
-  
 
-	@RequestMapping(value="/replyDubAll", method=RequestMethod.POST)
+	@RequestMapping(value = "/replyDubAll", method = RequestMethod.POST)
 	public @ResponseBody List<Reply> replyDubAll(int idnum) {
-		//System.out.println(dubbingnum);
 		List<Reply> replyList = dubRepository.replyDubAll(idnum);
 
 		return replyList;
 	}
-			
-	@RequestMapping(value="/replyInsert", method=RequestMethod.POST)
-	public @ResponseBody Integer replyInsert(@RequestBody Reply reply ) {
+
+	@RequestMapping(value = "/replyInsert", method = RequestMethod.POST)
+	public @ResponseBody Integer replyInsert(@RequestBody Reply reply) {
 		int result = dubRepository.insertReply(reply);
 		return result;
 	}
-			
-	@RequestMapping(value="/replyDubDelete", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/replyDubDelete", method = RequestMethod.GET)
 	public @ResponseBody Integer replyDubDelete(int replynum) {
 		int result = dubRepository.replyDubDelete(replynum);
 		return result;
 	}
-			
-	@RequestMapping(value="/replyDubUpdate", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/replyDubUpdate", method = RequestMethod.POST)
 	public @ResponseBody Integer replyDubUpdate(@RequestBody Reply reply) {
 		int result = dubRepository.replyDubUpdate(reply);
 		return result;
+	}
+
+	@RequestMapping(value = "dubbingDirections", method = RequestMethod.GET)
+	public String dubbingDirections() {
+		return "DubbingBoard/dubbingDirections";
 	}
 }

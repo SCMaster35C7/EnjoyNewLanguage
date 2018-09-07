@@ -276,7 +276,8 @@
 		
 		<c:if test="${not empty finished}">
 			<c:forEach var="f" items="${finished}">
-				<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br/>
+				<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a>
+				 <a href="TryRetake?videoNum=${f.videoNum}">재시험 도전</a><br/>
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty finished}">
