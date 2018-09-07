@@ -159,6 +159,7 @@
 	            method : 'post',
 	            url : 'replyInvAll',
 	            data : 'idnum=${inv.investigationnum}',
+	            async: false,
 	            success : outputReply
 	    	});
 	        
@@ -166,6 +167,7 @@
 	            method : 'post',
 	            url : 'invSubAll',
 	            data : 'investigationnum=${inv.investigationnum}',
+	            async: false,
 	            success : outputSubtitle
 	        });
 	    }
@@ -219,19 +221,50 @@
 		}
 	    
 	   	function subStart() {
-	   		alert("나는 자막 실행");
-	   		subnum = $(this).attr('data-rno');
+	   		alert("자막 실행");
+	   		
+	   		var subnum = $(this).attr('data-rno');
+	   		
+	   		$.ajax({
+	   			method: 'get'
+	   			, url: 'getSubtitles'
+	   			, data: 'subtitleNum='+subnum
+	   			, success: makeSubList
+	   			, error: function(resp, code, error) {
+	   				alert(resp+", code:"+code+", error:"+error)
+	   			}
+	   		});
 	   	}
+	   	
+	   	function makeSubList(s) {
+			console.log(s); 
+			var subtitles="";
+			setInterval(function() {
+				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
+				var time=player.getCurrentTime().toFixed(2);
+				var text=s[time];
+				
+				if(text!=null){
+					$('#textbox').html(text);	
+				}
+			},10);
+		}
 	    
 	    function subDelete() {
-	    	subnum = $(this).attr('data-rno');
+	    	var subnum = $(this).attr('data-rno');
+	    	
+	    	var dataForm = {
+	    		'subtitleNum':subnum
+	    		, "recommendtable":"3"
+	    	};
 	    	
 	    	$.ajax({
 	    		method: 'get'
 	    		, url: 'invSubDelete'
-	    		, data: 'subtitleNum='+subnum
+	    		, data: dataForm
+	    		, async: false
 	    		, success: function(resp) {
-	    			alert(resp);
+	    			//alert(resp);
 	    		}
 	    	});
 	    	
@@ -557,17 +590,18 @@
 		</form>
 	</div>
 	
-	<div id="subtitleList">
-		
-	</div>
+	<div id="subtitleList"></div>
 	<hr />
+	
+	<div id="textbox"></div>
+	<hr/>
 	
 	<div>
 		<form id="replyform" method="post">
 			<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
 			<input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
-			<input hidden="useremail" id="useremail" name="useremail" value="" /> 
-			<input hidden="replynum" id="replynum" name="replynum" value="" /> 
+			<input type="hidden" id="useremail" name="useremail" value="" /> 
+			<input type="hidden" id="replynum" name="replynum" value="" /> 
 			<input id="replyInsert" type="button" value="댓글등록" />
 		</form>
 		
