@@ -18,7 +18,7 @@
 
 <title>더빙게시판</title>
 
-<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>	
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>	
 <script>
 $(document).ready(function() {
     var table = $('#dubbing').DataTable();
@@ -33,7 +33,7 @@ $(document).ready(function() {
         column.visible( ! column.visible() );
     } ); */
     
-} );
+});
 	
 	$(function(){
 	 	//$('#dubbing').DataTable();
@@ -161,11 +161,13 @@ $(document).ready(function() {
 				
 					<div class="row">
 						<div class="col s10">
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-									<i class="material-icons right">send</i>
-								</button>
-							</span>
+							<c:if test="${empty sessionScope.useremail }">
+								<span class="flow-text">
+									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+										<i class="material-icons right">send</i>
+									</button>
+								</span>
+							</c:if>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
