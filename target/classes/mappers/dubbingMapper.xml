@@ -161,20 +161,23 @@
 	</update>
 	
 	<select id="selectReply" parameterType="Black" resultType="Reply">
-		select
+		select distinct
 			  r.content 
-			, r.replynum
-			, r.blackcount 
+			, b.replynum
+			, r.blackcount
+			, b.whichboard
 		from 
-			  blacklist b
+			blacklist b
 			<if test="whichboard==0">
 				,dubbingreply r
 			</if>
 			<if test="whichboard==1">
 				,investigationreply r
 			</if>
-		where b.replynum = r.replynum
-		and b.replynum = #{replynum}
+		where 
+			b.replynum = r.replynum
+		and 
+			b.replynum = #{replynum}
 	</select>
 	
 	<delete id="reportDelete" parameterType="Black">
@@ -187,6 +190,15 @@
 				investigationreply
 			</if>
 		where replynum = #{replynum}
+	</delete>
+	
+	<delete id="deleteBlack" parameterType="Black">
+		delete from
+			blacklist
+		where
+			replynum = #{replynum}
+		and
+			whichboard = #{whichboard}
 	</delete>
 	
 	<insert id="replyDubInsert" parameterType="Reply">
@@ -202,7 +214,4 @@
 			, #{content}
 		)
 	</insert>
-	
-	
-
 </mapper>

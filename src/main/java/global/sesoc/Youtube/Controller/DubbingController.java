@@ -165,8 +165,10 @@ public class DubbingController {
 			dubRepository.insertBlack(black);
 			dubRepository.updateBlack(black);
 			Reply reply = dubRepository.selectReply(black);
+			System.out.println(reply);
 			 if (reply.getBlackcount()>2) {
 				 dubRepository.reportDelete(black);
+				 dubRepository.deleteBlack(black);
 			}
 			return "신고가 완료되었습니다.";
 		}else {
