@@ -261,11 +261,11 @@
 	</update>
 	
 	<delete id="deleteAllRecommend" parameterType="map">
-      delete from
-         recommendation
-      where
-         identificationnum = #{IDCode}
-      and
-         recommendtable = #{recommendtable}
-   </delete>
+		delete from
+			recommendation
+		where
+			identificationnum = #{IDCode}
+		and
+			recommendtable = #{recommendtable}
+	</delete>
 </mapper>

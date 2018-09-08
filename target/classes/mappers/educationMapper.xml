@@ -6,30 +6,21 @@
 <mapper namespace="global.sesoc.Youtube.dao.EducationMapper">
 	<select id="selectEduList" resultType="Education">
 		select
-		videonum
-		, title
-		, url
-		, originalfile
-		, savedfile
-		, to_char(regdate, 'YYYY-MM-DD') regdate
-		, hitcount
-		, recommendation
-		, decommendation
+			videonum
+			, title
+			, url
+			, originalfile
+			, savedfile
+			, to_char(regdate, 'YYYY-MM-DD') regdate
+			, hitcount
+			, recommendation
+			, decommendation
 		from
-<<<<<<< Updated upstream
 			EducationVideo
 		order by
 			regdate desc
 	</select>
 
-
-=======
-		EducationVideo
-		order by
-		regdate desc
-	</select>
-	
->>>>>>> Stashed changes
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
 			videonum
@@ -89,10 +80,7 @@
 		where 
 			videonum=#{value}
 	</select>
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 	<select id="selectSubName2" parameterType="String" resultType="String">
 		select 
 			savedfile
@@ -102,10 +90,6 @@
 			url=#{value}
 	</select>
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 	<select id="checkUserStudyExist" parameterType="TestResult" resultType="String">
 		select 
 			url
@@ -114,11 +98,7 @@
 		where 
 			useremail=#{useremail} and url=#{url}
 	</select>
-<<<<<<< Updated upstream
 
-=======
-	
->>>>>>> Stashed changes
 	<insert id="insertUserStudy" parameterType="TestResult">
 		insert into userstudy (
 			studynum,
@@ -132,11 +112,7 @@
 			0
 		)
 	</insert>
-<<<<<<< Updated upstream
 
-=======
-	
->>>>>>> Stashed changes
 	<select id="checkLastTestlevel" parameterType="TestResult" resultType="int">
 		select 
 			testlevel
@@ -145,7 +121,6 @@
 		where 
 			useremail=#{useremail} and url=#{url}
 	</select>
-<<<<<<< Updated upstream
 
 	<update id="updateTestResult" parameterType="TestResult">
 		update 
@@ -186,53 +161,9 @@
 			sysdate,
 			#{classification}
 		)
-=======
-	
-	
-	<update id="updateTestResult" parameterType="TestResult">
-	update 
-		userstudy
-	set 
-		laststudy=sysdate,
-		challengeCount= challengeCount+1
-		<if test="successCount!=0">
-		,successCount=successCount+1
-		</if>
-		<if test="failureCount!=0">
-		,failureCount=failureCount+1
-		</if>
-		<if test="testlevel!=0">
-		,testlevel=#{testlevel}
-		</if>
-	where  
-		useremail=#{useremail} and url=#{url}
-	
-	
-	</update>
-	
-	<insert id="insertWrongAnswer" parameterType="WrongAnswer">
-	insert into wronganswer (
-		answernum,
-		useremail,
-		wrongindex,
-		correctanswer,
-		url,
-		regdate,
-		classification
-	)values(
-		WRONG_ANSWER_SEQ.nextval,
-		#{useremail},
-		#{wrongIndex},
-		#{correctAnswer},
-		#{url},
-		sysdate,
-		#{classification}
-	)
->>>>>>> Stashed changes
 	</insert>
 
 	<select id="selectWrongAnswerList" parameterType="WrongAnswer" resultType="WrongAnswer">
-<<<<<<< Updated upstream
 		select 
 			*
 		from 
@@ -257,32 +188,6 @@
 			classification=#{classification} 
 		and 
 			wrongindex=#{wrongIndex}
-=======
-	select 
-		*
-	from 
-		WrongAnswer
-	where 
-		useremail=#{useremail} 
-	and 
-		url=#{url} 
-	and 
-		classification=#{classification}
-	order by answernum
-	</select>
-	
-	<delete id="deleteWrongAnswer" parameterType="WrongAnswer">
-	delete from 
-		wronganswer
-	where 
-		useremail=#{useremail} 
-	and 
-		url=#{url} 
-	and 
-		classification=#{classification} 
-	and 
-		wrongindex=#{wrongIndex}
->>>>>>> Stashed changes
 	</delete>
 
 	<select id="selectOneFromRecommendation" parameterType="Recommendation" resultType="Recommendation">
@@ -318,11 +223,7 @@
 		set
 			${commendation} = ${commendation}+1
 		where
-<<<<<<< Updated upstream
 			${idCode} = #{videonum}
-=======
-			${IDCode} = #{videonum}
->>>>>>> Stashed changes
 	</update>
 
 	<delete id="deleteRecommend" parameterType="Recommendation">
@@ -342,11 +243,7 @@
 		set
 			${commendation} = ${commendation}-1
 		where
-<<<<<<< Updated upstream
 			${idCode} = #{videonum}
-=======
-			${IDCode} = #{videonum}
->>>>>>> Stashed changes
 	</update>
 
 	<update id="updateRecommend" parameterType="Recommendation">
@@ -362,4 +259,13 @@
 		and
 			recommendtable = #{recommendtable}
 	</update>
+	
+	<delete id="deleteAllRecommend" parameterType="map">
+		delete from
+			recommendation
+		where
+			identificationnum = #{IDCode}
+		and
+			recommendtable = #{recommendtable}
+	</delete>
 </mapper>

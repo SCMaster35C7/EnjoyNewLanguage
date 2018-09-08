@@ -114,7 +114,6 @@
 				var decoCount = Number(target.children("span").text());
 				var recoTarget = target.parent().children(".recommendation").children("#recoCount");
 				var videonum = target.parent().children("input").val();
-				alert(videonum);
 				var dataForm = {
 						"tableName":"educationvideo",
 						"idCode":"videonum",  

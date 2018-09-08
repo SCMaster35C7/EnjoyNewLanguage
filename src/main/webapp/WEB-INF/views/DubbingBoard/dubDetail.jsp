@@ -140,6 +140,7 @@
 					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
 					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
+				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
 				result += ' </div>';
 			}
 			
@@ -148,6 +149,38 @@
 			//여기서(output) 나가기 전에 이벤트 걸어야함
 			 $("input:button.replyDelete").click(replyDelete);
 			 $("input:button.replyUpdate").click(replyUpdate); 
+			 $("img.report").click(reportReply); 
+		}
+		
+		function reportReply() {
+			//alert('신고');
+			var useremail = "${sessionScope.useremail}";
+			//alert(useremail);
+			replynum = $(this).attr('data-rno');
+			//alert(replynum);
+			var sendData = {
+					"useremail":useremail
+					,"whichboard":  "0"
+					,"replynum":  replynum
+				};
+				
+				$.ajax({
+					type : 'post',
+					url : 'insertBlack',
+					data : JSON.stringify(sendData),
+					dataType:'text',
+					contentType: "application/json; charset=UTF-8",
+					success : function(resp){
+						alert(JSON.stringify(resp));
+						init();
+					},
+					error:function(resp, code, error) {
+						//alert("resp : "+resp+", code : "+code+", error : "+error);
+						alert("로그인이 필요합니다.");
+						location.href="./";
+
+					}
+				}); 
 		}
 		
 		function replyInsert() {
@@ -164,14 +197,14 @@
 				}
 				
 				var sendData = {
-					"dubbingnum":dubbingnum
+					"idnum":dubbingnum
 					,"useremail":  useremail
 					,"content":replytext 
 				};
 				
 				$.ajax({
 					type : 'post',
-					url : 'replyInsert',
+					url : 'replyDubInsert',
 					data : JSON.stringify(sendData),
 					dataType:'json',
 					contentType: "application/json; charset=UTF-8",
@@ -358,12 +391,14 @@
 			<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly"/>
 			<input id=replytext name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^"/>
 		
-			<input hidden="useremail" id="useremail" name="useremail" value=""/>
-			<input hidden="replynum" id="replynum" name="replynum" value=""/>
+			<input type="hidden" id="useremail" name="useremail" value=""/>
+			<input type="hidden" id="replynum" name="replynum" value=""/>
 			
 			<input id="replyInsert" type="button" value="댓글등록"/>
 			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
 		</form>
+		
+		
 		
 		<hr/>
 		<div id="result"> 

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.DubbingRepository;
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Reply;
@@ -73,18 +74,6 @@ public class DubbingController {
 		model.addAttribute("edu", edu);
 
 		return "DubbingBoard/dubbingWrite";
-	}
-
-	@RequestMapping(value = "getSubtitles", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, String> getSubtitles(String subFileName) {
-		String jamacURL = eduFileRoot + "/" + subFileName;
-		EasySubtitlesMaker esm = new EasySubtitlesMaker();
-		Map<String, String> result = esm.GetSubtitles(jamacURL);
-		if (result.isEmpty())
-			return null;
-		else
-			return result;
 	}
 
 	@RequestMapping(value = "savedubbing", method = RequestMethod.POST)
@@ -147,10 +136,11 @@ public class DubbingController {
 
 		return replyList;
 	}
+			
+	@RequestMapping(value="/replyDubInsert", method=RequestMethod.POST)
+	public @ResponseBody Integer replyDubInsert(@RequestBody Reply reply ) {
+		int result = dubRepository.replyDubInsert(reply);
 
-	@RequestMapping(value = "/replyInsert", method = RequestMethod.POST)
-	public @ResponseBody Integer replyInsert(@RequestBody Reply reply) {
-		int result = dubRepository.insertReply(reply);
 		return result;
 	}
 
@@ -165,9 +155,22 @@ public class DubbingController {
 		int result = dubRepository.replyDubUpdate(reply);
 		return result;
 	}
-
-	@RequestMapping(value = "dubbingDirections", method = RequestMethod.GET)
-	public String dubbingDirections() {
-		return "DubbingBoard/dubbingDirections";
+  
+	@RequestMapping(value="/insertBlack", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public @ResponseBody String insertBlack(@RequestBody Black black ) {
+		System.out.println("신고고ㅗ고고고고고고ㅗ"+black);
+		
+		Black b = dubRepository.existedBlack(black);
+		if (b==null) {
+			dubRepository.insertBlack(black);
+			dubRepository.updateBlack(black);
+			Reply reply = dubRepository.selectReply(black);
+			 if (reply.getBlackcount()>2) {
+				 dubRepository.reportDelete(black);
+			}
+			return "신고가 완료되었습니다.";
+		}else {
+			return "이미 신고하신 댓글입니다.";
+		}
 	}
 }
