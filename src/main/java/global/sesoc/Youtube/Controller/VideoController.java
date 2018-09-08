@@ -43,7 +43,6 @@ public class VideoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
-		
 		model.addAttribute("plzLogin", plzLogin);
     
 		return "index";

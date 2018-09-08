@@ -165,4 +165,10 @@
 		where 
 			userid=#{value}
 	</delete>
+	
+	<select id="selectInConfirm" parameterType="String" resultType="Member">
+		select useremail
+		from confirmmember
+		where useremail = #{value}
+	</select>
 </mapper>

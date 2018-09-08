@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.DubbingRepository;
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Reply;
@@ -41,7 +42,7 @@ public class DubbingController {
 	public String dubbingBoard(HttpSession session, Model model) {
 		List<Dubbing> dubbing = dubRepository.dubbingBoard();
 		model.addAttribute("dubbing", dubbing);
-		
+
 		return "DubbingBoard/dubbingBoard";
 	}
 
@@ -71,7 +72,7 @@ public class DubbingController {
 			edu.setUrl(url);
 		}
 		model.addAttribute("edu", edu);
-		
+
 		return "DubbingBoard/dubbingWrite";
 	}
 
@@ -86,7 +87,7 @@ public class DubbingController {
 			dub.setVoiceFile(savedfile);
 			dubRepository.insertDubbing(dub);
 		}
-		
+
 		return "redirect:dubbingBoard";
 	}
 
@@ -114,37 +115,62 @@ public class DubbingController {
 		}
 		return null;
 	}
-  
-  @RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
-	public String deleteDubbing(Dubbing dub) {
+
+	@RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
+	public String deleteDubbing(int dubbingnum) {
+		Dubbing dub = dubRepository.selectOneDub(dubbingnum);
+		String fullPath = DubbingFileRoot + "/" + dub.getVoiceFile();
+		FileService.deleteFile(fullPath);
+		Reply reply=new Reply();
+		reply.setUseremail(dub.getUseremail());
+		reply.setIdnum(dub.getDubbingnum());
+		dubRepository.replysDelete(reply);
+		eduRepository.deleteAllRecommend(dub.getDubbingnum(), 2);
 		dubRepository.deleteDubbing(dub);
 		return "redirect:dubbingBoard";
 	}
-  
 
-	@RequestMapping(value="/replyDubAll", method=RequestMethod.POST)
+	@RequestMapping(value = "/replyDubAll", method = RequestMethod.POST)
 	public @ResponseBody List<Reply> replyDubAll(int idnum) {
-		//System.out.println(dubbingnum);
 		List<Reply> replyList = dubRepository.replyDubAll(idnum);
 
 		return replyList;
 	}
 			
-	@RequestMapping(value="/replyInsert", method=RequestMethod.POST)
-	public @ResponseBody Integer replyInsert(@RequestBody Reply reply ) {
-		int result = dubRepository.insertReply(reply);
+	@RequestMapping(value="/replyDubInsert", method=RequestMethod.POST)
+	public @ResponseBody Integer replyDubInsert(@RequestBody Reply reply ) {
+		int result = dubRepository.replyDubInsert(reply);
+
 		return result;
 	}
-			
-	@RequestMapping(value="/replyDubDelete", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/replyDubDelete", method = RequestMethod.GET)
 	public @ResponseBody Integer replyDubDelete(int replynum) {
 		int result = dubRepository.replyDubDelete(replynum);
 		return result;
 	}
-			
-	@RequestMapping(value="/replyDubUpdate", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/replyDubUpdate", method = RequestMethod.POST)
 	public @ResponseBody Integer replyDubUpdate(@RequestBody Reply reply) {
 		int result = dubRepository.replyDubUpdate(reply);
 		return result;
+	}
+  
+	@RequestMapping(value="/insertBlack", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public @ResponseBody String insertBlack(@RequestBody Black black ) {
+		System.out.println("신고고ㅗ고고고고고고ㅗ"+black);
+		
+		Black b = dubRepository.existedBlack(black);
+		if (b==null) {
+			dubRepository.insertBlack(black);
+			dubRepository.updateBlack(black);
+			Reply reply = dubRepository.selectReply(black);
+			 if (reply.getBlackcount()>2) {
+				 dubRepository.reportDelete(black);
+			}
+			return "신고가 완료되었습니다.";
+		}else {
+			return "이미 신고하신 댓글입니다.";
+		}
 	}
 }
