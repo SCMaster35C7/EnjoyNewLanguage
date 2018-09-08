@@ -263,9 +263,16 @@
 				videoTime=player.getCurrentTime();
 			}, 10);
 		}
+		function goback(){
+			history.back();
+		}
 	</script>
 </head>
 <body>
+<div>
+<h3>더빙 최강자에 도전하세요!</h3>
+<a onclick="goback()">더빙게시판</a>
+</div>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"

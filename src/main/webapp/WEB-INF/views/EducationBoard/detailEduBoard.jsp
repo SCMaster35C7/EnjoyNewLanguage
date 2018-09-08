@@ -54,7 +54,7 @@
 	var TestSuccess=false;  //시험을 끝까지 다 마쳤는지 확인
 	var TestFinish=false;  //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
 		
-		$(function() {
+		/* $(function() {
 			$('#playYoutube').on('click', playYoutube);
 			$('#pauseYoutube').on('click', pauseYoutube);
 			$('#currentTime').on('click', youtubeCurrentTime);
@@ -63,7 +63,7 @@
 			$('#soundVolum').on('click', soundVolum);
 			$('#seekTo').on('click', seekTo);	
 			$('#seekToinput').on('click', seekToinput);
-		});
+		}); */
 	    //음성인식 서비스 ,textbar: 클릭한 입력창
 		function startAnnyang(textbar) {
 			annyang.start({autoRestart: false,continuous: false});
@@ -231,6 +231,10 @@
 				
 			})
 		}	
+		
+		function goback(){
+			history.back();
+		}
 </script>
 
 <style>
@@ -291,7 +295,7 @@
 	</header>
    <!-- 축소시 사이드 nav -->
    	<ul class="sidenav" id="small-navi">
-	    <li><a href="eduBoard.jsp">영상게시판</a></li>
+	    <li><a href="eduBoard">영상게시판</a></li>
 		<li><a href="dubbingBoard">더빙게시판</a></li>
 		<li><a href="InvestigationBoard">자막게시판</a></li>
   	  </ul>
@@ -368,6 +372,7 @@
 		</div>	
 	  </div>
 	<div class="container">
+	<a onclick="goback()">영상게시판</a>
 		<h3 class="center">공부게시판상세</h3>
 			<div class="row">
 				<div class="col s4 m8">

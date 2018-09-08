@@ -286,7 +286,7 @@
 	
     <!-- Page Content -->
 	<div class="container">
-		<h4 class="center">자막검증게시판</h4>
+		<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
 		<div class="row">
 		
 		<c:if test="${not empty invList}">
