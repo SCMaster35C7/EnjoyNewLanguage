@@ -144,28 +144,30 @@
 			$('#jamaclist').html(subtitles); //jamaclist div 에 가공이 끝난 문제를 뿌림
 			setInterval(function() {
 				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
-			var time='T'+parseFloat(player.getCurrentTime().toFixed(2));
-			var TimeText=document.getElementById(time);
-			if(TimeText!=null){
-				if(saveTime!=null){
-		    saveTime.style.backgroundColor="";
+				var time='T'+parseFloat(player.getCurrentTime().toFixed(2));
+				var TimeText=document.getElementById(time);
+				
+				if(TimeText!=null){
+					if(saveTime!=null){
+			    		saveTime.style.backgroundColor="";
+					}
+					
+					TimeText.style.backgroundColor="#8dabfe";
+					TimeText.tabIndex=-1;
+					TimeText.focus();
+					saveTime=TimeText;
 				}
-			TimeText.style.backgroundColor="#8dabfe";
-			TimeText.tabIndex=-1;
-			TimeText.focus();
-			saveTime=TimeText;
-			}
 			},10);
 			
 			//음성 방식 test일시 추가되는 부분
 			if(TestType){
-			$('.answer').on('click',function(){		
-				if(!TestFinish){
-				var textbar=this;
-				startAnnyang(textbar);
-				textbar.style.backgroundColor="#d6f4c1";
-				}
-			})
+				$('.answer').on('click',function(){		
+					if(!TestFinish){
+						var textbar=this;
+						startAnnyang(textbar);
+						textbar.style.backgroundColor="#d6f4c1";
+					}
+				});
 			}
 		}
 		//채점 시스템
@@ -238,11 +240,11 @@
 </script>
 
 <style>
-        .scroll-box {
-            overflow-y: scroll;
-            height: 300px;
-            padding: 1rem
-        }
+       .scroll-box {
+           overflow-y: scroll;
+           height: 300px;
+           padding: 1rem
+       }
 </style>
 
 </head>
@@ -467,11 +469,10 @@
 				<label>
 					<input type="radio" class="TestType" name="TestType" value="mic">
 					<span>음성입력</span> 
-					<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level" size="50px">
+					<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level" size="50px" min="1" max="5">
 				</label>
 				<input type="button" onclick="getSubList()" value="문제생성"> 
 				<input type="button" onclick="mark()" value="채점하기">
-		
 			</div>
 	</div>
 

@@ -112,6 +112,8 @@
 			
 			$("#cancelUpdate").on('click', function() {
 				$("#replytext").val('');
+				$("#replyInsert").val("댓글등록");
+				$("#cancelUpdate").css("visibility", "hidden");
 			});
 		});
 			
@@ -164,23 +166,22 @@
 					,"replynum":  replynum
 				};
 				
-				$.ajax({
-					type : 'post',
-					url : 'insertBlack',
-					data : JSON.stringify(sendData),
-					dataType:'text',
-					contentType: "application/json; charset=UTF-8",
-					success : function(resp){
-						alert(JSON.stringify(resp));
-						init();
-					},
-					error:function(resp, code, error) {
-						//alert("resp : "+resp+", code : "+code+", error : "+error);
-						alert("로그인이 필요합니다.");
-						location.href="./";
-
-					}
-				}); 
+			$.ajax({
+				type : 'post',
+				url : 'insertBlack',
+				data : JSON.stringify(sendData),
+				dataType:'text',
+				contentType: "application/json; charset=UTF-8",
+				success : function(resp){
+					alert(JSON.stringify(resp));
+					init();
+				},
+				error:function(resp, code, error) {
+					//alert("resp : "+resp+", code : "+code+", error : "+error);
+					alert("로그인이 필요합니다.");
+					location.href="./";
+				}
+			}); 
 		}
 		
 		function replyInsert() {
@@ -233,7 +234,7 @@
 				}); 
 		
 				$("#replytext").val('');
-				$("#replyInsert").val("리뷰등록");
+				$("#replyInsert").val("댓글등록");
 				$("#cancelUpdate").css("visibility", "hidden");
 			}
 		}
@@ -269,8 +270,6 @@
 			$("#replyInsert").val("댓글수정");
 			$("#usernick").prop('readonly', 'readonly');
 			$("#cancelUpdate").css("visibility", "visible");
-
-				
 			
 			$("#replynum").val(replynum);
 		}
@@ -397,8 +396,6 @@
 			<input id="replyInsert" type="button" value="댓글등록"/>
 			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
 		</form>
-		
-		
 		
 		<hr/>
 		<div id="result"> 
