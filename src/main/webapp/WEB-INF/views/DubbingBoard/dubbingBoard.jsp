@@ -201,7 +201,7 @@ $(document).ready(function() {
 	  <!--start container-->
          <div class="container">
           <div class="section">
-          <h4 class="center">더빙게시판</h4>
+          <h4 class="center"><a href="dubbingBoard">더빙게시판</a></h4>
             <!--DataTables example-->
                   <table id="dubbing">
                     <thead>

@@ -278,7 +278,7 @@
 	
     <!-- Page Content -->
 	<div class="container">
-		<h4 class="center">공부게시판메인</h4>
+		<h4 class="center"><a href="eduBoard">공부게시판메인</a></h4>
 		<div class="row">
 			
 		<c:if test="${not empty eduList}">
