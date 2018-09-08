@@ -12,7 +12,8 @@
 		var investigationnum = "${inv.investigationnum}"
           
 	    $(function() {
-	    	init();
+	    	initReply();
+	    	initSubtitle();
 	         
 	        $("#replyInsert").on('click', replyInsert);
 	        $('#playYoutube').on('click', playYoutube);
@@ -109,6 +110,12 @@
 	        	});
 	    	});
 	   		
+			$("#cancelUpdate").on('click', function() {
+				$("#replytext").val('');
+				$("#replyInsert").val("댓글등록");
+				$("#cancelUpdate").css("visibility", "hidden");
+			});
+	   		
 			$('#registSubtitle').on('click', function() {
 				var form = $('#fileForm')[0];
 				var formData = new FormData(form);
@@ -144,7 +151,7 @@
 						}else if(resp == 'success') {
 							subtitleName.val('');
 							$('#subtitleFile').val('');
-							init();
+							initSubtitle();
 						}
 					}
 					, error: function(resp, code, error) {
@@ -154,7 +161,7 @@
 			});
 		});
 		
-		function init() {
+		function initReply() {
 	        $.ajax({
 	            method : 'post',
 	            url : 'replyInvAll',
@@ -162,7 +169,9 @@
 	            async: false,
 	            success : outputReply
 	    	});
-	        
+	    }
+		
+		function initSubtitle() {
 	        $.ajax({
 	            method : 'post',
 	            url : 'invSubAll',
@@ -170,26 +179,30 @@
 	            async: false,
 	            success : outputSubtitle
 	        });
-	    }
+		}
 	      
 	    function outputReply(resp) {
-	       var result = '';
+	       	var result = '';
 	    
-	       for ( var i in resp) {
-	          result += '<div class="content">'
-	          result += ' <p class="email" >' + resp[i].useremail + '</p>';
-	          result += ' <p class="nick" >' + resp[i].usernick + '</p>';
-	          result += ' <p class="text" >' + resp[i].content + '</p>';
-	          result += '<p class="date" >' + resp[i].regdate + '</p>';
-	          result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-	          result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-	          result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
-	          result += ' </div>';
-	       }
+	       	for ( var i in resp) {
+	          	result += '<div class="content">'
+	          	result += ' <p class="email" >' + resp[i].useremail + '</p>';
+	          	result += ' <p class="nick" >' + resp[i].usernick + '</p>';
+	          	result += ' <p class="text" >' + resp[i].content + '</p>';
+	          	result += '<p class="date" >' + resp[i].regdate + '</p>';
+	          	result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
+	      		if (usernick==resp[i].usernick) {
+					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+				}
+				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
+	          	result += ' </div>';
+			}
 	         
-	       $("#result").html(result);
-	       $("input:button.replyDelete").click(replyDelete);
-	       $("input:button.replyUpdate").click(replyUpdate); 
+	       	$("#result").html(result);
+	       	$("input:button.replyDelete").click(replyDelete);
+	       	$("input:button.replyUpdate").click(replyUpdate);
+	       	$("img.report").click(reportReply); 
 	    }
 	    
 	    function outputSubtitle(resp) {
@@ -268,7 +281,7 @@
 	    		}
 	    	});
 	    	
-	    	init();
+	    	initSubtitle();
 	    }
 	    
 	    function subRecommendation() {
@@ -357,6 +370,36 @@
         	});
 	    }
 
+		function reportReply() {
+			//alert('신고');
+			var useremail = "${sessionScope.useremail}";
+			//alert(useremail);
+			replynum = $(this).attr('data-rno');
+			//alert(replynum);
+			var sendData = {
+					"useremail":useremail
+					,"whichboard":  "1"
+					,"replynum":  replynum
+				};
+				
+			$.ajax({
+				type : 'post',
+				url : 'insertBlack',
+				data : JSON.stringify(sendData),
+				dataType:'text',
+				contentType: "application/json; charset=UTF-8",
+				success : function(resp){
+					alert(JSON.stringify(resp));
+					initReply();
+				},
+				error:function(resp, code, error) {
+					//alert("resp : "+resp+", code : "+code+", error : "+error);
+					alert("로그인이 필요합니다.");
+					location.href="./";
+				}
+			}); 
+		}
+	    
 		function replyInsert() {
 			$("#useremail").val(useremail);
 
@@ -382,7 +425,7 @@
 					data : JSON.stringify(sendData),
 					dataType : 'text',
 					contentType : "application/json; charset=UTF-8",
-					success : init
+					success : initReply
 				});
 				//돌려놓기
 				$("#replytext").val('');
@@ -400,11 +443,12 @@
 					data : JSON.stringify(sendData),
 					dataType : 'text',
 					contentType : "application/json; charset=UTF-8",
-					success : init
+					success : initReply
 				});
 
 				$("#replytext").val('');
 				$("#replyInsert").val("리뷰등록");
+				$("#cancelUpdate").css("visibility", "hidden");
 			}
 		}
 
@@ -420,7 +464,7 @@
 				url : 'replyInvDelete',
 				data : 'replynum=' + replynum,
 				dataType : 'text',
-				success : init
+				success : initReply
 			});
 		}
 

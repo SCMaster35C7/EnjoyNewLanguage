@@ -206,14 +206,4 @@ public class EducationRepository {
 		
 		return result;
 	}
-	
-	public int deleteAllRecommend(int IDCode, int recommendtable) {
-	      EducationMapper mapper = session.getMapper(EducationMapper.class);
-	      Map<String, Object> map = new HashMap<>();
-	      map.put("IDCode", IDCode);
-	      map.put("recommendtable", recommendtable);      
-	      int result = mapper.deleteAllRecommend(map);
-	      
-	      return result;
-	   }
 }

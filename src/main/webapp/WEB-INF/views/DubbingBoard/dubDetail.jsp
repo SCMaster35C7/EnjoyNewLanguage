@@ -166,23 +166,22 @@
 					,"replynum":  replynum
 				};
 				
-				$.ajax({
-					type : 'post',
-					url : 'insertBlack',
-					data : JSON.stringify(sendData),
-					dataType:'text',
-					contentType: "application/json; charset=UTF-8",
-					success : function(resp){
-						alert(JSON.stringify(resp));
-						init();
-					},
-					error:function(resp, code, error) {
-						//alert("resp : "+resp+", code : "+code+", error : "+error);
-						alert("로그인이 필요합니다.");
-						location.href="./";
-
-					}
-				}); 
+			$.ajax({
+				type : 'post',
+				url : 'insertBlack',
+				data : JSON.stringify(sendData),
+				dataType:'text',
+				contentType: "application/json; charset=UTF-8",
+				success : function(resp){
+					alert(JSON.stringify(resp));
+					init();
+				},
+				error:function(resp, code, error) {
+					//alert("resp : "+resp+", code : "+code+", error : "+error);
+					alert("로그인이 필요합니다.");
+					location.href="./";
+				}
+			}); 
 		}
 		
 		function replyInsert() {
@@ -390,8 +389,6 @@
 			<input id="replyInsert" type="button" value="댓글등록"/>
 			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
 		</form>
-		
-		
 		
 		<hr/>
 		<div id="result"> 
