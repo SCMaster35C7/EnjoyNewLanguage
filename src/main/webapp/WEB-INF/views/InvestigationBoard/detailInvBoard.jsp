@@ -439,8 +439,8 @@
 			$("#replytext").val(replytext);
 			$("#replyInsert").val("댓글수정");
 			$("#usernick").prop('readonly', 'readonly');
-
-			//히든에 리뷰넘버 넣어주기
+			$("#cancelUpdate").css("visibility", "visible");
+			
 			$("#replynum").val(replynum);
 		}
 	</script>
@@ -600,9 +600,12 @@
 		<form id="replyform" method="post">
 			<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
 			<input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
+			
 			<input type="hidden" id="useremail" name="useremail" value="" /> 
 			<input type="hidden" id="replynum" name="replynum" value="" /> 
+			
 			<input id="replyInsert" type="button" value="댓글등록" />
+			<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
 		</form>
 		
 		<hr />
