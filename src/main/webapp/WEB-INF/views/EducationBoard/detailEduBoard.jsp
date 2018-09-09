@@ -270,6 +270,14 @@
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
+	    <!-- sidenav trigger -->
+		    <ul class="left">
+		    	<li>
+		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+		    			<i class="material-icons">menu</i>
+		    		</a>
+		    	</li>
+		    </ul>
 	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
@@ -338,11 +346,13 @@
 				
 					<div class="row">
 						<div class="col s10">
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-									<i class="material-icons right">send</i>
-								</button>
-							</span>
+							<c:if test="${empty sessionScope.useremail }">
+								<span class="flow-text">
+									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+										<i class="material-icons right">send</i>
+									</button>
+								</span>
+							</c:if>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
@@ -373,6 +383,17 @@
 			</div>
 		</div>	
 	  </div>
+	<div class="wrapper">
+			 <!-- sidenav -->	  
+			<aside>	  	  
+			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+					<li><div class="user-view">
+							<div class="background">
+								<img src="images/">
+							</div>
+							<a href="#user"><img class="circle" src="images/"></a>
+							<a href="#name"><span class="white-text name">${usernick}</span></a> 
+							<a href="#email"><span class="white-text email">${useremail}</span></a>
 	<div class="container">
 	<a onclick="goback()">영상게시판</a>
 		<h3 class="center">공부게시판상세</h3>
@@ -406,14 +427,60 @@
 								<i class="material-icons right tooltipped" data-position="left" data-tooltip="채점" style="color:red" onclick="mark()">spellcheck</i>
 							</span>
 						</div>
-						<div class="card-content scroll-box">
-          					<p id="jamaclist"></p>
-          					
-        				</div>
-        				
-				    </div>
-				 </div>
-			</div>
+					</li>
+					<li><a href="#!"><i class="material-icons">cloud</i>First
+							Link With Icon</a></li>
+					<li><a href="#!">wishList</a></li>
+					<li><div class="divider"></div></li>
+					<li><a class="subheader">회원정보관리</a></li>
+					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+				</ul>
+			</aside>	
+		
+			<section>
+				<div class="container">
+					<h3 class="center">공부게시판상세</h3>
+						<div class="row">
+							<div class="col s4 m8">
+								<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+								<!--<div id="youtube"></div>   -->
+								<div class="video-container z-depth-2">
+									<iframe id="youtube" width="960" height="490"
+										src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+										frameborder="0" allowfullscreen>
+									</iframe>
+								</div>
+								<div>
+									<form action="#">
+									    <p class="range-field">
+									      <input type="range" id="test5" min="0" max="100" />
+									    </p>
+									 </form>
+								</div>
+								<div class="card-panel red" style="height:42px; padding:2.5px;">
+									<div class="flow-text btn"></div>
+								</div>
+							</div>
+							
+							<div class="col s4 m4">
+					      		<div class="card" style="height:450px; margin-top:0px;">
+									<div class="card-content">
+										<span class="card-title activator grey-text text-darken-4">
+											문제넣어보자
+											<i class="material-icons right tooltipped" data-position="left" data-tooltip="채점" style="color:red" onclick="mark()">spellcheck</i>
+										</span>
+									</div>
+									<div class="card-content scroll-box">
+			          					<p id="jamaclist"></p>
+			          					
+			        				</div>
+			        				
+							    </div>
+							 </div>
+						</div>
+				</div>
+			</section>
 	</div>
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
