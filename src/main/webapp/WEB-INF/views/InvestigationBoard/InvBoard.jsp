@@ -179,6 +179,14 @@
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
+	    <!-- sidenav trigger -->
+		    <ul class="left">
+		    	<li>
+		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+		    			<i class="material-icons">menu</i>
+		    		</a>
+		    	</li>
+		    </ul>
 	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
@@ -333,85 +341,111 @@
 		</div>
 	
     <!-- Page Content -->
-	<div class="container">
-		<h4 class="center">자막검증게시판</h4>
-		<div class="row">
-		
-		<c:if test="${not empty invList}">
-			<c:forEach var="invList" items="${invList}">
-			
-			<div class="col s3 m3">
-				<div class="card" style="height:400px margin-bottom:10px;">
-					<div class="card-image">
-							<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
-							<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-					</div>
-					
-						<div class="card-content" style="height:150px;">
-						<a href="detailInvBoard?investigationnum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
-					</div>
-					
-					<div class="card-action" style="height:70px">
-						<div class="row s12 m12">
-							<input type="hidden" value="${invList.investigationnum}">
-							<button class="btn recommendation" style="width:65px; padding-right:4px; padding-left:4px;">
-								<i class="material-icons">thumb_up</i>
-								<span id="recoCount">${invList.recommendation}</span>
-							</button>
-							
-							<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
-								<i class="material-icons">thumb_down</i>
-								<span id="decoCount">${invList.decommendation}</span>
-							</button>
-							<button class="btn disabled right decommendation" style="width:80px">
-								<i class="material-icons">touch_app</i>
-								<span>${invList.hitcount}</span>
-							</button>	 
+	<div class="wrapper">
+			 <!-- sidenav -->	  
+			<aside>	  	  
+			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+					<li><div class="user-view">
+							<div class="background">
+								<img src="images/">
+							</div>
+							<a href="#user"><img class="circle" src="images/"></a>
+							<a href="#name"><span class="white-text name">${usernick}</span></a> 
+							<a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>
+					</li>
+					<li><a href="#!"><i class="material-icons">cloud</i>First
+							Link With Icon</a></li>
+					<li><a href="#!">wishList</a></li>
+					<li><div class="divider"></div></li>
+					<li><a class="subheader">회원정보관리</a></li>
+					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+				</ul>
+			</aside>
+			
+			<section>	
+				<div class="container">
+					<h4 class="center">자막검증게시판</h4>
+					<div class="row">
+					
+					<c:if test="${not empty invList}">
+						<c:forEach var="invList" items="${invList}">
+						
+						<div class="col s3 m3">
+							<div class="card" style="height:400px margin-bottom:10px;">
+								<div class="card-image">
+										<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
+										<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+								</div>
+								
+									<div class="card-content" style="height:150px;">
+									<a href="detailInvBoard?investigationnum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
+								</div>
+								
+								<div class="card-action" style="height:70px">
+									<div class="row s12 m12">
+										<input type="hidden" value="${invList.investigationnum}">
+										<button class="btn recommendation" style="width:65px; padding-right:4px; padding-left:4px;">
+											<i class="material-icons">thumb_up</i>
+											<span id="recoCount">${invList.recommendation}</span>
+										</button>
+										
+										<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
+											<i class="material-icons">thumb_down</i>
+											<span id="decoCount">${invList.decommendation}</span>
+										</button>
+										<button class="btn disabled right decommendation" style="width:80px">
+											<i class="material-icons">touch_app</i>
+											<span>${invList.hitcount}</span>
+										</button>	 
+									</div>
+								</div>
+							</div>
+						</div>
+						</c:forEach>
+					</c:if>
+					</div>
+					
+					<div class="center">
+						<ul class="pagination">
+						<li class="waves-effect">
+							<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+								<i class="material-icons">first_page</i>
+							</a>
+						</li>
+						
+							<li class="waves-effect">
+								<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+									<i class="material-icons">chevron_left</i>
+								</a>
+							</li>
+						
+							<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
+								<c:if test="${navi.currentPage == page }">
+									<li class="page-item active"><a class="page-link">${page}</a></li>
+								</c:if>
+								<c:if test="${navi.currentPage != page }">
+									<li class="page-item"><a class="page-link"
+										href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+								</c:if>
+							</c:forEach>
+						
+							<li class="waves-effect">
+								<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+									<i class="material-icons">chevron_right</i> 
+								</a>
+							</li>
+						
+							<li class="waves-effect">
+								<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+									<i class="material-icons">last_page</i> 
+								</a>
+							</li>
+						</ul>
 					</div>
 				</div>
-			</div>
-			</c:forEach>
-		</c:if>
-		</div>
-		
-		<div class="center">
-			<ul class="pagination">
-			<li class="waves-effect">
-				<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-					<i class="material-icons">first_page</i>
-				</a>
-			</li>
-			
-				<li class="waves-effect">
-					<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
-						<i class="material-icons">chevron_left</i>
-					</a>
-				</li>
-			
-				<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
-					<c:if test="${navi.currentPage == page }">
-						<li class="page-item active"><a class="page-link">${page}</a></li>
-					</c:if>
-					<c:if test="${navi.currentPage != page }">
-						<li class="page-item"><a class="page-link"
-							href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
-					</c:if>
-				</c:forEach>
-			
-				<li class="waves-effect">
-					<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
-						<i class="material-icons">chevron_right</i> 
-					</a>
-				</li>
-			
-				<li class="waves-effect">
-					<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-						<i class="material-icons">last_page</i> 
-					</a>
-				</li>
-			</ul>
-		</div>
+		</section>
 	</div>
 	
 	<footer class="page-footer">

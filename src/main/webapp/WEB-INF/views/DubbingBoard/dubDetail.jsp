@@ -398,7 +398,7 @@
 		    		</a>
 		    	</li>
 		    </ul>
-		    <a href="${pageContext.request.contextPath}" class="brand-logo" style="margin-left:14px;">Logo</a>
+		    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 		    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
@@ -544,17 +544,17 @@
 				</div>
 				<div class="row">
 					더빙타임: ${
-					dubbing.starttime} ~ ${dubbing.endtime} <input type="button" value="더빙 재생하기" onclick="sinkTime()">
+					dubbing.starttime} ~ ${dubbing.endtime} <input type="button" class="btn" value="더빙 재생하기" onclick="sinkTime()">
 				</div>
 				<div class="card-footer" align="center">
 					<input type="hidden" value="${dubbing.dubbingnum}">
 					<button class="btn recommendation">
-						<img alt="" src="images/tup.png">
+						<i class="material-icons">thumb_up</i>
 						<span id="recoCount">${dubbing.recommendation}</span>
 					</button>
 									
 					<button class="btn decommendation">
-						<img alt="" src="images/tdown.png">
+						<i class="material-icons">thumb_down</i>
 						<span id="decoCount">${dubbing.decommendation}</span>
 					</button>
 				</div>

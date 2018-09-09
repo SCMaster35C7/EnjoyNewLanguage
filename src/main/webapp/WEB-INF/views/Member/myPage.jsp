@@ -88,7 +88,7 @@
 		    		</a>
 		    	</li>
 		    </ul>
-		    <a href="${pageContext.request.contextPath}" class="brand-logo" style="margin-left:14px;">Logo</a>
+		    <a href="${pageContext.request.contextPath}" class="brand-logo" >Logo</a>
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 		    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
