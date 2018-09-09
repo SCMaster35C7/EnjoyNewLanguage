@@ -29,8 +29,7 @@
 			});
 			
 			//modal open
-			$('#modal1').modal(); //로그인모달 
-			$('#addvideo').modal();  //영상추가 모달 
+			$('#modal1').modal();
 			
 			//side-nav open
 			$('.sidenav').sidenav();
@@ -52,36 +51,7 @@
 				$('#loginForm').submit();
 			});
 		});
-    	
-	    //영상추가 
-		$(function() {
-			$('#checkForm').on('click', function() {
-				var title = $('#title');
-				var url = $('#url');
-				var subtitle = $('#subtitle');
-				
-				if(title.val().trim().length == 0) {
-					alert('영상 제목을 입력해주세요.');
-					title.focus();
-					return false;
-				}
-				
-				if(url.val().trim().length == 0) {
-					alert('영상 URL을 입력해주세요.');
-					url.focus();
-					return false;
-				}
-				
-				
-				if(subtitle.val().trim().length == 0) {
-					alert('파일을 넣어주세요.');
-					subtitle.focus();
-					return false;
-				}
-				
-				return true;
-			});
-		});
+    
     
     	$(function() {
 			$('#addEduVideo').on('click', function() {
@@ -144,6 +114,7 @@
 				var decoCount = Number(target.children("span").text());
 				var recoTarget = target.parent().children(".recommendation").children("#recoCount");
 				var videonum = target.parent().children("input").val();
+				alert(videonum);
 				var dataForm = {
 						"tableName":"educationvideo",
 						"idCode":"videonum",  
@@ -178,6 +149,48 @@
 				});
 			});
 		});
+    	
+    	$(function(){
+    		//위시리스트에 비디오 등록
+    		$('#btnRegistWish').on('click', function(){
+    			var target = $(this);
+				var useremail = "${sessionScope.useremail}";
+				var videonum = target.parent().children("input").val();
+				var title = target.parent().children("input").val();
+				var url = target.parent().children("input").val();
+				
+				//로그인된 세션이 있는지 확인
+				if(useremail.trim().length == 0) {
+					location.href="login";
+					return;
+				}else{
+					//선택된 비디오 정보를 위시리스트로 보내기
+					var dataFormVideo = {
+							"tableName":"wishlist",
+							"wishtable": 0,							
+							"useremail":useremail, 
+							"identificationnum":videonum,
+							"title"	: title,
+							"url" : url							
+					};
+					
+					$.ajax({
+						method:'post'
+						, url:'insertVideoWish'
+						, data: JSON.stringify(dataFormVideo)
+						, contentType: "application/json; charset=utf-8"
+						, async : false
+						, success:function(resp) {
+							alert("위시리스트에 등록되었습니다.");
+							
+						  }
+						, error:function(resp, code, error) {
+							alert("resp : "+resp+", code : "+code+", error : "+error);
+						}
+					});					
+				}    			
+    		});    		
+    	});
     </script>
 </head>
 <body>
@@ -201,15 +214,7 @@
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
-	     <!-- sidenav trigger -->
-		    <ul class="left">
-		    	<li>
-		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-		    			<i class="material-icons">menu</i>
-		    		</a>
-		    	</li>
-		    </ul>
-	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+	    <a href="index" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
@@ -250,57 +255,46 @@
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+							<label for="useremail">EMAIL</label>
+						</div>
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mode_edit</i>
+							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+							<label for="userpwd">PASSWORD</label>
+						</div>
 					</div>
-					
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
 				</div>	
 				
 					<div class="row">
 						<div class="col s10">
-							<c:if test="${empty sessionScope.useremail }">
-								<span class="flow-text">
-									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-										<i class="material-icons right">send</i>
-									</button>
-								</span>
-							</c:if>
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+									<i class="material-icons right">send</i>
+								</button>
+							</span>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							<c:if test="${not empty sessionScope.useremail }">
-								<span class="flow-text">
-									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
-										<i class="material-icons right">power_settings_new</i>
-									</a>
-								</span>
-							</c:if>
+							
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close">LOGOUT
+									<i class="material-icons right">settings_power</i>
+								</button>
+							</span>
 						</div>
 						
 						<div class="fixed-action-btn">
 								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
-									<i class="large material-icons">person</i>
+								<i class="large material-icons">person</i>
 								</a>
 								<ul>
 								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
@@ -314,83 +308,11 @@
 		</div>	
 	  </div>
    
-   <!-- admin 영상추가 -->	
-	<c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
-		<div class="fixed-action-btn">
-		  	<a class="btn-floating btn-large red modal-trigger tooltipped" data-position="top" data-tooltip="+VIDEO" href="#addvideo">
-		    	<i class="large material-icons">add_a_photo</i>
-		  	</a>
-		</div>
-	</c:if>
-   
-  	<!-- 영상추가 모달 -->
-  	<div id="addvideo" class="modal">
-  		<div class="container">
-  		<div class="modal-content">
-		      <h5 class="center">교육 영상 삽입</h5>
-		      <div class="row">
-			      <form action="addEduVideo" method="post" enctype="multipart/form-data">
-						<div class="input-field col s12">
-							<input type="text" class="validate" id="title" name="title"/>
-							<label for="title">영상제목입력</label>
-						</div>
-						<div class="row">
-							<div class="input-field col s8">
-								<input type="text" class="validate" id="url" name="url"/>
-								<label for="url">URL입력</label>
-							</div>
-							<div class="input-field col s4">
-								<input type="button" class="btn" id="urlCheck" value="중복 확인"/>
-							</div>	
-						</div>	
-							<div class="file-field input-field">
-								<div class="btn">
-									<span>FILE</span>
-									<input type="file" id="subtitle" name="subtitle"/>
-								</div>
-								<div class="file-path-wrapper">
-									<input class="file-path validate" type="text">
-								</div>	
-							</div>
-					</form>	
-							<div class="center">
-								<input type="submit" id="checkForm" class="btn" value="영상 등록"/>
-								<input type="reset" class="btn" value="재입력"/>
-							</div>
-				</div>
-		 </div>
-		 </div>
-		    <div class="modal-footer">
-		      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-			</div>
-  	</div>		
+  
 	
-	<div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<img src="images/">
-							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
-						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
-				</ul>
-			</aside>	
-	<section>
     <!-- Page Content -->
 	<div class="container">
-		<h4 class="center"><a href="eduBoard">공부게시판메인</a></h4>
+		<h3 class="center">공부게시판메인</h3>
 		<div class="row">
 			
 		<c:if test="${not empty eduList}">
@@ -400,23 +322,27 @@
 				<div class="card" style="height:400px margin-bottom:10px;">
 					<div class="card-image">
 						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+						<input type="hidden" value="${eduList.videoNum}"/>
+						<a class="btn-floating halfway-fab waves-effect waves-light red" id="btnRegistWish" >						
+						<i class="material-icons" ></i></a>
 					</div>
 					<div class="card-content" style="height:150px;">
 							<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
 					</div>
 						
 					<div class="card-action" style="height:70px">
-						<div class="row s12 m12">
+						<div class="row">
 							<input type="hidden" value="${eduList.videoNum}"/>
-							<button class="btn recommendation"  style="width:65px; padding-right:4px; padding-left:4px;">
+							<button class="btn recommendation">
 								<i class="material-icons">thumb_up</i>
 								<span id="recoCount">${eduList.recommendation}</span>
 							</button>
-							<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
+														
+							<button class="btn decommendation">
 								<i class="material-icons">thumb_down</i>
 								<span id="decoCount">${eduList.decommendation}</span>
 							</button>
+							
 							<button class="btn disabled right decommendation" style="width:80px">
 								<i class="material-icons">touch_app</i>
 								<span>${eduList.hitCount}</span>
@@ -428,11 +354,16 @@
 			</c:forEach>
 		</c:if>
 		</div>
+	
+	<!-- admin 영상추가 -->	
+	<c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
+		<div class="fixed-action-btn">
+		  <a class="btn-floating btn-large red tooltipped" href="addEduVideo" data-position="top" data-tooltip="ADD VIDEO">
+		    <i class="large material-icons">add_a_photo</i>
+		  </a>
+		</div>
+	</c:if>
 		
-		</div>
-		</section>
-		</div>
-		<!-- pagination -->
 		<div class="center">
 			<ul class="pagination">
 			<li class="waves-effect">
@@ -470,6 +401,7 @@
 				</li>
 			</ul>
 		</div>
+	</div>
 
 
 	<footer class="page-footer">

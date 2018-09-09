@@ -1,19 +1,26 @@
 package global.sesoc.Youtube.dto;
 
 public class WishList {
-	private int wishnum;	
+	private int wishnum;
+	private int videoNum;			
+	private int subtitlenum;			
+	private int dubbingnum;
 	private String useremail;	
 	private String url;			
 	private String title;
 	private String regDate;
-	 
+	
 	public WishList() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
-
-	public WishList(int wishnum, String useremail, String url, String title, String regDate) {
+	
+	public WishList(int wishnum, int videoNum, int subtitlenum, int dubbingnum, String useremail, String url,
+			String title, String regDate) {
 		super();
 		this.wishnum = wishnum;
+		this.videoNum = videoNum;
+		this.subtitlenum = subtitlenum;
+		this.dubbingnum = dubbingnum;
 		this.useremail = useremail;
 		this.url = url;
 		this.title = title;
@@ -26,6 +33,30 @@ public class WishList {
 
 	public void setWishnum(int wishnum) {
 		this.wishnum = wishnum;
+	}
+
+	public int getVideoNum() {
+		return videoNum;
+	}
+
+	public void setVideoNum(int videoNum) {
+		this.videoNum = videoNum;
+	}
+
+	public int getSubtitlenum() {
+		return subtitlenum;
+	}
+
+	public void setSubtitlenum(int subtitlenum) {
+		this.subtitlenum = subtitlenum;
+	}
+
+	public int getDubbingnum() {
+		return dubbingnum;
+	}
+
+	public void setDubbingnum(int dubbingnum) {
+		this.dubbingnum = dubbingnum;
 	}
 
 	public String getUseremail() {
@@ -62,8 +93,8 @@ public class WishList {
 
 	@Override
 	public String toString() {
-		return "WishList [wishnum=" + wishnum + ", useremail=" + useremail + ", url=" + url + ", title=" + title
+		return "WishList [wishnum=" + wishnum + ", videoNum=" + videoNum + ", subtitlenum=" + subtitlenum
+				+ ", dubbingnum=" + dubbingnum + ", useremail=" + useremail + ", url=" + url + ", title=" + title
 				+ ", regDate=" + regDate + "]";
 	}
-	
 }

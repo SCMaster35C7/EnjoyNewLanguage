@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="global.sesoc.Youtube.dao.WishMapper">
+
+
+	<!-- 영상 위시리스트 데이터 수 세기 -->
+	<select id="getTotalCount1" parameterType="map" resultType="int">
+		select
+			count(*)
+		from
+			WishList
+		where
+			${searchType} like '%' || #{searchWord} || '%'
+	</select>
+	
+	<!-- 영상 위시리스트 조회 -->
+	<select id="selectVideoWish" parameterType="string" resultType="WishList">
+		select 
+			title
+			, url
+		from
+			wishlist
+		where
+			useremail = #{useremail}
+		and
+			wishnum = #{videoNum}
+			
+		<!-- select
+			*
+		from
+			wishlist w, educationvideo e
+		where
+			w.videoNum = e.videoNum
+		and
+			useremail=#{useremail} -->
+	</select>
+	
+	<!-- 영상 위시리스트 등록 -->	
+	<insert id="insertVideoWish" parameterType="WishList">
+	insert into wishlist(
+		wishnum
+		, videoNum
+		, useremail
+		, title
+		, url		
+		, regDate	
+	)values(
+		wish_list_seq.nextval
+		, #{videoNum}
+		, #{useremail}
+		, #{title}
+		, #{url}
+		, to_char(regDate, 'YYYY-MM-DD') regDate
+	)		
+	</insert>
+	
+	<!-- 영상 위시리스트 삭제 -->
+	<delete id="deleteVideoWish" parameterType="int">
+		delete from
+			wishlist
+		where
+			videoNum = #{wishnum}
+	</delete>
+	
+	<!-- 자막 위시리스트 데이터 수 세기 -->
+	
+	<!-- <select id="getTotalCount1" parameterType="map" resultType="int">
+		select
+			count(*)
+		from
+			WishList
+		where
+			${searchType} like '%' || #{searchWord} || '%'
+	</select> -->
+	
+	<!-- 자막 위시리스트 조회 -->
+	<!-- <select id="selectSubWish" resultType="WishList" parameterType="string">
+		select
+			*
+		from
+			wishlist w, educationvideo e
+		where
+			w.videonum = e.videonum
+		and
+			useremail = #{useremail}
+	</select> -->
+	
+	<!-- 자막 위시리스트 등록 -->
+
+	<insert id="insertSubWish" parameterType="WishList">
+	insert into wishlist(
+		wishnum
+		, subtitlenum
+		, useremail
+		, title
+		, url		
+		, regDate	
+	)values(
+		wish_list_seq.nextval
+		, #{subtitlenum}
+		, #{useremail}
+		, #{title}
+		, to_char(regDate, 'YYYY-MM-DD') regDate
+	)		
+	</insert>
+	
+	<!-- 자막 위시리스트 삭제 -->
+
+	<delete id="deleteSubWish" parameterType="int">
+		delete from
+			wishlist
+		where
+			subtitlenum = #{wishnum}
+	
+	</delete>
+	
+	<!-- 자막 위시리스트 데이터 수 세기 -->
+	<!-- <select id="dubWishCount" parameterType="String" resultType="int">
+		select
+			count(*)
+		from
+			wishlist w, dubbing d
+		where
+			w.dubbingnum = d.dubbingnum
+		and
+			useremail=#{useremail}
+	</select> -->
+	
+	<!-- 더빙 위시리스트 조회 -->
+	<!-- <select id="selectDubWish" resultType="Wishlist" parameterType="string">
+		select
+			*
+		from
+			wishlist w, Dubbing d
+		where
+			w.dubbingnum = d.dubbingnum
+		and
+			useremail = #{useremail}
+	</select> -->
+	
+	<!-- 더빙 위시리스트 등록 -->
+	<insert id="insertDubWish" parameterType="WishList">
+	insert into wishlist(
+		wishnum
+		, dubbingnum
+		, useremail
+		, title
+		, url		
+		, regDate	
+	)values(
+		wish_list_seq.nextval
+		, #{dubbingnum}
+		, #{useremail}
+		, #{title}
+		, to_char(regDate, 'YYYY-MM-DD') regDate
+	)		
+	</insert>
+	
+	<!-- 더빙 위시리스트 삭제 -->
+	<delete id="deleteDubWish" parameterType="int">
+		delete from
+			wishlist
+		where
+			wishnum = #{dubbingnum}	
+	</delete>
+</mapper>

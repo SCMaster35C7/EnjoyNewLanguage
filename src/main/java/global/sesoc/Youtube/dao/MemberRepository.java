@@ -25,14 +25,13 @@ public class MemberRepository {
 	 * @return
 	 */
 	public Member selectOneFromMember(Member m) {
-		/*
-		 * Map<String, Object> map = new HashMap<>(); map.put("useremail", useremail);
-		 * map.put("userpwd", userpwd);
-		 */
+		/*Map<String, Object> map = new HashMap<>();
+		map.put("useremail", useremail);
+		map.put("userpwd", userpwd);*/
 
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		Member member = mapper.selectOneFromMember(m);
-		
+
 		return member;
 	}
 
@@ -61,39 +60,39 @@ public class MemberRepository {
 	public int updateLastAccess(String useremail) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		int result = mapper.updateLastAccess(useremail);
-
+		
 		return result;
-
+		
 	}
 
-	public int updateMember(String useremail, String currpwd, String newpwd, String usernick/* , Member member */) {
+	public int updateMember(String useremail, String currpwd, String newpwd, String usernick/*, Member member*/) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		int result = 0;
 		Map<String, String> map = new HashMap<>();
-
+		
 		map.put("useremail", useremail);
 		map.put("currpwd", currpwd);
 		map.put("newpwd", newpwd);
 		map.put("usernick", usernick);
-
+		
 		result = mapper.updateMember(map);
-
-		/* int result = mapper.updateMember(member); */
+		
+		/*int result = mapper.updateMember(member);*/
 		try {
-			// result = mapper.updateMember(map);
-		} catch (Exception e) {
+			//result = mapper.updateMember(map);
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-	public Member selectMyInfo(Member member) {
+	public Member selectMyInfo(String useremail) {
 
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		Member result = mapper.selectMyInfo(member);
+		Member member = mapper.selectMyInfo(useremail);
 
-		return result;
-
+		return member;
 	}
 
 	public List<Video> selectMyVideo(String useremail) {
@@ -108,28 +107,5 @@ public class MemberRepository {
 		List<TestResult> levelList = mapper.selectLevels(useremail);
 		return levelList;
 	}
-
-	public int checkChallengeCount(String useremail) {
-		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		int result = mapper.checkChallengeCount(useremail);
-		return result;
-	}
-
-	public int insertCloseID(String useremail) {
-		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		int result = mapper.insertCloseID(useremail);
-		return result;
-	}
-
-	public int recoveryID(String useremail) {
-		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		int result = mapper.recoveryID(useremail);
-		return result;
-	}
-
-	public Member selectInConfirm(String useremail) {
-		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		Member member = mapper.selectInConfirm(useremail);
-		return member;
-	}
 }
+

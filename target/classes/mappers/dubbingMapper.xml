@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="global.sesoc.Youtube.dao.DubbingMapper">
 	<insert id="insertDubbing" parameterType="Dubbing">
 		insert into dubbing (
@@ -11,9 +11,7 @@
 			content,
 	    	useremail,
 	    	url,
-	    	voiceFile,
-	    	starttime,
-	    	endtime
+	    	voiceFile
 		) values(
 			DUBBING_SEQ.nextval
 			, #{title}
@@ -21,16 +19,13 @@
 			, #{useremail}
 			, #{url}
 			, #{voiceFile}
-			, #{starttime}
-			, #{endtime}
 		)
 	</insert>
-	
+
 	<select id="dubbingBoard"  resultType="Dubbing">
 		select 
 			d.dubbingnum
 			, d.title
-			, d.useremail
 			, m.usernick
 			, d.hitcount
 			, d.recommendation
@@ -48,7 +43,6 @@
 		select
 			d.dubbingnum
 			, d.title
-			, d.useremail
 			, m.usernick
 			, d.content
 			, d.url
@@ -57,8 +51,6 @@
 			, d.recommendation
 			, d.decommendation
 			, d.regdate
-			, d.starttime
-			, d.endtime
 		from 
 			dubbing d, member m
 		where 
@@ -66,143 +58,4 @@
 		and 
 			d.dubbingnum = #{dubbingnum}
 	</select>
-	
-	<select id="replyDubAll" parameterType="int" resultType="Reply">
-		select
-			d.replynum
-			, d.dubbingnum idnum
-			, d.useremail
-			, d.content
-			, d.regDate
-			, d.blackCount
-			, m.usernick
-		from 
-			dubbingreply d, member m
-		where
-			dubbingnum = #{dubbingnum}
-		and
-			d.useremail =m.useremail
-		order by d.replynum
-	</select>
-	
-	<delete id="replyDubDelete" parameterType="int">
-		delete from
-			dubbingreply
-		where
-			replynum = #{replynum}
-	</delete> 
-	
-	
-	<update id="replyDubUpdate" parameterType="Reply">
-		update 
-			dubbingreply
-		set
-			content = #{content}
-			, regdate = sysdate
-		where
-			replynum = #{replynum}
-	</update>
-	
-
-	<delete id="replysDelete" parameterType="Reply">
-	delete from dubbingreply
-	where useremail=#{useremail}
-	and dubbingnum=#{idnum}
-	
-	
-	</delete>
-	
-	<delete id="deleteDubbing" parameterType="Dubbing">
-	delete from dubbing
-	where dubbingnum=#{dubbingnum}
-	
-	</delete>
-
-	<select id="existedBlack" parameterType="Black" resultType="Black">
-		select 
-			  useremail
-			, whichboard
-			, replynum
-			, regdate
-		from 
-			blacklist
-		where
-			useremail=#{useremail}
-		and
-			whichboard=#{whichboard}
-		and
-			replynum=#{replynum}
-	</select>
-	
-	<insert id="insertBlack" parameterType="Black">
-		insert into blacklist (
-			useremail,
-			whichboard,
-			replynum
-		) values(
-			  #{useremail}
-			, #{whichboard}
-			, #{replynum}
-		)
-	</insert>
-	
-	<update id="updateBlack" parameterType="Black">
-		update
-			<if test="whichboard==0">
-				dubbingreply
-			</if>
-			<if test="whichboard==1">
-				investigationreply
-			</if>
-		set 
-			blackcount = blackcount+1
-		where 
-			replynum = #{replynum}
-	</update>
-	
-	<select id="selectReply" parameterType="Black" resultType="Reply">
-		select
-			  r.content 
-			, r.replynum
-			, r.blackcount 
-		from 
-			  blacklist b
-			<if test="whichboard==0">
-				,dubbingreply r
-			</if>
-			<if test="whichboard==1">
-				,investigationreply r
-			</if>
-		where b.replynum = r.replynum
-		and b.replynum = #{replynum}
-	</select>
-	
-	<delete id="reportDelete" parameterType="Black">
-		delete
-		from 
-			<if test="whichboard==0">
-				dubbingreply 
-			</if>
-			<if test="whichboard==1">
-				investigationreply
-			</if>
-		where replynum = #{replynum}
-	</delete>
-	
-	<insert id="replyDubInsert" parameterType="Reply">
-		insert into dubbingreply (
-			replynum,
-			dubbingnum,
-			useremail,
-			content
-		) values(
-			dubbing_reply_seq.nextval		
-			, #{idnum}
-			, #{useremail}
-			, #{content}
-		)
-	</insert>
-	
-	
-
 </mapper>

@@ -29,27 +29,18 @@
     <script>
     var pageName='VideoSearch';
     	$(function() {
-    		$(document).keyup(function(event){
-    			if(event.keyCode=='13'){
-    				if($('#search').val().length == 0) {
-           				alert("검색어를 입력하세요.");
-           				$('#search').focus();
-           				return;
-           			}
-            		init();
-            		search();
-    			}
-    		});  		
- 
        		$("#searchBtn").on('click', function() {
        			if($('#search').val().length == 0) {
        				alert("검색어를 입력하세요.");
        				$('#search').focus();
        				return;
        			}
+
         		init();
         		search();
-        	});  		
+        	});
+         	
+       		
         });
     	
     	function DubbingWrite(){

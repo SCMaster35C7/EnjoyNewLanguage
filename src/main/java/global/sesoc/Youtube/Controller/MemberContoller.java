@@ -14,15 +14,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import global.sesoc.Youtube.dao.MemberRepository;
-import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Member;
-import global.sesoc.Youtube.dto.Reply;
 import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.Video;
 
@@ -62,7 +59,6 @@ public class MemberContoller {
 		m.setUserpwd(userpwd);
 
 		Member member = mRepository.selectOneFromMember(m);
-
 		// 아이디 비번 같은 계정이 있음
 		if (member != null) {
 			// 인증상태 확인
@@ -151,7 +147,6 @@ public class MemberContoller {
 		} else
 			return "중복된 닉네임 입니다.";
 		/* return b; */
-
 	}
 
 	@RequestMapping(value = "mailSending", method = RequestMethod.POST)
@@ -160,7 +155,7 @@ public class MemberContoller {
 
 		mRepository.insertMember(member);
 		session.setAttribute("waitingEmail", member.getUseremail());
-
+		
 		String setfrom = "timetravelwithdoctor@gmail.com";
 		// String tomail = request.getParameter("tomail"); // 받는 사람 이메일
 		String tomail = member.getUseremail(); // 받는 사람 이메일
@@ -193,48 +188,6 @@ public class MemberContoller {
 
 		return "Member/waiting";// 대기중
 	}
-	
-	@RequestMapping(value = "recoveryMail", method = RequestMethod.POST)
-	public String recoveryID(HttpServletRequest request, String  recoveryEmail, HttpSession session) {
-		System.out.println("리커버리하는넘**********" + recoveryEmail);
-
-		//mRepository.insertMember(member);
-		session.setAttribute("recoveringEmail", recoveryEmail);
-
-		String setfrom = "timetravelwithdoctor@gmail.com";
-		// String tomail = request.getParameter("tomail"); // 받는 사람 이메일
-		String tomail = recoveryEmail; // 받는 사람 이메일
-
-		// String title = request.getParameter("[앤죠애캉] 회원 가입 인증"); // 제목
-		// String content = request.getParameter("content"); // 내용
-		// String content ="안녕하세요~ 인증하시려면 아래 버튼을 누르셈\n\r";
-
-		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-
-			messageHelper.setFrom(setfrom); // 보내는사람 생략하거나 하면 정상작동을 안함
-			messageHelper.setTo(recoveryEmail); // 받는사람 이메일
-			messageHelper.setSubject("[앤죠애캉] 회원복구 인증"); // 메일제목은 생략이 가능하다
-
-			String host = "http://localhost:8888/Youtube/recoveryID"; // 인증완료페이지
-
-			messageHelper.setText("", " <h2>앤죠애캉 회원복구 인증</h2><br/>" + "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>" + "<a href="
-					+ host + ">"
-					+ "<button style=\"color: white;background-color: #4c586f;border: none;width:200px;height:50px;text-align: center;text-decoration: none;  font-size: 25px;border-radius:10px;\">인증하기♥</button>"); // 메일
-																																																						// 내용
-			// messageHelper.setText("안녕하세요 인증하시려면 아래 버튼을 누르셈", " <a href="+host+">" +"<img
-			// src=\"images/tup.png\"/></a>");
-
-			mailSender.send(message);
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-
-		return "Member/waiting";// 대기중
-	}
-	
-	
 
 	@RequestMapping(value = "/certification", method = RequestMethod.GET)
 	public String certification(HttpSession session) {
@@ -247,13 +200,8 @@ public class MemberContoller {
 	@RequestMapping(value = "/myPage", method = RequestMethod.GET)
 	public String myPage(Model model, HttpSession session) {
 		String useremail = (String) session.getAttribute("useremail");
-		int myChallengeCount = mRepository.checkChallengeCount(useremail);
-		// x/0 에러를 방지하기 위해 먼저 분모부분을 체크하고 해당 경우를 반영
-		Member checkIfo = new Member();
-		checkIfo.setUseremail(useremail);
-		checkIfo.setAllChallenge(myChallengeCount);
 		// 갠정보
-		Member member = mRepository.selectMyInfo(checkIfo);
+		Member member = mRepository.selectMyInfo(useremail);
 		// 갠영상
 		List<Video> video = mRepository.selectMyVideo(useremail);
 		// 갠레벨스
@@ -272,6 +220,7 @@ public class MemberContoller {
 				notfinished.add(item);
 			} else {
 				finished.add(item);
+
 			}
 		}
 
@@ -280,6 +229,7 @@ public class MemberContoller {
 		model.addAttribute("notfinished", notfinished);
 		// System.out.println("완료 영상*******"+finished);
 		// System.out.println("아직 영상*******"+notfinished);
+
 		// map
 		Map<Integer, Integer> levelMap = new HashMap<>();
 
@@ -302,7 +252,6 @@ public class MemberContoller {
 				five++;
 			}
 		}
-
 		levelMap.put(1, one);
 		levelMap.put(2, two);
 		levelMap.put(3, three);
@@ -322,7 +271,6 @@ public class MemberContoller {
 
 	@RequestMapping(value = "/updateMember", method = RequestMethod.POST)
 	public String updateMember(Model model, HttpSession session, String usernick, String currpwd, String newpwd) {
-
 		String useremail = (String) session.getAttribute("useremail");
 		int result = mRepository.updateMember(useremail, currpwd, newpwd, usernick);
 		String message = null;
@@ -331,62 +279,12 @@ public class MemberContoller {
 
 			message = "비밀번호 수정 완료. 다시 로그인해 주세요";
 			session.invalidate();
-			
+
 		} else {
 			message = "비밀번호가 수정되지 않았습니다.";
 		}
 		model.addAttribute("msg", message);
 
-
 		return "redirect:/";
-	}
-
-	@RequestMapping(value = "recovery", method = RequestMethod.GET)
-	public String recovery() {
-		return "Member/recovery";
-	}
-
-	@RequestMapping(value = "recoveryID", method = RequestMethod.GET)
-	public String recoveryID(HttpSession session) {
-		String recoveringEmail = (String) session.getAttribute("recoveringEmail"); 
-		mRepository.recoveryID(recoveringEmail);
-		return "Member/certification";
-	}
-
-	@RequestMapping(value = "closeID", method = RequestMethod.GET)
-	public String closeID() {
-		return "Member/closeID";
-	}
-
-	@RequestMapping(value = "closeIDsubmit", method = RequestMethod.POST)
-	public @ResponseBody String closeIDsubmit(@RequestBody Member member) {
-		Member checkresult = mRepository.selectOneFromMember(member);
-		if (checkresult != null)
-			return "ok";
-		else
-			return "no";
-
-	}
-	
-	@RequestMapping(value="insertCloseID",method=RequestMethod.POST)
-	public String insertCloseID(HttpSession session,String useremail) {
-		mRepository.insertCloseID(useremail);
-		session.invalidate();
-		return "redirect:/";
-	}
-	
-	
-	@RequestMapping(value="/selectInConfirm", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public @ResponseBody String selectInConfirm(@RequestBody String useremail) {
-		System.out.println("이멜나오냐?????"+useremail);
-		
-		Member member = mRepository.selectInConfirm(useremail);
-		
-		if (member==null) {
-			return "notok";
-		}else{
-			return "ok";
-		}
-		
 	}
 }

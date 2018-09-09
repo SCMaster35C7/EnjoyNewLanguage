@@ -28,7 +28,7 @@ public class EducationRepository {
 	 */
 	public List<Education> selectEduList(String searchType, String searchWord, int startRecord, int countPerPage) {
 		RowBounds bound = new RowBounds(startRecord, countPerPage);
-		
+
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		List<Education> eduList = mapper.selectEduList(bound);
 
@@ -192,18 +192,6 @@ public class EducationRepository {
 	public int deleteWrongAnswer(WrongAnswer wa) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.deleteWrongAnswer(wa);
-		
-		return result;
-	}
-
-	public int deleteAllRecommend(int IDCode, int recommendtable) {
-		EducationMapper mapper = session.getMapper(EducationMapper.class);
-		Map<String, Object> map = new HashMap<>();
-		map.put("IDCode", IDCode);
-		map.put("recommendtable", recommendtable);
-		
-		int result = mapper.deleteAllRecommend(map);
-		
 		return result;
 	}
 }
