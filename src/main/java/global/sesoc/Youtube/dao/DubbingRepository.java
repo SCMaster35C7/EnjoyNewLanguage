@@ -49,12 +49,6 @@ public class DubbingRepository {
 		return replyList;
 	}
 
-	public int insertReply(Reply reply) {
-		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
-		int result = mapper.insertReply(reply);
-		return result;
-	}
-
 	public int replyDubDelete(int replynum) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		int result = mapper.replyDubDelete(replynum);
@@ -65,6 +59,13 @@ public class DubbingRepository {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		int result = mapper.replyDubUpdate(reply);
     
+		return result;
+	}
+	
+	public int replysDelete(Reply reply) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.replysDelete(reply);
+		
 		return result;
 	}
 
@@ -97,6 +98,13 @@ public class DubbingRepository {
 	public int reportDelete(Black black) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		int result = mapper.reportDelete(black);
+		return result;
+	}
+
+	public int replyDubInsert(Reply reply) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.replyDubInsert(reply);
+
 		return result;
 	}
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  
 <mapper namespace="global.sesoc.Youtube.dao.DubbingMapper">
 	<insert id="insertDubbing" parameterType="Dubbing">
 		insert into dubbing (
@@ -30,6 +30,7 @@
 		select 
 			d.dubbingnum
 			, d.title
+			, d.useremail
 			, m.usernick
 			, d.hitcount
 			, d.recommendation
@@ -47,6 +48,7 @@
 		select
 			d.dubbingnum
 			, d.title
+			, d.useremail
 			, m.usernick
 			, d.content
 			, d.url
@@ -80,6 +82,7 @@
 			dubbingnum = #{dubbingnum}
 		and
 			d.useremail =m.useremail
+		order by d.replynum
 	</select>
 	
 	<delete id="replyDubDelete" parameterType="int">
@@ -100,6 +103,21 @@
 			replynum = #{replynum}
 	</update>
 	
+
+	<delete id="replysDelete" parameterType="Reply">
+	delete from dubbingreply
+	where useremail=#{useremail}
+	and dubbingnum=#{idnum}
+	
+	
+	</delete>
+	
+	<delete id="deleteDubbing" parameterType="Dubbing">
+	delete from dubbing
+	where dubbingnum=#{dubbingnum}
+	
+	</delete>
+
 	<select id="existedBlack" parameterType="Black" resultType="Black">
 		select 
 			  useremail
@@ -171,4 +189,20 @@
 		where replynum = #{replynum}
 	</delete>
 	
+	<insert id="replyDubInsert" parameterType="Reply">
+		insert into dubbingreply (
+			replynum,
+			dubbingnum,
+			useremail,
+			content
+		) values(
+			dubbing_reply_seq.nextval		
+			, #{idnum}
+			, #{useremail}
+			, #{content}
+		)
+	</insert>
+	
+	
+
 </mapper>

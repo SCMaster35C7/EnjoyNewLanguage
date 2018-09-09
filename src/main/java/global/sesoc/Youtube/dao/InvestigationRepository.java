@@ -117,4 +117,11 @@ public class InvestigationRepository {
 		
 		return result;
 	}
+
+	public InvSubtitle selectOneFromSubUseNum(int subtitleNum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		InvSubtitle sub = mapper.selectOneFromSubUseNum(subtitleNum);
+		
+		return sub;
+	}
 }

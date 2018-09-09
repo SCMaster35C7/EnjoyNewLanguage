@@ -103,7 +103,7 @@
 		      	  <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
 		    </ul>
 		  </div>
-	
+
 		  <div class="nav-content">
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 	        		<i class="medium material-icons">person</i>
@@ -194,6 +194,7 @@
 			</div>
 		</div>	
 	  </div>
+
 	
 		<div class="wrapper">
 			 <!-- sidenav -->	  
@@ -327,7 +328,8 @@
 		
 		<c:if test="${not empty finished}">
 			<c:forEach var="f" items="${finished}">
-				<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br/>
+				<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a>
+				 <a href="TryRetake?videoNum=${f.videoNum}">재시험 도전</a><br/>
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty finished}">

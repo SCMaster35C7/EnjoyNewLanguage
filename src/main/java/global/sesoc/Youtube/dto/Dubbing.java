@@ -115,6 +115,18 @@ public class Dubbing {
 	public void setEndtime(String endtime) {
 		this.endtime = endtime;
 	}
+	
+	
+
+	public String getContent() {
+		return content;
+	}
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 
 	@Override
 	public String toString() {

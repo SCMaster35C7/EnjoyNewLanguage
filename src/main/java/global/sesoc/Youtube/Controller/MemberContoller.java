@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import global.sesoc.Youtube.dao.MemberRepository;
+import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Member;
+import global.sesoc.Youtube.dto.Reply;
 import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.Video;
 
@@ -39,7 +41,7 @@ public class MemberContoller {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
-
+		
 		return "Member/login";
 	}
 
@@ -191,6 +193,48 @@ public class MemberContoller {
 
 		return "Member/waiting";// 대기중
 	}
+	
+	@RequestMapping(value = "recoveryMail", method = RequestMethod.POST)
+	public String recoveryID(HttpServletRequest request, String  recoveryEmail, HttpSession session) {
+		System.out.println("리커버리하는넘**********" + recoveryEmail);
+
+		//mRepository.insertMember(member);
+		session.setAttribute("recoveringEmail", recoveryEmail);
+
+		String setfrom = "timetravelwithdoctor@gmail.com";
+		// String tomail = request.getParameter("tomail"); // 받는 사람 이메일
+		String tomail = recoveryEmail; // 받는 사람 이메일
+
+		// String title = request.getParameter("[앤죠애캉] 회원 가입 인증"); // 제목
+		// String content = request.getParameter("content"); // 내용
+		// String content ="안녕하세요~ 인증하시려면 아래 버튼을 누르셈\n\r";
+
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+			messageHelper.setFrom(setfrom); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setTo(recoveryEmail); // 받는사람 이메일
+			messageHelper.setSubject("[앤죠애캉] 회원복구 인증"); // 메일제목은 생략이 가능하다
+
+			String host = "http://localhost:8888/Youtube/recoveryID"; // 인증완료페이지
+
+			messageHelper.setText("", " <h2>앤죠애캉 회원복구 인증</h2><br/>" + "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>" + "<a href="
+					+ host + ">"
+					+ "<button style=\"color: white;background-color: #4c586f;border: none;width:200px;height:50px;text-align: center;text-decoration: none;  font-size: 25px;border-radius:10px;\">인증하기♥</button>"); // 메일
+																																																						// 내용
+			// messageHelper.setText("안녕하세요 인증하시려면 아래 버튼을 누르셈", " <a href="+host+">" +"<img
+			// src=\"images/tup.png\"/></a>");
+
+			mailSender.send(message);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return "Member/waiting";// 대기중
+	}
+	
+	
 
 	@RequestMapping(value = "/certification", method = RequestMethod.GET)
 	public String certification(HttpSession session) {
@@ -302,10 +346,11 @@ public class MemberContoller {
 		return "Member/recovery";
 	}
 
-	@RequestMapping(value = "recoveryID", method = RequestMethod.POST)
-	public String recoveryID(String recoveryID) {
-		mRepository.recoveryID(recoveryID);
-		return "redirect:/";
+	@RequestMapping(value = "recoveryID", method = RequestMethod.GET)
+	public String recoveryID(HttpSession session) {
+		String recoveringEmail = (String) session.getAttribute("recoveringEmail"); 
+		mRepository.recoveryID(recoveringEmail);
+		return "Member/certification";
 	}
 
 	@RequestMapping(value = "closeID", method = RequestMethod.GET)
@@ -328,5 +373,20 @@ public class MemberContoller {
 		mRepository.insertCloseID(useremail);
 		session.invalidate();
 		return "redirect:/";
+	}
+	
+	
+	@RequestMapping(value="/selectInConfirm", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public @ResponseBody String selectInConfirm(@RequestBody String useremail) {
+		System.out.println("이멜나오냐?????"+useremail);
+		
+		Member member = mRepository.selectInConfirm(useremail);
+		
+		if (member==null) {
+			return "notok";
+		}else{
+			return "ok";
+		}
+		
 	}
 }

@@ -266,6 +266,7 @@ $(document).ready(function() {
 		              </div>
 		        </section>
          </div>
+
          <a href="VideoSearch">더빙할 영상 찾기</a>
 	<c:if test="${plzLogin!=null}">
 		<script type="text/javascript">

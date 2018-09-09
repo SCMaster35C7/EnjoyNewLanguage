@@ -8,7 +8,7 @@ public class Black {
 	
 	public Black() {
 		// TODO Auto-generated constructor stub
-	}
+	} 
 	
 
 	public Black(String useremail, int whichboard, int replynum, String regdate) {

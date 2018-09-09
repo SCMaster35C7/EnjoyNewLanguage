@@ -185,4 +185,25 @@
 		where
 			subtitleNum = #{subtitleNum}
 	</delete>
+	
+	<select id="selectOneFromSubUseNum" parameterType="int" resultType="InvSubtitle">
+		select
+			i.subtitlenum
+			, i.subtitleName
+			, i.originalfile
+			, i.savedfile
+			, i.useremail
+			, i.investigationnum
+			, to_char(i.regdate, 'YYYY-MM-DD') regdate
+			, i.usecount
+			, i.recommendation
+			, i.decommendation
+			, m.usernick
+		from
+			InvestigationSubtitle i, member m
+		where
+			i.subtitlenum = #{subtitlenum}
+		and
+			i.useremail = m.useremail
+	</select>
 </mapper>

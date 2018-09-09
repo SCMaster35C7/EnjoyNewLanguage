@@ -59,7 +59,8 @@
 		var investigationnum = "${inv.investigationnum}"
           
 	    $(function() {
-	    	init();
+	    	initReply();
+	    	initSubtitle();
 	         
 	        $("#replyInsert").on('click', replyInsert);
 	        $('#playYoutube').on('click', playYoutube);
@@ -156,6 +157,12 @@
 	        	});
 	    	});
 	   		
+			$("#cancelUpdate").on('click', function() {
+				$("#replytext").val('');
+				$("#replyInsert").val("댓글등록");
+				$("#cancelUpdate").css("visibility", "hidden");
+			});
+	   		
 			$('#registSubtitle').on('click', function() {
 				var form = $('#fileForm')[0];
 				var formData = new FormData(form);
@@ -191,7 +198,7 @@
 						}else if(resp == 'success') {
 							subtitleName.val('');
 							$('#subtitleFile').val('');
-							init();
+							initSubtitle();
 						}
 					}
 					, error: function(resp, code, error) {
@@ -201,40 +208,48 @@
 			});
 		});
 		
-		function init() {
+		function initReply() {
 	        $.ajax({
 	            method : 'post',
 	            url : 'replyInvAll',
 	            data : 'idnum=${inv.investigationnum}',
+	            async: false,
 	            success : outputReply
 	    	});
-	        
+	    }
+		
+		function initSubtitle() {
 	        $.ajax({
 	            method : 'post',
 	            url : 'invSubAll',
 	            data : 'investigationnum=${inv.investigationnum}',
+	            async: false,
 	            success : outputSubtitle
 	        });
-	    }
+		}
 	      
 	    function outputReply(resp) {
-	       var result = '';
+	       	var result = '';
 	    
-	       for ( var i in resp) {
-	          result += '<div class="content">'
-	          result += ' <p class="email" >' + resp[i].useremail + '</p>';
-	          result += ' <p class="nick" >' + resp[i].usernick + '</p>';
-	          result += ' <p class="text" >' + resp[i].content + '</p>';
-	          result += '<p class="date" >' + resp[i].regdate + '</p>';
-	          result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-	          result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-	          result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
-	          result += ' </div>';
-	       }
+	       	for ( var i in resp) {
+	          	result += '<div class="content">'
+	          	result += ' <p class="email" >' + resp[i].useremail + '</p>';
+	          	result += ' <p class="nick" >' + resp[i].usernick + '</p>';
+	          	result += ' <p class="text" >' + resp[i].content + '</p>';
+	          	result += '<p class="date" >' + resp[i].regdate + '</p>';
+	          	result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
+	      		if (usernick==resp[i].usernick) {
+					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+				}
+				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
+	          	result += ' </div>';
+			}
 	         
-	       $("#result").html(result);
-	       $("input:button.replyDelete").click(replyDelete);
-	       $("input:button.replyUpdate").click(replyUpdate); 
+	       	$("#result").html(result);
+	       	$("input:button.replyDelete").click(replyDelete);
+	       	$("input:button.replyUpdate").click(replyUpdate);
+	       	$("img.report").click(reportReply); 
 	    }
 	    
 	    function outputSubtitle(resp) {
@@ -266,23 +281,54 @@
 		}
 	    
 	   	function subStart() {
-	   		alert("나는 자막 실행");
-	   		subnum = $(this).attr('data-rno');
+	   		alert("자막 실행");
+	   		
+	   		var subnum = $(this).attr('data-rno');
+	   		
+	   		$.ajax({
+	   			method: 'get'
+	   			, url: 'getSubtitles'
+	   			, data: 'subtitleNum='+subnum
+	   			, success: makeSubList
+	   			, error: function(resp, code, error) {
+	   				alert(resp+", code:"+code+", error:"+error)
+	   			}
+	   		});
 	   	}
+	   	
+	   	function makeSubList(s) {
+			console.log(s); 
+			var subtitles="";
+			setInterval(function() {
+				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
+				var time=player.getCurrentTime().toFixed(2);
+				var text=s[time];
+				
+				if(text!=null){
+					$('#textbox').html(text);	
+				}
+			},10);
+		}
 	    
 	    function subDelete() {
-	    	subnum = $(this).attr('data-rno');
+	    	var subnum = $(this).attr('data-rno');
+	    	
+	    	var dataForm = {
+	    		'subtitleNum':subnum
+	    		, "recommendtable":"3"
+	    	};
 	    	
 	    	$.ajax({
 	    		method: 'get'
 	    		, url: 'invSubDelete'
-	    		, data: 'subtitleNum='+subnum
+	    		, data: dataForm
+	    		, async: false
 	    		, success: function(resp) {
-	    			alert(resp);
+	    			//alert(resp);
 	    		}
 	    	});
 	    	
-	    	init();
+	    	initSubtitle();
 	    }
 	    
 	    function subRecommendation() {
@@ -371,6 +417,36 @@
         	});
 	    }
 
+		function reportReply() {
+			//alert('신고');
+			var useremail = "${sessionScope.useremail}";
+			//alert(useremail);
+			replynum = $(this).attr('data-rno');
+			//alert(replynum);
+			var sendData = {
+					"useremail":useremail
+					,"whichboard":  "1"
+					,"replynum":  replynum
+				};
+				
+			$.ajax({
+				type : 'post',
+				url : 'insertBlack',
+				data : JSON.stringify(sendData),
+				dataType:'text',
+				contentType: "application/json; charset=UTF-8",
+				success : function(resp){
+					alert(JSON.stringify(resp));
+					initReply();
+				},
+				error:function(resp, code, error) {
+					//alert("resp : "+resp+", code : "+code+", error : "+error);
+					alert("로그인이 필요합니다.");
+					location.href="./";
+				}
+			}); 
+		}
+	    
 		function replyInsert() {
 			$("#useremail").val(useremail);
 
@@ -396,7 +472,7 @@
 					data : JSON.stringify(sendData),
 					dataType : 'text',
 					contentType : "application/json; charset=UTF-8",
-					success : init
+					success : initReply
 				});
 				//돌려놓기
 				$("#replytext").val('');
@@ -414,11 +490,12 @@
 					data : JSON.stringify(sendData),
 					dataType : 'text',
 					contentType : "application/json; charset=UTF-8",
-					success : init
+					success : initReply
 				});
 
 				$("#replytext").val('');
 				$("#replyInsert").val("리뷰등록");
+				$("#cancelUpdate").css("visibility", "hidden");
 			}
 		}
 
@@ -434,7 +511,7 @@
 				url : 'replyInvDelete',
 				data : 'replynum=' + replynum,
 				dataType : 'text',
-				success : init
+				success : initReply
 			});
 		}
 
@@ -453,8 +530,8 @@
 			$("#replytext").val(replytext);
 			$("#replyInsert").val("댓글수정");
 			$("#usernick").prop('readonly', 'readonly');
-
-			//히든에 리뷰넘버 넣어주기
+			$("#cancelUpdate").css("visibility", "visible");
+			
 			$("#replynum").val(replynum);
 		}
 	</script>
@@ -763,23 +840,28 @@
 					</form>
 				</div>
 	
-				<div id="subtitleList">
-					
-				</div>
-	
-					<div>
-						<form id="replyform" method="post">
-							<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
-							<input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
-							<input hidden="useremail" id="useremail" name="useremail" value="" /> 
-							<input hidden="replynum" id="replynum" name="replynum" value="" /> 
-							<input id="replyInsert" type="button" value="댓글등록" />
-						</form>
-						
-						<hr />
-						<div id="result">
-							<!-- 반복적으로 나오게 -->
-						</div>
+				<div id="subtitleList"></div>
+          <hr />
+
+          <div id="textbox"></div>
+          <hr/>
+
+          <div>
+            <form id="replyform" method="post">
+              <input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
+              <input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
+
+              <input type="hidden" id="useremail" name="useremail" value="" /> 
+              <input type="hidden" id="replynum" name="replynum" value="" /> 
+
+              <input id="replyInsert" type="button" value="댓글등록" />
+              <input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
+            </form>
+
+            <hr />
+            <div id="result">
+              <!-- 반복적으로 나오게 -->
+            </div>
 					</div>
 				</div>
 			</section>
