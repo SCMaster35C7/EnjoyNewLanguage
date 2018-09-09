@@ -48,7 +48,11 @@
 	<c:if test="${empty finished}">
 		없음
 	</c:if> 
+<<<<<<< HEAD
 	<a href="wishList">위시리스트[임시]</a>
+=======
+	
+>>>>>>> Muk
 	<br/>
 	
 	

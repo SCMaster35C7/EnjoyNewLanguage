@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="global.sesoc.Youtube.dao.WishMapper">
+<<<<<<< HEAD
 
 
 	<!-- 영상 위시리스트 데이터 수 세기 -->
@@ -29,13 +30,34 @@
 			wishnum = #{videoNum}
 			
 		<!-- select
+=======
+	<!-- 영상 위시리스트 데이터 수 세기 -->
+	<select id="videoWishCount" parameterType="String" resultType="int">
+		select
+			count(*)
+		from
+			wishlist w, educationvideo e
+		where
+			w.videoNum = e.videoNum
+		and
+			useremail=#{useremail}
+	</select>
+	<!-- 영상 위시리스트 조회 -->
+	<select id="selectVideoWish" parameterType="string" resultType="WishList">
+	
+		select
+>>>>>>> Muk
 			*
 		from
 			wishlist w, educationvideo e
 		where
 			w.videoNum = e.videoNum
 		and
+<<<<<<< HEAD
 			useremail=#{useremail} -->
+=======
+			useremail=#{useremail}
+>>>>>>> Muk
 	</select>
 	
 	<!-- 영상 위시리스트 등록 -->	
@@ -52,7 +74,10 @@
 		, #{videoNum}
 		, #{useremail}
 		, #{title}
+<<<<<<< HEAD
 		, #{url}
+=======
+>>>>>>> Muk
 		, to_char(regDate, 'YYYY-MM-DD') regDate
 	)		
 	</insert>
@@ -62,6 +87,7 @@
 		delete from
 			wishlist
 		where
+<<<<<<< HEAD
 			videoNum = #{wishnum}
 	</delete>
 	
@@ -78,6 +104,25 @@
 	
 	<!-- 자막 위시리스트 조회 -->
 	<!-- <select id="selectSubWish" resultType="WishList" parameterType="string">
+=======
+			wishnum = #{videonum}
+	</delete>
+	
+	<!-- 자막 위시리스트 데이터 수 세기 -->
+	<select id="subWishCount" parameterType="String" resultType="int">
+		select
+			count(*)
+		from
+			wishlist w, InvestigationSubtitle i
+		where
+			w.subtitlenum = i.subtitlenum
+		and
+			useremail = #{useremail}
+	</select>
+	
+	<!-- 자막 위시리스트 조회 -->
+	<select id="selectSubWish" resultType="WishList" parameterType="string">
+>>>>>>> Muk
 		select
 			*
 		from
@@ -86,7 +131,11 @@
 			w.videonum = e.videonum
 		and
 			useremail = #{useremail}
+<<<<<<< HEAD
 	</select> -->
+=======
+	</select>
+>>>>>>> Muk
 	
 	<!-- 자막 위시리스트 등록 -->
 
@@ -113,12 +162,20 @@
 		delete from
 			wishlist
 		where
+<<<<<<< HEAD
 			subtitlenum = #{wishnum}
+=======
+			wishnum = #{subtitlenum}
+>>>>>>> Muk
 	
 	</delete>
 	
 	<!-- 자막 위시리스트 데이터 수 세기 -->
+<<<<<<< HEAD
 	<!-- <select id="dubWishCount" parameterType="String" resultType="int">
+=======
+	<select id="dubWishCount" parameterType="String" resultType="int">
+>>>>>>> Muk
 		select
 			count(*)
 		from
@@ -127,10 +184,17 @@
 			w.dubbingnum = d.dubbingnum
 		and
 			useremail=#{useremail}
+<<<<<<< HEAD
 	</select> -->
 	
 	<!-- 더빙 위시리스트 조회 -->
 	<!-- <select id="selectDubWish" resultType="Wishlist" parameterType="string">
+=======
+	</select>
+	
+	<!-- 더빙 위시리스트 조회 -->
+	<select id="selectDubWish" resultType="Wishlist" parameterType="string">
+>>>>>>> Muk
 		select
 			*
 		from
@@ -139,7 +203,11 @@
 			w.dubbingnum = d.dubbingnum
 		and
 			useremail = #{useremail}
+<<<<<<< HEAD
 	</select> -->
+=======
+	</select>
+>>>>>>> Muk
 	
 	<!-- 더빙 위시리스트 등록 -->
 	<insert id="insertDubWish" parameterType="WishList">

@@ -23,6 +23,12 @@
 		$('#deleteWish').submit();
 	}
 </script>
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> Muk
 <style type="text/css">
 body {
 	margin-top: 100px;
@@ -76,17 +82,29 @@ ul.tabs li.current {
 			</ul>
 
 			<div id="tab-1" class="tab-content current">
+<<<<<<< HEAD
 				<h2>[${sessionScope.useremail}(${sessionScope.usernick})님의 위시리스트]</h2>
 
 				<c:if test="${sessionScope.useremail!=null}">
 					<c:if test="${empty vWishList}">
+=======
+				<h2>[${sessionScope.useremail}(${sessionScope.usernick})님의 찜한영상
+					리스트]</h2>
+
+				<c:if test="${sessionScope.useremail!=null}">
+					<c:if test="${empty WishList}">
+>>>>>>> Muk
 						<table border="1">
 							<tr>
 								<td> 영상위시리스트가 비어있습니다.</td>	
 							</tr>
 						</table>	
 					</c:if>
+<<<<<<< HEAD
 					<c:if test="${vWishList != null}">
+=======
+					<c:if test="${WishList != null}">
+>>>>>>> Muk
 						<table border="1">
 							<tr>
 								<td>번호</td>
@@ -95,6 +113,7 @@ ul.tabs li.current {
 								<td>작성자</td>
 								<td>작성일자</td>
 							</tr>
+<<<<<<< HEAD
 							<c:forEach var="vWishList" items="${vWishList}">
 								<tr>
 									<td>${vWishList.videoNum}</td>
@@ -108,6 +127,20 @@ ul.tabs li.current {
 											<input type="hidden" name="videoNum" value="${vWishList.videoNum}">
 											<input type="button" id="btnDeleteWish" value="삭제" />
 											<input type="button" id="btnCancel" value="취소" />
+=======
+							<c:forEach var="WishList" items="${WishList}" varStatus="status">
+								<tr>
+									<td>${WishList.wishnum}</td>
+									<td>${WishList.title}</td>
+									<td>${WishList.url}</td>
+									<td>${WishList.useremail}</td>
+									<td>${WishList.regDate}</td>
+									<td>
+										<form action="deleteVideoWish" method="get">
+											<input type="hidden" name="useremail" value="${sessionScope.useremail}">
+											<input type="hidden" name="videoNum" value="${WishList.videoNum}">
+											<input type="submit" id="btnDeleteWish" value="삭제" />
+>>>>>>> Muk
 										</form>
 									</td>
 								</tr>
