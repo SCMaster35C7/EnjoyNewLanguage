@@ -366,9 +366,6 @@
 	<div class="container">
 		<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
 		<div class="row">
-		
-		<c:if test="${not empty invList}">
-			<c:forEach var="invList" items="${invList}">
                                                  
 			<section>	
 				<div class="container">
