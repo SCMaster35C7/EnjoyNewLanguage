@@ -443,9 +443,17 @@
 			//히든에 리뷰넘버 넣어주기
 			$("#replynum").val(replynum);
 		}
+		
+		function goback(){
+			history.back();
+		}
 	</script>
 </head>
 <body>
+<div>
+<h3>이 자막은 어떠신가요?</h3>
+<a onclick="goback()">자막검증게시판</a>
+</div>
 	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 	<!--<div id="youtube"></div>   -->
 	<iframe id="youtube" width="960" height="490"

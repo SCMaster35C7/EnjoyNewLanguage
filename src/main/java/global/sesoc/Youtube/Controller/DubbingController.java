@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Reply;
-import global.sesoc.Youtube.util.EasySubtitlesMaker;
 import global.sesoc.Youtube.util.FileService;
 
 @Controller
@@ -35,9 +33,9 @@ public class DubbingController {
 	DubbingRepository dubRepository;
 
 	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
-	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
+	//private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 
-	// 더빙겟
+	// 더빙 게시판 출력
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
 	public String dubbingBoard(HttpSession session, Model model) {
 		List<Dubbing> dubbing = dubRepository.dubbingBoard();
@@ -46,22 +44,25 @@ public class DubbingController {
 		return "DubbingBoard/dubbingBoard";
 	}
 
+	// 더빙게시판 --> 유튜브 동영상 검색 으로 이동
 	@RequestMapping(value = "VideoSearch", method = RequestMethod.GET)
 	public String VideoSearch() {
 		return "DubbingBoard/VideoSearch";
 	}
 
-	// 더빙 디테일
+	// 더빙 세부보기 
 	@RequestMapping(value = "dubDetail", method = RequestMethod.GET)
 	public String dubDetail(int dubbingnum, Model model) {
 		Dubbing dubbing = dubRepository.selectOneDub(dubbingnum);
-		String savedfileName = eduRepository.selectSubName2(dubbing.getUrl());
+		//String savedfileName = eduRepository.selectSubName2(dubbing.getUrl());
 		model.addAttribute("dubbing", dubbing);
-		model.addAttribute("savedfileName", savedfileName);
+		//model.addAttribute("savedfileName", savedfileName);
+		// 자막은 이제 안쓰므로 패쇄
 
 		return "DubbingBoard/dubDetail";
 	}
 
+	//더빙 작성 게시판
 	@RequestMapping(value = "DubbingWrite", method = RequestMethod.GET)
 	public String DubbingWrite(Model model, Integer videoNum, String url) {
 		Education edu = null;
@@ -76,6 +77,7 @@ public class DubbingController {
 		return "DubbingBoard/dubbingWrite";
 	}
 
+	// 더빙 저장
 	@RequestMapping(value = "savedubbing", method = RequestMethod.POST)
 	public String savedubbing(Dubbing dub, MultipartFile saveFile) {
 		if (saveFile.getSize() != 0) {
@@ -91,6 +93,7 @@ public class DubbingController {
 		return "redirect:dubbingBoard";
 	}
 
+	//더빙 음성파일 가져오기
 	@RequestMapping(value = "getDubbingSoundFile", method = RequestMethod.GET)
 	public String getDubbingSoundFile(String voiceFile, HttpServletResponse response) {
 		String fullPath = DubbingFileRoot + "/" + voiceFile;
@@ -116,6 +119,7 @@ public class DubbingController {
 		return null;
 	}
 
+	// 더빙삭제, 게시글에 관련된 덧글, 추천 정보등 전부 삭제
 	@RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
 	public String deleteDubbing(int dubbingnum) {
 		Dubbing dub = dubRepository.selectOneDub(dubbingnum);
@@ -130,6 +134,7 @@ public class DubbingController {
 		return "redirect:dubbingBoard";
 	}
 
+	// 해당 게시글에 맞는 댓글 전부 가져오기
 	@RequestMapping(value = "/replyDubAll", method = RequestMethod.POST)
 	public @ResponseBody List<Reply> replyDubAll(int idnum) {
 		List<Reply> replyList = dubRepository.replyDubAll(idnum);
