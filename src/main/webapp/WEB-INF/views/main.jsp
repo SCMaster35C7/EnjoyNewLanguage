@@ -65,6 +65,14 @@
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
+	     <!-- sidenav trigger -->
+		    <ul class="left">
+		    	<li>
+		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+		    			<i class="material-icons">menu</i>
+		    		</a>
+		    	</li>
+		    </ul>
 	    <a href="#!" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
@@ -148,16 +156,41 @@
 	  </div>
 	
 	 <!-- 메인 -->
-	  <div class="container">
-	  	<h3 class="center">인기 항목</h3>
-	  </div>
-	
-	  <div class="carousel">
-		<a class="carousel-item" href="#one!"><img src="images/liverpool.jpg"></a>
-		<a class="carousel-item" href="#two!"><img src="images/torres.jpg"></a>
-		<a class="carousel-item" href="#three!"><img src="images/berna.jpg"></a>
-	    <a class="carousel-item" href="#four!"><img src="images/ronaldo.jpg"></a>
-	    <a class="carousel-item" href="#five!"><img src="images/kaka.jpeg"></a>
+		<div class="wrapper">
+			 <!-- sidenav -->	  
+			<aside>	  	  
+			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+					<li><div class="user-view">
+							<div class="background">
+								<img src="images/">
+							</div>
+							<a href="#user"><img class="circle" src="images/"></a>
+							<a href="#name"><span class="white-text name">${usernick}</span></a> 
+							<a href="#email"><span class="white-text email">${useremail}</span></a>
+						</div>
+					</li>
+					<li><a href="#!"><i class="material-icons">cloud</i>First
+							Link With Icon</a></li>
+					<li><a href="#!">wishList</a></li>
+					<li><div class="divider"></div></li>
+					<li><a class="subheader">회원정보관리</a></li>
+					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+				</ul>
+			</aside>	 
+	 		 <section>
+				  <div class="container">
+				  	<h3 class="center">인기 항목</h3>
+				  </div>
+				
+				  <div class="carousel">
+					<a class="carousel-item" href="#one!"><img src="images/liverpool.jpg"></a>
+					<a class="carousel-item" href="#two!"><img src="images/torres.jpg"></a>
+					<a class="carousel-item" href="#three!"><img src="images/berna.jpg"></a>
+				    <a class="carousel-item" href="#four!"><img src="images/ronaldo.jpg"></a>
+				    <a class="carousel-item" href="#five!"><img src="images/kaka.jpeg"></a>
+			  	  </div>
+  	 		 </section>
   	  </div>
 	
 	

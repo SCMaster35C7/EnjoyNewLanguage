@@ -6,14 +6,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<meta name="author" content="zisung">
+<meta name="author" content="zisung">
 	<!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>마이페이지</title>
 <script type="text/javascript" src="js/Chart.js"></script>
@@ -88,7 +88,7 @@
 		    		</a>
 		    	</li>
 		    </ul>
-		    <a href="${pageContext.request.contextPath}" class="brand-logo" style="margin-left:14px;">Logo</a>
+		    <a href="${pageContext.request.contextPath}" class="brand-logo" >Logo</a>
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 		    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
@@ -157,11 +157,13 @@
 				
 					<div class="row">
 						<div class="col s10">
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-									<i class="material-icons right">send</i>
-								</button>
-							</span>
+							<c:if test="${empty sessionScope.useremail }">
+								<span class="flow-text">
+									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+										<i class="material-icons right">send</i>
+									</button>
+								</span>
+							</c:if>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
@@ -200,11 +202,11 @@
 			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
 					<li><div class="user-view">
 							<div class="background">
-								<img src="images/office.jpg">
+								<img src="images/">
 							</div>
-							<a href="#user"><img class="circle" src="images/yuna.jpg"></a>
-							<a href="#name"><span class="white-text name">John Doe</span></a> 
-							<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+							<a href="#user"><img class="circle" src="images/"></a>
+							<a href="#name"><span class="white-text name">${usernick}</span></a> 
+							<a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>
 					</li>
 					<li><a href="#!"><i class="material-icons">cloud</i>First
@@ -219,11 +221,12 @@
 		
 			<section>
 				<div class="container">
-					<h5>이름 : ${usernick}</h5>
+					<h5>${usernick}님의 mypage</h5>
 						<div class="row">
 							<div class="col s12 m8">
 								<div class="card">
 									<div class="waves-effect waves-block waves-light">
+										<h6>레벨별 성취도</h6>
 										<div class="trending-line-chart-wrapper">
 			 								<canvas id="myChart"></canvas>
 	                                    </div>
@@ -233,8 +236,57 @@
 							<div class="col s12 m4 l4">
 								<div class="card">
 									<div class="waves-effect waves-block waves-light">
+										<h6>승률 : 
+											<span>
+												<c:if test="${myInfo!=null }">
+												${myInfo.winningRate} (승 : ${myInfo.allSuccess}/ 패 :  ${myInfo.allFailure}/ 도전: ${myInfo.allChallenge})
+												</c:if>
+												<c:if test="${myInfo==null }">
+												승률 데이터 없음 하셈	
+												<br/>
+												</c:if>
+											</span>
+										</h6>
 										<div class="trending-line-chart-wrapper">
 				 							<canvas id="circle"></canvas>
+		                                 </div>
+									</div>
+								</div>	
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col s12 m8">
+								<div class="card">
+									<div class="waves-effect waves-block waves-light">
+										<h6>보고있는 영상</h6>
+										<div class="trending-line-chart-wrapper">
+			 								<c:if test="${not empty notfinished}">
+												<c:forEach var="nf" items="${notfinished}">
+													<a href="detailEduBoard?videoNum=${nf.videoNum}">${nf.title}</a> 
+												</c:forEach>
+											</c:if>
+		
+											<c:if test="${empty notfinished}">
+												없음
+											</c:if> 
+	                                    </div>
+									</div>
+								</div>
+							</div>
+							<div class="col s12 m4 l4">
+								<div class="card">
+									<div class="waves-effect waves-block waves-light">
+										<h6>완료한 영상</h6>	
+										<div class="trending-line-chart-wrapper">
+				 							<c:if test="${not empty finished}">
+												<c:forEach var="f" items="${finished}">
+													<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br/>
+												</c:forEach>
+											</c:if>
+											<c:if test="${empty finished}">
+												없음
+											</c:if> 
 		                                 </div>
 									</div>
 								</div>	
@@ -346,7 +398,7 @@
 		 var myChart = new Chart(ctx, {
 			    type: 'bar',
 			    data: {
-			        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+			        labels: ["lv.1", "lv.2", "lv.3", "lv.4", "lv.5"],
 			        datasets: [{
 			            label: '# of Votes',
 			            data: [12, 19, 3, 5, 2, 3],
@@ -355,16 +407,14 @@
 			                'rgba(54, 162, 235, 0.2)',
 			                'rgba(255, 206, 86, 0.2)',
 			                'rgba(75, 192, 192, 0.2)',
-			                'rgba(153, 102, 255, 0.2)',
-			                'rgba(255, 159, 64, 0.2)'
+			                'rgba(153, 102, 255, 0.2)'
 			            ],
 			            borderColor: [
 			                'rgba(255,99,132,1)',
 			                'rgba(54, 162, 235, 1)',
 			                'rgba(255, 206, 86, 1)',
 			                'rgba(75, 192, 192, 1)',
-			                'rgba(153, 102, 255, 1)',
-			                'rgba(255, 159, 64, 1)'
+			                'rgba(153, 102, 255, 1)'
 			            ],
 			            borderWidth: 1
 			        }]

@@ -68,7 +68,6 @@ public class DubbingRepository {
 		return result;
 	}
 
-
 	public Black existedBlack(Black black) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
 		Black b = mapper.existedBlack(black);
