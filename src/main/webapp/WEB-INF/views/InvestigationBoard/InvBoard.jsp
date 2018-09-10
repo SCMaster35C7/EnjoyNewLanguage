@@ -311,7 +311,7 @@
 							<input type="text" class="validate" id="url" name="url"/>
 							<label for="url">요청URL</label>
 						</div>			
-						<div class="input-field col s12"">
+						<div class="input-field col s12">
 							<textarea id="content" class="materialize-textarea"></textarea>
 	          				<label for="textarea1">내용</label>
 						</div>
@@ -366,10 +366,6 @@
 	<div class="container">
 		<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
 		<div class="row">
-		
-		<c:if test="${not empty invList}">
-			<c:forEach var="invList" items="${invList}">
-                                                 
 			<section>	
 				<div class="container">
 					<h4 class="center">자막검증게시판</h4>
@@ -451,7 +447,8 @@
 						</ul>
 					</div>
 				</div>
-		</section>
+			</section>
+		</div>
 	</div>
 	
 	<footer class="page-footer">
@@ -479,6 +476,7 @@
         	</div>
     	</div>
 	</footer>
+	</div>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 	<script type="text/javascript" src="YoutubeAPI/search.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
