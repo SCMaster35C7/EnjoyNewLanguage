@@ -152,13 +152,14 @@
     	
     	$(function(){
     		//위시리스트에 비디오 등록
-    		$('#btnRegistWish').on('click', function(){
+    		$('.btnRegistVideoWish').on('click', function(){
     			var target = $(this);
 				var useremail = "${sessionScope.useremail}";
-				var videonum = target.parent().children("input").val();
-				var title = target.parent().children("input").val();
-				var url = target.parent().children("input").val();
+				var videonum = target.parent().children("#videonum").val();
+				var title = target.parent().parent().children('.card-content').children("a").html();
+				var url = target.parent().children("#url").val();
 				
+				alert("title : "+title+"videonum:"+videonum+"url:"+url);
 				//로그인된 세션이 있는지 확인
 				if(useremail.trim().length == 0) {
 					location.href="login";
@@ -166,7 +167,6 @@
 				}else{
 					//선택된 비디오 정보를 위시리스트로 보내기
 					var dataFormVideo = {
-							"tableName":"wishlist",
 							"wishtable": 0,							
 							"useremail":useremail, 
 							"identificationnum":videonum,
@@ -181,8 +181,12 @@
 						, contentType: "application/json; charset=utf-8"
 						, async : false
 						, success:function(resp) {
-							alert("위시리스트에 등록되었습니다.");
-							
+							if(resp == "success")
+								alert("영상을 찜한 목록에 등록하였습니다.");
+							else if(resp == "failure")
+								alert("영상이 찜한 목록에 있습니다.");
+							else if(resp == "failRegist")
+								alert("영상을 찜한 목록 등록에 실패하였습니다.")
 						  }
 						, error:function(resp, code, error) {
 							alert("resp : "+resp+", code : "+code+", error : "+error);
@@ -322,13 +326,10 @@
 				<div class="card" style="height:400px margin-bottom:10px;">
 					<div class="card-image">
 						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-<<<<<<< HEAD
-						<input type="hidden" value="${eduList.videoNum}"/>
-						<a class="btn-floating halfway-fab waves-effect waves-light red" id="btnRegistWish" >						
-						<i class="material-icons" ></i></a>
-=======
-						<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
->>>>>>> Muk
+						<input type="hidden" id="url" value="${eduList.url}"/>
+						<input type="hidden" id="videonum"value="${eduList.videoNum}"/>
+						<a class="btn-floating halfway-fab waves-effect waves-light red btnRegistVideoWish">						
+						<i class="material-icons" >add</i></a>
 					</div>
 					<div class="card-content" style="height:150px;">
 							<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>

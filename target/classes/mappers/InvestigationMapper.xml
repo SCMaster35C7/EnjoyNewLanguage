@@ -4,27 +4,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="global.sesoc.Youtube.dao.InvestigationMapper">
-<<<<<<< HEAD
 	<select resultType="int" parameterType="map" id="getTotalCount">
-=======
-	<select id="getTotalCount" parameterType="map" resultType="int">
->>>>>>> Muk
 		select
 			count(*)
 		from
 			investigation
 		where
-<<<<<<< HEAD
 			${searchType} like '%' || #{searchWord} || '%' 
 	</select>
 
 	<select resultType="Investigation" parameterType="map" id="selectInvList">
-=======
-			${searchType} like '%' || #{searchWord} || '%'
-	</select>
-	
-	<select id="selectInvList" parameterType="map" resultType="Investigation">
->>>>>>> Muk
 		select
 			investigationnum
 			, url
@@ -41,11 +30,7 @@
 			${searchType} like '%' || #{searchWord} || '%'
 	</select>
 	
-<<<<<<< HEAD
 	<insert parameterType="Investigation" id="insertInvestigation">
-=======
-	<insert id="insertInvestigation" parameterType="Investigation">
->>>>>>> Muk
 		insert into investigation (
 			investigationnum
 			, url
@@ -56,7 +41,6 @@
 			INVESTIGATION_SEQ.nextval
 			, #{url}
 			, #{title}
-<<<<<<< HEAD
 			, #{content
 			, jdbcType=VARCHAR}
 			, #{useremail}
@@ -64,14 +48,6 @@
 	</insert>
 	
 	<select resultType="Investigation" parameterType="Investigation" id="selectOneFromInvUseURL">
-=======
-			, #{content, jdbcType=VARCHAR}
-			, #{useremail}
-		)
-	</insert>
-	
-	<select id="selectOneFromInvUseURL" parameterType="Investigation" resultType="Investigation">
->>>>>>> Muk
 		select
 			investigationnum
 			, url
@@ -85,17 +61,10 @@
 		from
 			investigation
 		where
-<<<<<<< HEAD
 			url = #{url} 
 	</select>
 	
 	<select resultType="Investigation" parameterType="int" id="selectOneFromInvUseNum">
-=======
-			url = #{url}
-	</select>
-	
-	<select id="selectOneFromInvUseNum" parameterType="int" resultType="Investigation">
->>>>>>> Muk
 		select
 			investigationnum
 			, url
@@ -109,17 +78,10 @@
 		from
 			investigation
 		where
-<<<<<<< HEAD
 			investigationnum = #{investigationnum} 
 	</select>
 	
 	<update parameterType="int" id="updateHitCount">
-=======
-			investigationnum = #{investigationnum}
-	</select>
-	
-	<update id="updateHitCount" parameterType="int">
->>>>>>> Muk
 		update
 			investigation
 		set

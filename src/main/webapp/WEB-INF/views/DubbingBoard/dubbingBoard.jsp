@@ -67,8 +67,53 @@ $(document).ready(function() {
 			var userpwd = $('#userpwd');
 			
 			$('#loginForm').submit();
-		});
+		});		
 	});
+
+	$(function () {
+		
+		$('.btnRegistDubWish').on('click', function(){
+			var target = $(this);
+			var useremail = "${sessionScope.useremail}";
+			/* var videonum = target.parent().children("#videonum").val();
+			var title = target.parent().parent().children('.card-content').children("a").html();
+			var url = target.parent().children("#url").val(); */
+			
+			alert("title : "+title+"videonum:"+videonum+"url:"+url);
+			//로그인된 세션이 있는지 확인
+			if(useremail.trim().length == 0) {
+				location.href="login";
+				return;
+			}else{
+				//선택된 비디오 정보를 위시리스트로 보내기
+		
+				var dataFormDub = {
+					"wishtable":2, 
+					"useremail":useremail, 
+					"title":title,			
+					"url":url						
+				};
+
+				$.ajax({
+					method:'post'
+					, url:'insertDubwish'
+					, data: JSON.stringify(dataFormDub)
+					, contentType: "application/json; charset=utf-8"
+					, async : false
+					, success:function(resp) {
+						if(resp == "success")
+							alert("더빙을 찜한 목록에 등록하여습니다.");
+						else if(resp == "failure")
+							alert("더빙이 찜한 목록에 있습니다.");
+						else if(resp == "failRegist")
+							alert("더빙을 찜한 목록에 등록하는데 실패하였습니다.")
+					 }	
+					, error:function(resp, code, error) {
+						alert("resp : "+resp+", code : "+code+", error : "+error);
+					}
+				});
+			}
+		});
 </script>
 
 </head>
