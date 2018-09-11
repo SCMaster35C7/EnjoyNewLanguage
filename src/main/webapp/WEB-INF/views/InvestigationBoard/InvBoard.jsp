@@ -363,9 +363,7 @@
 					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
 				</ul>
 			</aside>
-	<div class="container">
-		<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
-		<div class="row">
+
 			<section>	
 				<div class="container">
 					<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
