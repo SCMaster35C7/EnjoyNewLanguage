@@ -275,21 +275,21 @@
 								</div>
 							</div>
 							<div class="col s12 m4 l4">
-								<div class="card">
-									<div class="waves-effect waves-block waves-light">
-										<h6>완료한 영상</h6>	
-										<div class="trending-line-chart-wrapper">
+								<ul class="collection with-header waves-effect waves-block waves-light">
+									<li class="collection-header"><h6>완료한 영상</h6></li>
+											
 				 							<c:if test="${not empty finished}">
 												<c:forEach var="f" items="${finished}">
-													<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br/>
+													<li class="collection-item">
+														<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br>
+														<a href="TryRetake?videoNum=${f.videoNum}">재시험 도전</a>
+													</li>
 												</c:forEach>
 											</c:if>
 											<c:if test="${empty finished}">
 												없음
 											</c:if> 
-		                                 </div>
-									</div>
-								</div>	
+								</ul>
 							</div>
 						</div>
 						

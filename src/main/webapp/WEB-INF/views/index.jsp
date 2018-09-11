@@ -118,7 +118,7 @@
 	
 	 <!-- 창 축소시 사이드 nav -->
 		  <ul class="sidenav" id="small-navi">
-		    <li><a href="eduBoard.jsp">영상게시판</a></li>
+		    <li><a href="eduBoard">영상게시판</a></li>
 		    <li><a href="dubbingBoard">더빙게시판</a></li>
 		    <li><a href="InvestigationBoard">자막게시판</a></li>
 	  	  </ul>

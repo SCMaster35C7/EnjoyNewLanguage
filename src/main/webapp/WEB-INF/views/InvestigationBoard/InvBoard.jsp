@@ -212,7 +212,7 @@
 	</header>
    
 		<ul class="sidenav" id="small-navi">
-		    <li><a href="eduBoard.jsp">영상게시판</a></li>
+		    <li><a href="eduBoard">영상게시판</a></li>
 			<li><a href="dubbingBoard">더빙게시판</a></li>
 			<li><a href="InvestigationBoard">자막게시판</a></li>
 	  	</ul>
@@ -330,7 +330,7 @@
 			            		<input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" />
 			                </div>
 			                <div class="input-field col s3">
-			            	    <input type="button" id="searchBtn" value="Search" class="form-control btn btn-primary w100">
+			            	    <input type="button" id="searchBtn" value="Search" class="btn">
 			            	</div>
 			            </form>
 			        	<div id="results"></div>
@@ -363,16 +363,11 @@
 					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
 				</ul>
 			</aside>
-	<div class="container">
-		<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
-		<div class="row">
+	
 		
-		<c:if test="${not empty invList}">
-			<c:forEach var="invList" items="${invList}">
-                                                 
 			<section>	
 				<div class="container">
-					<h4 class="center">자막검증게시판</h4>
+					<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
 					<div class="row">
 					
 					<c:if test="${not empty invList}">
