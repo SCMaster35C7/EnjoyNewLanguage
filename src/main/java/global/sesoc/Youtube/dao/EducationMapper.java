@@ -18,6 +18,7 @@ public interface EducationMapper {
 	public int insertEduVideo(Education education); 						// 교육 영상 삽입
 	public int getTotalCount(Map<String, Object> map); 						// 교육 영상 개수 추출
 	public int updateHitCount(int videoNum); 								// 교육 영상 조회수 증가
+	public List<Education> selectBestFive();								// 인기 교육 영상 5개 추출
 	
 	public Recommendation selectOneFromRecommendation(Recommendation reco); // 교육 영상 추천 여부 확인
 	public int insertRecommendation(Recommendation reco); 					// 교육 영상 추천/비추천 삽입

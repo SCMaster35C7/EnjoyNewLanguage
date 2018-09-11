@@ -3,6 +3,7 @@ package global.sesoc.Youtube.dto;
 public class Education {
 	private int videoNum;
 	private String title;
+	private String useremail;
 	private String url;
 	private String originalfile;
 	private String savedfile;
@@ -10,17 +11,18 @@ public class Education {
 	private int hitCount;
 	private int recommendation;
 	private int decommendation;
-	 
+	
 	public Education() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Education(int videoNum, String title, String url, String originalfile, String savedfile, String regDate,
-			int hitCount, int recommendation, int decommendation) {
+	public Education(int videoNum, String title, String useremail, String url, String originalfile, String savedfile,
+			String regDate, int hitCount, int recommendation, int decommendation) {
 		super();
 		this.videoNum = videoNum;
 		this.title = title;
+		this.useremail = useremail;
 		this.url = url;
 		this.originalfile = originalfile;
 		this.savedfile = savedfile;
@@ -35,6 +37,9 @@ public class Education {
 	}
 	public String getTitle() {
 		return title;
+	}
+	public String getUseremail() {
+		return useremail;
 	}
 	public String getUrl() {
 		return url;
@@ -64,6 +69,9 @@ public class Education {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public void setUseremail(String useremail) {
+		this.useremail = useremail;
+	}
 	public void setUrl(String url) {
 		this.url = url;
 	}
@@ -88,9 +96,8 @@ public class Education {
 	
 	@Override
 	public String toString() {
-		return "Education [videoNum=" + videoNum + ", title=" + title + ", url=" + url + ", originalfile="
-				+ originalfile + ", savedfile=" + savedfile + ", regDate=" + regDate + ", hitCount=" + hitCount
-				+ ", recommendation=" + recommendation + ", decommendation=" + decommendation + "]";
+		return "Education [videoNum=" + videoNum + ", title=" + title + ", useremail=" + useremail + ", url=" + url
+				+ ", originalfile=" + originalfile + ", savedfile=" + savedfile + ", regDate=" + regDate + ", hitCount="
+				+ hitCount + ", recommendation=" + recommendation + ", decommendation=" + decommendation + "]";
 	}
-	
 }

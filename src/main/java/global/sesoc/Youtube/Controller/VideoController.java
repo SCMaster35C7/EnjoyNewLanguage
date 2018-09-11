@@ -44,14 +44,14 @@ public class VideoController {
 	public String home(HttpServletRequest request, Model model) {
 		String plzLogin = (String) request.getAttribute("plzLogin");
 		model.addAttribute("plzLogin", plzLogin);
-    
+		
+		List<Education> eList = eduRepository.selectBestFive();
+		System.out.println(eList);
+		model.addAttribute("eList", eList);
+		
 		return "index";
 	}
 	
-	@RequestMapping(value="index",method=RequestMethod.GET)
-	public String index() {
-		return"index";
-	}
 
 	/**
 	 * 교육 영상 게시판으로 이동 검색 테마와 검색 내용에 합당한 자료를 찾는다.
