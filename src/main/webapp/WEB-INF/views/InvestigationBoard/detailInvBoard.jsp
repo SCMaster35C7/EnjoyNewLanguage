@@ -699,11 +699,12 @@
 				<div class="container">
 				<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 				<!--<div id="youtube"></div>   -->
-					<iframe id="youtube" width="960" height="490"
-						src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
-						frameborder="0" allowfullscreen>
-					</iframe>
-				
+					<div class="video-container z-depth-2">
+						<iframe id="youtube" width="960" height="490"
+							src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+							frameborder="0" allowfullscreen>
+						</iframe>
+					</div>
 	<script>
       // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
       var tag = document.createElement('script');
@@ -792,76 +793,62 @@
       }
    </script>
 
-	<table border="1">
-		<tr>
-			<th>동영상 재생/멈춤</th>
-			<td><input type="button" class="btn" id="playYoutube" value="재생"> <input
-				type="button" class="btn" id="pauseYoutube" value="멈춤"></td>
-		</tr>
-		<tr>
-			<th>동영상 현재 시간 출력</th>
-			<td><input type="button" class="btn" id="currentTime" value="영상 시간 출력" /></td>
-		</tr>
-		<tr>
-			<th>동영상 음소거/음소거 제거</th>
-			<td><input type="button" id="mute" value="음소거" /> <input
-				type="button" id="unMute" value="음소거 제거" /></td>
-		</tr>
-		<tr>
-			<th>동영상 소리 설정</th>
-			<td><input type="number" id="soundValue" max="100" min="0" /> <input
-				type="button" id="soundVolum" value="소리조절" /></td>
-		</tr>
-		<tr>
-			<th>동영상 재생시간 이동</th>
-			<td><input type="text" id="start" /> <input type="button"
-				id="seekTo" value="영상이동" /></td>
-		</tr>
-	</table>
 
-	<div class="card-footer" align="center">
-		<input type="hidden" value="${inv.investigationnum}">
-		<button class="btn recommendation" type="button">
-			<img alt="" src="images/tup.png"> <span id="recoCount">${inv.recommendation}</span>
-		</button>
-		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button class="btn decommendation" type="button">
-			<img alt="" src="images/tdown.png"> <span id="decoCount">${inv.decommendation}</span>
-		</button>
-	</div>
-	<hr />
+					<div class="row">
+						<div class="right" style="margin-top:15px;">
+							<input type="hidden" value="${inv.investigationnum}">
+							<button class="btn recommendation" type="button">
+								<i class="material-icons">thumb_up</i>
+								<span id="recoCount">${inv.recommendation}</span>
+							</button>
+							
+							<button class="btn decommendation" type="button">
+								<i class="material-icons">thumb_down</i> 
+								<span id="decoCount">${inv.decommendation}</span>
+							</button>
+						</div>
 	
-				<div>
-					<form id="fileForm" method="post" enctype="multipart/form-data" action="">
-						파일명<input type="text" id="subtitleName"/>
-						<input type="file" id="subtitleFile"/>
-						<input type="button" id="registSubtitle" value="자막 등록"/>
-					</form>
-				</div>
-	
+						<form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
+							 <div class="file-field input-field col s6 m6 l6">
+							     <div class="btn">
+							          <span>File</span>
+							          <input type="file" id="subtitleFile">
+							      </div>
+							  
+							      <div class="file-path-wrapper">
+							      	  <input class="file-path validate" type="text">
+							      </div>
+							  </div>	
+							 
+							 <div class="input-field col s4 m4 l4">
+	          					<input id="subtitleName" type="text" class="validate" >
+	         					 <label for="subtitleName">등록 파일명</label>
+	       					 </div>
+	       				
+							 <div class="input-field col s2 m2 l2" style="margin-top:25px;">
+								<input type="button" id="registSubtitle" class="btn" value="자막 등록"/>
+							 </div>	
+						</form>
+					</div>
 				<div id="subtitleList"></div>
-          <hr />
 
-          <div id="textbox"></div>
-          <hr/>
+          		<div id="textbox"></div>
 
-          <div>
-            <form id="replyform" method="post">
-              <input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
-              <input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
-
-              <input type="hidden" id="useremail" name="useremail" value="" /> 
-              <input type="hidden" id="replynum" name="replynum" value="" /> 
-
-              <input id="replyInsert" type="button" value="댓글등록" />
-              <input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
-            </form>
-
-            <hr />
-            <div id="result">
-              <!-- 반복적으로 나오게 -->
-            </div>
+			          <div>
+			            <form id="replyform" method="post">
+			              <input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
+			              <input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
+			
+			              <input type="hidden" id="useremail" name="useremail" value="" /> 
+			              <input type="hidden" id="replynum" name="replynum" value="" /> 
+			
+			              <input id="replyInsert" type="button" value="댓글등록" />
+			              <input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
+			            </form>
+			
+			            <div id="result">
+			              <!-- 반복적으로 나오게 -->
+			            </div>
 					</div>
 				</div>
 			</section>

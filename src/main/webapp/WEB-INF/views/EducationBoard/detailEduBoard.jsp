@@ -173,8 +173,10 @@
 		//채점 시스템
 		function mark(){
 			TestFinish=true;
-			
+			console.log(player.getCurrentTime());
+			console.log(player.getDuration());
 			if((player.getCurrentTime()/player.getDuration())<0.8){
+				console.log(player.getCurrentTime()/player.getDuration());
 				alert('영상을 끝까지 재생해주세요!! \n영상을 80%이상 재생하셔야 채점이 가능합니다!!');
 				return null;
 			}
@@ -389,60 +391,29 @@
 			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
 					<li><div class="user-view">
 							<div class="background">
-								<img src="images/">
+								<!-- <img src="images/"> -->
 							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
+							<!-- <a href="#user"><img class="circle" src="images/"></a> -->
 							<a href="#name"><span class="white-text name">${usernick}</span></a> 
 							<a href="#email"><span class="white-text email">${useremail}</span></a>
-	<div class="container">
-	<a onclick="goback()">영상게시판</a>
-		<h3 class="center">공부게시판상세</h3>
-			<div class="row">
-				<div class="col s4 m8">
-					<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-					<!--<div id="youtube"></div>   -->
-					<div class="video-container z-depth-2">
-						<iframe id="youtube" width="960" height="490"
-							src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
-							frameborder="0" allowfullscreen>
-						</iframe>
-					</div>
-					<div>
-						<form action="#">
-						    <p class="range-field">
-						      <input type="range" id="test5" min="0" max="100" />
-						    </p>
-						 </form>
-					</div>
-					<div class="card-panel red" style="height:42px; padding:2.5px;">
-						<div class="flow-text btn"></div>
-					</div>
-				</div>
-				
-				<div class="col s4 m4">
-		      		<div class="card" style="height:450px; margin-top:0px;">
-						<div class="card-content">
-							<span class="card-title activator grey-text text-darken-4">
-								문제넣어보자
-								<i class="material-icons right tooltipped" data-position="left" data-tooltip="채점" style="color:red" onclick="mark()">spellcheck</i>
-							</span>
 						</div>
 					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+							<li><a href="#!"><i class="material-icons">cloud</i>First
+								Link With Icon</a></li>
+							<li><a href="#!">wishList</a></li>
+							<li><div class="divider"></div></li>
+							<li><a class="subheader">회원정보관리</a></li>
+							<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+							<li><a class="waves-effect" href="#">회원탈퇴</a></li>
 				</ul>
 			</aside>	
 		
 			<section>
 				<div class="container">
+				<a onclick="goback()">영상게시판</a>
 					<h3 class="center">공부게시판상세</h3>
 						<div class="row">
-							<div class="col s4 m8">
+							<div class="col s8 m8">
 								<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 								<!--<div id="youtube"></div>   -->
 								<div class="video-container z-depth-2">
@@ -451,15 +422,26 @@
 										frameborder="0" allowfullscreen>
 									</iframe>
 								</div>
-								<div>
-									<form action="#">
-									    <p class="range-field">
-									      <input type="range" id="test5" min="0" max="100" />
-									    </p>
-									 </form>
-								</div>
-								<div class="card-panel red" style="height:42px; padding:2.5px;">
-									<div class="flow-text btn"></div>
+								<div style="margin-top:15px;">
+									<div>	
+										<label>
+											<input type="radio" class="TestType" name="TestType" value="text">
+											<span>문자입력</span> 
+										</label>
+										<label style="margin-left:15px;">
+											<input type="radio" class="TestType" name="TestType" value="mic">
+											<span>음성입력</span> 
+										</label>
+									</div>	
+									<div class="row">
+										<div class="col s12 m5">
+											<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level" size="50px" min="1" max="5">
+										</div>
+										<div class="right" style="margin-right:15px;">
+											<input type="button" class="btn" onclick="getSubList()" value="문제생성"> 
+											<input type="button" class="btn" onclick="mark()" value="채점하기">
+										</div>
+									</div>
 								</div>
 							</div>
 							
@@ -479,6 +461,8 @@
 							    </div>
 							 </div>
 						</div>
+				
+						
 				</div>
 			</section>
 	</div>
@@ -527,25 +511,8 @@
 		}
 	
 	</script>
-	<div class="container">
-			<div>
-				<label>
-					<input type="radio" class="TestType" name="TestType" value="text">
-					<span>문자입력</span> 
-				</label>
-				<label>
-					<input type="radio" class="TestType" name="TestType" value="mic">
-					<span>음성입력</span> 
-					<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level" size="50px" min="1" max="5">
-				</label>
-				<input type="button" onclick="getSubList()" value="문제생성"> 
-				<input type="button" onclick="mark()" value="채점하기">
-			</div>
-	</div>
-
-
-	<div id="jamaclist"></div>
 	
+
 
 <footer class="page-footer">
           <div class="container">

@@ -15,6 +15,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
 	<title>Insert title here</title>
+	<style>
+		th{
+			
+		}
+	</style>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
 		//css
@@ -174,20 +179,38 @@
 			//alert(JSON.stringify(resp));
 			var result = '';
 		
-			for ( var i in resp) {
-				result += '<div class="content">'
-				result += ' <p class="email" >' + resp[i].useremail + '</p> ';
-				result += ' <p class="nick" >' + resp[i].usernick + '</p> ';
-				result += ' <p class="text" >' + resp[i].content + '</p>';
-				result += '<p class="date" >' + resp[i].regdate + '</p>';
-				result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
+			result += '<div class="row">'
+			result += '<table width="200" cellpadding="5" cellspacing="2" border="1" align="center" style="table-layout:fixed; word-break:break-all;">';
+			result += 	'<thead>';
+			result +=		'<tr>';
+			result +=			'<th>' + 'useremail' + '</th>';
+			result +=			'<th>' + 'usernick' + '</th>';
+			result +=			'<th class="replycontent">' + 'content' + '</th>';
+			result +=			'<th>' + 'date' + '</th>';
+			result +=			'<th>' + 'blackcount' + '</th>';
+			result +=			'<th colspan="2">' + '수정/취소' + '</th>';
+			result +=		'</tr>';
+			result += 	'</thead>';
+			for (var i in resp) {
+				result += 	'<tbody>';
+				result +=		'<tr>';
+				result +=			'<td>' + resp[i].useremail + '</td>';
+				result +=			'<td>' + resp[i].usernick + '</td>';
+				result +=			'<td class="replycontent">' + resp[i].content + '</td>';
+				result +=			'<td>' + resp[i].regdate + '</td>';
+				result +=			'<td>' + resp[i].blackcount + '</td>';
+				result +=			'<td colspan="2">';
 				if (usernick==resp[i].usernick) {
-					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+					result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+					result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
 				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
-				result += ' </div>';
+				result +=			'</td>';
+				result +=		'</tr>';
+				result += 	'</tbody>';
 			}
+			result += '</table>';
+			result += ' </div>';
 			
 			$("#result").html(result);
 	
@@ -264,7 +287,7 @@
 				//alert(replynum);
 		 		var sendData = {
 					"replynum" : replynum,
-					"content" : replytext,
+					"content" : replytext
 				} 
 		
 				$.ajax({
@@ -302,7 +325,7 @@
 
 			var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
 			var replytext = $(this).parent().children('.text').text();
-
+			alert(nick);
 			if ("${usernick}" != nick) {
 				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
 				return;
@@ -505,7 +528,6 @@
 
 
 <div>
-<h3>더빙 최강자에 도전하세요!</h3>
 <a onclick="goback()">더빙게시판</a>
 </div>
 
@@ -514,7 +536,7 @@
 		<section>
 			<div class="container">
 			<h3 class="center">더빙게시판상세</h3>
-				<div class="row">
+				<div class="row col s12">
 						<div class="video-container z-depth-2">
 							<iframe id="youtube" width="960" height="490"
 								src="http://www.youtube.com/embed/${dubbing.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
@@ -523,32 +545,44 @@
 						</div>
 				</div>
 				<div class="row">
-					더빙타임: ${
-					dubbing.starttime} ~ ${dubbing.endtime} <input type="button" class="btn" value="더빙 재생하기" onclick="sinkTime()">
-				</div>
-				<div class="card-footer" align="center">
-					<input type="hidden" value="${dubbing.dubbingnum}">
-					<button class="btn recommendation">
-						<i class="material-icons">thumb_up</i>
-						<span id="recoCount">${dubbing.recommendation}</span>
-					</button>
-									
-					<button class="btn decommendation">
-						<i class="material-icons">thumb_down</i>
-						<span id="decoCount">${dubbing.decommendation}</span>
-					</button>
+					<div class="col s8">
+						<h5 style="display:inline-block;">더빙타임  &nbsp; : &nbsp; ${
+						dubbing.starttime} ~ ${dubbing.endtime} &nbsp; <input type="button" class="btn" value="더빙 재생하기" onclick="sinkTime()"></h5>
+						<input type="hidden" value="${dubbing.dubbingnum}">
+					</div>
+					<div class="right" style="margin-right:15px;">
+						<p>
+						<button class="btn recommendation">
+							<i class="material-icons">thumb_up</i>
+							<span id="recoCount">${dubbing.recommendation}</span>
+						</button>
+										
+						<button class="btn decommendation">
+							<i class="material-icons">thumb_down</i>
+							<span id="decoCount">${dubbing.decommendation}</span>
+						</button>
+						</p>
+					</div>
 				</div>
 				<!--주말 댓글-->
 				<div> 
-					<form id="replyform"  method="post" >
-						<input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly"/>
-						<input id=replytext name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^"/>
-					
-						<input hidden="useremail" id="useremail" name="useremail" value=""/>
-						<input hidden="replynum" id="replynum" name="replynum" value=""/>
-						
-						<input id="replyInsert" type="button" value="댓글등록"/>
-						<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
+					<form id="replyform" class="col s12" method="post" >
+						<div class="row">
+							<div class="input-field col s12 m2" style="margin-bottom:0px;">
+								<input class="center" id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s6">
+								<textarea id=replytext name="replytext" class="materialize-textarea" placeholder="리뷰를 작성해주세요 ^ㅅ^"></textarea>
+								<input hidden="useremail" id="useremail" name="useremail" value=""/>
+								<input hidden="replynum" id="replynum" name="replynum" value=""/>
+							</div>
+							<div class="input-field col s6">								
+								<input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
+								<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
+							</div>	
+						</div>
 					</form>
 					
 					<div id="result"> 

@@ -9,8 +9,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.InvSubtitle;
+import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.Reply;
 
 @Repository

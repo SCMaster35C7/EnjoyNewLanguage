@@ -68,6 +68,17 @@ $(document).ready(function() {
 			
 			$('#loginForm').submit();
 		});
+	
+	
+		$('#VideoSearchbtn').on('click', function() {
+			var useremail = "${sessionScope.useremail}";
+			
+			if(useremail.trim().length == 0) {
+				$('#modal1').modal('open');
+				return;
+			}
+				$('#VideoSearch').modal();
+		}); 
 	});
 </script>
 
@@ -128,7 +139,7 @@ $(document).ready(function() {
 	  
 	  <!-- 창 축소시 사이드 nav -->
 	  <ul class="sidenav" id="small-navi">
-	    <li><a href="eduBoard.jsp">영상게시판</a></li>
+	    <li><a href="eduBoard">영상게시판</a></li>
  	    <li><a href="dubbingBoard">더빙게시판</a></li>
 	    <li><a href="InvestigationBoard">자막게시판</a></li>
   	  </ul>
@@ -266,8 +277,39 @@ $(document).ready(function() {
 		              </div>
 		        </section>
          </div>
+		
+	<!-- 더빙영상찾기버튼 -->
+		<div class="fixed-action-btn">
+		  <a class="btn-floating btn-large red modal-trigger tooltipped" id="VideoSearchbtn" data-position="top" data-tooltip="SEARCH" href="#VideoSearch">
+		    <i class="large material-icons">search</i>
+		  </a>
+	  	</div>	
+	
+	<!-- 더빙영상검색모달 -->
+	
+	<div id="VideoSearch" class="modal">
+		<div class="container">
+			<div class="madal-content">
+				<h5 class="center">더빙영상검색</h5>
+				<input type="hidden" id="url" /> 
 
-         <a href="VideoSearch">더빙할 영상 찾기</a>
+	 			<h4 class="center" style="color:red;">YouTube Viral Search</h4>
+				 <div class="row col s12">
+			        <form action="#">
+			     		<div class="input-field col s9">
+			           		<p><input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" /></p>
+			            </div>
+			            <div class="input-field col s3">
+			                <p><input type="button" id="searchBtn" value="Search" class="btn"></p>
+			            </div>
+			        </form>
+			        	<div id="results"></div>
+			      	</div>
+			  	</div>
+			</div>
+		</div>
+		
+		<!-- 다나? -->
 	<c:if test="${plzLogin!=null}">
 		<script type="text/javascript">
 			$(function(){
@@ -304,6 +346,45 @@ $(document).ready(function() {
         
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>        
-	
+<script type="text/javascript" src="YoutubeAPI/search.js"></script>
+	<script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script>
+    var pageName='VideoSearch';
+    	$(function() {
+    		$(document).keyup(function(event){
+    			if(event.keyCode=='13'){
+    				if($('#search').val().length == 0) {
+           				alert("검색어를 입력하세요.");
+           				$('#search').focus();
+           				return;
+           			}
+            		init();
+            		search();
+    			}
+    		});  		
+ 
+       		$("#searchBtn").on('click', function() {
+       			if($('#search').val().length == 0) {
+       				alert("검색어를 입력하세요.");
+       				$('#search').focus();
+       				return;
+       			}
+        		init();
+        		search();
+        	});  		
+        });
+    	
+    	function DubbingWrite(){
+   			var originalURL = $('#url').val();				// 원본 URL
+       		var findVideoId = "";
+       		var embedIndex = originalURL.indexOf("embed")+6;
+       		
+   			findVideoId = originalURL.substring(embedIndex);	//iframe에서 선택시 VideoId추출
+       		location.href="DubbingWrite?url="+findVideoId;
+       		
+       		console.log('originalURL: '+originalURL);
+       		console.log('findVideoId: '+findVideoId);
+   		}
+	</script>	
 </body>
 </html>
