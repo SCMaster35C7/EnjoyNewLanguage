@@ -80,16 +80,6 @@
 	var TestFinish = false; //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
 	var focusingReady = false;
 
-	/* $(function() {
-		$('#playYoutube').on('click', playYoutube);
-		$('#pauseYoutube').on('click', pauseYoutube);
-		$('#currentTime').on('click', youtubeCurrentTime);
-		$('#mute').on('click', mute);
-		$('#unMute').on('click', unMute);		
-		$('#soundVolum').on('click', soundVolum);
-		$('#seekTo').on('click', seekTo);	
-		$('#seekToinput').on('click', seekToinput);
-	}); */
 	//음성인식 서비스 ,textbar: 클릭한 입력창
 	function startAnnyang(textbar) {
 		annyang.start({
@@ -134,7 +124,6 @@
 			error : function() {
 				console.log('error!!');
 			}
-
 		})
 	}
 	//문제 생성 s: ajax로 가져온 SubtitlesList 자료
@@ -159,7 +148,7 @@
 				if (s.quiz[i][j].indexOf('★') == 0) {
 					var longer = s.quiz[i][j].replace("★★", ""); //controller 에서 별처리한 문제 빈칸을 입력칸으로 가공
 
-					subtitles += ' <div class="input-field inline"><input class="answer"'+readonly+' type="text" size='+'"'+longer+'"'+'px></div>';
+					subtitles += ' <div class="input-field inline" style="margin: 1%;"><input class="answer"'+readonly+' type="text" size='+'"'+longer+'"'+'px style="margin: 1%;"></div>';
 				} else {
 					subtitles += s.quiz[i][j];
 					subtitles += ' ';
@@ -431,7 +420,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container" style="width:90%;">
+	
 		<a onclick="goback()">영상게시판</a>
 		<h3 class="center">공부게시판상세</h3>
 		<div class="row">

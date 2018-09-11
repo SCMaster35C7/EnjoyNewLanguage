@@ -311,7 +311,7 @@
 							<input type="text" class="validate" id="url" name="url"/>
 							<label for="url">요청URL</label>
 						</div>			
-						<div class="input-field col s12"">
+						<div class="input-field col s12">
 							<textarea id="content" class="materialize-textarea"></textarea>
 	          				<label for="textarea1">내용</label>
 						</div>
