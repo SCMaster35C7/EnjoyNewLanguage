@@ -18,7 +18,8 @@
 
 <title>더빙게시판</title>
 
-<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>	
+
 <script>
 $(document).ready(function() {
     var table = $('#dubbing').DataTable();
@@ -33,7 +34,7 @@ $(document).ready(function() {
         column.visible( ! column.visible() );
     } ); */
     
-} );
+});
 	
 	$(function(){
 	 	//$('#dubbing').DataTable();
@@ -99,6 +100,17 @@ $(document).ready(function() {
 				}
 			});//ajax
 		});
+	
+	
+		$('#VideoSearchbtn').on('click', function() {
+			var useremail = "${sessionScope.useremail}";
+			
+			if(useremail.trim().length == 0) {
+				$('#modal1').modal('open');
+				return;
+			}
+				$('#VideoSearch').modal();
+		}); 
 	});
 </script>
 <style type="text/css">
@@ -128,6 +140,14 @@ $(document).ready(function() {
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
+	    <!-- sidenav trigger -->
+		    <ul class="left">
+		    	<li>
+		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+		    			<i class="material-icons">menu</i>
+		    		</a>
+		    	</li>
+		    </ul>
 	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
@@ -156,7 +176,7 @@ $(document).ready(function() {
 	  
 	  <!-- 창 축소시 사이드 nav -->
 	  <ul class="sidenav" id="small-navi">
-	    <li><a href="eduBoard.jsp">영상게시판</a></li>
+	    <li><a href="eduBoard">영상게시판</a></li>
  	    <li><a href="dubbingBoard">더빙게시판</a></li>
 	    <li><a href="InvestigationBoard">자막게시판</a></li>
   	  </ul>
@@ -198,11 +218,13 @@ $(document).ready(function() {
 				
 					<div class="row">
 						<div class="col s10">
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-									<i class="material-icons right">send</i>
-								</button>
-							</span>
+							<c:if test="${empty sessionScope.useremail }">
+								<span class="flow-text">
+									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+										<i class="material-icons right">send</i>
+									</button>
+								</span>
+							</c:if>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
@@ -234,43 +256,98 @@ $(document).ready(function() {
 		</div>	
 	  </div>
 	  
-	   <!-- table -->
-	  <!--start container-->
-         <div class="container">
-          <div class="section">
-          <h4 class="center">더빙게시판</h4>
-            <!--DataTables example-->
-                  <table id="dubbing">
-                    <thead>
-                        <tr>
-                            <th>글번호</th>
-                            <th>글제목</th>
-                            <th>닉네임</th>
-                            <th>조회수</th>
-                            <th>날짜</th>
-                            <th>추천</th>
-                            <th>비추천</th>
-                        </tr>
-                    </thead>
-                 
-                    <tbody>
-                    	<c:forEach var="dub" items="${dubbing}">
-                        <tr>
-                            <td>${dub.dubbingnum}</td>
-                            <td><a href="dubDetail?dubbingnum=${dub.dubbingnum}"> ${dub.title} </a></td>
-                            <td>${dub.usernick}</td>
-                            <td>${dub.hitcount}</td>
-                            <td>${dub.regdate}</td>
-                            <td>${dub.recommendation}</td>
-                            <td>${dub.decommendation}</td>
-                        </tr>
-                        </c:forEach>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-         
-         <a href="VideoSearch">더빙할 영상 찾기</a>
+	  <div class="wrapper">
+			 <!-- sidenav -->	  
+			<aside>	  	  
+			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+					<li><div class="user-view">
+							<div class="background">
+								<img src="images/">
+							</div>
+							<a href="#user"><img class="circle" src="images/"></a>
+							<a href="#name"><span class="white-text name">${usernick}</span></a> 
+							<a href="#email"><span class="white-text email">${useremail}</span></a>
+						</div>
+					</li>
+					<li><a href="#!"><i class="material-icons">cloud</i>First
+							Link With Icon</a></li>
+					<li><a href="#!">wishList</a></li>
+					<li><div class="divider"></div></li>
+					<li><a class="subheader">회원정보관리</a></li>
+					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+				</ul>
+			</aside>
+			
+			<section>	
+		         <div class="container">
+		          <div class="section">
+		          <h4 class="center">더빙게시판</h4>
+		            <!--DataTables example-->
+		                  <table id="dubbing">
+		                    <thead>
+		                        <tr>
+		                            <th>글번호</th>
+		                            <th>글제목</th>
+		                            <th>닉네임</th>
+		                            <th>조회수</th>
+		                            <th>날짜</th>
+		                            <th>추천</th>
+		                            <th>비추천</th>
+		                        </tr>
+		                    </thead>
+		                 
+		                    <tbody>
+		                    	<c:forEach var="dub" items="${dubbing}">
+		                        <tr>
+		                            <td>${dub.dubbingnum}</td>
+		                            <td><a href="dubDetail?dubbingnum=${dub.dubbingnum}"> ${dub.title} </a></td>
+		                            <td>${dub.usernick}</td>
+		                            <td>${dub.hitcount}</td>
+		                            <td>${dub.regdate}</td>
+		                            <td>${dub.recommendation}</td>
+		                            <td>${dub.decommendation}</td>
+		                        </tr>
+		                        </c:forEach>
+		                    </tbody>
+		                  </table>
+		                </div>
+		              </div>
+		        </section>
+         </div>
+		
+	<!-- 더빙영상찾기버튼 -->
+		<div class="fixed-action-btn">
+		  <a class="btn-floating btn-large red modal-trigger tooltipped" id="VideoSearchbtn" data-position="top" data-tooltip="SEARCH" href="#VideoSearch">
+		    <i class="large material-icons">search</i>
+		  </a>
+	  	</div>	
+	
+	<!-- 더빙영상검색모달 -->
+	
+	<div id="VideoSearch" class="modal">
+		<div class="container">
+			<div class="madal-content">
+				<h5 class="center">더빙영상검색</h5>
+				<input type="hidden" id="url" /> 
+
+	 			<h4 class="center" style="color:red;">YouTube Viral Search</h4>
+				 <div class="row col s12">
+			        <form action="#">
+			     		<div class="input-field col s9">
+			           		<p><input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" /></p>
+			            </div>
+			            <div class="input-field col s3">
+			                <p><input type="button" id="searchBtn" value="Search" class="btn"></p>
+			            </div>
+			        </form>
+			        	<div id="results"></div>
+			      	</div>
+			  	</div>
+			</div>
+		</div>
+		
+		<!-- 다나? -->
 	<c:if test="${plzLogin!=null}">
 		<script type="text/javascript">
 			$(function(){
@@ -278,6 +355,7 @@ $(document).ready(function() {
 			});
 		</script>
 	</c:if>
+  
   <footer class="page-footer">
     <div class="container">
       <div class="row">
@@ -306,6 +384,45 @@ $(document).ready(function() {
         
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>        
-	
+<script type="text/javascript" src="YoutubeAPI/search.js"></script>
+	<script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script>
+    var pageName='VideoSearch';
+    	$(function() {
+    		$(document).keyup(function(event){
+    			if(event.keyCode=='13'){
+    				if($('#search').val().length == 0) {
+           				alert("검색어를 입력하세요.");
+           				$('#search').focus();
+           				return;
+           			}
+            		init();
+            		search();
+    			}
+    		});  		
+ 
+       		$("#searchBtn").on('click', function() {
+       			if($('#search').val().length == 0) {
+       				alert("검색어를 입력하세요.");
+       				$('#search').focus();
+       				return;
+       			}
+        		init();
+        		search();
+        	});  		
+        });
+    	
+    	function DubbingWrite(){
+   			var originalURL = $('#url').val();				// 원본 URL
+       		var findVideoId = "";
+       		var embedIndex = originalURL.indexOf("embed")+6;
+       		
+   			findVideoId = originalURL.substring(embedIndex);	//iframe에서 선택시 VideoId추출
+       		location.href="DubbingWrite?url="+findVideoId;
+       		
+       		console.log('originalURL: '+originalURL);
+       		console.log('findVideoId: '+findVideoId);
+   		}
+	</script>	
 </body>
 </html>

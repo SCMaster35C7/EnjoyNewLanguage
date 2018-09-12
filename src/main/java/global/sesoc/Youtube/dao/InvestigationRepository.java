@@ -9,8 +9,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.InvSubtitle;
+import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.Reply;
 
 @Repository
@@ -116,5 +116,12 @@ public class InvestigationRepository {
 		int result = mapper.deleteInvSubtitle(subtitleNum);
 		
 		return result;
+	}
+
+	public InvSubtitle selectOneFromSubUseNum(int subtitleNum) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		InvSubtitle sub = mapper.selectOneFromSubUseNum(subtitleNum);
+		
+		return sub;
 	}
 }

@@ -299,11 +299,13 @@
 				
 					<div class="row">
 						<div class="col s10">
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-									<i class="material-icons right">send</i>
-								</button>
-							</span>
+							<c:if test="${empty sessionScope.useremail }">
+								<span class="flow-text">
+									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+										<i class="material-icons right">send</i>
+									</button>
+								</span>
+							</c:if>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK

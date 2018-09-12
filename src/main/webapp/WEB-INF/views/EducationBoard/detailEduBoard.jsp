@@ -54,7 +54,7 @@
 	var TestSuccess=false;  //시험을 끝까지 다 마쳤는지 확인
 	var TestFinish=false;  //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
 		
-		$(function() {
+		/* $(function() {
 			$('#playYoutube').on('click', playYoutube);
 			$('#pauseYoutube').on('click', pauseYoutube);
 			$('#currentTime').on('click', youtubeCurrentTime);
@@ -63,7 +63,7 @@
 			$('#soundVolum').on('click', soundVolum);
 			$('#seekTo').on('click', seekTo);	
 			$('#seekToinput').on('click', seekToinput);
-		});
+		}); */
 	    //음성인식 서비스 ,textbar: 클릭한 입력창
 		function startAnnyang(textbar) {
 			annyang.start({autoRestart: false,continuous: false});
@@ -144,35 +144,39 @@
 			$('#jamaclist').html(subtitles); //jamaclist div 에 가공이 끝난 문제를 뿌림
 			setInterval(function() {
 				//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
-			var time='T'+parseFloat(player.getCurrentTime().toFixed(2));
-			var TimeText=document.getElementById(time);
-			if(TimeText!=null){
-				if(saveTime!=null){
-		    saveTime.style.backgroundColor="";
+				var time='T'+parseFloat(player.getCurrentTime().toFixed(2));
+				var TimeText=document.getElementById(time);
+				
+				if(TimeText!=null){
+					if(saveTime!=null){
+			    		saveTime.style.backgroundColor="";
+					}
+					
+					TimeText.style.backgroundColor="#8dabfe";
+					TimeText.tabIndex=-1;
+					TimeText.focus();
+					saveTime=TimeText;
 				}
-			TimeText.style.backgroundColor="#8dabfe";
-			TimeText.tabIndex=-1;
-			TimeText.focus();
-			saveTime=TimeText;
-			}
 			},10);
 			
 			//음성 방식 test일시 추가되는 부분
 			if(TestType){
-			$('.answer').on('click',function(){		
-				if(!TestFinish){
-				var textbar=this;
-				startAnnyang(textbar);
-				textbar.style.backgroundColor="#d6f4c1";
-				}
-			})
+				$('.answer').on('click',function(){		
+					if(!TestFinish){
+						var textbar=this;
+						startAnnyang(textbar);
+						textbar.style.backgroundColor="#d6f4c1";
+					}
+				});
 			}
 		}
 		//채점 시스템
 		function mark(){
 			TestFinish=true;
-			
+			console.log(player.getCurrentTime());
+			console.log(player.getDuration());
 			if((player.getCurrentTime()/player.getDuration())<0.8){
+				console.log(player.getCurrentTime()/player.getDuration());
 				alert('영상을 끝까지 재생해주세요!! \n영상을 80%이상 재생하셔야 채점이 가능합니다!!');
 				return null;
 			}
@@ -231,14 +235,18 @@
 				
 			})
 		}	
+		
+		function goback(){
+			history.back();
+		}
 </script>
 
 <style>
-        .scroll-box {
-            overflow-y: scroll;
-            height: 300px;
-            padding: 1rem
-        }
+       .scroll-box {
+           overflow-y: scroll;
+           height: 300px;
+           padding: 1rem
+       }
 </style>
 
 </head>
@@ -264,6 +272,14 @@
 	<!-- nav -->
 	<nav class="nav-extended">
 	  <div class="nav-wrapper">
+	    <!-- sidenav trigger -->
+		    <ul class="left">
+		    	<li>
+		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+		    			<i class="material-icons">menu</i>
+		    		</a>
+		    	</li>
+		    </ul>
 	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 	    <ul class="right hide-on-med-and-down">
@@ -291,7 +307,7 @@
 	</header>
    <!-- 축소시 사이드 nav -->
    	<ul class="sidenav" id="small-navi">
-	    <li><a href="eduBoard.jsp">영상게시판</a></li>
+	    <li><a href="eduBoard">영상게시판</a></li>
 		<li><a href="dubbingBoard">더빙게시판</a></li>
 		<li><a href="InvestigationBoard">자막게시판</a></li>
   	  </ul>
@@ -332,11 +348,13 @@
 				
 					<div class="row">
 						<div class="col s10">
-							<span class="flow-text">
-								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-									<i class="material-icons right">send</i>
-								</button>
-							</span>
+							<c:if test="${empty sessionScope.useremail }">
+								<span class="flow-text">
+									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+										<i class="material-icons right">send</i>
+									</button>
+								</span>
+							</c:if>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
@@ -367,46 +385,86 @@
 			</div>
 		</div>	
 	  </div>
-	<div class="container">
-		<h3 class="center">공부게시판상세</h3>
-			<div class="row">
-				<div class="col s4 m8">
-					<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-					<!--<div id="youtube"></div>   -->
-					<div class="video-container z-depth-2">
-						<iframe id="youtube" width="960" height="490"
-							src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
-							frameborder="0" allowfullscreen>
-						</iframe>
-					</div>
-					<div>
-						<form action="#">
-						    <p class="range-field">
-						      <input type="range" id="test5" min="0" max="100" />
-						    </p>
-						 </form>
-					</div>
-					<div class="card-panel red" style="height:42px; padding:2.5px;">
-						<div class="flow-text btn"></div>
-					</div>
-				</div>
-				
-				<div class="col s4 m4">
-		      		<div class="card" style="height:450px; margin-top:0px;">
-						<div class="card-content">
-							<span class="card-title activator grey-text text-darken-4">
-								문제넣어보자
-								<i class="material-icons right tooltipped" data-position="left" data-tooltip="채점" style="color:red" onclick="mark()">spellcheck</i>
-							</span>
+	<div class="wrapper">
+			 <!-- sidenav -->	  
+			<aside>	  	  
+			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+					<li><div class="user-view">
+							<div class="background">
+								<!-- <img src="images/"> -->
+							</div>
+							<!-- <a href="#user"><img class="circle" src="images/"></a> -->
+							<a href="#name"><span class="white-text name">${usernick}</span></a> 
+							<a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>
-						<div class="card-content scroll-box">
-          					<p id="jamaclist"></p>
-          					
-        				</div>
-        				
-				    </div>
-				 </div>
-			</div>
+					</li>
+							<li><a href="#!"><i class="material-icons">cloud</i>First
+								Link With Icon</a></li>
+							<li><a href="#!">wishList</a></li>
+							<li><div class="divider"></div></li>
+							<li><a class="subheader">회원정보관리</a></li>
+							<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+							<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+				</ul>
+			</aside>	
+		
+			<section>
+				<div class="container">
+				<a onclick="goback()">영상게시판</a>
+					<h3 class="center">공부게시판상세</h3>
+						<div class="row">
+							<div class="col s8 m8">
+								<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+								<!--<div id="youtube"></div>   -->
+								<div class="video-container z-depth-2">
+									<iframe id="youtube" width="960" height="490"
+										src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+										frameborder="0" allowfullscreen>
+									</iframe>
+								</div>
+								<div style="margin-top:15px;">
+									<div>	
+										<label>
+											<input type="radio" class="TestType" name="TestType" value="text">
+											<span>문자입력</span> 
+										</label>
+										<label style="margin-left:15px;">
+											<input type="radio" class="TestType" name="TestType" value="mic">
+											<span>음성입력</span> 
+										</label>
+									</div>	
+									<div class="row">
+										<div class="col s12 m5">
+											<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level" size="50px" min="1" max="5">
+										</div>
+										<div class="right" style="margin-right:15px;">
+											<input type="button" class="btn" onclick="getSubList()" value="문제생성"> 
+											<input type="button" class="btn" onclick="mark()" value="채점하기">
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col s4 m4">
+					      		<div class="card" style="height:450px; margin-top:0px;">
+									<div class="card-content">
+										<span class="card-title activator grey-text text-darken-4">
+											문제넣어보자
+											<i class="material-icons right tooltipped" data-position="left" data-tooltip="채점" style="color:red" onclick="mark()">spellcheck</i>
+										</span>
+									</div>
+									<div class="card-content scroll-box">
+			          					<p id="jamaclist"></p>
+			          					
+			        				</div>
+			        				
+							    </div>
+							 </div>
+						</div>
+				
+						
+				</div>
+			</section>
 	</div>
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -447,102 +505,14 @@
             
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
-        
-        // youtube 기능 함수 나열 =======================================================
-        
-		function playYoutube() {
-            // 플레이어 자동실행 (주의: 모바일에서는 자동실행되지 않음)
-            player.playVideo();
-            console.log( player.getVideoEmbedCode());
-        }
-		
-        function pauseYoutube() {
-        	player.pauseVideo();
-        	// player.stopVideo();	완전 멈춰서 처음부터 시작함
-        }
-        
-		function youtubeCurrentTime() {
-			console.log('재생률: '+(player.getCurrentTime()/player.getDuration()));
-			// console.log(player.getDuration());	// 총 시간 출력
-		}
-		
-		function mute() {
-			player.mute();
-		}
-		
-		function unMute() {
-			player.unMute();
-		}
-		
-		function soundVolum() {
-			var soundValue = document.getElementById("soundValue");
-			
-			if(isNaN(soundValue.value) == true) {
-				alert("볼륨 값을 입력해주세요.");
-				soundValue.focus();
-				return;
-			}
-			player.setVolume(soundValue.value, true);
-		}
-		
+  		
 		function seekTo(start) {
 			player.seekTo(start, true);
 		}
-		
-		function seekToinput() {
-			var gotime=$('#start').val();
-			console.log(gotime);
-			player.seekTo(gotime, true);
-		}
-	</script>
-	<div class="container">
-	<!-- 
-		<table class="responsive-table centered" style="width:30%;">
-			<tr>
-				<th>동영상 재생/멈춤</th>
-				<td><input type="button" id="playYoutube" value="재생"> <input
-					type="button" id="pauseYoutube" value="멈춤"></td>
-			</tr>
-			<tr>
-				<th>동영상 현재 시간 출력</th>
-				<td><input type="button" id="currentTime" value="영상 시간 출력" /></td>
-			</tr>
-			<tr>
-				<th>동영상 음소거/음소거 제거</th>
-				<td><input type="button" id="mute" value="음소거" /> <input
-					type="button" id="unMute" value="음소거 제거" /></td>
-			</tr>
-			<tr>
-				<th>동영상 소리 설정</th>
-				<td><input type="number" id="soundValue" max="100" min="0" /> <input
-					type="button" id="soundVolum" value="소리조절" /></td>
-			</tr>
-			<tr>
-				<th>동영상 재생시간 이동</th>
-				<td><input type="text" id="start" /> <input type="button"
-					id="seekToinput" value="영상이동" /></td>
-			</tr>
-		</table>
- -->
-			<div>
-				<label>
-					<input type="radio" class="TestType" name="TestType" value="text">
-					<span>문자입력</span> 
-				</label>
-				<label>
-					<input type="radio" class="TestType" name="TestType" value="mic">
-					<span>음성입력</span> 
-					<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level" size="50px">
-				</label>
-				<input type="button" onclick="getSubList()" value="문제생성"> 
-				<input type="button" onclick="mark()" value="채점하기">
-		
-			</div>
-	</div>
-
-
-	<div id="jamaclist"></div>
 	
+	</script>
+	
+
 
 <footer class="page-footer">
           <div class="container">

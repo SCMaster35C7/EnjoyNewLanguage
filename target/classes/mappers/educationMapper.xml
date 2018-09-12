@@ -2,12 +2,13 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  
 <mapper namespace="global.sesoc.Youtube.dao.EducationMapper">
 	<select id="selectEduList" resultType="Education">
 		select
 			videonum
 			, title
+			, useremail
 			, url
 			, originalfile
 			, savedfile
@@ -25,6 +26,7 @@
 		select
 			videonum
 			, title
+			, useremail
 			, url
 			, originalfile
 			, savedfile
@@ -41,6 +43,7 @@
 	<insert id="insertEduVideo" parameterType="Education">
 		insert into EducationVideo(
 			videonum
+			, useremail
 			, title
 			, url
 			, originalfile
@@ -48,6 +51,7 @@
 		)values (
 			EDUCATION_VIDEO_SEQ.nextval
 			, #{title}
+			, #{useremail}
 			, #{url}
 			, #{originalfile}
 			, #{savedfile}
@@ -259,4 +263,38 @@
 		and
 			recommendtable = #{recommendtable}
 	</update>
+	
+	<delete id="deleteAllRecommend" parameterType="map">
+		delete from
+			recommendation
+		where
+			identificationnum = #{IDCode}
+		and
+			recommendtable = #{recommendtable}
+	</delete>
+	
+	<select id="selectBestFive" resultType="Education">
+		select
+		  	videonum
+			, title
+			, useremail
+			, url
+			, originalfile
+			, savedfile
+			, to_char(regdate, 'YYYY-MM-DD') regdate
+			, hitcount
+			, recommendation
+			, decommendation
+		from 
+		  (
+			select 
+		      *
+		    from 
+		      educationvideo 
+		    order by 
+		      recommendation desc
+		    ) e
+		where
+		  rownum &lt;= 5
+	</select>
 </mapper>

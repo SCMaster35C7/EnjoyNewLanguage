@@ -31,11 +31,12 @@ public class EasySubtitlesMaker {
 				if (str == null)
 					break;
 				if (cut == 0) {
-					cut++;
+					cut++; //첫줄 자르기용
 					continue;
 				}
 				analysisText(str);
 			}
+			// 문장단위로 list를 만들어 자료를 다 추출한 다음 시간정보를 key로, text를 value로 map 타입으로 변환
 			for (int i = 0; i < fullsentence.size(); i++)
 				result.put(playtime.get(i) + "", fullsentence.get(i));
 
@@ -76,7 +77,7 @@ public class EasySubtitlesMaker {
 		return;
 	}
 
-	// 시간분석, time 부분 String 값을 받아서 해당 시간을 분석, second 로 리턴
+	// 시간분석, time 부분 String 값을 받아서 해당 시간을 분석, second 로 리턴, 1/100초단위까지 연산
 	public double analysisTime(String time) {
 		double resultTime = 0;
 		StringTokenizer st = new StringTokenizer(time, ":,");

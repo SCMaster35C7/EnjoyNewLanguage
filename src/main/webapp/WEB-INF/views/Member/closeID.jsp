@@ -33,14 +33,11 @@ function closeID(){
 			}else{
 				alert('아이디 또는 패스워드를 확인해주세요.');
 			}
-		}
-		
+		}	
 	})
 }
 
 </script>
-
-
 </head>
 <body>
 <h4>회원탈퇴 페이지 입니다.</h4>

@@ -1,3 +1,4 @@
+
 // Youtube 검색 메소드
 function search(pageCode) {
 	console.log("search 시작");
@@ -33,14 +34,18 @@ function search(pageCode) {
 				$.each(results.items,function(index, item) {
 					var title = item.snippet.title;
 					var videoId = item.id.videoId;
-
-					var addVideo = '<div class="item">';
-					addVideo += '<h2>' + title + '</h2>';
+					
+					var addVideo = '<div class="container">';
+					addVideo += '<div class="item">';
+					addVideo += '<h6 class="center">' + title + '</h6>';
+					addVideo += '<div class="video-container z-depth-2">';
 					addVideo += '<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/'+ videoId
 								+ '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
 					addVideo += '</div>';
-					addVideo += '<input type="button" class="decideURL" data-rno="http://www.youtube.com/embed/'
+					addVideo += '<input type="button" class="decideURL btn right" style="margin-top:5px;" data-rno="http://www.youtube.com/embed/'
 								+ videoId + '" value="영상 선택"/> <br/>';
+					addVideo += '</div>';
+					addVideo += '</div>';
 
 					$("#results").append(addVideo);
 				});
@@ -49,7 +54,7 @@ function search(pageCode) {
 
 				if (prevPage) {
 					$("#results").append(
-							"<input type='button' id='prevPage' value='이전'/>");
+						"<input type='button' class='btn' id='prevPage' value='이전'/>");
 					$("#prevPage").on('click', function() {
 						console.log('p: ' + prevPage);
 						search(prevPage);
@@ -58,7 +63,7 @@ function search(pageCode) {
 
 				if (nextPage) {
 					$("#results").append(
-							"<input type='button' id='nextPage' value='다음'/>");
+							"<input type='button' class='btn' id='nextPage' value='다음'/>");
 					$("#nextPage").on('click', function() {
 						console.log('n: ' + nextPage);
 						search(nextPage);
@@ -73,7 +78,7 @@ function search(pageCode) {
 
 // 비디오 크기 조정 메소드
 function resetVideoHeight() {
-	$(".video").css("height", $("#results").width() * 9 / 16);
+	$(".video").css("height", $("#results").width() * 8 / 16);
 }
 
 // 비디오 선택시 URL에 추가해주는 메소드

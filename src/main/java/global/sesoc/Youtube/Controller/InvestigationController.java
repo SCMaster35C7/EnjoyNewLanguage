@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dao.InvestigationRepository;
 import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.InvSubtitle;
 import global.sesoc.Youtube.dto.Reply;
+import global.sesoc.Youtube.util.EasySubtitlesMaker;
 import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
 
@@ -26,7 +28,11 @@ public class InvestigationController {
 	@Autowired
 	InvestigationRepository invRepository;
 	
+	@Autowired
+	EducationRepository eduRepository;
+	
 	private final String subtitleFileRoot ="/YoutubeEduCenter/InvSubtitle";
+	
 	/***
 	 * 자막 검증 게시판 
 	 * @return
@@ -171,8 +177,9 @@ public class InvestigationController {
 	 */
 	@RequestMapping(value="/registSubtitle", method=RequestMethod.POST)
 	public @ResponseBody String registSubtitle(MultipartFile file, InvSubtitle invSub) {
-		// System.out.println("file : "+file);
-		// System.out.println("data : "+invSub);
+		//System.out.println("file : "+file);
+		//System.out.println("data : "+invSub);
+		
 		
 		if(file != null) {
 			if(file.getSize() == 0) {
@@ -198,12 +205,30 @@ public class InvestigationController {
 	}
 	
 	@RequestMapping(value="/invSubDelete", method=RequestMethod.GET)
-	public @ResponseBody String invSubDelete(int subtitleNum) {
-		int result = invRepository.deleteInvSubtitle(subtitleNum);
+	public @ResponseBody String invSubDelete(int subtitleNum, int recommendtable) {
+		//System.out.println("subtitlenum: "+subtitleNum+", recommendtable: "+recommendtable);
+		eduRepository.deleteAllRecommend(subtitleNum, recommendtable);
 		
-		if(result == 1)
+		int result = invRepository.deleteInvSubtitle(subtitleNum);
+
+		if (result == 1)
 			return "success";
 		else
 			return "failure";
+	}
+	
+	@RequestMapping(value = "/getSubtitles", method = RequestMethod.GET)
+	public @ResponseBody Map<String, String> getSubtitles(int subtitleNum) {
+		InvSubtitle sub = invRepository.selectOneFromSubUseNum(subtitleNum);
+		
+		if(sub != null) {
+			String jamacURL = subtitleFileRoot + "/" + sub.getSavedFile();
+			EasySubtitlesMaker esm = new EasySubtitlesMaker();
+			Map<String, String> result = esm.GetSubtitles(jamacURL);
+			
+			if (!result.isEmpty())	return result;
+		}
+		
+		return null;
 	}
 }
