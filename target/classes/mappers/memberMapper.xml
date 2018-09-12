@@ -145,7 +145,7 @@
 		where 
 			s.url = e.url
 		and 
-			s.useremail = #{useremail}
+			s.useremail = #{value}
 	</select> 
 	
 	<!-- 회원탈퇴 정보 입력(삭제 예정 회원정보에 저장) -->

@@ -176,35 +176,30 @@
 		}
 		
 		function output(resp) {
-			//alert(JSON.stringify(resp));
 			var result = '';
 		
 			result += '<div class="row">'
-			result += '<table width="200" cellpadding="5" cellspacing="2" border="1" align="center" style="table-layout:fixed; word-break:break-all;">';
+			result += '<table cellpadding="5" cellspacing="2" border="1" align="center" word-break:break-all;">';
 			result += 	'<thead>';
 			result +=		'<tr>';
-			result +=			'<th>' + 'useremail' + '</th>';
 			result +=			'<th>' + 'usernick' + '</th>';
-			result +=			'<th class="replycontent">' + 'content' + '</th>';
+			result +=			'<th class="replycontent" size="40%;">' + 'content' + '</th>';
 			result +=			'<th>' + 'date' + '</th>';
-			result +=			'<th>' + 'blackcount' + '</th>';
 			result +=			'<th colspan="2">' + '수정/취소' + '</th>';
 			result +=		'</tr>';
 			result += 	'</thead>';
 			for (var i in resp) {
 				result += 	'<tbody>';
 				result +=		'<tr>';
-				result +=			'<td>' + resp[i].useremail + '</td>';
 				result +=			'<td>' + resp[i].usernick + '</td>';
 				result +=			'<td class="replycontent">' + resp[i].content + '</td>';
 				result +=			'<td>' + resp[i].regdate + '</td>';
-				result +=			'<td>' + resp[i].blackcount + '</td>';
 				result +=			'<td colspan="2">';
 				if (usernick==resp[i].usernick) {
 					result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
 					result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
-				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
+				result += '<img class="report" src="images/warning.jpg" style="margin: 1%;" data-rno="'+resp[i].replynum+'" />';
 				result +=			'</td>';
 				result +=		'</tr>';
 				result += 	'</tbody>';
@@ -542,7 +537,7 @@
 								src="http://www.youtube.com/embed/${dubbing.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
 								frameborder="0" allowfullscreen>
 							</iframe>
-						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col s8">
