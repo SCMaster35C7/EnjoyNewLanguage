@@ -11,12 +11,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	
 	<title>Enjoy Language</title>
-	
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
@@ -46,19 +43,55 @@
 			//캐러셀
 			$('.carousel').carousel();
 			
-			$('#loginBtn').on('click',function(){
-				var useremail = $('#useremail');
-				var userpwd = $('#userpwd');
-				
-				$('#loginForm').submit();
+			$('#sticker').on('click', function() {
+				//alert('emf어오냐');
+				$('#checkline').val('');
 			});
-		});
-		
-		function dictionary(){
-			var win= window.open('dictionaryBoard','_black',"width=340px,height=250px");
-			win.focus();
-		}
+			
+			$('#loginBtn').on('click', function() {
+				
+				var useremail = $('#useremail').val();
+				var userpwd = $('#userpwd').val();
+				
+				var sendData = {	
+						"useremail":useremail
+						,"userpwd": userpwd
+				};
+				
+				$.ajax({
+					method	:	'post'
+					, url	: 'statusCheck'
+					, data	: JSON.stringify(sendData)
+					, dataType	: 'text'
+					, contentType: 'application/json; charset=utf-8'
+					, success	: function(resp){
+						if (resp=="checkEmail") {
+							$("#checkline").val('이메일 인증 먼저 해주세요!');
+						}else if (resp=="loginFailure") {
+							//alert('담으로가자');
+							//$('#loginForm').submit();
+							$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
+						} else {
+							window.location.reload();
+						}
+					}, error:function(resp, code, error) {
+						alert("resp : "+resp+", code:"+code+", error:"+error);
+					}
+				});//ajax
+			});
+			
+			function dictionary() {
+				var win= window.open('dictionaryBoard','_black',"width=340px,height=250px");
+				win.focus();
+			}
+		})
 	</script>
+	<style type="text/css">
+		#checkline{
+			text-align: center;
+			color: red;
+		}
+	</style>
 </head>
 
 <body>
@@ -102,7 +135,7 @@
 	
 		  <div class="nav-content">
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
-	        		<i class="medium material-icons">person</i>
+	        		<i class="medium material-icons" id="sticker">person</i>
 	     		</a>
 		  </div>
 		</nav>
@@ -143,7 +176,8 @@
 							</div>
 						</c:if>
 					</div>
-					
+						 <!-- 글씨뜨는거 -->
+						 <input id="checkline" value="" type="text" style="border-bottom: none;"  />
 					<c:if test="${not empty sessionScope.useremail }">
 						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 					</c:if>
