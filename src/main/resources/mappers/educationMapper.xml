@@ -165,7 +165,8 @@
 
 	<select id="selectWrongAnswerList" parameterType="WrongAnswer" resultType="WrongAnswer">
 		select 
-			*
+			distinct WRONGINDEX
+		   ,correctanswer 
 		from 
 			WrongAnswer
 		where 
@@ -174,7 +175,9 @@
 			url=#{url} 
 		and 
 			classification=#{classification}
-		order by answernum
+		order by 
+		to_number(substr(wrongindex, 0, (Instr(wrongindex,':')-1)), '999999')
+	   ,to_number(substr(wrongindex, (Instr(wrongindex,':')+1)), '999999')
 	</select>
 
 	<delete id="deleteWrongAnswer" parameterType="WrongAnswer">
