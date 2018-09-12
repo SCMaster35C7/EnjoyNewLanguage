@@ -32,10 +32,6 @@
 			//modal open
 			$('#modal1').modal();
 			
-			$('#back').on('click', function() {
-				
-			});
-			
 			//side-nav open
 			$('.sidenav').sidenav();
 			
@@ -63,14 +59,7 @@
 	    	initSubtitle();
 	         
 	        $("#replyInsert").on('click', replyInsert);
-	        $('#playYoutube').on('click', playYoutube);
-	        $('#pauseYoutube').on('click', pauseYoutube);
-	        $('#currentTime').on('click', youtubeCurrentTime);
-	        $('#mute').on('click', mute);
-	        $('#unMute').on('click', unMute);      
-	        $('#soundVolum').on('click', soundVolum);
-	        $('#seekTo').on('click', seekTo);      
-	        
+ 
 	        $('.recommendation').on('click', function() {
 	           	if(useremail.trim().length == 0) {
 	            	location.href="login";
@@ -168,9 +157,20 @@
 				var formData = new FormData(form);
 				var subtitleName = $('#subtitleName');
 				
+	           	if(useremail.trim().length == 0) {
+	           		$('#modal1').modal().open();
+	            	return;
+	           	}
+				
 				if(subtitleName.val().trim().length == 0) {
 					alert("자막 파일명을 입력해주세요.");
 					subtitleName.focus();
+					return;
+				}
+				
+				if($('#subtitleFile')[0].files[0]  == undefined) {
+					alert("파일을 등록해주세요.");
+					$('#subtitleFile').focus();
 					return;
 				}
 				
@@ -260,9 +260,9 @@
 				result += '<div class="subtitle">'
 				result += ' <span class="">'+resp[i].usernick+'</span>'
 				result += ' <span class="">'+resp[i].subtitleName+'</span>'
-				result += '	<input class="subStart" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
+				result += '	<input class="subStart btn" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
 				if(useremail == resp[i].useremail) {
-					result += '	<input class="subDelete" type="button" value="자막 삭제" data-rno="'+resp[i].subtitleNum+'"/>';
+					result += '	<a class="subDelete btn-floating" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">add</i></a>';
 				}
 				result += '	<button class="btn subRecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
 				result += '		<img alt="" src="images/tup.png"> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
@@ -741,61 +741,11 @@
             
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
-        
-      // youtube 기능 함수 나열 =======================================================
-        
-      function playYoutube() {
-           
-            // 플레이어 자동실행 (주의: 모바일에서는 자동실행되지 않음)
-            player.playVideo();
-            sinkTime();
-            //soundA.play();
-            console.log( player.getVideoEmbedCode());
-       }
-      
-      function pauseYoutube() {
-      	player.pauseVideo();
-        //잠시만 soundA.pause();
-        // player.stopVideo();   완전 멈춰서 처음부터 시작함
-      }
-        
-      function youtubeCurrentTime() {
-         //console.log('재생률: '+(player.getCurrentTime()/player.getDuration()));   // 현재 상영 시간 출력
-         // console.log(player.getDuration());   // 총 시간 출력
-      }
-      
-      function mute() {
-         player.mute();
-      }
-      
-      function unMute() {
-         player.unMute();
-      }
-      
-      function soundVolum() {
-         var soundValue = document.getElementById("soundValue");
-         
-         if(isNaN(soundValue.value) == true) {
-            alert("볼륨 값을 입력해주세요.");
-            soundValue.focus();
-            return;
-         }
-         player.setVolume(soundValue.value, true);
-      }
-      
-      function seekTo() {
-         var start=$('#start').val();
-         console.log(start);
-         //soundA.pause();
-         //soundA.currentTime=(start-1.5);
-         player.seekTo(start, true);
-         //soundA.play();
-      }
    </script>
 
 
 					<div class="row">
-						<div class="right" style="margin-top:15px;">
+						<div class="right" style="margin-top:15px; margin-right:12px;">
 							<input type="hidden" value="${inv.investigationnum}">
 							<button class="btn recommendation" type="button">
 								<i class="material-icons">thumb_up</i>
@@ -830,7 +780,9 @@
 							 </div>	
 						</form>
 					</div>
-				<div id="subtitleList"></div>
+				<div id="subtitleList">
+					
+				</div>
 
           		<div id="textbox"></div>
 
