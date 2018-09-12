@@ -92,35 +92,54 @@
 		    	</li>
 		    </ul>
 		    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+		  <!--     <form>
+		        <div class="input-field" style="diplay:inline-block">
+		          <input id="search" type="search" required>
+		          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+		          <i class="material-icons">close</i>
+		        </div>
+		      </form> -->
+		     
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 		    <ul class="right hide-on-med-and-down">
-		      	<c:if test="${not empty sessionScope.useremail }">
-		      <li>
-						<a href="logout">${sessionScope.useremail }님아logout</a>
-					
-		      </li>
-				</c:if>
+			  <li>
+			  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:640px;">
+                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+                  		<input  type="search" name="Search" class="header-search-input z-depth-2" placeholder="SEARCH WORD"/>
+             		</div>
+			  </li>		 
 		      <li><a href="eduBoard">영상게시판</a></li>
 		      <li><a href="dubbingBoard">더빙게시판</a></li>
 		      <li><a href="InvestigationBoard">자막검증게시판</a></li>
 		      <!-- Dropdown Trigger -->
 		      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
 		    </ul>
-		  </div>
-	
+		</div>		
 		  <div class="nav-content">
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 	        		<i class="medium material-icons">person</i>
 	     		</a>
 		  </div>
+		
 		</nav>
 	</header>
 	
 	 <!-- 창 축소시 사이드 nav -->
 		  <ul class="sidenav" id="small-navi">
+		    <li>
+			  		<form>
+        <div class="input-field">
+          <input id="search" type="search" required>
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+        </div>
+      </form>
+			  </li>		 
 		    <li><a href="eduBoard">영상게시판</a></li>
 		    <li><a href="dubbingBoard">더빙게시판</a></li>
 		    <li><a href="InvestigationBoard">자막게시판</a></li>
+		    <li><a href="myPage">마이페이지</a></li>
+		    
 	  	  </ul>
 	  	  
 	  <!-- 로그인 MODAL -->
@@ -204,9 +223,9 @@
 			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
 					<li><div class="user-view">
 							<div class="background">
-								<img src="images/">
+								<!-- <img src="images/"> -->
 							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
+							<!-- <a href="#user"><img class="circle" src="images/"></a> -->
 							<a href="#name"><span class="white-text name">${usernick}</span></a> 
 							<a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>

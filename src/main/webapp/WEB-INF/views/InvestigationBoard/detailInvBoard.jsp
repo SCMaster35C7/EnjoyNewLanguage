@@ -260,9 +260,9 @@
 				result += '<div class="subtitle">'
 				result += ' <span class="">'+resp[i].usernick+'</span>'
 				result += ' <span class="">'+resp[i].subtitleName+'</span>'
-				result += '	<input class="subStart" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
+				result += '	<input class="subStart btn" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
 				if(useremail == resp[i].useremail) {
-					result += '	<input class="subDelete" type="button" value="자막 삭제" data-rno="'+resp[i].subtitleNum+'"/>';
+					result += '	<a class="subDelete btn-floating" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">add</i></a>';
 				}
 				result += '	<button class="btn subRecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
 				result += '		<img alt="" src="images/tup.png"> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
@@ -795,7 +795,7 @@
 
 
 					<div class="row">
-						<div class="right" style="margin-top:15px;">
+						<div class="right" style="margin-top:15px; margin-right:12px;">
 							<input type="hidden" value="${inv.investigationnum}">
 							<button class="btn recommendation" type="button">
 								<i class="material-icons">thumb_up</i>
@@ -830,7 +830,9 @@
 							 </div>	
 						</form>
 					</div>
-				<div id="subtitleList"></div>
+				<div id="subtitleList">
+					
+				</div>
 
           		<div id="textbox"></div>
 
