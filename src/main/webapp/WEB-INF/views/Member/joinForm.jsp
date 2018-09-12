@@ -30,7 +30,6 @@
 			
 			//floating actionbutton
 			$(".fixed-action-btn").floatingActionButton({
-				/* direction:'left' */
 			});
 			
 			//modal open
@@ -52,7 +51,6 @@
 			$('#loginBtn').on('click',function(){
 				var useremail = $('#useremail');
 				var userpwd = $('#userpwd');
-				
 				$('#loginForm').submit();
 			});
     		
@@ -72,17 +70,26 @@
     						,dataType	: 'text'
     						,success	: function(resp){
     							
-    		            	 	$("#emailcheck").text(resp);
+    							if (resp=="이미 가입한 이메일 입니다") {
+									$("#emailcheck").text(resp);
+									$("#emailcheck").attr("data-error","이미 가입한 이메일 입니다");
+									$("#emailcheck").removeAttr("data-success");
+									$('#useremail2').attr("style", "border-bottom: 1px solid red;-webkit-box-shadow: 0 1px 0 0 red; box-shadow: 0 1px 0 0 red;");
+								}else if (resp=="사용 가능한 이메일 입니다") {
+    		            	 		$("#emailcheck").text(resp);
+    		            	 		$("#emailcheck").attr("data-success","사용 가능한 이메일 입니다");
+    		            	 		$("#emailcheck").removeAttr("data-error");
+    		            	 		$('#useremail2').attr("style", "border-bottom: 1px solid green;-webkit-box-shadow: 0 1px 0 0 green; box-shadow: 0 1px 0 0 green;");
+								}
 						}, error:function(resp, code, error) {
 							alert("resp : "+resp+", code:"+code+", error:"+error);
 						}
-						
-    					
     				});
-    				
-    				
 				} else {
 					$("#emailcheck").text('올바른 이메일 형식으로 해주세요~');
+					$("#emailcheck").attr("data-error","올바른 이메일 형식으로 해주세요~");
+					$("#emailcheck").removeAttr("data-success");
+					$('#useremail2').attr("style", "border-bottom: 1px solid red;-webkit-box-shadow: 0 1px 0 0 red; box-shadow: 0 1px 0 0 red;");
 				}
     			
     			
@@ -100,8 +107,17 @@
     						,data	: "usernick="+usernick
     						,dataType	: 'text'
     						,success	: function(resp){
-    							
-    		            	 	$("#nickcheck").text(resp);
+    							if (resp=="중복된 닉네임 입니다") {
+									$("#nickcheck").text(resp);
+									$("#nickcheck").attr("data-error","이미 가입한 이메일 입니다");
+									$("#nickcheck").removeAttr("data-success");
+									$('#usernick').attr("style", "border-bottom: 1px solid red;-webkit-box-shadow: 0 1px 0 0 red; box-shadow: 0 1px 0 0 red;");
+								}else if (resp=="사용 가능한 닉네임 입니다") {
+    		            	 		$("#nickcheck").text(resp);
+    		            	 		$("#nickcheck").attr("data-success","사용 가능한 이메일 입니다");
+    		            	 		$("#nickcheck").removeAttr("data-error");
+    		            	 		$('#usernick').attr("style", "border-bottom: 1px solid green;-webkit-box-shadow: 0 1px 0 0 green; box-shadow: 0 1px 0 0 green;");
+								}
 						}, error:function(resp, code, error) {
 							alert("resp : "+resp+", code:"+code+", error:"+error);
 						}    					
@@ -116,14 +132,27 @@
     				
     				 if(pwd1.match($pattern)){
     					 
-    					 $("#pwdcheck").text('좋은 비밀번호네요~*^^*');
-
+	    					$("#pwdcheck").text('좋은 비밀번호네요~*^^*');
+	    					$("#pwdcheck").attr("data-success","좋은 비밀번호네요~*^^*");
+		            	   	$("#pwdcheck").removeAttr("data-error");
+		            	 	$('#InputPassword1').attr("style", "border-bottom: 1px solid green;-webkit-box-shadow: 0 1px 0 0 green; box-shadow: 0 1px 0 0 green;");
     					 }
     				 
     				 else {
     					 $("#pwdcheck").text('비밀번호는 대/소문자,  숫자, 특수 문자 포함, 8자 이상');
 					}
     		
+				});
+				
+				$('#InputPassword2').keyup(function(){
+					var pwd1 = $('#InputPassword1').val();
+					var pwd2 = $(this).val();
+					
+					if (pwd1==pwd2) {
+	            	 	$('#InputPassword2').attr("style", "border-bottom: 1px solid green;-webkit-box-shadow: 0 1px 0 0 green; box-shadow: 0 1px 0 0 green;");
+					} else {
+						$('#InputPassword2').attr("style", "border-bottom: 1px solid red;-webkit-box-shadow: 0 1px 0 0 red; box-shadow: 0 1px 0 0 red;");
+					}
 				});
 				
 				
@@ -167,21 +196,14 @@
 							alert('비밀번호를 다시 한 번 확인해주세요');
 							$("#InputPassword1").select();
 							$("#InputPassword1").focus();
+							
 							return false;
-						} else if (InputPassword1!=InputPassword2) {
-							alert('비밀번호를 다시 한 번 확인해주세요');
-							$("#InputPassword1").select();
-							$("#InputPassword1").focus();
-							return false;
-						} else if (birth>today) {
+						}  else if (birth>today) {
 							alert('생년월일을 다시 한 번 확인해주세요');
 							$("#birth").select();
 							$("#birth").focus();
-							
-							
 							return false;
 						}
-						
 						var InputPassword = $("#InputPassword2").val();
 						$("#userpwd2").val(InputPassword); 
 						return true;
@@ -189,6 +211,12 @@
     		
     	});
     </script>
+    <style type="text/css">
+    	#wrapper{
+    		width: 500px;
+    		margin: auto;
+    	}
+    </style>
   </head>
 <body>
 	<header>
@@ -308,115 +336,88 @@
 		</div>	
 	  </div>
 
-<!-- ************************************************************************* -->
+<!-- ************************************************************************************************************************* -->
 
-        <div class="container">
-          <div class="section">
-          <h4 class="center">회원가입</h4>
-         </div>
-        </div>
-        <div class="col-md-6 col-md-offset-3">
+	<div class="container">
+		<div class="section">
+			<h4 class="center">회원가입</h4>
+		</div>
+	</div>
+	<div class="col-md-6 col-md-offset-3" id="wrapper">
 		<form id="joinForm" name="joinForm" action="mailSending" method="post">
 
 			<div class="row">
 				<div class="input-field col s12">
-					<input  type="email"id="useremail2" name="useremail" class="validate"> 
-					<label for="useremail2">Email</label>
-					<span class="helper-text"  id="emailcheck" data-error="wrong" data-success="right"></span>
+					<input type="text" id="useremail2" name="useremail"
+						class="validate"> <label for="useremail2">Email</label> <span
+						class="helper-text" id="emailcheck"></span>
 				</div>
 			</div>
-		</form>
 
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="text" id="usernick" name="usernick"> <label
+						for="useremail2">Nickname</label> <span class="helper-text"
+						id="nickcheck"></span>
+				</div>
+			</div>
 
-		<div class="form-group">
-              <label for="InputEmail">* 이메일 주소</label>
-              <input type="text" class="form-control" id="useremail3" name="useremail" placeholder="이메일 주소">
-           		<p class="help-block" id="emailcheck" style="width:400px;"></p>
-            </div>
-            
-            <div class="form-group">
-              <label for="usernick">* 닉네임</label>
-              <input type="text" class="form-control" id="usernick" name="usernick" placeholder="닉네임">
-           		 <p class="help-block" id="nickcheck" style="width:400px;"></p>
-            </div>
-            
-            
-            <div class="form-group">
-              <label for="InputPassword1">* 비밀번호</label>
-              <input type="password" class="form-control" id="InputPassword1" placeholder="비밀번호">
-              <p class="help-block" id="pwdcheck" style="width:700px;"></p>
-            </div>
-            <div class="form-group">
-              <label for="InputPassword2">* 비밀번호 확인</label>
-              <input type="password" class="form-control" id="InputPassword2" placeholder="비밀번호 확인">
-              <p class="help-block" style="width:400px;">비밀번호 확인을 위해 다시한번 입력 해 주세요</p>
-              <input type="hidden" name="userpwd" id="userpwd2" value=""/>
-            </div>
-            
-            
-            <div >
-              <label for="gender">* 성별</label>
-              <br/>
-                  <span>여</span>
-                  <input id="female" name="gender" value="f" type="radio" class="genders" />
-                  <!-- &nbsp; -->
-                  <span>남</span>
-                  <input id="male" name="gender" value="m" type="radio"  class="genders" />
-              
-            </div>
-            
-            <div class="form-group">
-              <label for="InputBirthDate">* 생년월일</label>
-              <input type="date" class="form-control" id="birth" name="birth">
-            </div>
-            
-            <br/>
-            
-            <!-- <div class="form-group">
-                <label>* 약관 동의</label>
-              <div data-toggle="buttons" style="width:400px;">
-              <label class="btn btn-primary active">
-                  <span class="fa fa-check"></span>
-                  <input id="agree" type="checkbox" autocomplete="off" >
-              </label>
-              <a href="#">이용약관</a>에 동의합니다.
-              </div>
-            </div> -->
-            
-          
-        </div>
-		<br/><br/>
-		<div class="form-group text-center" align="center">
-              <button type="submit" class="btn btn-info" id="joinbtn">회원가입<i class="fa fa-check spaceLeft"></i></button>
-              <button type="reset" class="btn btn-warning">가입취소<i class="fa fa-times spaceLeft"></i></button>
-            </div>
-            
-            
-           </form>
- 		
- 		
- 	<!-- <div class="container">
-  <h4>메일 보내기</h4>
-  <form action="mailSending" method="post">
-    <div align="center">받는 사람 이메일
-      <input type="text" name="tomail" size="120" style="width:100%" placeholder="상대의 이메일" class="form-control" >
-    </div>     
-    <div align="center">제목
-      <input type="text" name="title" size="120" style="width:100%" placeholder="제목을 입력해주세요" class="form-control" >
-    </div>
-    <p>
-    <div align="center">내용 
-      <textarea name="content" cols="120" rows="12" style="width:100%; resize:none" placeholder="내용#" class="form-control"></textarea>
-    </div>
-    <p>
-    <div align="center">
-      <input type="submit" value="메일 보내기" class="btn btn-warning">
-    </div>
-  </form>
-</div>
-    <button style=" color: white;background-color: #4c586f;border: none;width:200px;height:50px;text-align: center;text-decoration: none;  font-size: 25px;border-radius:10px;">인증하기♥</button>
-  --> 
-  <br/>
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="password" id="InputPassword1"> <label
+						for="useremail2">Password</label> <span class="helper-text"
+						id="pwdcheck"></span>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="password" id="InputPassword2"> <label
+						for="useremail2">Confirm Password</label> <span
+						class="helper-text" id="pwdcheck">비밀번호 확인을 위해 다시한번 입력 해 주세요</span>
+					<input type="hidden" name="userpwd" id="userpwd2" value="" />
+				</div>
+			</div>
+
+			<br /> <br />
+			<div class="row">
+				<label for="gender">&nbsp;&nbsp;&nbsp;Gender</label>
+				<p>
+					<label> <input class="genders" name="gender" id="female"
+						value="f" type="radio" checked /> <span>여성</span>
+					</label>
+				</p>
+				<p>
+					<label> <input class="genders" name="gender" id="male"
+						value="m" type="radio" /> <span>남성</span>
+					</label>
+				</p>
+			</div>
+
+			<br />
+			<br />
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="date" id="birth" name="birth"> <label
+						for="InputBirthDate">Birth</label>
+				</div>
+			</div>
+
+			<br />
+	</div>
+	<br />
+	<br />
+	<div class="form-group text-center" align="center">
+		<button type="submit" class="btn btn-info" id="joinbtn">
+			회원가입<i class="fa fa-check spaceLeft"></i>
+		</button>
+		<button type="reset" class="btn btn-warning">
+			가입취소<i class="fa fa-times spaceLeft"></i>
+		</button>
+	</div>
+	</form>
+
+	<br/>
   <footer class="page-footer">
           <div class="container">
             <div class="row">
