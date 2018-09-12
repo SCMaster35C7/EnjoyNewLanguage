@@ -15,11 +15,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
 	<title>Insert title here</title>
-	<style>
-		th{
-			
-		}
-	</style>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
 		//css
@@ -36,10 +31,6 @@
 			
 			//modal open
 			$('#modal1').modal();
-			
-			$('#back').on('click', function() {
-				
-			});
 			
 			//side-nav open
 			$('.sidenav').sidenav();

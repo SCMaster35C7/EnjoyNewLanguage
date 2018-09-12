@@ -18,10 +18,6 @@ function deleteMember() {
 	var useremail = $('#useremail').val();
 	var userpwd = $('#userpwd').val();
 	
-	if(){
-		
-	}
-	
 	if(userpwd.val().length == 0){
 		alert('비밀번호를 입력해주십시오');
 		

@@ -51,7 +51,7 @@
 			
 			$('.search').on('keydown', function(key) {
 				if (key.keyCode == 13) {
-					alert("안녕");
+					naver();					
 				}
 			});
 		});
@@ -59,8 +59,7 @@
 		function naver(){
 			var searchText = $('.search').val();
 			var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
-			window.resizeTo(750, 500);
-			location.href=http;
+			window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");
 		}
 	</script>
 </head>

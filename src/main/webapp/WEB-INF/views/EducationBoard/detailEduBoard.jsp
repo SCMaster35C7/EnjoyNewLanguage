@@ -36,10 +36,6 @@
 		//캐러셀
 		$('.carousel').carousel();
 		
-		$('#back').on('click', function() {
-			
-		});
-		
 		$('#loginBtn').on('click',function(){
 			var useremail = $('#useremail');
 			var userpwd = $('#userpwd');
@@ -285,8 +281,7 @@
 	    <ul class="right hide-on-med-and-down">
 		      	<c:if test="${not empty sessionScope.useremail }">
 		      <li>
-						<a href="logout">${sessionScope.useremail }님아logout</a>
-					
+				<a href="logout">${sessionScope.useremail }님아logout</a>
 		      </li>
 				</c:if>
 		      <li><a href="eduBoard">영상게시판</a></li>
