@@ -239,24 +239,7 @@
 				</c:if>
 			</section>
 		</div>
-	
-	
-	
-	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
-	
-	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
-	<a href="TryRetake?videoNum=9">재시험 테스트</a>
-	<c:if test="${plzLogin!=null}">
-		<script type="text/javascript">
-			$(function(){
-				alert("${plzLogin}");
-			});
-		</script>
-	</c:if>
-	<a href="DubbingWrite?videoNum=9">더빙작성 게시판 테스트</a>
-	<a href="dubDetail?dubbingnum=23">더빙 싱크 테스트</a>
-	<a href="tester">테스트...코드</a>
-	
+
 	<footer class="page-footer">
           <div class="container">
             <div class="row">
