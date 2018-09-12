@@ -107,4 +107,11 @@ public class DubbingRepository {
 
 		return result;
 	}
+
+	public int deleteBlack(Black black) {
+		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
+		int result = mapper.deleteBlack(black);
+		
+		return result;
+	}
 }

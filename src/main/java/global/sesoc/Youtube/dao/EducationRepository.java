@@ -206,4 +206,11 @@ public class EducationRepository {
 		
 		return result;
 	}
+
+	public List<Education> selectBestFive() {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		List<Education> eList = mapper.selectBestFive();
+		
+		return eList;
+	}
 }

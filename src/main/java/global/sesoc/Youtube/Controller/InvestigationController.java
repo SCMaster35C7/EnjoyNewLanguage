@@ -177,8 +177,9 @@ public class InvestigationController {
 	 */
 	@RequestMapping(value="/registSubtitle", method=RequestMethod.POST)
 	public @ResponseBody String registSubtitle(MultipartFile file, InvSubtitle invSub) {
-		// System.out.println("file : "+file);
-		// System.out.println("data : "+invSub);
+		//System.out.println("file : "+file);
+		//System.out.println("data : "+invSub);
+		
 		
 		if(file != null) {
 			if(file.getSize() == 0) {

@@ -33,10 +33,6 @@
 			//modal open
 			$('#modal1').modal();
 			
-			$('#back').on('click', function() {
-				
-			});
-			
 			//side-nav open
 			$('.sidenav').sidenav();
 			
@@ -80,7 +76,7 @@
 		  <li><a onclick="dictionary()">Dictionary</a></li>
 		</ul>
 	
-	<!-- nav -->
+		<!-- nav -->
 		<nav class="nav-extended">
 		  <div class="nav-wrapper">
 		    <!-- sidenav trigger -->
@@ -141,6 +137,7 @@
 		    <li><a href="myPage">마이페이지</a></li>
 		    
 	  	  </ul>
+
 	  	  
 	  <!-- 로그인 MODAL -->
 		<div id="modal1" class="modal">
@@ -214,95 +211,86 @@
 				</form>
 			</div>
 		</div>	
-	  </div>
+	</div>
 	  
-	  <!-- 메인 -->
-	  <div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<!-- <img src="images/"> -->
-							</div>
-							<!-- <a href="#user"><img class="circle" src="images/"></a> -->
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
-						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
-				</ul>
-			</aside>
+	<!-- 메인 -->
+  <div class="wrapper">
+	<!-- sidenav -->	  
+	  <aside>	  	  
+		  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+		    <li>
+          <div class="user-view">
+		        <div class="background">
+		        <!-- <img src="images/"> -->
+		        </div>
+		        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
+		        <a href="#name"><span class="white-text name">${usernick}</span></a> 
+		        <a href="#email"><span class="white-text email">${useremail}</span></a>
+					</div>
+				</li>
+				<li>
+					<a href="#!">
+					<i class="material-icons">cloud</i>First Link With Icon</a>
+				</li>
+				<li>
+					<a href="#!">wishList</a>
+				</li>
+				<li>
+					<div class="divider"></div>
+				</li>
+				<li>
+					<a class="subheader">회원정보관리</a>
+				</li>
+				<li>
+					<a class="waves-effect" href="updateMember">회원정보수정</a>
+				</li>
+				<li>
+					<a class="waves-effect" href="#">회원탈퇴</a>
+				</li>
+			</ul>
+		</aside>
 			
-			<section>	
-				  <div class="container">
-				  	<h3 class="center">인기 항목</h3>
-				  </div>
-									
-				  <div class="carousel" >
-					<a class="carousel-item" href="#one!" style="width:500px; height:auto;"><img src="images/liverpool.jpg" class="z-depth-2"></a>
-					<a class="carousel-item" href="#two!" style="width:500px; height:auto;"><img src="images/torres.jpg" class="z-depth-2"></a>
-					<a class="carousel-item" href="#three!" style="width:500px; height:auto;"><img src="images/berna.jpg" class="z-depth-2"></a>
-				    <a class="carousel-item" href="#four!" style="width:500px; height:auto;"><img src="images/ronaldo.jpg" class="z-depth-2"></a>
-				    <a class="carousel-item" href="#five!" style="width:500px; height:auto;"><img src="images/kaka.jpeg" class="z-depth-2"></a>
-			  	  </div>	  
-				
-				<c:if test="${empty sessionScope.useremail }">
-					<a href="login">login</a>
-				</c:if>
-			</section>
-		</div>
-	
-	
-	
-	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
-	
-	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
-	<a href="TryRetake?videoNum=9">재시험 테스트</a>
-	<c:if test="${plzLogin!=null}">
-		<script type="text/javascript">
-			$(function(){
-				alert("${plzLogin}");
-			});
-		</script>
-	</c:if>
-	<a href="DubbingWrite?videoNum=9">더빙작성 게시판 테스트</a>
-	<a href="dubDetail?dubbingnum=23">더빙 싱크 테스트</a>
-	<a href="tester">테스트...코드</a>
+		<section>	
+			<div class="container">
+			  	<h3 class="center">인기 항목</h3>
+			</div>
+								
+			<div class="carousel" >
+				<c:forEach var="eList" items="${eList}">
+					<a class="carousel-item" href="#one!" style="width:500px; height:auto;">
+						<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>;
+					</a>
+				</c:forEach>
+			</div>	  
+		</section>
+	</div>
 	
 	<footer class="page-footer">
-          <div class="container">
-            <div class="row">
-              <div class="col l6 s12">
-                <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-              </div>
-              <div class="col l4 offset-l2 s12">
+    	<div class="container">
+        	<div class="row">
+              	<div class="col l6 s12">
+                	<h5 class="white-text">Footer Content</h5>
+                	<p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              	</div>
+              	<div class="col l4 offset-l2 s12">
                 <h5 class="white-text">Links</h5>
                 <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="footer-copyright">
+                  	<li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
             <div class="container">
             © 2014 Copyright Text
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
-          </div>
-        </footer>
+        	</div>
+    	</div>
+    </footer>
 
-
-<script type="text/javascript" src="js/materialize.js"></script>
+	<script type="text/javascript" src="js/materialize.js"></script>
 </body>
 </html>
