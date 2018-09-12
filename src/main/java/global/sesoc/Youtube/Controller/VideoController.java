@@ -30,10 +30,8 @@ public class VideoController {
 	@Autowired
 	EducationRepository eduRepository;
 
-
-	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
-
 	// 교육용 자막파일 경로
+	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 	
 	/***
 	 * Home 기본 페이지 이동
