@@ -48,11 +48,19 @@
 				
 				$('#loginForm').submit();
 			});
+			
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					alert("안녕");
+				}
+			});
 		});
 		
-		function dictionary(){
-			var win= window.open('dictionaryBoard','_black',"width=340px,height=250px");
-			win.focus();
+		function naver(){
+			var searchText = $('.search').val();
+			var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+			window.resizeTo(750, 500);
+			location.href=http;
 		}
 	</script>
 </head>
@@ -73,7 +81,6 @@
 		  </li>
 		  <li class="divider"></li>
 		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		  <li><a onclick="dictionary()">Dictionary</a></li>
 		</ul>
 	
 		<!-- nav -->
@@ -98,17 +105,17 @@
 		     
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 		    <ul class="right hide-on-med-and-down">
-			  <li>
+			  	<li>
 			  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:640px;">
                   		<i class="material-icons" style="margin-left:-50px;">search</i>
-                  		<input  type="search" name="Search" class="header-search-input z-depth-2" placeholder="SEARCH WORD"/>
-             		</div>
-			  </li>		 
-		      <li><a href="eduBoard">영상게시판</a></li>
-		      <li><a href="dubbingBoard">더빙게시판</a></li>
-		      <li><a href="InvestigationBoard">자막검증게시판</a></li>
-		      <!-- Dropdown Trigger -->
-		      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+              		</div>
+			  	</li>		 
+		      	<li><a href="eduBoard">영상게시판</a></li>
+		      	<li><a href="dubbingBoard">더빙게시판</a></li>
+		      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
+		      	<!-- Dropdown Trigger -->
+		      	<li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
 		    </ul>
 		</div>		
 		  <div class="nav-content">
@@ -125,7 +132,7 @@
 		    <li>
 			  		<form>
         <div class="input-field">
-          <input id="search" type="search" required>
+          <input class="search" type="search" required>
           <label class="label-icon" for="search"><i class="material-icons">search</i></label>
           <i class="material-icons">close</i>
         </div>
