@@ -23,15 +23,16 @@ public class EducationController {
 	@Autowired
 	EducationRepository eduRepository;
 
-
-	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
-
+	private final String eduFileRoot = "/EducationVideo";
 	
 	@RequestMapping(value = "getSubtitlesList", method = RequestMethod.GET)
 	public @ResponseBody SubtitlesList getSubtitlesList(int level, String savedfileName) {
+		// String jamacName = eduRepository.selectSubName(videoNum);
+		// System.out.println(savedfileName);
 		String jamacURL = eduFileRoot + "/" + savedfileName;
 		SubtitlesMaker sm = new SubtitlesMaker();
 		SubtitlesList sublist = sm.RandomText(jamacURL, level);
+		System.out.println(sublist);
 		
 		return sublist;
 	}
@@ -40,8 +41,10 @@ public class EducationController {
 	@ResponseBody
 	public String ScoreResult(int testlevel, String[] WronganswerList, String[] CorrectanswerList, String useremail,
 			String url, boolean testType, int correctCount) {
-		// WronganswerList : 오답문제의 index 정보, CorrectanswerList: 정답 단어리스트 useremail: 수험자id
-		// url : 영상 주소값, correctCount: 정답갯수 testType: 시험 타입(false text true mic), testlevel: 난이도
+		// WronganswerList : 오답문제의 index 정보, CorrectanswerList: 정답 단어리스트, userid 로그인한
+		// 아이디,
+		// url : 영상 주소값, correctCount: 정답갯수 testType: 시험 타입(false text true mic)
+		// TestSuccess: 시험 수행여부, 90% 이상시 수행처리(true) 일단 뷰단에서 처리하고 거르는것으로 구현
 		double successPercent = correctCount / (WronganswerList.length + correctCount);
 		TestResult tr = new TestResult();
 		tr.setUseremail(useremail);
@@ -51,7 +54,7 @@ public class EducationController {
 		if (lastTestlevel < testlevel)
 			tr.setTestlevel(testlevel);
 
-		if (successPercent > 0.7)        //70%이상 맞추면 합격처리
+		if (successPercent > 0.7)
 			tr.setSuccessCount(1);
 		else
 			tr.setFailureCount(1);
@@ -67,6 +70,7 @@ public class EducationController {
 			wa.setClassification(0);
 
 		for (int i = 0; i < WronganswerList.length; i++) {
+
 			wa.setCorrectAnswer(CorrectanswerList[i]);
 			wa.setWrongIndex(WronganswerList[i]);
 			eduRepository.insertWrongAnswer(wa);
@@ -145,10 +149,5 @@ public class EducationController {
 			return "fail"; // 시험 실패
 		}
 
-	}
-	
-	@RequestMapping(value="dictionaryBoard",method=RequestMethod.GET)
-	public String dicionaryBoard() {
-		return "EducationBoard/dictionaryBoard";
 	}
 }

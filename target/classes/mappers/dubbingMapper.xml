@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="global.sesoc.Youtube.dao.DubbingMapper">
 	<insert id="insertDubbing" parameterType="Dubbing">
 		insert into dubbing (
@@ -11,9 +11,7 @@
 			content,
 	    	useremail,
 	    	url,
-	    	voiceFile,
-	    	starttime,
-	    	endtime
+	    	voiceFile
 		) values(
 			DUBBING_SEQ.nextval
 			, #{title}
@@ -21,16 +19,13 @@
 			, #{useremail}
 			, #{url}
 			, #{voiceFile}
-			, #{starttime}
-			, #{endtime}
 		)
 	</insert>
-	
+
 	<select id="dubbingBoard"  resultType="Dubbing">
 		select 
 			d.dubbingnum
 			, d.title
-			, d.useremail
 			, m.usernick
 			, d.hitcount
 			, d.recommendation
@@ -48,7 +43,6 @@
 		select
 			d.dubbingnum
 			, d.title
-			, d.useremail
 			, m.usernick
 			, d.content
 			, d.url
@@ -57,8 +51,6 @@
 			, d.recommendation
 			, d.decommendation
 			, d.regdate
-			, d.starttime
-			, d.endtime
 		from 
 			dubbing d, member m
 		where 
@@ -66,6 +58,7 @@
 		and 
 			d.dubbingnum = #{dubbingnum}
 	</select>
+<<<<<<< HEAD
 	
 	<select id="replyDubAll" parameterType="int" resultType="Reply">
 		select
@@ -214,4 +207,6 @@
 			, #{content}
 		)
 	</insert>
+=======
+>>>>>>> Muk
 </mapper>

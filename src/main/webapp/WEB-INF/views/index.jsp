@@ -49,11 +49,6 @@
 				$('#loginForm').submit();
 			});
 		});
-		
-		function dictionary(){
-			var win= window.open('dictionaryBoard','_black',"width=340px,height=250px");
-			win.focus();
-		}
 	</script>
 </head>
 
@@ -73,20 +68,11 @@
 		  </li>
 		  <li class="divider"></li>
 		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		  <li><a onclick="dictionary()">Dictionary</a></li>
 		</ul>
 	
 		<!-- nav -->
 		<nav class="nav-extended">
 		  <div class="nav-wrapper">
-		    <!-- sidenav trigger -->
-		    <ul class="left">
-		    	<li>
-		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-		    			<i class="material-icons">menu</i>
-		    		</a>
-		    	</li>
-		    </ul>
 		    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 		  <!--     <form>
 		        <div class="input-field" style="diplay:inline-block">
@@ -149,52 +135,41 @@
 					<h4 class="center-align">LOGIN</h4>
 				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+							<label for="useremail">EMAIL</label>
+						</div>
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-							</div>
-						</c:if>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mode_edit</i>
+							<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+							<label for="userpwd">PASSWORD</label>
+						</div>
 					</div>
-					
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
 				</div>	
 				
 					<div class="row">
 						<div class="col s10">
-							<c:if test="${empty sessionScope.useremail }">
-								<span class="flow-text">
-									<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
-										<i class="material-icons right">send</i>
-									</button>
-								</span>
-							</c:if>
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light" type="button" id="loginBtn">ENTER
+									<i class="material-icons right">send</i>
+								</button>
+							</span>
 						
 							<span class="flow-text">
 								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
-							<c:if test="${not empty sessionScope.useremail }">
-								<span class="flow-text">
-									<a href="logout" class="btn waves-effect waves-light modal-close">LOGOUT
-										<i class="material-icons right">power_settings_new</i>
-									</a>
-								</span>
-							</c:if>
+							
+							<span class="flow-text">
+								<button class="btn waves-effect waves-light modal-close">LOGOUT
+									<i class="material-icons right">settings_power</i>
+								</button>
+							</span>
 						</div>
 						
 						<div class="fixed-action-btn">
@@ -203,8 +178,8 @@
 								</a>
 								<ul>
 								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
 					</div>
@@ -213,6 +188,7 @@
 		</div>	
 	</div>
 	  
+<<<<<<< HEAD
 	<!-- 메인 -->
   <div class="wrapper">
 	<!-- sidenav -->	  
@@ -264,6 +240,41 @@
 			</div>	  
 		</section>
 	</div>
+=======
+	  <!-- 메인 -->
+	  <div class="container">
+	  	<h3 class="center">인기 항목</h3>
+	  </div>
+	
+	  <div class="carousel">
+		<a class="carousel-item" href="#one!"><img src="images/liverpool.jpg"></a>
+		<a class="carousel-item" href="#two!"><img src="images/torres.jpg"></a>
+		<a class="carousel-item" href="#three!"><img src="images/berna.jpg"></a>
+	    <a class="carousel-item" href="#four!"><img src="images/ronaldo.jpg"></a>
+	    <a class="carousel-item" href="#five!"><img src="images/kaka.jpeg"></a>
+  	  </div>	  
+	
+	<c:if test="${empty sessionScope.useremail }">
+		<a href="login">login</a>
+	</c:if>
+	
+	
+	
+	
+	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
+	
+	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
+	<a href="TryRetake?videoNum=9">재시험 테스트</a>
+	<c:if test="${plzLogin!=null}">
+		<script type="text/javascript">
+			$(function(){
+				alert("${plzLogin}");
+			});
+		</script>
+	</c:if>
+	<a href="DubbingWrite?videoNum=9">더빙작성 게시판 테스트</a>
+	<a href="dubDetail?dubbingnum=23">더빙 싱크 테스트</a>
+>>>>>>> Muk
 	
 	<footer class="page-footer">
     	<div class="container">

@@ -16,7 +16,6 @@ DROP SEQUENCE DUBBING_SEQ;					-- 더빙게시판 시퀀스
 DROP SEQUENCE INVESTIGATION_REPLY_SEQ;		-- 자막검증게시판 댓글 시퀀스
 DROP SEQUENCE INVESTIGATION_SUBTITLE_SEQ;	-- 요청자막 제공 시퀀스 
 DROP SEQUENCE INVESTIGATION_SEQ;			-- 자막요청 시퀀스
-DROP SEQUENCE WISH_LIST_SEQ;				-- 찜한목록 시퀀스	
 DROP SEQUENCE USER_STUDY_SEQ;				-- 사용자학습용 시퀀스
 DROP SEQUENCE WRONG_ANSWER_SEQ;				-- 사용자오답용 시퀀스
 DROP SEQUENCE EDUCATION_VIDEO_SEQ;			-- 교육자료용 시퀀스
@@ -73,7 +72,7 @@ CREATE TABLE UserStudy(
 	useremail		VARCHAR2(100),																-- 사용자 아이디
 	url				VARCHAR2(1000)	CONSTRAINT userstudy_useremail_nn		NOT NULL,			-- 영상URL
 	lastStudy		DATE			DEFAULT SYSDATE,
- 	testlevel       NUMBER                											-- 최종
+ 	testlevel       NUMBER,                														-- 최종
 	challengeCount	NUMBER			DEFAULT 0,													-- 도전 횟수
 	successCount	NUMBER			DEFAULT 0,													-- 성공 횟수
 	failureCount	NUMBER			DEFAULT 0,													-- 실패 횟수
@@ -84,15 +83,14 @@ CREATE SEQUENCE USER_STUDY_SEQ;
 
 -- 5. 찜한 목록 테이블
 CREATE TABLE WishList(	
-	wishnum			NUMBER			CONSTRAINT wishlist_wishnum_pk		PRIMARY KEY,			-- 찜목록 번호
-	useremail		VARCHAR2(100),																-- 사용자 아이디
-	url				VARCHAR2(1000) 	CONSTRAINT wishlist_url_nn			NOT NULL,				-- 영상URL
-	title			VARCHAR2(1000) 	CONSTRAINT wishlist_title_nn		NOT NULL,				-- 영상제목
-	regDate			DATE			DEFAULT SYSDATE,											-- 등록일
-	CONSTRAINT wishlist_useremail_fk FOREIGN KEY(useremail) REFERENCES Member(useremail) ON DELETE CASCADE
+	wishtable			NUMBER,																			-- 테이블 식별코드(0-교육영상 게시글, 1-자막검증 게시글, 2-더빙 게시글)
+	identificationnum	NUMBER,																			-- 테이블 안 데이터 식별코드
+	useremail			VARCHAR2(100),																	-- 사용자 아이디
+	url					VARCHAR2(1000) 		CONSTRAINT wishlist_url_nn			NOT NULL,				-- 영상URL
+	title				VARCHAR2(1000) 		CONSTRAINT wishlist_title_nn		NOT NULL,				-- 영상제목
+	regDate				DATE				DEFAULT SYSDATE,											-- 등록일
+	CONSTRAINT wishlist_fk PRIMARY KEY(useremail, wishtable, identificationnum)
 );
-
-CREATE SEQUENCE WISH_LIST_SEQ;
 
 -- 6. 자막요청 게시판 테이블
 CREATE TABLE Investigation(
@@ -152,9 +150,9 @@ CREATE TABLE  Dubbing(
 	regdate				DATE			DEFAULT SYSDATE,									-- 게시글 등록일
 	hitcount			NUMBER			DEFAULT 0,											-- 조회수
 	recommendation		NUMBER			DEFAULT 0,											-- 추천수
-	decommendation		NUMBER			DEFAULT 0											-- 비추천수
-        starttime                      varchar2(50)                 -- 더빙파일의 녹화 시작시간(영상 기준)
-        endtime                        varchar2(50)                 -- 더빙파일의 녹화 종료시간(영상 기준)
+	decommendation		NUMBER			DEFAULT 0,											-- 비추천수
+    starttime                      varchar2(50),                 -- 더빙파일의 녹화 시작시간(영상 기준)
+    endtime                        varchar2(50)                 -- 더빙파일의 녹화 종료시간(영상 기준)
 );
 
 CREATE SEQUENCE DUBBING_SEQ;
@@ -182,13 +180,3 @@ CREATE TABLE Recommendation(
 	regDate				Date 			DEFAULT SYSDATE,									-- 추천일
 	CONSTRAINT recomend_fk PRIMARY KEY(useremail, identificationnum, recommendtable) 
 );
-
--- 12. 신고 테이블
-CREATE TABLE Blacklist(
-	useremail			VARCHAR2(100),
-	whichboard			NUMBER,																-- 테이블 식별코드(0-더빙리플, 1-자막리플)
-	replynum				NUMBER,
-	regDate				Date 			DEFAULT SYSDATE,	
-	CONSTRAINT blacklist_fk PRIMARY KEY(useremail, whichboard, replynum) 
-);
-

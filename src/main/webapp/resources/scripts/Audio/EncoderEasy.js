@@ -167,11 +167,11 @@ function saveRecording(blob) {
   var videoTime=player.getCurrentTime().toFixed(2);
  // console.log(videoStartTime+", "+videoTime);
   var saveFileName=videoStartTime+"-"+videoTime;
- // var time = new Date(),
+  var time = new Date(),
       url = URL.createObjectURL(blob),
       html = "<p recording='" + url + "'>" +
              "<audio controls src='" + url + "'></audio> " +
-            // time +
+             time +
              " <a class='btn btn-default' href='" + url +
                   "' download='"+saveFileName+".mp3'>" +
              "Save...</a> " +

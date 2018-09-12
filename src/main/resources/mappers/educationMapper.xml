@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="global.sesoc.Youtube.dao.EducationMapper">
 	<select id="selectEduList" resultType="Education">
 		select
@@ -21,6 +21,7 @@
 		order by
 			regdate desc
 	</select>
+
 
 	<select id="selectOneFromEduVideo" parameterType="int" resultType="Education">
 		select
@@ -263,6 +264,7 @@
 		and
 			recommendtable = #{recommendtable}
 	</update>
+<<<<<<< HEAD
 	
 	<delete id="deleteAllRecommend" parameterType="map">
 		delete from
@@ -297,4 +299,6 @@
 		where
 		  rownum &lt;= 5
 	</select>
+=======
+>>>>>>> Muk
 </mapper>

@@ -12,26 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
-import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dao.InvestigationRepository;
 import global.sesoc.Youtube.dto.Investigation;
-import global.sesoc.Youtube.dto.InvSubtitle;
-import global.sesoc.Youtube.dto.Reply;
-import global.sesoc.Youtube.util.EasySubtitlesMaker;
-import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.PageNavigator;
 
 @Controller
 public class InvestigationController {
 	@Autowired
 	InvestigationRepository invRepository;
-	
-	@Autowired
-	EducationRepository eduRepository;
-	
-	private final String subtitleFileRoot ="/YoutubeEduCenter/InvSubtitle";
 	
 	/***
 	 * 자막 검증 게시판 
@@ -88,15 +77,6 @@ public class InvestigationController {
 		return map;
 	}
 	
-	/**
-	 * 자막 검증 상세페이지로 이동
-	 * @param investigationnum
-	 * @param currentPage
-	 * @param searchType
-	 * @param searchWord
-	 * @param model
-	 * @return
-	 */
 	@RequestMapping(value="/detailInvBoard", method= RequestMethod.GET)
 	public String detailInvBoard(
 		int investigationnum,
@@ -119,6 +99,7 @@ public class InvestigationController {
 		
 		return "InvestigationBoard/detailInvBoard";
 	}
+<<<<<<< HEAD
 	
 	/**
 	 * 자막 검증 상세페이지 모든 댓글가져오기
@@ -231,4 +212,6 @@ public class InvestigationController {
 		
 		return null;
 	}
+=======
+>>>>>>> Muk
 }

@@ -9,9 +9,13 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+<<<<<<< HEAD
 import global.sesoc.Youtube.dto.InvSubtitle;
 import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.Reply;
+=======
+import global.sesoc.Youtube.dto.Investigation;
+>>>>>>> Muk
 
 @Repository
 public class InvestigationRepository {
@@ -24,7 +28,7 @@ public class InvestigationRepository {
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
 		int result = mapper.getTotalCount(map);
-		
+				
 		return result;
 	}
 
@@ -67,61 +71,5 @@ public class InvestigationRepository {
 		int result = mapper.updateHitCount(investigationnum);
 		
 		return result;
-	}
-
-	public List<Reply> replyAllFromInv(int idnum) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		List<Reply> rList = mapper.replyAllFromInv(idnum);
-		
-		return rList;
-	}
-	
-	public int insertReplyToInv(Reply reply) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		int result = mapper.insertReplyToInv(reply);
-		
-		return result;
-	}
-
-	public int replyInvUpdate(Reply reply) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		int result = mapper.replyInvUpdate(reply);
-		
-		return result;
-	}
-
-	public int replyInvDelete(int replynum) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		int result = mapper.replyInvDelete(replynum);
-		
-		return result;
-	}
-
-	public int insertInvSubtitle(InvSubtitle invSub) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		int result = mapper.insertInvSubtitle(invSub);
-		
-		return result;
-	}
-
-	public List<InvSubtitle> subtitleAllFromInv(int investigationnum) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		List<InvSubtitle> subList = mapper.subtitleAllFromInv(investigationnum);
-		
-		return subList;
-	}
-
-	public int deleteInvSubtitle(int subtitleNum) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		int result = mapper.deleteInvSubtitle(subtitleNum);
-		
-		return result;
-	}
-
-	public InvSubtitle selectOneFromSubUseNum(int subtitleNum) {
-		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
-		InvSubtitle sub = mapper.selectOneFromSubUseNum(subtitleNum);
-		
-		return sub;
 	}
 }

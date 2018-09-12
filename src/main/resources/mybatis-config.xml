@@ -14,13 +14,12 @@
 		<typeAlias type="global.sesoc.Youtube.dto.Education" alias="Education"/>
 		<typeAlias type="global.sesoc.Youtube.dto.TestResult" alias="TestResult"/>
 		<typeAlias type="global.sesoc.Youtube.dto.WrongAnswer" alias="WrongAnswer"/>
-		<typeAlias type="global.sesoc.Youtube.dto.InvSubtitle" alias="InvSubtitle"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Investigation" alias="Investigation"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Recommendation" alias="Recommendation"/>
-		<typeAlias type="global.sesoc.Youtube.dto.Black" alias="Black"/>
 	</typeAliases>
 	<mappers>
-		<mapper resource="mappers/memberMapper.xml"/>
+		<mapper resource="mappers/wishMapper.xml"/>
+		<mapper resource="mappers/memberMapper.xml"/>		
 		<mapper resource="mappers/dubbingMapper.xml"/>
 		<mapper resource="mappers/educationMapper.xml"/>
 		<mapper resource="mappers/InvestigationMapper.xml"/>
