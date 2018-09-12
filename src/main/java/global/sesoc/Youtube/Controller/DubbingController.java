@@ -2,6 +2,7 @@ package global.sesoc.Youtube.Controller;
 
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -19,9 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.DubbingRepository;
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Reply;
+import global.sesoc.Youtube.util.EasySubtitlesMaker;
 import global.sesoc.Youtube.util.FileService;
 
 @Controller
@@ -137,28 +140,28 @@ public class DubbingController {
 	@RequestMapping(value="/replyAll", method=RequestMethod.POST)
 	public @ResponseBody List<Reply> replyAll(int dubbingnum) {
 		//System.out.println(dubbingnum);
-		List<Reply> replyList = dubRepository.replyAll(dubbingnum);
+		List<Reply> replyList = dubRepository.replyDubAll(dubbingnum);
 		return replyList;
 	}
 			
 	@RequestMapping(value="/replyInsert", method=RequestMethod.POST)
 	public @ResponseBody Integer replyInsert(@RequestBody Reply reply ) {
-		int result = dubRepository.insertReply(reply);
+		int result = dubRepository.replyDubInsert(reply);
 		return result;
 	}
 			
 	@RequestMapping(value="/replyDelete", method=RequestMethod.GET)
 	public @ResponseBody Integer replyDelete(int replynum) {
-		int result = dubRepository.replyDelete(replynum);
+		int result = dubRepository.replyDubDelete(replynum);
 		return result;
 	}
 			
 	@RequestMapping(value="/replyUpdate", method=RequestMethod.POST)
 	public @ResponseBody Integer replyUpdate(@RequestBody Reply reply) {
-		int result = dubRepository.replyUpdate(reply);
+		int result = dubRepository.replyDubUpdate(reply);
 		return result;
 	}
-<<<<<<< HEAD
+
   
 	@RequestMapping(value="/insertBlack", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String insertBlack(@RequestBody Black black ) {
@@ -172,13 +175,10 @@ public class DubbingController {
 			System.out.println(reply);
 			 if (reply.getBlackcount()>2) {
 				 dubRepository.reportDelete(black);
-				 dubRepository.deleteBlack(black);
 			}
 			return "신고가 완료되었습니다.";
 		}else {
 			return "이미 신고하신 댓글입니다.";
 		}
 	}
-=======
->>>>>>> Muk
 }

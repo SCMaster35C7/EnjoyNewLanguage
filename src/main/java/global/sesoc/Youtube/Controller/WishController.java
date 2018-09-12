@@ -85,12 +85,13 @@ public class WishController {
 	public String dubWish(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 						@RequestParam(value="searchType", defaultValue="title") String searchType,
 						@RequestParam(value="searchWord", defaultValue="") String searchWord,
+						String useremail,
 						Model model) {
 		
 		int totalRecordCount = wRepository.getTotalCount1(searchType, searchWord);
 		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
 		
-		List<WishList> dWishlist =  wRepository.selectDubWish(searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
+		List<WishList> dWishlist =  wRepository.getDubWishList(useremail, searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
 				
 					
 		model.addAttribute("dWishlist", dWishlist);

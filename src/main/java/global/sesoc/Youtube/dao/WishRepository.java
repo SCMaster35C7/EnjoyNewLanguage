@@ -110,7 +110,7 @@ public class WishRepository {
 	}
 	
 	//더빙 파트
-	public List<WishList> getDubWishList(String searchType, String searchWord, int startRecord, int getcountPerPage) {
+	public List<WishList> getDubWishList(String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		RowBounds bound = new RowBounds(startRecord, getcountPerPage);	
 		
@@ -121,7 +121,7 @@ public class WishRepository {
 		String useremail = dub.getUseremail(); 
 		*/
 		
-		map.put("useremail", useremail);		
+		/*map.put("useremail", useremail);*/		
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
 		

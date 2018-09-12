@@ -30,10 +30,7 @@ public class VideoController {
 	@Autowired
 	EducationRepository eduRepository;
 
-<<<<<<< HEAD
-=======
-	private final String eduFileRoot = "/EducationVideo";
->>>>>>> Muk
+
 	// 교육용 자막파일 경로
 	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 	
@@ -54,10 +51,7 @@ public class VideoController {
 		
 		return "index";
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> Muk
+
 
 	/**
 	 * 교육 영상 게시판으로 이동 검색 테마와 검색 내용에 합당한 자료를 찾는다.
