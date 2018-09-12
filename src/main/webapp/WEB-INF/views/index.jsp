@@ -289,8 +289,8 @@
 					<a class="waves-effect" href="#">회원탈퇴</a>
 				</li>
 			</ul>
-		</aside>
-			
+		</aside>			
+
 		<section>	
 			<div class="container">
 			  	<h3 class="center">인기 항목</h3>
