@@ -15,8 +15,6 @@
 	<br/><br/>
 	
 	<c:if test="${myInfo!=null }">
-	
-<<<<<<< HEAD
 		<div class="wrapper">
 			 <!-- sidenav -->	  
 			<aside>	  	  
@@ -122,7 +120,7 @@
 		
 		
 		<br/><br/>
-		
+		</c:if>
 		<c:if test="${myInfo!=null }">
 		
 		승률 : ${myInfo.winningRate} (승 : ${myInfo.allSuccess}/ 패 :  ${myInfo.allFailure}/ 도전: ${myInfo.allChallenge})
@@ -131,27 +129,7 @@
 		<c:if test="${myInfo==null }">
 		승률 데이터 없음 하셈	
 		<br/>
-		</c:if>
-=======
-	승률 : ${myInfo.winningRate} (승 : ${myInfo.allSuccess}/ 패 :  ${myInfo.allFailure}/ 도전: ${myInfo.allChallenge})
-	<br/>
-	</c:if>
-	<c:if test="${myInfo==null }">
-	승률 데이터 없음 하셈	
-	<br/>
-	</c:if>
-	
-	
-	
-	
-	보고있는 영상 : 
-	<c:if test="${not empty notfinished}">
-		<c:forEach var="nf" items="${notfinished}">
-			<a href="detailEduBoard?videoNum=${nf.videoNum}">${nf.title}</a> 
-		</c:forEach>
-	</c:if>
->>>>>>> Muk
-	
+		</c:if>	
 	<c:if test="${empty notfinished}">
 		없음
 	</c:if> 

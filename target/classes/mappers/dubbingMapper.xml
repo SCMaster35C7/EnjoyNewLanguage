@@ -58,7 +58,6 @@
 		and 
 			d.dubbingnum = #{dubbingnum}
 	</select>
-<<<<<<< HEAD
 	
 	<select id="replyDubAll" parameterType="int" resultType="Reply">
 		select
@@ -207,6 +206,4 @@
 			, #{content}
 		)
 	</insert>
-=======
->>>>>>> Muk
 </mapper>

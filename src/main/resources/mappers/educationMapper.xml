@@ -264,8 +264,7 @@
 		and
 			recommendtable = #{recommendtable}
 	</update>
-<<<<<<< HEAD
-	
+
 	<delete id="deleteAllRecommend" parameterType="map">
 		delete from
 			recommendation
@@ -299,6 +298,4 @@
 		where
 		  rownum &lt;= 5
 	</select>
-=======
->>>>>>> Muk
 </mapper>

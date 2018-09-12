@@ -187,8 +187,6 @@
 			</div>
 		</div>	
 	</div>
-	  
-<<<<<<< HEAD
 	<!-- 메인 -->
   <div class="wrapper">
 	<!-- sidenav -->	  
@@ -240,41 +238,6 @@
 			</div>	  
 		</section>
 	</div>
-=======
-	  <!-- 메인 -->
-	  <div class="container">
-	  	<h3 class="center">인기 항목</h3>
-	  </div>
-	
-	  <div class="carousel">
-		<a class="carousel-item" href="#one!"><img src="images/liverpool.jpg"></a>
-		<a class="carousel-item" href="#two!"><img src="images/torres.jpg"></a>
-		<a class="carousel-item" href="#three!"><img src="images/berna.jpg"></a>
-	    <a class="carousel-item" href="#four!"><img src="images/ronaldo.jpg"></a>
-	    <a class="carousel-item" href="#five!"><img src="images/kaka.jpeg"></a>
-  	  </div>	  
-	
-	<c:if test="${empty sessionScope.useremail }">
-		<a href="login">login</a>
-	</c:if>
-	
-	
-	
-	
-	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
-	
-	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
-	<a href="TryRetake?videoNum=9">재시험 테스트</a>
-	<c:if test="${plzLogin!=null}">
-		<script type="text/javascript">
-			$(function(){
-				alert("${plzLogin}");
-			});
-		</script>
-	</c:if>
-	<a href="DubbingWrite?videoNum=9">더빙작성 게시판 테스트</a>
-	<a href="dubDetail?dubbingnum=23">더빙 싱크 테스트</a>
->>>>>>> Muk
 	
 	<footer class="page-footer">
     	<div class="container">

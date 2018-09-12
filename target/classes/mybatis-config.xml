@@ -6,7 +6,11 @@
   
 <configuration>
 	<typeAliases>
+	
     	<typeAlias type="global.sesoc.Youtube.dto.Reply" alias="Reply"/> 
+    	<typeAlias type="global.sesoc.Youtube.dto.SubtitlesList" alias="SubtitlesList"/>
+    	<typeAlias type="global.sesoc.Youtube.dto.InvSubtitle" alias="InvSubtitle"/>
+    	<typeAlias type="global.sesoc.Youtube.dto.Black" alias="Black"/> 
 		<typeAlias type="global.sesoc.Youtube.dto.Video" alias="Video"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Member" alias="Member"/>
 		<typeAlias type="global.sesoc.Youtube.dto.Dubbing" alias="Dubbing"/>

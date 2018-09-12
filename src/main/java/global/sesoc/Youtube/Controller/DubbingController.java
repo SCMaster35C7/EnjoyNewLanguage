@@ -2,7 +2,6 @@ package global.sesoc.Youtube.Controller;
 
 import java.io.FileInputStream;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +23,6 @@ import global.sesoc.Youtube.dto.Black;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Reply;
-import global.sesoc.Youtube.util.EasySubtitlesMaker;
 import global.sesoc.Youtube.util.FileService;
 
 @Controller
@@ -76,18 +74,6 @@ public class DubbingController {
 		model.addAttribute("edu", edu);
 		
 		return "DubbingBoard/dubbingWrite";
-	}
-
-	@RequestMapping(value = "getSubtitles", method = RequestMethod.GET)
-	@ResponseBody
-	public Map<String, String> getSubtitles(String subFileName) {
-		String jamacURL = eduFileRoot + "/" + subFileName;
-		EasySubtitlesMaker esm = new EasySubtitlesMaker();
-		Map<String, String> result = esm.GetSubtitles(jamacURL);
-		if (result.isEmpty())
-			return null;
-		else
-			return result;
 	}
 
 	@RequestMapping(value = "savedubbing", method = RequestMethod.POST)
