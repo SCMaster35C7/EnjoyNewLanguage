@@ -52,9 +52,50 @@ public class MemberContoller {
 	 * @param userpwd
 	 * @param session
 	 * @param model
+	 * @return 
 	 * @return
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/statusCheck", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public @ResponseBody String statusCheck(@RequestBody Member member, HttpSession session){
+		Member selectedM = mRepository.selectOneFromMember(member);
+		
+		/*
+		 1. 인증 유무 확인
+		 		return checkFailure;
+		 2. 비밀번호 유무 확인
+		 		if(비밀번호/ 아이디 다르면 == null)
+		 		 		return loginFailure;
+		 		 else
+		 		 		return loginSuccess; 세션저장 -> jsp에서 리프레시
+		 
+		 * 
+		 */
+		if (selectedM!=null) {
+			//1.
+			if (selectedM.getStatus()==0) {
+				return "checkEmail";
+			} else { //로그인가능
+				session.setAttribute("useremail", selectedM.getUseremail());
+				session.setAttribute("admin", selectedM.getAdmin());
+				session.setAttribute("usernick", selectedM.getUsernick());
+				System.out.println("닉네임 확인 : " +  selectedM.getUsernick());
+				session.setAttribute("gender", selectedM.getGender());
+				session.setAttribute("birth", selectedM.getBirth());
+
+				System.out.println("로그인한넘" + selectedM);
+
+				// 접속일 업뎃
+				mRepository.updateLastAccess(selectedM.getUseremail());
+				return "loginSuccess";
+			}
+		} else {
+			//아디비번없을때
+			return "loginFailure";
+		}
+	}
+	
+	
+	/*@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(String useremail, String userpwd, HttpSession session, Model model) {
 
 		Member m = new Member();
@@ -87,15 +128,17 @@ public class MemberContoller {
 				mRepository.updateLastAccess(member.getUseremail());
 
 				return "redirect:/";
-			}
-		} else {
+			//}
+		} 
+		else {
 			model.addAttribute("useremail", useremail);
 			model.addAttribute("userpwd", userpwd);
 			model.addAttribute("message", "아이디나 비밀번호가 틀렸습니다.");
 
 			return "Member/login";
 		}
-	}
+		return "fail"
+	}*/
 
 	/**
 	 * 로그아웃을 해준다.
@@ -129,10 +172,11 @@ public class MemberContoller {
 	 */
 	@RequestMapping(value = "/emailCheck", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String emailCheck(String useremail) {
-		// System.out.println("이메일 아이디 : "+useremail);
+		 System.out.println("이메일 체크 : "+useremail);
 
 		Member m = new Member();
 		m.setUseremail(useremail);
+		System.out.println("널이니*****"+mRepository.selectOneFromMember(m));
 		if (mRepository.selectOneFromMember(m) == null) {
 			return "사용 가능한 이메일 입니다";
 		} else
@@ -149,7 +193,7 @@ public class MemberContoller {
 			return "사용 가능한 닉네임 입니다";
 			/* return a; */
 		} else
-			return "중복된 닉네임 입니다.";
+			return "중복된 닉네임 입니다";
 		/* return b; */
 
 	}
@@ -247,7 +291,7 @@ public class MemberContoller {
 	@RequestMapping(value = "/myPage", method = RequestMethod.GET)
 	public String myPage(Model model, HttpSession session) {
 		String useremail = (String) session.getAttribute("useremail");
-		int myChallengeCount = mRepository.checkChallengeCount(useremail);
+		Integer myChallengeCount = mRepository.checkChallengeCount(useremail);
 		// x/0 에러를 방지하기 위해 먼저 분모부분을 체크하고 해당 경우를 반영
 		Member checkIfo = new Member();
 		checkIfo.setUseremail(useremail);

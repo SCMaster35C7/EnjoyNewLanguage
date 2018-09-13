@@ -45,10 +45,10 @@ public class DubbingController {
 		return "DubbingBoard/dubbingBoard";
 	}
 
-	@RequestMapping(value = "VideoSearch", method = RequestMethod.GET)
+	/*@RequestMapping(value = "VideoSearch", method = RequestMethod.GET)
 	public String VideoSearch() {
 		return "DubbingBoard/VideoSearch";
-	}
+	}*/
 
 	// 더빙 디테일
 	@RequestMapping(value = "dubDetail", method = RequestMethod.GET)

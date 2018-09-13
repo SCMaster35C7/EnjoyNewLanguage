@@ -11,12 +11,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	
 	<title>Enjoy Language</title>
-	
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
@@ -42,94 +39,123 @@
 			//캐러셀
 			$('.carousel').carousel();
 			
-			$('#loginBtn').on('click',function(){
-				var useremail = $('#useremail');
-				var userpwd = $('#userpwd');
+			$('#sticker').on('click', function() {
+				$('#checkline').val('');
+			});
+			
+			$('#loginBtn').on('click', function() {
+				var useremail = $('#useremail').val();
+				var userpwd = $('#userpwd').val();
 				
-				$('#loginForm').submit();
+				var sendData = {	
+						"useremail":useremail
+						,"userpwd": userpwd
+				};
+				
+				$.ajax({
+					method	:	'post'
+					, url	: 'statusCheck'
+					, data	: JSON.stringify(sendData)
+					, dataType	: 'text'
+					, contentType: 'application/json; charset=utf-8'
+					, success	: function(resp){
+						if (resp=="checkEmail") {
+							$("#checkline").val('이메일 인증 먼저 해주세요!');
+						}else if (resp=="loginFailure") {
+							//alert('담으로가자');
+							//$('#loginForm').submit();
+							$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
+						} else {
+							window.location.reload();
+						}
+					}, error:function(resp, code, error) {
+						alert("resp : "+resp+", code:"+code+", error:"+error);
+					}
+				});//ajax
+			});
+			
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
+				}
 			});
 		});
-		
-		function dictionary(){
-			var win= window.open('dictionaryBoard','_black',"width=340px,height=250px");
-			win.focus();
-		}
 	</script>
+	<style type="text/css">
+		#checkline{
+			text-align: center;
+			color: red;
+		}
+	</style>
 </head>
 
 <body>
 	<header>
-	<!-- Dropdown Structure -->
-		<ul id="dropdown1" class="dropdown-content">
-		  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  		<c:if test="${plzLogin!=null}">
-					<script type="text/javascript">
-							$(function(){
-								alert("${plzLogin}");
-							});
-					</script>
-				</c:if>
-		  </li>
-		  <li class="divider"></li>
-		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		  <li><a onclick="dictionary()">Dictionary</a></li>
-		</ul>
-	
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
+
 		<!-- nav -->
 		<nav class="nav-extended">
-		  <div class="nav-wrapper">
-		    <!-- sidenav trigger -->
-		    <ul class="left">
-		    	<li>
-		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-		    			<i class="material-icons">menu</i>
-		    		</a>
-		    	</li>
-		    </ul>
-		    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-		
-		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
-		    <ul class="right hide-on-med-and-down" >
-			  <li>
-			  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
-                  		<i class="material-icons" style="margin-left:-50px;">search</i>
-                  		<input  type="search" name="Search" class="header-search-input z-depth-2" placeholder="SEARCH WORD"/>
-             		</div>
-			  </li>		 
-		      <li><a href="eduBoard">영상게시판</a></li>
-		      <li><a href="dubbingBoard">더빙게시판</a></li>
-		      <li><a href="InvestigationBoard">자막검증게시판</a></li>
-		      <!-- Dropdown Trigger -->
-		      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-		    </ul>
-		</div>		
-		  <div class="nav-content">
+		  	<div class="nav-wrapper">
+			    <!-- sidenav trigger -->
+			    <ul class="left">
+			    	<li>
+			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+			    			<i class="material-icons">menu</i>
+			    		</a>
+			    	</li>
+			    </ul>
+			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+			     
+			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+			    <ul class="right hide-on-med-and-down">
+				  	<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>		 
+			      	<li><a href="eduBoard">영상게시판</a></li>
+			      	<li><a href="dubbingBoard">더빙게시판</a></li>
+			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
+			      	<li><a href="myPage">마이페이지</a></li>
+			    </ul>
+			</div>		
+			<div class="nav-content">
+
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
-	        		<i class="medium material-icons">person</i>
-	     		</a>
-		  </div>
-		
+		        	<i class="medium material-icons" id="sticker">person</i>
+		     	</a>
+			</div>
 		</nav>
 	</header>
 	
 	 <!-- 창 축소시 사이드 nav -->
-		  <ul class="sidenav" id="small-navi">
-		    <li>
-			  		<form>
-        <div class="input-field">
-          <input id="search" type="search" required>
-          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons">close</i>
-        </div>
-      </form>
-			  </li>		 
-		    <li><a href="eduBoard">영상게시판</a></li>
-		    <li><a href="dubbingBoard">더빙게시판</a></li>
-		    <li><a href="InvestigationBoard">자막게시판</a></li>
-		    <li><a href="myPage">마이페이지</a></li>
-		    
-	  	  </ul>
+	<ul class="sidenav" id="small-navi">
+		<li>
+        	<div class="input-field">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<i class="material-icons">close</i>
+       		</div>
+		</li>		 
+		<li><a href="eduBoard">영상게시판</a></li>
+		<li><a href="dubbingBoard">더빙게시판</a></li>
+		<li><a href="InvestigationBoard">자막게시판</a></li>
+		<li><a href="myPage">마이페이지</a></li>
+	</ul>
 
 	  	  
 	  <!-- 로그인 MODAL -->
@@ -152,15 +178,16 @@
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
+						<c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mode_edit</i>
 								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
 								<label for="userpwd">PASSWORD</label>
+								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
 							</div>
 						</c:if>
 					</div>
-					
+					<!-- 글씨뜨는거 -->
 					<c:if test="${not empty sessionScope.useremail }">
 						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 					</c:if>
@@ -241,8 +268,8 @@
 					<a class="waves-effect" href="#">회원탈퇴</a>
 				</li>
 			</ul>
-		</aside>
-			
+		</aside>			
+
 		<section>	
 			<div class="container">
 			  	<h3 class="center">인기 항목</h3>
@@ -251,7 +278,7 @@
 			<div class="carousel" >
 				<c:forEach var="eList" items="${eList}">
 					<a class="carousel-item" href="#one!" style="width:500px; height:auto;">
-						<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>;
+						<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>
 					</a>
 				</c:forEach>
 			</div>	  
