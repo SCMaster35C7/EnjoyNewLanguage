@@ -429,7 +429,8 @@ $('#loginBtn').on('click', function() {
 	<section>
     <!-- Page Content -->
 	<div class="container">
-		<h4 class="center"><a href="eduBoard">공부게시판메인</a></h4>
+		<h4 class="left"><a href="eduBoard">추천학습영상</a></h4>
+		<div class="row"></div>
 		<div class="row">
 			
 		<c:if test="${not empty eduList}">

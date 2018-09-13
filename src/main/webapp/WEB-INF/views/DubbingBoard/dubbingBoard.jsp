@@ -110,6 +110,17 @@ $(document).ready(function() {
 				return;
 			}
 				$('#VideoSearch').modal();
+				$(document).keyup(function(event){
+	    			if(event.keyCode=='13'){
+	    				if($('#search').val().length == 0) {
+	           				alert("검색어를 입력하세요.");
+	           				$('#search').focus();
+	           				return;
+	           			}
+	            		init();
+	            		search();
+	    			}
+	    		});  		
 		}); 
 	});
 </script>
@@ -333,14 +344,14 @@ $(document).ready(function() {
 
 	 			<h4 class="center" style="color:red;">YouTube Viral Search</h4>
 				 <div class="row col s12">
-			        <form action="#">
+			     
 			     		<div class="input-field col s9">
 			           		<p><input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" /></p>
 			            </div>
 			            <div class="input-field col s3">
 			                <p><input type="button" id="searchBtn" value="Search" class="btn"></p>
 			            </div>
-			        </form>
+			      
 			        	<div id="results"></div>
 			      	</div>
 			  	</div>
@@ -389,18 +400,6 @@ $(document).ready(function() {
     <script>
     var pageName='VideoSearch';
     	$(function() {
-    		$(document).keyup(function(event){
-    			if(event.keyCode=='13'){
-    				if($('#search').val().length == 0) {
-           				alert("검색어를 입력하세요.");
-           				$('#search').focus();
-           				return;
-           			}
-            		init();
-            		search();
-    			}
-    		});  		
- 
        		$("#searchBtn").on('click', function() {
        			if($('#search').val().length == 0) {
        				alert("검색어를 입력하세요.");
