@@ -57,11 +57,7 @@ public class MemberContoller {
 	 */
 	@RequestMapping(value = "/statusCheck", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String statusCheck(@RequestBody Member member, HttpSession session){
-		Member m = new Member();
-		m.setUseremail(member.getUseremail());
-		m.setUserpwd(member.getUserpwd());
-		
-		Member selectedM = mRepository.selectOneFromMember(m);
+		Member selectedM = mRepository.selectOneFromMember(member);
 		
 		/*
 		 1. 인증 유무 확인
@@ -79,16 +75,17 @@ public class MemberContoller {
 			if (selectedM.getStatus()==0) {
 				return "checkEmail";
 			} else { //로그인가능
-				session.setAttribute("useremail", member.getUseremail());
-				session.setAttribute("admin", member.getAdmin());
-				session.setAttribute("usernick", member.getUsernick());
-				session.setAttribute("gender", member.getGender());
-				session.setAttribute("birth", member.getBirth());
+				session.setAttribute("useremail", selectedM.getUseremail());
+				session.setAttribute("admin", selectedM.getAdmin());
+				session.setAttribute("usernick", selectedM.getUsernick());
+				System.out.println("닉네임 확인 : " +  selectedM.getUsernick());
+				session.setAttribute("gender", selectedM.getGender());
+				session.setAttribute("birth", selectedM.getBirth());
 
-				System.out.println("로그인한넘" + member);
+				System.out.println("로그인한넘" + selectedM);
 
 				// 접속일 업뎃
-				mRepository.updateLastAccess(member.getUseremail());
+				mRepository.updateLastAccess(selectedM.getUseremail());
 				return "loginSuccess";
 			}
 		} else {

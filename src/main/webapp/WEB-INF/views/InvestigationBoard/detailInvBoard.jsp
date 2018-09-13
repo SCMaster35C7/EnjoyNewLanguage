@@ -238,7 +238,7 @@
 	          	result += ' <p class="text" >' + resp[i].content + '</p>';
 	          	result += '<p class="date" >' + resp[i].regdate + '</p>';
 	          	result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-	      		if (usernick==resp[i].usernick) {
+	      		if (useremail==resp[i].useremail) {
 					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
 					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
