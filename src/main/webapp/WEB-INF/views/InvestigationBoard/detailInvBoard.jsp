@@ -257,22 +257,29 @@
 	    	
 	    	var result = '';
 			for ( var i in resp) {
-				result += '<div class="subtitle">'
-				result += ' <span class="">'+resp[i].usernick+'</span>'
-				result += ' <span class="">'+resp[i].subtitleName+'</span>'
-				result += '	<input class="subStart btn" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
+				result += '<div class="row">';
+				result += '  <div class="subtitle" style="display:inline-block;">';
+				result += '    <span class="">'+resp[i].usernick+'</span>'
+				result += '    <span class="">'+resp[i].subtitleName+'</span>'
+				result += '  </div>';
+				result += '  <div class="right" style="display:inline-block;">';
+				result += '	  <a class="subStart btn-floating tooltipped" data-position="top" data-tooltip="PLAY" style="margin-left:85px;" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">play_arrow</i></a>';
 				if(useremail == resp[i].useremail) {
-					result += '	<a class="subDelete btn-floating" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">add</i></a>';
+					result += '	<a class="subDelete btn-floating" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">clear</i></a>';
 				}
-				result += '	<button class="btn subRecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
-				result += '		<img alt="" src="images/tup.png"> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
-				result += '	</button>';
-				result += '	<button class="btn subDecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
-				result += '		<img alt="" src="images/tdown.png"> <span class="subDecoCount">'+resp[i].decommendation+'</span>';
-				result += '	</button>';
+				result += '	  <button class="btn subRecommendation " style="padding-left:4px; padding-right:4px;" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		  <i class="material-icons">thumb_up</i> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
+				result += '	  </button>';
+				result += '	  <button class="btn subDecommendation " style="padding-left:4px; padding-right:4px;" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		<i class="material-icons">thumb_down</i> <span class="subDecoCount">'+resp[i].decommendation+'</span>';
+				result += '	  </button>';
+				result += '  </div>';
 				result += '</div>';
+				result += '<br>';
 			}
-
+			
+		
+			
 			$("#subtitleList").html(result);
 			$(".subStart").on('click', subStart);
 			$(".subDelete").on('click', subDelete);
@@ -536,6 +543,13 @@
 		}
 	</script>
 </head>
+<style>
+       .scroll-box {
+           overflow-y: scroll;
+           height: 300px;
+           padding: 1rem
+       }
+</style>
 <body>
 	<header>
 	<!-- Dropdown Structure -->
@@ -581,7 +595,7 @@
 		  </div>
 	
 		  <div class="nav-content">
-				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
+				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="bottom" data-tooltip="LOGIN!" href="#modal1">
 	        		<i class="medium material-icons">person</i>
 	     		</a>
 		  </div>
@@ -696,15 +710,69 @@
 		
 			
 			<section>
-				<div class="container">
+				<div class="container" style="width:98%;">
 				<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 				<!--<div id="youtube"></div>   -->
-					<div class="video-container z-depth-2">
-						<iframe id="youtube" width="960" height="490"
-							src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
-							frameborder="0" allowfullscreen>
-						</iframe>
-					</div>
+					<div class="row">
+						<div class="col s8 m8">
+							<div class="video-container z-depth-2" >
+								<iframe id="youtube" width="960" height="490"
+									src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+									frameborder="0" allowfullscreen>
+								</iframe>
+							</div>
+							
+							<div class="row" style="margin-top:15px;">
+							<div class="col s8 m8 l8"><h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:680px; padding:5px; margin-top:0px;"></h6></div>
+							<div class="right" style="margin-right:15px;">
+								<input type="hidden" value="${inv.investigationnum}">
+								<button class="btn recommendation" type="button">
+									<i class="material-icons">thumb_up</i>
+									<span id="recoCount">${inv.recommendation}</span>
+								</button>
+								<button class="btn decommendation" type="button">
+									<i class="material-icons">thumb_down</i> 
+									<span id="decoCount">${inv.decommendation}</span>
+								</button>
+							</div>
+						</div>
+						</div>
+							<div class="col s4 m4 l4">
+					      		<div class="card" style="height:520px; margin-top:0px;">
+									<div class="card-content">
+										<span class="card-title activator grey-text text-darken-4">
+											자막목록
+										</span>
+									</div>
+									<div class="card-content scroll-box">
+			          					<div id="subtitleList"></div>
+			        				</div>
+			        				<div class="card-action" style="padding:10px;">
+							         	 <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
+											 <div class="file-field">
+											     <div class="btn right" style="margin-left:30px;">
+											          <span>File</span>
+											          <input type="file" id="subtitleFile">
+											      </div>
+											  
+											      <div class="file-path-wrapper">
+											      	  <input class="file-path validate" type="text">
+											      </div>
+											  </div>	
+											 <div class="row">
+												 <div class="input-field col s9" style="margin-left:10px;">
+						          					<input id="subtitleName" type="text" class="validate"/>
+						         					 <label for="subtitleName">등록 파일명</label>
+						       					 </div>
+						       				
+												 <div class="input-field col s2" style="margin-top:25px;">
+													<input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
+												 </div>
+											 </div>	
+										</form>
+							        </div>
+							    </div>
+							 </div>
 	<script>
       // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
       var tag = document.createElement('script');
@@ -743,48 +811,10 @@
         }
    </script>
 
-
-					<div class="row">
-						<div class="right" style="margin-top:15px; margin-right:12px;">
-							<input type="hidden" value="${inv.investigationnum}">
-							<button class="btn recommendation" type="button">
-								<i class="material-icons">thumb_up</i>
-								<span id="recoCount">${inv.recommendation}</span>
-							</button>
-							
-							<button class="btn decommendation" type="button">
-								<i class="material-icons">thumb_down</i> 
-								<span id="decoCount">${inv.decommendation}</span>
-							</button>
-						</div>
-	
-						<form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
-							 <div class="file-field input-field col s6 m6 l6">
-							     <div class="btn">
-							          <span>File</span>
-							          <input type="file" id="subtitleFile">
-							      </div>
-							  
-							      <div class="file-path-wrapper">
-							      	  <input class="file-path validate" type="text">
-							      </div>
-							  </div>	
-							 
-							 <div class="input-field col s4 m4 l4">
-	          					<input id="subtitleName" type="text" class="validate" >
-	         					 <label for="subtitleName">등록 파일명</label>
-	       					 </div>
-	       				
-							 <div class="input-field col s2 m2 l2" style="margin-top:25px;">
-								<input type="button" id="registSubtitle" class="btn" value="자막 등록"/>
-							 </div>	
-						</form>
-					</div>
-				<div id="subtitleList">
-					
+						
 				</div>
 
-          		<div id="textbox"></div>
+          		
 
 			          <div>
 			            <form id="replyform" method="post">
@@ -809,7 +839,7 @@
 <footer class="page-footer">
        <div class="container">
          <div class="row">
-            <div class="col l6 s12">
+            <div class="col l12 m12 s12">
               <h5 class="white-text">Footer Content</h5>
                 <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
             </div>
