@@ -38,8 +38,8 @@
 
 		//캐러셀
 		$('.carousel').carousel();
-
-		$('#loginBtn').on('click', function() {
+		
+		$('#loginBtn').on('click',function(){
 			var useremail = $('#useremail');
 			var userpwd = $('#userpwd');
 
