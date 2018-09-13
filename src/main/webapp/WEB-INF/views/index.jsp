@@ -40,7 +40,6 @@
 			$('.carousel').carousel();
 			
 			$('#sticker').on('click', function() {
-				//alert('emf어오냐');
 				$('#checkline').val('');
 			});
 			
@@ -99,83 +98,64 @@
 
 <body>
 	<header>
-	<!-- Dropdown Structure -->
-		<ul id="dropdown1" class="dropdown-content">
-		  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  		<c:if test="${plzLogin!=null}">
-					<script type="text/javascript">
-							$(function(){
-								alert("${plzLogin}");
-							});
-					</script>
-				</c:if>
-		  </li>
-		  <li class="divider"></li>
-		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		</ul>
-	
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
+
 		<!-- nav -->
 		<nav class="nav-extended">
-		  <div class="nav-wrapper">
-		    <!-- sidenav trigger -->
-		    <ul class="left">
-		    	<li>
-		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-		    			<i class="material-icons">menu</i>
-		    		</a>
-		    	</li>
-		    </ul>
-		    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-		  <!--     <form>
-		        <div class="input-field" style="diplay:inline-block">
-		          <input id="search" type="search" required>
-		          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-		          <i class="material-icons">close</i>
-		        </div>
-		      </form> -->
-		     
-		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
-		    <ul class="right hide-on-med-and-down">
-			  	<li>
-			  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:200px; margin-left:-5%;">
-                  		<i class="material-icons" style="margin-left:-50px;">search</i>
-                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
-              		</div>
-			  	</li>		 
-		      	<li><a href="eduBoard">영상게시판</a></li>
-		      	<li><a href="dubbingBoard">더빙게시판</a></li>
-		      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
-		      	<!-- Dropdown Trigger -->
-		      	<li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-		    </ul>
-		</div>		
-		  <div class="nav-content">
+		  	<div class="nav-wrapper">
+			    <!-- sidenav trigger -->
+			    <ul class="left">
+			    	<li>
+			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+			    			<i class="material-icons">menu</i>
+			    		</a>
+			    	</li>
+			    </ul>
+			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+			     
+			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+			    <ul class="right hide-on-med-and-down">
+				  	<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>		 
+			      	<li><a href="eduBoard">영상게시판</a></li>
+			      	<li><a href="dubbingBoard">더빙게시판</a></li>
+			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
+			      	<li><a href="myPage">마이페이지</a></li>
+			    </ul>
+			</div>		
+			<div class="nav-content">
+
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
-	        		<i class="medium material-icons" id="sticker">person</i>
-	     		</a>
-		  </div>
-		
+		        	<i class="medium material-icons" id="sticker">person</i>
+		     	</a>
+			</div>
 		</nav>
 	</header>
 	
 	 <!-- 창 축소시 사이드 nav -->
-		  <ul class="sidenav" id="small-navi">
-		    <li>
-			  		<form>
-        <div class="input-field">
-          <input class="search" type="search" required>
-          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons">close</i>
-        </div>
-      </form>
-			  </li>		 
-		    <li><a href="eduBoard">영상게시판</a></li>
-		    <li><a href="dubbingBoard">더빙게시판</a></li>
-		    <li><a href="InvestigationBoard">자막게시판</a></li>
-		    <li><a href="myPage">마이페이지</a></li>
-		    
-	  	  </ul>
+	<ul class="sidenav" id="small-navi">
+		<li>
+        	<div class="input-field">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<i class="material-icons">close</i>
+       		</div>
+		</li>		 
+		<li><a href="eduBoard">영상게시판</a></li>
+		<li><a href="dubbingBoard">더빙게시판</a></li>
+		<li><a href="InvestigationBoard">자막게시판</a></li>
+		<li><a href="myPage">마이페이지</a></li>
+	</ul>
 
 	  	  
 	  <!-- 로그인 MODAL -->
@@ -198,16 +178,16 @@
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
+						<c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mode_edit</i>
 								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
 								<label for="userpwd">PASSWORD</label>
+								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
 							</div>
 						</c:if>
 					</div>
-						 <!-- 글씨뜨는거 -->
-						 <input id="checkline" value="" type="text" style="border-bottom: none;"  />
+					<!-- 글씨뜨는거 -->
 					<c:if test="${not empty sessionScope.useremail }">
 						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 					</c:if>
