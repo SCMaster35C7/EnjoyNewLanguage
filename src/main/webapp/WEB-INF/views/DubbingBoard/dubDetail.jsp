@@ -15,11 +15,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
 	<title>Insert title here</title>
-	<style>
-		th{
-			
-		}
-	</style>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
 		//css
@@ -36,10 +31,6 @@
 			
 			//modal open
 			$('#modal1').modal();
-			
-			$('#back').on('click', function() {
-				
-			});
 			
 			//side-nav open
 			$('.sidenav').sidenav();
@@ -200,7 +191,7 @@
 				result +=			'<td>' + resp[i].regdate + '</td>';
 				result +=			'<td>' + resp[i].blackcount + '</td>';
 				result +=			'<td colspan="2">';
-				if (usernick==resp[i].usernick) {
+				if (useremail==resp[i].useremail) {
 					result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
 					result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
@@ -367,9 +358,8 @@
 	</script>
 </head>
 <body>
-
 	<header>
-	<!-- Dropdown Structure -->
+		<!-- Dropdown Structure -->
 		<ul id="dropdown1" class="dropdown-content">
 		  <li><a href="myPage">마이페이지</a></li>
 		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
@@ -384,7 +374,7 @@
 		  <li class="divider"></li>
 		  <li><a href="searchTest">Youtube Search테스트</a></li>
 		</ul>
-	<!-- nav -->
+		<!-- nav -->
 		<nav class="nav-extended">
 		  <div class="nav-wrapper">
 		    <!-- sidenav trigger -->
@@ -419,48 +409,45 @@
 		</nav>
 	</header>
 	
-	 <!-- 창 축소시 사이드 nav -->
-		  <ul class="sidenav" id="small-navi">
-		    <li><a href="eduBoard.jsp">영상게시판</a></li>
-		    <li><a href="dubbingBoard">더빙게시판</a></li>
-		    <li><a href="InvestigationBoard">자막게시판</a></li>
-	  	  </ul>
-	  
-	 
+	<!-- 창 축소시 사이드 nav -->
+	<ul class="sidenav" id="small-navi">
+		<li><a href="eduBoard.jsp">영상게시판</a></li>
+		<li><a href="dubbingBoard">더빙게시판</a></li>
+		<li><a href="InvestigationBoard">자막게시판</a></li>
+	</ul>
 	  	  
-	  <!-- 로그인 MODAL -->
-		<div id="modal1" class="modal">
-			<div class="modal-content">
+	<!-- 로그인 MODAL -->
+	<div id="modal1" class="modal">
+		<div class="modal-content">
 			<div class="container">
-			
 				<form class="col s12" id=loginForm action="login" method="POST">
-				<div class="row">
-					<h4 class="center-align">LOGIN</h4>
-				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
-						</c:if>
-					</div>
-				
-					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-							</div>
-						</c:if>
-					</div>
+						<h4 class="center-align">LOGIN</h4>
 					
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
-				</div>	
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mail</i>
+									<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+									<label for="useremail">EMAIL</label>
+								</div>
+							</c:if>
+						</div>
+					
+						<div class="row">
+						<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mode_edit</i>
+									<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+									<label for="userpwd">PASSWORD</label>
+								</div>
+							</c:if>
+						</div>
+						
+						<c:if test="${not empty sessionScope.useremail }">
+							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+						</c:if>
+					</div>	
 				
 					<div class="row">
 						<div class="col s10">
@@ -500,39 +487,43 @@
 				</form>
 			</div>
 		</div>	
-	  </div>
+	</div>
 	
-		<div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<!--  <img src="images/">  -->
-							</div>
+	<div class="wrapper">
+		<!-- sidenav -->	  
+		<aside>	  	  
+	 		<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+				<li>
+					<div class="user-view">
+						<div class="background">
+							<!--  <img src="images/">  -->
+						</div>
 							<a href="#user"> <!-- <img class="circle" src="images/"> --></a>
 							<a href="#name"><span class="white-text name">${usernick}</span></a> 
 							<a href="#email"><span class="white-text email">${useremail}</span></a>
-						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
-				</ul>
-			</aside>
-				
+					</div>
+				</li>
+				<li>
+					<a href="#!"><i class="material-icons">cloud</i>FirstLink With Icon</a>
+				</li>
+				<li>
+					<a href="#!">wishList</a>
+				</li>
+				<li>
+					<div class="divider"></div>
+				</li>
+				<li><a class="subheader">회원정보관리</a></li>
+				<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+				<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+			</ul>
+		</aside>
+		
+		<div>
+			<a onclick="goback()">더빙게시판</a>
+		</div>
 
-
-<div>
-<a onclick="goback()">더빙게시판</a>
-</div>
-
-	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-	<!--<div id="youtube"></div>   -->
+		<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+		<!--<div id="youtube"></div>   -->
 		<section>
 			<div class="container">
 			<h3 class="center">더빙게시판상세</h3>
@@ -564,7 +555,8 @@
 						</p>
 					</div>
 				</div>
-				<!--주말 댓글-->
+				
+				<!--댓글 영역-->
 				<div> 
 					<form id="replyform" class="col s12" method="post" >
 						<div class="row">
@@ -592,6 +584,7 @@
 			</div>
 		</section>
 	</div>
+	
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
 		var tag = document.createElement('script');
@@ -622,12 +615,13 @@
 		// 5. Youtube Player의 state가 변하면 적용할 함수
 		var playerState;
         function onPlayerStateChange(event) {
-            playerState = event.data == YT.PlayerState.ENDED ? '종료됨' :
-                    event.data == YT.PlayerState.PLAYING ? '재생 중' :
-                    event.data == YT.PlayerState.PAUSED ? '일시중지 됨' :
-                    event.data == YT.PlayerState.BUFFERING ? '버퍼링 중' :
-                    event.data == YT.PlayerState.CUED ? '재생준비 완료됨' :
-                    event.data == -1 ? '시작되지 않음' : '예외';
+            playerState = 
+            	event.data == YT.PlayerState.ENDED ? '종료됨' :
+                event.data == YT.PlayerState.PLAYING ? '재생 중' :
+                event.data == YT.PlayerState.PAUSED ? '일시중지 됨' :
+                event.data == YT.PlayerState.BUFFERING ? '버퍼링 중' :
+                event.data == YT.PlayerState.CUED ? '재생준비 완료됨' :
+                event.data == -1 ? '시작되지 않음' : '예외';
             
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
