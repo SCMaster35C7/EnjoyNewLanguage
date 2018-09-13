@@ -48,6 +48,19 @@
 				
 				$('#loginForm').submit();
 			});
+			
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
+				}
+			});
 		});
 	
 		var useremail = "${sessionScope.useremail}";
@@ -518,7 +531,7 @@
 		function replyUpdate() {
 			replynum = $(this).attr('data-rno');
 
-			var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
+			var nick = $(this).parent().children('.nick').text();
 			var replytext = $(this).parent().children('.text').text();
 
 			if ("${usernick}" != nick) {
@@ -560,16 +573,16 @@
 			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			    <ul class="right hide-on-med-and-down">
-			      	<c:if test="${not empty sessionScope.useremail }">
-						<li>
-							<a href="logout">${sessionScope.useremail }님아logout</a>
-				      	</li>
-					</c:if>
+			      	<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:640px;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>	
 				    <li><a href="eduBoard">영상게시판</a></li>
 				    <li><a href="dubbingBoard">더빙게시판</a></li>
 				    <li><a href="InvestigationBoard">자막검증게시판</a></li>
-			      	<!-- Dropdown Trigger -->
-			      	<li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+				    <li><a href="myPage">마이페이지</a></li>
 			    </ul>
 		   	</div>
 	
@@ -583,9 +596,17 @@
 	
 	 <!-- 창 축소시 사이드 nav -->
 	<ul class="sidenav" id="small-navi">
-		<li><a href="eduBoard.jsp">영상게시판</a></li>
+		<li>
+        	<div class="input-field">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<i class="material-icons">close</i>
+       		</div>
+		</li>		 
+		<li><a href="eduBoard">영상게시판</a></li>
 		<li><a href="dubbingBoard">더빙게시판</a></li>
 		<li><a href="InvestigationBoard">자막게시판</a></li>
+		<li><a href="myPage">마이페이지</a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->

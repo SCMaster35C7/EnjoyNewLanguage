@@ -208,8 +208,6 @@
 				</script>
 			</c:if>
 		</li>
-		<li class="divider"></li>
-		<li><a href="searchTest">Youtube Search테스트</a></li>
 	</ul>
 	
 	<!-- nav -->
@@ -361,21 +359,18 @@
 				</div>				
 				<h4 class="center" style="color:red;">YouTube Viral Search</h4>
 				 
-				 <div class="row col s12">
-			        	<form action="#">
-						    <div class="input-field col s9">
-			            		<input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" />
-			                </div>
-			                <div class="input-field col s3">
-			            	    <input type="button" id="searchBtn" value="Search" class="btn">
-			            	</div>
-			            </form>
-			        	<div id="results"></div>
-			      </div>
-			  </div>
-				
+				<div class="row col s12">
+					<div class="input-field col s9">
+			        	<input type="text" id="search" placeholder="Type something..." autocomplete="off" class="form-control" />
+			        </div>
+			        <div class="input-field col s3">
+			        	<input type="button" id="searchBtn" value="Search" class="btn">
+			        </div>
+			       	<div id="results"></div>
+				</div>
 			</div>
 		</div>
+	</div>
 	
     <!-- Page Content -->
 	<div class="wrapper">
