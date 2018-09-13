@@ -122,7 +122,7 @@
 			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			    <ul class="right hide-on-med-and-down">
 				  	<li>
-				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:640px;">
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
 	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
 	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
 	              		</div>
@@ -134,6 +134,7 @@
 			    </ul>
 			</div>		
 			<div class="nav-content">
+
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 		        	<i class="medium material-icons" id="sticker">person</i>
 		     	</a>
