@@ -551,15 +551,13 @@
 </head>
 <body>
 	<header>
-		<!-- Dropdown Structure -->
-		<ul id="dropdown1" class="dropdown-content">
-			<li>
-				<a href="myPage">마이페이지</a>
-			</li>
-		  	<li>
-		  		<a href="TryRetake?videoNum=9">재시험테스트</a>
-		  	</li>
-		</ul>
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
 		
 		<!-- nav -->
 		<nav class="nav-extended">
