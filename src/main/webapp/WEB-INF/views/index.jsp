@@ -45,7 +45,6 @@
 			});
 			
 			$('#loginBtn').on('click', function() {
-				
 				var useremail = $('#useremail').val();
 				var userpwd = $('#userpwd').val();
 				
@@ -79,13 +78,13 @@
 			$('.search').on('keydown', function(key) {
 				if (key.keyCode == 13) {
 					// naver 검색
-					$.each('.search', function(index, item) {
-						alert("index:"+index +"item :"+item);
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
 					});
-					var searchText = $('.search').val();
-					alert("search text :"+searchText);
-					var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
-					window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");					
 				}
 			});
 		});
