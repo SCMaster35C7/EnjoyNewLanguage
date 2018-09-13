@@ -138,7 +138,7 @@
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 		    <ul class="right hide-on-med-and-down">
 			  	<li>
-			  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:640px;">
+			  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:200px; margin-left:-5%;">
                   		<i class="material-icons" style="margin-left:-50px;">search</i>
                   		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
               		</div>
@@ -298,7 +298,7 @@
 			<div class="carousel" >
 				<c:forEach var="eList" items="${eList}">
 					<a class="carousel-item" href="#one!" style="width:500px; height:auto;">
-						<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>;
+						<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>
 					</a>
 				</c:forEach>
 			</div>	  
@@ -309,23 +309,26 @@
     	<div class="container">
         	<div class="row">
               	<div class="col l6 s12">
-                	<h5 class="white-text">Footer Content</h5>
-                	<p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p></p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
               	</div>
               	<div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Links</h5>
+                <h5 class="white-text">Made By</h5>
                 <ul>
-                  	<li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  	<li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  	<li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  	<li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
                 	</ul>
             	</div>
        		</div>
         </div>
        	<div class="footer-copyright">
             <div class="container">
-            © 2014 Copyright Text
+            © 2018 Copyright 일석칠조
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
         	</div>
     	</div>
