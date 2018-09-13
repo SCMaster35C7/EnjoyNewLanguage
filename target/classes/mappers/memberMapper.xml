@@ -110,7 +110,6 @@
 			m.useremail, m.usernick, m.point
 	</select>
 
-
 	<select id="checkChallengeCount" parameterType="String" resultType="int"> 
 		select 
 	 		sum(s.CHALLENGECOUNT)
