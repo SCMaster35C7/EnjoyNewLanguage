@@ -77,11 +77,8 @@ public class MemberContoller {
 				session.setAttribute("useremail", selectedM.getUseremail());
 				session.setAttribute("admin", selectedM.getAdmin());
 				session.setAttribute("usernick", selectedM.getUsernick());
-				System.out.println("닉네임 확인 : " +  selectedM.getUsernick());
 				session.setAttribute("gender", selectedM.getGender());
 				session.setAttribute("birth", selectedM.getBirth());
-
-				System.out.println("로그인한넘" + selectedM);
 
 				// 접속일 업뎃
 				mRepository.updateLastAccess(selectedM.getUseremail());

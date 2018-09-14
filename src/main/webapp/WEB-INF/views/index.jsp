@@ -135,7 +135,6 @@
 			    </ul>
 			</div>		
 			<div class="nav-content">
-
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 		        	<i class="medium material-icons" id="sticker">person</i>
 		     	</a>
