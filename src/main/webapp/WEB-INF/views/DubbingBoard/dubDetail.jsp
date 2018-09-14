@@ -137,8 +137,7 @@
 		function output(resp) {
 			//alert(JSON.stringify(resp));
 			var result = '';
-		
-<<<<<<< HEAD
+			
 			result += '<div class="row">'
 			result += '<table width="200" cellpadding="5" cellspacing="2" border="1" align="center" style="table-layout:fixed; word-break:break-all;">';
 			result += 	'<thead>';
@@ -168,18 +167,7 @@
 				result +=			'</td>';
 				result +=		'</tr>';
 				result += 	'</tbody>';
-=======
-			for ( var i in resp) {
-				result += '<div class="content">'
-				result += ' <p class="email" >' + resp[i].useremail + '</p> ';
-				result += ' <p class="nick" >' + resp[i].usernick + '</p> ';
-				result += ' <p class="text" >' + resp[i].content + '</p>';
-				result += '<p class="date" >' + resp[i].regdate + '</p>';
-				result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-				result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-				result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
-				result += ' </div>';
->>>>>>> Muk
+
 			}
 			result += '</table>';
 			result += ' </div>';
@@ -330,8 +318,6 @@
 	</script>
 </head>
 <body>
-<<<<<<< HEAD
-
 	<header>
 	<!-- Dropdown Structure -->
 		<ul id="dropdown1" class="dropdown-content">
@@ -556,17 +542,7 @@
 			</div>
 		</section>
 	</div>
-=======
-	${dubbing}
-	<br/>
-	<body>
-	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-	<!--<div id="youtube"></div>   -->
-	<iframe id="youtube" width="960" height="490"
-		src="http://www.youtube.com/embed/${dubbing.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
-		frameborder="0" allowfullscreen></iframe>
 
->>>>>>> Muk
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
 		var tag = document.createElement('script');

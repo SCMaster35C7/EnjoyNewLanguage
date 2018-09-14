@@ -22,17 +22,17 @@ DROP SEQUENCE EDUCATION_VIDEO_SEQ;			-- 교육자료용 시퀀스
 
 --1. 회원관리 테이블
 CREATE TABLE Member (
-   useremail     VARCHAR2(100)  CONSTRAINT user_useremail_pk  PRIMARY KEY,   	-- 이메일(아이디)
-   usernick      VARCHAR2(100)  CONSTRAINT user_usernick_nn   NOT NULL UNIQUE,  -- 이름
-   userpwd       VARCHAR2(100)  CONSTRAINT user_userpwd_nn    NOT NULL,      	-- 비밀번호
-   gender        CHAR(1)        CONSTRAINT user_gender_nn     NOT NULL,      	-- 성별
-   birth         DATE         	CONSTRAINT user_birth_nn      NOT NULL,      	-- 생일
-   joinDate      DATE         	DEFAULT SYSDATE,                        		-- 가입일
-   lastAccess    DATE         	DEFAULT SYSDATE,                       		 	-- 최종접속일
-   point         NUMBER         DEFAULT 0,                             		 	-- 포인트
-   warningCount  NUMBER         DEFAULT 0,                              		-- 경고수
-   admin         NUMBER         DEFAULT 1,                           			-- 관리자 유무 	(0-관리자, 1-사용자)
-   status        NUMBER 		DEFAULT 0                  						-- 인증상태 	(0-waiting, 1-complete)
+	   useremail     VARCHAR2(100)  CONSTRAINT user_useremail_pk  PRIMARY KEY,   	-- 이메일(아이디)
+	   usernick      VARCHAR2(100)  CONSTRAINT user_usernick_nn   NOT NULL UNIQUE,  -- 이름
+	   userpwd       VARCHAR2(100)  CONSTRAINT user_userpwd_nn    NOT NULL,      	-- 비밀번호
+	   gender        CHAR(1)        CONSTRAINT user_gender_nn     NOT NULL,      	-- 성별
+	   birth         DATE         	CONSTRAINT user_birth_nn      NOT NULL,      	-- 생일
+	   joinDate      DATE         	DEFAULT SYSDATE,                        		-- 가입일
+	   lastAccess    DATE         	DEFAULT SYSDATE,                       		 	-- 최종접속일
+	   point         NUMBER         DEFAULT 0,                             		 	-- 포인트
+	   warningCount  NUMBER         DEFAULT 0,                              		-- 경고수
+	   admin         NUMBER         DEFAULT 1,                           			-- 관리자 유무 	(0-관리자, 1-사용자)
+	   status        NUMBER 		DEFAULT 0                  						-- 인증상태 	(0-waiting, 1-complete)
 );
 
 -- 2. 교육 자료 테이블(교육용 게시판용)
@@ -84,7 +84,7 @@ CREATE SEQUENCE USER_STUDY_SEQ;
 -- 5. 찜한 목록 테이블
 CREATE TABLE WishList(	
 	wishtable			NUMBER,																			-- 테이블 식별코드(0-교육영상 게시글, 1-자막검증 게시글, 2-더빙 게시글)
-	identificationnum	NUMBER,																			-- 테이블 안 데이터 식별코드
+	identificationnum	NUMBER,																			-- 테이블 안 데이터 식별코드(각 게시판 글들의 번호)
 	useremail			VARCHAR2(100),																	-- 사용자 아이디
 	url					VARCHAR2(1000) 		CONSTRAINT wishlist_url_nn			NOT NULL,				-- 영상URL
 	title				VARCHAR2(1000) 		CONSTRAINT wishlist_title_nn		NOT NULL,				-- 영상제목

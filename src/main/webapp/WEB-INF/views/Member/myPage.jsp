@@ -30,7 +30,7 @@
 					</li>
 					<li><a href="#!"><i class="material-icons">cloud</i>First
 							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
+					<li><a href="wishList">wishList</a></li>
 					<li><div class="divider"></div></li>
 					<li><a class="subheader">회원정보관리</a></li>
 					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>

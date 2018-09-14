@@ -16,7 +16,7 @@
 	</select>
 	
 	<!-- 영상, 자막, 더빙 위시리스트 조회 -->
-	<select id="getVideoWishList" parameterType="map" resultType="WishList">
+	<select id="getAllWishList" parameterType="map" resultType="WishList">
 		select 
 			*
 		from
@@ -49,7 +49,8 @@
 		<!-- 영상, 자막, 더빙 위시리스트에서 선택하기 -->
 	<select id="selectOneFromWishList" parameterType="WishList" resultType="WishList">
 		select 
-			wishtable
+			rownum as rownum
+			, wishtable
 			, identificationnum
 			, useremail
 			, url
@@ -58,88 +59,84 @@
 		from
 			wishlist
 		where
-			wishtable = #{wishtable}
+			wishtable=${wishtable}		
+		<!-- <if test="wishtable == 0">
+			wishtable = 0
+		</if>
+		<if test="wishtable == 1">
+			wishtable = 1
+		</if>	
+		<if test="wishtable == 2">
+			wishtable = 2
+		</if>		 -->
 		and
 			identificationnum = #{identificationnum}
 		and
 			useremail = #{useremail}
 	</select>
 	
-	<!-- 영상 위시리스트 등록 -->	
-	<insert id="insertVideoWish" parameterType="WishList">
-	insert into wishlist(
-		wishtable	
-		, useremail
-		, identificationnum
-		, title
-		, url		
-	)values(
-		#{wishtable}	
-		, #{useremail}
-		, #{identificationnum}
-		, #{title}
-		, #{url}
-	)		
-	</insert>
+		
 	
-	<!-- 영상 위시리스트 삭제 -->
-	<delete id="deleteVideoWish" parameterType="int">
+	
+	<!-- 영상, 자막, 더빙 위시리스트 삭제 -->
+	<delete id="deleteWish" parameterType="string">
 		delete from
 			wishlist
 		where
-			wishnum = #{wishnum}
+			title = #{title}
+		and
+			useremail = #{useremail}
 	</delete>
 	
+	<!-- 영상 위시리스트 등록 -->	
+	<insert id="insertVideoWish" parameterType="WishList">
+		insert into wishlist(
+			wishtable	
+			, useremail
+			, identificationnum
+			, title
+			, url		
+		)values(
+			#{wishtable}	
+			, #{useremail}
+			, #{identificationnum}
+			, #{title}
+			, #{url}
+		)		
+	</insert>
 	
 	<!-- 자막 위시리스트 등록 -->
 	<insert id="insertSubWish" parameterType="WishList">
-	insert into wishlist(
-		wishtable	
-		, useremail
-		, identificationnum
-		, title
-		, url		
-	)values(
-		#{wishtable}	
-		, #{useremail}
-		, #{identificationnum}
-		, #{title}
-		, #{url}
-	)		
+		insert into wishlist(
+			wishtable	
+			, useremail
+			, identificationnum
+			, title
+			, url		
+		)values(
+			#{wishtable}	
+			, #{useremail}
+			, #{identificationnum}
+			, #{title}
+			, #{url}
+		)		
 	</insert>
-	
-	<!-- 자막 위시리스트 삭제 -->
 
-	<delete id="deleteSubWish" parameterType="int">
-		delete from
-			wishlist
-		where
-			wishnum = #{wishnum}	
-	</delete>
-	
-	
 	<!-- 더빙 위시리스트 등록 -->
 	<insert id="insertDubWish" parameterType="WishList">
-	insert into wishlist(
-		wishtable	
-		, useremail
-		, identificationnum
-		, title
-		, url		
-	)values(
-		#{wishtable}	
-		, #{useremail}
-		, #{identificationnum}
-		, #{title}
-		, #{url}
-	)		
+		insert into wishlist(
+			wishtable	
+			, useremail
+			, identificationnum
+			, title
+			, url		
+		)values(
+			#{wishtable}	
+			, #{useremail}
+			, #{identificationnum}
+			, #{title}
+			, #{url}
+		)		
 	</insert>
 	
-	<!-- 더빙 위시리스트 삭제 -->
-	<delete id="deleteDubWish" parameterType="int">
-		delete from
-			wishlist
-		where
-			wishnum = #{wishnum}	
-	</delete>
 </mapper>

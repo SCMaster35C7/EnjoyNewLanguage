@@ -67,7 +67,6 @@ $(document).ready(function() {
 			var userpwd = $('#userpwd');
 			
 			$('#loginForm').submit();
-<<<<<<< HEAD
 		});
 	
 	
@@ -80,9 +79,6 @@ $(document).ready(function() {
 			}
 				$('#VideoSearch').modal();
 		}); 
-=======
-		});		
->>>>>>> Muk
 	});
 
 	$(function () {
@@ -247,8 +243,6 @@ $(document).ready(function() {
 			</div>
 		</div>	
 	  </div>
-	  
-<<<<<<< HEAD
 	  <div class="wrapper">
 			 <!-- sidenav -->	  
 			<aside>	  	  
@@ -341,48 +335,7 @@ $(document).ready(function() {
 		</div>
 		
 		<!-- 다나? -->
-=======
-	   <!-- table -->
-	  <!--start container-->
-         <div class="container">
-          <div class="section">
-          <h4 class="center">자막검증게시판</h4>
-            <!--DataTables example-->
-                  <table id="dubbing">
-                    <thead>
-                        <tr>
-                            <th>글번호</th>
-                            <th>글제목</th>
-                            <th>닉네임</th>
-                            <th>조회수</th>
-                            <th>날짜</th>
-                            <th>추천</th>
-                            <th>비추천</th>
-                        </tr>
-                    </thead>
-                 
-                    <tbody>
-                    	<c:forEach var="dub" items="${dubbing}">
-                        <tr>
-                            <td>${dub.dubbingnum}</td>
-                            <td><a href="dubDetail?dubbingnum=${dub.dubbingnum}"> ${dub.title} </a></td>
-                            <td>${dub.usernick}</td>
-                            <td>${dub.hitcount}</td>
-                            <td>${dub.regdate}</td>
-                            <td>${dub.recommendation}</td>
-                            <td>${dub.decommendation}</td>
-                        </tr>
-                        </c:forEach>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-         
-         	<a href="slide">슬라이드 만들거임 -다나-</a> <br/>
-	
-	<a href="myPage">마이페이지 만들거임 -다나-</a> <br/><br/>
-	<a href="TryRetake?videoNum=9">재시험 테스트</a>
->>>>>>> Muk
+
 	<c:if test="${plzLogin!=null}">
 		<script type="text/javascript">
 			$(function(){
@@ -417,8 +370,7 @@ $(document).ready(function() {
 </footer>
         
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="js/materialize.min.js"></script>        
-<<<<<<< HEAD
+<script type="text/javascript" src="js/materialize.min.js"></script>   
 <script type="text/javascript" src="YoutubeAPI/search.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
     <script>
@@ -459,17 +411,5 @@ $(document).ready(function() {
        		console.log('findVideoId: '+findVideoId);
    		}
 	</script>	
-=======
-	글번호  &nbsp 글제목 &nbsp 닉넴 &nbsp 조회수 &nbsp 날짜 &nbsp 추천 &nbsp 비추천 <br/>
-	<c:forEach var="dub" items="${dubbing}">
-		${dub.dubbingnum} &nbsp
-		 
-		 <a href="dubDetail?dubbingnum=${dub.dubbingnum}"> ${dub.title} </a>
-		 
-		 &nbsp ${dub.usernick}  &nbsp ${dub.hitcount}  &nbsp ${dub.regdate} 
-		 &nbsp ${dub.recommendation}  &nbsp ${dub.decommendation}<br/>
-	</c:forEach>
-	<a href="VideoSearch">더빙할 영상 찾기</a>
->>>>>>> Muk
 </body>
 </html>

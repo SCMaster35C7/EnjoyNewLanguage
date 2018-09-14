@@ -365,7 +365,6 @@ $(function(){
 			</div>
 		</div>	
 	  </div>
-<<<<<<< HEAD
 	<div class="wrapper">
 			 <!-- sidenav -->	  
 			<aside>	  	  
@@ -446,48 +445,6 @@ $(function(){
 						
 				</div>
 			</section>
-=======
-	<div class="container">
-		<h3 class="center">공부게시판상세</h3>
-			<div class="row">
-				<div class="col s4 m8">
-					<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-					<!--<div id="youtube"></div>   -->
-					<div class="video-container z-depth-2">
-						<iframe id="youtube" width="960" height="490"
-							src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
-							frameborder="0" allowfullscreen>
-						</iframe>
-					</div>
-					<div>
-						<form action="#">
-						    <p class="range-field">
-						      <input type="range" id="test5" min="0" max="100" />
-						    </p>
-						 </form>
-					</div>
-					<div class="card-panel red" style="height:42px; padding:2.5px;">
-						<div class="flow-text btn"></div>
-					</div>
-				</div>
-				
-				<div class="col s4 m4">
-		      		<div class="card" style="height:450px; margin-top:0px;">
-						<div class="card-content">
-							<span class="card-title activator grey-text text-darken-4">
-								문제넣어보자
-								<i class="material-icons right tooltipped" data-position="left" data-tooltip="채점" style="color:red" onclick="mark()">spellcheck</i>
-							</span>
-						</div>
-						<div class="card-content scroll-box">
-          					<p id="jamaclist"></p>
-          					
-        				</div>
-        				
-				    </div>
-				 </div>
-			</div>
->>>>>>> Muk
 	</div>
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -576,57 +533,6 @@ $(function(){
 			player.seekTo(gotime, true);
 		}
 	</script>
-<<<<<<< HEAD
-=======
-	<div class="container">
-		<table class="responsive-table centered" style="width:30%;">
-			<tr>
-				<th>동영상 재생/멈춤</th>
-				<td><input type="button" id="playYoutube" value="재생"> <input
-					type="button" id="pauseYoutube" value="멈춤"></td>
-			</tr>
-			<tr>
-				<th>동영상 현재 시간 출력</th>
-				<td><input type="button" id="currentTime" value="영상 시간 출력" /></td>
-			</tr>
-			<tr>
-				<th>동영상 음소거/음소거 제거</th>
-				<td><input type="button" id="mute" value="음소거" /> <input
-					type="button" id="unMute" value="음소거 제거" /></td>
-			</tr>
-			<tr>
-				<th>동영상 소리 설정</th>
-				<td><input type="number" id="soundValue" max="100" min="0" /> <input
-					type="button" id="soundVolum" value="소리조절" /></td>
-			</tr>
-			<tr>
-				<th>동영상 재생시간 이동</th>
-				<td><input type="text" id="start" /> <input type="button"
-					id="seekToinput" value="영상이동" /></td>
-			</tr>
-		</table>
-
-			<div>
-				<label>
-					<input type="radio" class="TestType" name="TestType" value="text">
-					<span>문자입력</span> 
-				</label>
-				<label>
-					<input type="radio" class="TestType" name="TestType" value="mic">
-					<span>음성입력</span> 
-					<input type="number" placeholder="난이도를 1~5 입력해주세요." id="level">
-				</label>
-				<input type="button" onclick="getSubList()" value="문제생성"> 
-				<input type="button" onclick="mark()" value="채점하기">
-		
-			</div>
-	</div>
-
-
-	<div id="jamaclist"></div>
->>>>>>> Muk
-	
-
 
 <footer class="page-footer">
           <div class="container">

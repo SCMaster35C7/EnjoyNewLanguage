@@ -269,8 +269,7 @@
 			</div>
 		</div>	
 	  </div>
-<<<<<<< HEAD
-   	  
+	  
    	  <!-- 영상추가버튼 -->	
    	  <div class="fixed-action-btn">
 		  <a class="btn-floating btn-large red modal-trigger tooltipped" id="requestInvestigation" data-position="top" data-tooltip="+VIDEO" href="#requestInv">
@@ -350,25 +349,7 @@
 				<div class="container">
 					<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
 					<div class="row">
-=======
-   
-	<input type="button" id="requestInvestigation" value="자막요청"/>
-	
-    <!-- Page Content -->
-	<div class="container">
-		<h3 class="center">자막검증게시판</h3>
-		<div class="row">
-		
-		<c:if test="${not empty invList}">
-			<c:forEach var="invList" items="${invList}">
-			
-			<div class="col s3 m3">
-				<div class="card" style="height:400px margin-bottom:10px;">
-					<div class="card-image">
-							<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
-							<a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-					</div>
->>>>>>> Muk
+
 					
 						<div class="card-content" style="height:150px;">
 						<a href="detailInvBoard?investigationnum=${invList.investigationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${invList.title}</a>
@@ -393,51 +374,8 @@
 						</div>
 					</div>
 				</div>
-<<<<<<< HEAD
 			</section>
-=======
-			</div>
-			</c:forEach>
-		</c:if>
-		</div>
-		
-		<div class="center">
-			<ul class="pagination">
-			<li class="waves-effect">
-				<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-					<i class="material-icons">first_page</i>
-				</a>
-			</li>
-			
-				<li class="waves-effect">
-					<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
-						<i class="material-icons">chevron_left</i>
-					</a>
-				</li>
-			
-				<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
-					<c:if test="${navi.currentPage == page }">
-						<li class="page-item active"><a class="page-link">${page}</a></li>
-					</c:if>
-					<c:if test="${navi.currentPage != page }">
-						<li class="page-item"><a class="page-link"
-							href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
-					</c:if>
-				</c:forEach>
-			
-				<li class="waves-effect">
-					<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
-						<i class="material-icons">chevron_right</i> 
-					</a>
-				</li>
-			
-				<li class="waves-effect">
-					<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-						<i class="material-icons">last_page</i> 
-					</a>
-				</li>
-			</ul>
->>>>>>> Muk
+
 		</div>
 	</div>
 	

@@ -9,7 +9,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.WishList;
 
 @Repository
@@ -18,6 +17,7 @@ public class WishRepository {
 	@Autowired
 	SqlSession session;
 
+	//페이징을 위해 데이터수 세기
 	public int getTotalCount1(String searchType, String searchWord) {
 
 		WishMapper wMapper = session.getMapper(WishMapper.class);
@@ -30,6 +30,14 @@ public class WishRepository {
 		return result;
 	}
 	
+	//위시리스트 등록 전 중복 검사
+	public WishList selectOneFromWishList(WishList wishlist) {
+		WishMapper wMapper = session.getMapper(WishMapper.class);
+		WishList wList = wMapper.selectOneFromWishList(wishlist);
+		
+		return wList;
+	}	
+	
 	//비디오파트
 	public List<WishList> getVideoWishList(String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
@@ -40,123 +48,55 @@ public class WishRepository {
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
 		//System.out.println("잘 들어옴? : "+map);
-		List<WishList> vWishList = wMapper.getVideoWishList(map, bound);
+		List<WishList> vWishList = wMapper.getAllWishList(map, bound);
 		
 		return vWishList;
 	}
 	
-	public int insertVideoWish(WishList wishlist) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		System.out.println(wishlist);
-		int result = wMapper.insertVideoWish(wishlist);
-		
-		return result;
-	}
-
-	public WishList selectVideoWish(int wishnum) {		
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		WishList vList = wMapper.selectVideoWish(wishnum);
-				
-		return vList;		
-	}
-	
-	public int deleteVideoWish(int wishnum) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		int result = wMapper.deleteVideoWish(wishnum);
-		
-		return result;
-	}
-	
-
 	//자막 파트	
-	public List<WishList> getSubWishList (String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
+	public List<WishList> getSubWishList(String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		RowBounds bound = new RowBounds(startRecord, getcountPerPage);	
-		
-		Map<String, Object> map = new HashMap<>();
-		
+		Map<String,Object> map = new HashMap<>();
 		
 		map.put("useremail", useremail);
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
+		//System.out.println("잘 들어옴? : "+map);
+		List<WishList> sWishList = wMapper.getAllWishList(map, bound);
 		
-		List<WishList> sWishList = wMapper.getDubWishList(map, bound);
-		
-		return sWishList;	
-	}
-	
-	public WishList selectSubWish(int subtitlenum) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		WishList sList = wMapper.selectSubWish(subtitlenum);
-		
-		return sList;
-	}
-
-	public int insertSubWish(WishList wishlist) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		System.out.println(wishlist);
-		
-		int result = wMapper.insertSubWish(wishlist);
-		
-		return result;
-	}
-
-	public int deleteSubWish(int subtitlenum) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		int result = wMapper.deleteSubWish(subtitlenum);
-
-		
-		return result;
+		return sWishList;
 	}
 	
 	//더빙 파트
 	public List<WishList> getDubWishList(String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		RowBounds bound = new RowBounds(startRecord, getcountPerPage);	
+		Map<String,Object> map = new HashMap<>();
 		
-		Map<String, Object> map = new HashMap<>();		
-		
-		/*Dubbing dub = new Dubbing();		
-		
-		String useremail = dub.getUseremail(); 
-		*/
-		
-		/*map.put("useremail", useremail);*/		
+		map.put("useremail", useremail);
 		map.put("searchType", searchType);
 		map.put("searchWord", searchWord);
-		
-		List<WishList> dWishList = wMapper.getDubWishList(map, bound);
+		//System.out.println("잘 들어옴? : "+map);
+		List<WishList> dWishList = wMapper.getAllWishList(map, bound);
 		
 		return dWishList;
+		
 	}
-
-	public int insertDubWish(WishList wishlist) {
+	//영상, 자막, 더빙 위시리스트에 등록
+	public int insertWish(WishList wishlist) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		System.out.println(wishlist);
-		
-		int result = wMapper.insertDubWish(wishlist);
-		
-		return result;
-	}
-
-	public WishList selectDubWish(int dubbingnum) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		WishList dList = wMapper.selectDubWish(dubbingnum);
-		
-		return dList;
-	}
-
-	public int deleteDubWish(int dubbingnum) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		int result = wMapper.deleteDubWish(dubbingnum);
+		int result = wMapper.insertWish(wishlist);
 		
 		return result;
 	}
-
-	public WishList selectOneFromWishList(WishList wishlist) {
+	//영상, 자막, 더빙 위시리스트에서 삭제
+	public int deleteWish (String title) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		WishList wList = wMapper.selectOneFromWishList(wishlist);
+		wMapper.deleteWish(title);
 		
-		return wList;
-	}	
+		return 0;
+	}
+	
 }

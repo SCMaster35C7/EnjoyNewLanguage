@@ -6,10 +6,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="author" content="zisung">
+<meta name="author" content="zisung">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
+	
 <title>Insert title here</title>
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
+
 	$(function() {
+		//삭제버튼 클릭시 작업
+		$('#btnDeleteVideoWish').on('click', function() {
+			
+			var title = $(this).attr('data-rno');
+			$.ajax({
+				method : 'get',
+				url : 'deleteVideoWish',
+				data : 'title=' + title,
+				success : init
+			})
+			
+			$('#deleteVideoWish').submit();	
+		});	
+		//취소버튼 클릭시 이동
+		$('#btnCancel').on('click', function() {		
+			location.href = "${pageContext.request.contextPath}/"
+		});		
+	});	
+
+	
+	/* $(function() {
 
 		var dataFormVideo = {
 			"tableName" : "videowish",
@@ -34,124 +64,85 @@
 				alert("resp : " + resp + ", code : " + code + ", error : " + error);
 			}
 		});
-	});
+	}); */
 
 </script>
 </head>
 <body>
 	<div id="wrapper">
-		<h2>[ 영상위시리스트 ]</h2>
-		<div>
+		 <c:if test="${sessionScope.useremail!=null}">
+				<c:if test="${empty vWishlist}">
 
-			<table>
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>URL</th>
-					<th>작성자</th>
-					<th>작성일자</th>
-				</tr>
-
-				<c:if test="${empty WishList}">
-					<tr>
-						<td colspan="5">글이 없습니다.</td>
-					</tr>
-				</c:if>
-
-			<%-- 글 목록  뿌리기 --%>
-
-				<c:if test="${not empty list}">
-					<c:forEach var="WishList" items="${WishList}" varStatus="status">
+					<table border="1">
 						<tr>
-							<td class="center">${status.count + navi.startRecord}</td>
-							<c:if test="${not empty sessionScope.useremail}">
-								<td class="title"><a
-									href="detailVideoWish?wishnum=${WishList.videoNum}">${WishList.title}</a>
-								</td>
-							</c:if>
-							<td>${WishList.useremail}</td>
-							<td>${WishList.regDate}</td>
+							<td>영상위시리스트가 비어있습니다.</td>
 						</tr>
-					</c:forEach>
+					</table>
 				</c:if>
-			</table>
+
+				<c:if test="${vWishlist != null}">
+
+					<table border="1">
+						<tr>
+							
+							<td>번호</td>
+							<td>제목</td>
+							<td>작성일자</td>
+							<td>삭제</td>
+						</tr>
+						<c:forEach var="vWishlist" items="${vWishlist}">
+							<tr>
+								
+								<td>${vWishlist.rownum}</td>								
+								<td><a href="detailEduBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${vWishlist.title}</a></td>
+								<td>${vWishlist.regdate}</td>
+								<td>
+									<input type="button" id="btnDeleteVideoWish" value="삭제"/>										
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:if>
+			</c:if>
+			
 		<!-- 페이징 -->
 			<div class="center">
-				<ul class="pagination">
-					<li class="waves-effect"><a
-						href="videoWish?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-							<i class="material-icons">first_page</i>
-					</a></li>
-
-					<li class="waves-effect"><a
-						href="videoWish?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}">
-							<i class="material-icons">chevron_left</i>
-					</a></li>
-
-					<c:forEach var="page" begin="${navi.startPageGroup}"
-						end="${navi.endPageGroup}" step="1">
-						<c:if test="${navi.currentPage == page }">
-							<li class="page-item active"><a class="page-link">${page}</a></li>
-						</c:if>
-
-						<c:if test="${navi.currentPage != page }">
-							<li class="page-item"><a class="page-link"
-								href="videoWish?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a>
-							</li>
-						</c:if>
-					</c:forEach>
-
-					<li class="waves-effect"><a
-						href="videoWish?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
-							<i class="material-icons">chevron_right</i>
-					</a></li>
-
-					<li class="waves-effect"><a
-						href="videoWish?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-							<i class="material-icons">last_page</i>
-					</a></li>
-	<!-- 페이징 -->
-			<div class="center">
-				<ul class="pagination">
-					<li class="waves-effect">
-						<a href="videoWish?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-							<i class="material-icons">first_page</i>
-						</a>
-					</li>
-
-					<li class="waves-effect">
-						<a href="videoWish?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}">
-							<i class="material-icons">chevron_left</i>
-						</a>
-					</li>
-
-					<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
-						<c:if test="${navi.currentPage == page }">
-							<li class="page-item active"><a class="page-link">${page}</a></li>
-						</c:if>
-						
-						<c:if test="${navi.currentPage != page }">
-							<li class="page-item">
-								<a class="page-link" href="videoWish?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a>
-							</li>						
-						</c:if>
-					</c:forEach>
-
-					<li class="waves-effect">
-						<a href="videoWish?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
-						<i class="material-icons">chevron_right</i>
-						</a>
-					</li>
-
-					<li class="waves-effect">
-						<a href="videoWish?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-						<i class="material-icons">last_page</i>
-						</a>
-					</li>
->>>>>>> Muk
-				</ul>
-			</div>
-		</div>
+			<ul class="pagination">
+			<li class="waves-effect">
+				<a href="videoWish?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+					<i class="material-icons">first_page</i>
+				</a>
+			</li>
+			
+				<li class="waves-effect">
+					<a href="videoWish?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+						<i class="material-icons">chevron_left</i>
+					</a>
+				</li>
+			
+				<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
+					<c:if test="${navi.currentPage == page }">
+						<li class="page-item active"><a class="page-link">${page}</a></li>
+					</c:if>
+					<c:if test="${navi.currentPage != page }">
+						<li class="page-item"><a class="page-link"
+							href="videoWish?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+					</c:if>
+				</c:forEach>
+			
+				<li class="waves-effect">
+					<a href="videoWish?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+						<i class="material-icons">chevron_right</i> 
+					</a>
+				</li>
+			
+				<li class="waves-effect">
+					<a href="videoWish?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+						<i class="material-icons">last_page</i> 
+					</a>
+				</li>
+			</ul>
+		</div>		
 	</div>
 </body>
 </html>
