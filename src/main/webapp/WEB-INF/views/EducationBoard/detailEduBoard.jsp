@@ -4,281 +4,287 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="author" content="zisung">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-	rel="stylesheet">
-<!--Import materialize.css-->
-<link type="text/css" rel="stylesheet" href="css/materialize1.css"
-	media="screen,projection" />
-<title>공부게시판 상세</title>
-<script
-	src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
-<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-<script>
-	//css용
-	$(function() {
-		//dropdown
-		$(".dropdown-trigger").dropdown();
-
-		//floating actionbutton
-		$(".fixed-action-btn").floatingActionButton({
-		/* direction:'left' */
-		});
-
-		//modal open
-		$('#modal1').modal();
-
-		//side-nav open
-		$('.sidenav').sidenav();
-
-		//tooltip
-		$('.tooltipped').tooltip();
-
-		//캐러셀
-		$('.carousel').carousel();
-		
-		$('#loginBtn').on('click',function(){
-			var useremail = $('#useremail');
-			var userpwd = $('#userpwd');
-
-			$('#loginForm').submit();
-		});
-		$('#onoff').change(function(){
-			console.log(focusingReady);
-			focusings(focusingReady);
-			if (focusingReady) {
-				focusingReady = false;
-				clearInterval(focusings());
-			}
-		});
-		
-		$('.TestType').on('click',function(){
+	<meta charset="UTF-8">
+	<meta name="author" content="zisung">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize1.css"
+		media="screen,projection" />
+	<title>공부게시판 상세</title>
+	
+	<style>
+	.scroll-box {
+		overflow-y: scroll;
+		height: 300px;
+		padding: 1rem
+	}
+	</style>
+	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<script>
+		//css용
+		$(function() {
+			//dropdown
+			$(".dropdown-trigger").dropdown();
+	
+			//floating actionbutton
+			$(".fixed-action-btn").floatingActionButton({
+			/* direction:'left' */
+			});
+	
+			//modal open
+			$('#modal1').modal();
+	
+			//side-nav open
+			$('.sidenav').sidenav();
+	
+			//tooltip
+			$('.tooltipped').tooltip();
+	
+			//캐러셀
+			$('.carousel').carousel();
 			
-			if(this.value=='text'){
-				$('#level').attr('placeholder','난이도를 1~5 사이에 골라주세요.');
-				$('#level').attr('max',5);
-				$('#level').prop('readonly',null);
-			}else{
-				$('#level').attr('placeholder','난이도를 1~4 사이에 골라주세요.');
-				$('#level').attr('max',4);
-				$('#level').prop('readonly',null);
-			}
-		})
-		
-	});
-	var correct = "";
-	var quizIndex = "";
-	var TestType = false; //문제유형용 변수 false : text, true : mic
-	var saveTime = null; //자막 싱크용 시간저장변수
-	var TestSuccess = false; //시험을 끝까지 다 마쳤는지 확인
-	var TestFinish = false; //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
-	var focusingReady = false;
-
-	//음성인식 서비스 ,textbar: 클릭한 입력창
-	function startAnnyang(textbar) {
-		annyang.start({
-			autoRestart : false,
-			continuous : false
-		});
-		var recognition = annyang.getSpeechRecognizer();
-		recognition.onresult = function(event) {
-			var resultText = event.results[0][0];
-			annyang.abort();
-			textbar.value = resultText.transcript; //input에 돌아온 리턴값 입력
-			textbar.style.backgroundColor = ""; //문자입력시 배경 없에기
-		}
-	}
-	// 문제 가져오기	
-	function getSubList() {
-		var level = $('#level').val(); //난이도
-		var ChoiceType = document.getElementsByClassName('TestType'); //문제유형
-
-		if (ChoiceType[0].checked) {
-			if (level<1 ||level>5) {
-				alert('텍스트 테스트 모드는 1~5 Level 까지 도전 가능합니다.');
-				return;
-			}
-			TestType = false; //text 모드
-		} else {
-			if (level<1||level>4) {
-				alert('음성 테스트 모드는 1~4 Level 까지 도전 가능합니다.');
-				return;
-			}
-			TestType = true; // mic 모드
-		}
-		// 스크립트 상위에 선언해둔 TestType 이란 변수를 이용하여 마이크 스크립트를 작동시킬지 체크	
-
-		$.ajax({
-			method : 'get',
-			url : 'getSubtitlesList',
-			data : 'level=' + level + "&savedfileName=" + '${edu.savedfile}',
-			contentType : 'application/json; charset=UTF-8',
-			dataType : 'json',
-			success : makeSubList,
-			error : function() {
-				console.log('error!!');
-			}
-		})
-	}
-	//문제 생성 s: ajax로 가져온 SubtitlesList 자료
-	function makeSubList(s) {
-		correct = s.correct; //정답 배열 스크립트 맨위에 저장(채점시 용도)
-		quizIndex = s.quizIndex; //퀴즈 (1차원배열 자료의)의 index 값
-		var subtitles = '<div class="row">';
-		var readonly = ""; //mic 시험의 경우 text를 입력할 수 없도록 처리
-		if (TestType) {
-			readonly = 'readonly="readonly"';
-		} else {
-			readonly = "";
-		}
-		//음성입력일시 input 창을 readonly로, 텍스트 입력일시 입력가능하게	
-		for (var i = 0; i < s.quiz.length; i++) {
-			// <a> 태그 : 자막 줄 별 시간정보, 클릭시 해당시간으로 영상 이동
-			subtitles += '<div id="T'+s.playtime[i]+'" class="row"><a onclick=' + '"' + 'seekTo(' + s.playtime[i] + ')' + '"' + '>'+ s.playtimeView[i] + '</a>';
-			subtitles += ' <div class="col s12">';
-			for (var j = 0; j < s.quiz[i].length; j++) {
-				if (s.quiz[i][j].indexOf('★') == 0) {
-					var longer = s.quiz[i][j].replace("★★", ""); //controller 에서 별처리한 문제 빈칸을 입력칸으로 가공
-
-					subtitles += ' <div class="input-field inline" style="margin: 1%;"><input class="answer"'+readonly+' type="text" size='+'"'+longer+'"'+'px style="margin: 1%;"></div>';
-				} else {
-					subtitles += s.quiz[i][j];
-					subtitles += ' ';
+			$('#loginBtn').on('click',function(){
+				var useremail = $('#useremail');
+				var userpwd = $('#userpwd');
+	
+				$('#loginForm').submit();
+			});
+			$('#onoff').change(function(){
+				console.log(focusingReady);
+				focusings(focusingReady);
+				if (focusingReady) {
+					focusingReady = false;
+					clearInterval(focusings());
 				}
+			});
+			
+			$('.TestType').on('click',function(){
+				
+				if(this.value=='text'){
+					$('#level').attr('placeholder','난이도를 1~5 사이에 골라주세요.');
+					$('#level').attr('max',5);
+					$('#level').prop('readonly',null);
+				}else{
+					$('#level').attr('placeholder','난이도를 1~4 사이에 골라주세요.');
+					$('#level').attr('max',4);
+					$('#level').prop('readonly',null);
+				}
+			})
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
+				}
+			});
+		});
+		var correct = "";
+		var quizIndex = "";
+		var TestType = false; //문제유형용 변수 false : text, true : mic
+		var saveTime = null; //자막 싱크용 시간저장변수
+		var TestSuccess = false; //시험을 끝까지 다 마쳤는지 확인
+		var TestFinish = false; //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
+		var focusingReady = false;
+	
+		//음성인식 서비스 ,textbar: 클릭한 입력창
+		function startAnnyang(textbar) {
+			annyang.start({
+				autoRestart : false,
+				continuous : false
+			});
+			var recognition = annyang.getSpeechRecognizer();
+			recognition.onresult = function(event) {
+				var resultText = event.results[0][0];
+				annyang.abort();
+				textbar.value = resultText.transcript; //input에 돌아온 리턴값 입력
+				textbar.style.backgroundColor = ""; //문자입력시 배경 없에기
 			}
-			subtitles += '</div></div><br>';
 		}
-		subtitles += '</div>';
-		$('#jamaclist').html(subtitles); //jamaclist div 에 가공이 끝난 문제를 뿌림
-		focusingReady = true;
-		$('#TestControlForm').show();
-		$('#testMakeForm').hide();
-		focusings(true);
-		//음성 방식 test일시 추가되는 부분
-		if (TestType) {
-			$('.answer').on('click', function() {
-				if (!TestFinish) {
-					var textbar = this;
-					startAnnyang(textbar);
-					textbar.style.backgroundColor = "#d6f4c1";
+		// 문제 가져오기	
+		function getSubList() {
+			var level = $('#level').val(); //난이도
+			var ChoiceType = document.getElementsByClassName('TestType'); //문제유형
+	
+			if (ChoiceType[0].checked) {
+				if (level<1 ||level>5) {
+					alert('텍스트 테스트 모드는 1~5 Level 까지 도전 가능합니다.');
+					return;
+				}
+				TestType = false; //text 모드
+			} else {
+				if (level<1||level>4) {
+					alert('음성 테스트 모드는 1~4 Level 까지 도전 가능합니다.');
+					return;
+				}
+				TestType = true; // mic 모드
+			}
+			// 스크립트 상위에 선언해둔 TestType 이란 변수를 이용하여 마이크 스크립트를 작동시킬지 체크	
+	
+			$.ajax({
+				method : 'get',
+				url : 'getSubtitlesList',
+				data : 'level=' + level + "&savedfileName=" + '${edu.savedfile}',
+				contentType : 'application/json; charset=UTF-8',
+				dataType : 'json',
+				success : makeSubList,
+				error : function() {
+					console.log('error!!');
 				}
 			})
 		}
-	}
-    //자막에 포커싱 걸기
-	function focusings(bool) {
-		focusingReady = (!focusingReady);
-		if (bool) {
-			timer = setInterval(
-					function focusings() {
-						//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
-						var time = 'T'
-								+ parseFloat(player.getCurrentTime().toFixed(2));
-						var TimeText = document.getElementById(time);
-						if (TimeText != null) {
-							if (saveTime != null) {
-								saveTime.style.backgroundColor = "";
-							}
-							TimeText.style.backgroundColor = "#8dabfe";
-							TimeText.tabIndex = -1;
-							TimeText.focus();
-							saveTime = TimeText;
-						}
-					}, 10);
-		} else {
-			clearInterval(timer);
-		}
-	}
-
-	//채점 시스템
-	function mark() {
-		TestFinish = true;
-
-		if ((player.getCurrentTime() / player.getDuration()) < 0.8) {
-			alert('영상을 끝까지 재생해주세요!! \n영상을 80%이상 재생하셔야 채점이 가능합니다!!');
-			return null;
-		}
-		console.log((player.getCurrentTime() / player.getDuration()));
-		console.log(TestSuccess);
-		var answer = $('.answer'); //class명으로 긁어와서 배열로 생성
-		var WronganswerList = []; //오답리스트(오답의 2차원배열값을 저장)
-		var CorrectanswerList = []; //정답 리스트(오답의 정답 단어를 저장)
-		var correctCount = 0; //맞춘문제 갯수
-		var level = $('#level').val();
-
-		for (var i = 0; i < correct.length; i++) {
-			if (correct[i] == answer[i].value) {
-				correctCount++;
-				answer[i].style.color = "blue";
-				answer[i].readOnly = true;
+		//문제 생성 s: ajax로 가져온 SubtitlesList 자료
+		function makeSubList(s) {
+			correct = s.correct; //정답 배열 스크립트 맨위에 저장(채점시 용도)
+			quizIndex = s.quizIndex; //퀴즈 (1차원배열 자료의)의 index 값
+			var subtitles = '<div class="row">';
+			var readonly = ""; //mic 시험의 경우 text를 입력할 수 없도록 처리
+			if (TestType) {
+				readonly = 'readonly="readonly"';
 			} else {
-				answer[i].readOnly = true;
-				answer[i].style.color = "red";
-				answer[i].value = ('정답: ' + correct[i] + ", 오답: " + answer[i].value);
-				WronganswerList.push(quizIndex[i]);
-				CorrectanswerList.push(correct[i]);
-				answer[i].size = (correct[i].length * 4);
-				answer[i].readOnly = true;
+				readonly = "";
+			}
+			//음성입력일시 input 창을 readonly로, 텍스트 입력일시 입력가능하게	
+			for (var i = 0; i < s.quiz.length; i++) {
+				// <a> 태그 : 자막 줄 별 시간정보, 클릭시 해당시간으로 영상 이동
+				subtitles += '<div id="T'+s.playtime[i]+'" class="row"><a onclick=' + '"' + 'seekTo(' + s.playtime[i] + ')' + '"' + '>'+ s.playtimeView[i] + '</a>';
+				subtitles += ' <div class="col s12">';
+				for (var j = 0; j < s.quiz[i].length; j++) {
+					if (s.quiz[i][j].indexOf('★') == 0) {
+						var longer = s.quiz[i][j].replace("★★", ""); //controller 에서 별처리한 문제 빈칸을 입력칸으로 가공
+	
+						subtitles += ' <div class="input-field inline" style="margin: 1%;"><input class="answer"'+readonly+' type="text" size='+'"'+longer+'"'+'px style="margin: 1%;"></div>';
+					} else {
+						subtitles += s.quiz[i][j];
+						subtitles += ' ';
+					}
+				}
+				subtitles += '</div></div><br>';
+			}
+			subtitles += '</div>';
+			$('#jamaclist').html(subtitles); //jamaclist div 에 가공이 끝난 문제를 뿌림
+			focusingReady = true;
+			$('#TestControlForm').show();
+			$('#testMakeForm').hide();
+			focusings(true);
+			//음성 방식 test일시 추가되는 부분
+			if (TestType) {
+				$('.answer').on('click', function() {
+					if (!TestFinish) {
+						var textbar = this;
+						startAnnyang(textbar);
+						textbar.style.backgroundColor = "#d6f4c1";
+					}
+				})
 			}
 		}
-
-		    $.ajax({
-					method : 'post',
-					url : 'ScoreResult',
-					data : {
-						'testlevel' : level,
-						'correctCount' : correctCount,
-						'WronganswerList' : WronganswerList,
-						'CorrectanswerList' : CorrectanswerList,
-						'useremail' : '${sessionScope.useremail}',
-						'url' : '${edu.url}',
-						'testType' : TestType
-					},
-					traditional : true,
-					success : function(resp) {
-						if (resp == "ok") {
-							alert('채점완료!!\n시험결과: 합격 \n 총문제수: '
-									+ correct.length
-									+ "\n정답갯수: "
-									+ (correct.length - WronganswerList.length)
-									+ "\n정답률: "
-									+ (((correct.length - WronganswerList.length)) / correct.length)
-											.toFixed(3));
-						} else {
-							alert('채점완료!!\n시험결과: 불합격 \n 총문제수: '
-									+ correct.length
-									+ "\n정답갯수: "
-									+ (correct.length - WronganswerList.length)
-									+ "\n정답률: "
-									+ (((correct.length - WronganswerList.length)) / correct.length)
-											.toFixed(3));
-						}
-					},
-					error : function() {
-						alert('채점에 실패했습니다.');
-						console.log('error!!');
-					}
-
-				})
-	}
-
-	function goback() {
-		history.back();
-	}
-
+	    //자막에 포커싱 걸기
+		function focusings(bool) {
+			focusingReady = (!focusingReady);
+			if (bool) {
+				timer = setInterval(
+						function focusings() {
+							//0.01초 단위로 영상 재생시간을 채크하고 이를 소숫점2자리까지 잘라서 자막의 소숫점 2자리까지의 싱크타임과 비교, 맞을 경우 해당 문장의 배경색을 바꿈
+							var time = 'T'
+									+ parseFloat(player.getCurrentTime().toFixed(2));
+							var TimeText = document.getElementById(time);
+							if (TimeText != null) {
+								if (saveTime != null) {
+									saveTime.style.backgroundColor = "";
+								}
+								TimeText.style.backgroundColor = "#8dabfe";
+								TimeText.tabIndex = -1;
+								TimeText.focus();
+								saveTime = TimeText;
+							}
+						}, 10);
+			} else {
+				clearInterval(timer);
+			}
+		}
 	
-</script>
-
-<style>
-.scroll-box {
-	overflow-y: scroll;
-	height: 300px;
-	padding: 1rem
-}
-</style>
-
+		//채점 시스템
+		function mark() {
+			TestFinish = true;
+	
+			if ((player.getCurrentTime() / player.getDuration()) < 0.8) {
+				alert('영상을 끝까지 재생해주세요!! \n영상을 80%이상 재생하셔야 채점이 가능합니다!!');
+				return null;
+			}
+			console.log((player.getCurrentTime() / player.getDuration()));
+			console.log(TestSuccess);
+			var answer = $('.answer'); //class명으로 긁어와서 배열로 생성
+			var WronganswerList = []; //오답리스트(오답의 2차원배열값을 저장)
+			var CorrectanswerList = []; //정답 리스트(오답의 정답 단어를 저장)
+			var correctCount = 0; //맞춘문제 갯수
+			var level = $('#level').val();
+	
+			for (var i = 0; i < correct.length; i++) {
+				if (correct[i] == answer[i].value) {
+					correctCount++;
+					answer[i].style.color = "blue";
+					answer[i].readOnly = true;
+				} else {
+					answer[i].readOnly = true;
+					answer[i].style.color = "red";
+					answer[i].value = ('정답: ' + correct[i] + ", 오답: " + answer[i].value);
+					WronganswerList.push(quizIndex[i]);
+					CorrectanswerList.push(correct[i]);
+					answer[i].size = (correct[i].length * 4);
+					answer[i].readOnly = true;
+				}
+			}
+	
+			$.ajax({
+				method : 'post',
+				url : 'ScoreResult',
+				data : {
+					'testlevel' : level,
+					'correctCount' : correctCount,
+					'WronganswerList' : WronganswerList,
+					'CorrectanswerList' : CorrectanswerList,
+					'useremail' : '${sessionScope.useremail}',
+					'url' : '${edu.url}',
+					'testType' : TestType
+				},
+				traditional : true,
+				success : function(resp) {
+					if (resp == "ok") {
+						alert('채점완료!!\n시험결과: 합격 \n 총문제수: '
+						+ correct.length
+						+ "\n정답갯수: "
+						+ (correct.length - WronganswerList.length)
+						+ "\n정답률: "
+						+ (((correct.length - WronganswerList.length)) / correct.length)
+										.toFixed(3));
+					} else {
+						alert('채점완료!!\n시험결과: 불합격 \n 총문제수: '
+						+ correct.length
+						+ "\n정답갯수: "
+						+ (correct.length - WronganswerList.length)
+						+ "\n정답률: "
+						+ (((correct.length - WronganswerList.length)) / correct.length)
+								.toFixed(3));
+					}
+				},
+				error : function() {
+					alert('채점에 실패했습니다.');
+					console.log('error!!');
+				}
+			});
+		}
+	
+		function goback() {
+			history.back();
+		}
+	</script>
 </head>
 
 <body>
@@ -301,23 +307,28 @@
 		<!-- nav -->
 		<nav class="nav-extended">
 			<div class="nav-wrapper">
+				<!-- sidenav trigger -->
+			    <ul class="left">
+			    	<li>
+			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline"><i class="material-icons">menu</i></a>
+			    	</li>
+			    </ul>
 				<a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-				<a href="#" data-target="small-navi" class="sidenav-trigger"><i
-					class="material-icons">menu</i></a>
+				<a href="#" data-target="small-navi" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+					
 				<ul class="right hide-on-med-and-down">
-					<c:if test="${not empty sessionScope.useremail }">
-						<li><a href="logout">${sessionScope.useremail }Logout</a></li>
-					</c:if>
-					<li><a href="eduBoard">영상게시판</a></li>
-					<li><a href="dubbingBoard">더빙게시판</a></li>
-					<li><a href="InvestigationBoard">자막검증게시판</a></li>
-					<!-- Dropdown Trigger -->
-					<li><a class="dropdown-trigger" href="#"
-						data-target="dropdown1">Dropdown<i
-							class="material-icons right">arrow_drop_down</i></a></li>
-				</ul>
+				  	<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>		 
+			      	<li><a href="eduBoard">영상게시판</a></li>
+			      	<li><a href="dubbingBoard">더빙게시판</a></li>
+			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
+			      	<li><a href="myPage">마이페이지</a></li>
+			    </ul>
 			</div>
-
 
 			<div class="nav-content">
 				<a
@@ -328,22 +339,29 @@
 			</div>
 		</nav>
 	</header>
+	
 	<!-- 축소시 사이드 nav -->
 	<ul class="sidenav" id="small-navi">
+		<li>
+        	<div class="input-field">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<i class="material-icons">close</i>
+       		</div>
+		</li>		 
 		<li><a href="eduBoard">영상게시판</a></li>
 		<li><a href="dubbingBoard">더빙게시판</a></li>
 		<li><a href="InvestigationBoard">자막게시판</a></li>
+		<li><a href="myPage">마이페이지</a></li>
 	</ul>
 
 	<!-- 로그인 MODAL -->
 	<div id="modal1" class="modal">
 		<div class="modal-content">
 			<div class="container">
-
 				<form class="col s12" id=loginForm action="login" method="POST">
 					<div class="row">
 						<h4 class="center-align">LOGIN</h4>
-
 						<div class="row">
 							<c:if test="${empty sessionScope.useremail }">
 								<div class="input-field col s12">
@@ -364,6 +382,18 @@
 							</c:if>
 						</div>
 
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mode_edit</i>
+									<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+									<label for="userpwd">PASSWORD</label>
+									<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
+								</div>
+							</c:if>
+						</div>
+						
+						<!-- 글씨뜨는거 -->
 						<c:if test="${not empty sessionScope.useremail }">
 							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 						</c:if>
@@ -516,32 +546,69 @@
 		</div>
 	</div>
 	
+	<!-- 메인 -->
+	<div class="wrapper">
+		<!-- sidenav -->	  
+		<aside>	  	  
+			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+		    	<li>
+          			<div class="user-view">
+		        		<div class="background"><!-- <img src="images/"> --></div>
+				        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
+				        <a href="#name"><span class="white-text name">${usernick}</span></a> 
+				        <a href="#email"><span class="white-text email">${useremail}</span></a>
+					</div>
+				</li>
+				<li>
+					<a href="#!">
+					<i class="material-icons">cloud</i>First Link With Icon</a>
+				</li>
+				<li>
+					<a href="#!">wishList</a>
+				</li>
+				<li>
+					<div class="divider"></div>
+				</li>
+				<li>
+					<a class="subheader">회원정보관리</a>
+				</li>
+				<li>
+					<a class="waves-effect" href="updateMember">회원정보수정</a>
+				</li>
+				<li>
+					<a class="waves-effect" href="#">회원탈퇴</a>
+				</li>
+			</ul>
+		</aside>			
+	</div>
+	
 	<footer class="page-footer">
-		<div class="container">
-			<div class="row">
-				<div class="col l6 s12">
-					<h5 class="white-text">Footer Content</h5>
-					<p class="grey-text text-lighten-4">You can use rows and
-						columns here to organize your footer content.</p>
-				</div>
-				<div class="col l4 offset-l2 s12">
-					<h5 class="white-text">Links</h5>
-					<ul>
-						<li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-						<li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-						<li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-						<li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="footer-copyright">
-			<div class="container">
-				© 2014 Copyright Text <a class="grey-text text-lighten-4 right"
-					href="#!">More Links</a>
-			</div>
-		</div>
-	</footer>
+    	<div class="container">
+        	<div class="row">
+              	<div class="col l6 s12">
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
+              	</div>
+              	<div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Made By</h5>
+                <ul>
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
+            <div class="container">
+            © 2018 Copyright 일석칠조
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        	</div>
+    	</div>
+    </footer>
 
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 </body>

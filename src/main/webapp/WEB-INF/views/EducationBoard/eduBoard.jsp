@@ -13,7 +13,14 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 	<title>공부영상게시판</title>
-    
+	
+    <style type="text/css">
+		#checkline{
+			text-align: center;
+			color: red;
+		}
+	</style>
+	
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script src="YoutubeAPI/auth.js"></script>
 	    
@@ -41,16 +48,12 @@
 			//캐러셀
 			$('.carousel').carousel();
 			
-			$('#back').on('click', function() {
-				
-			});
-			
 			$('#sticker').on('click', function() {
 				//alert('emf어오냐');
 				$('#checkline').val('');
 			});
 			
-$('#loginBtn').on('click', function() {
+			$('#loginBtn').on('click', function() {
 				
 				var useremail = $('#useremail').val();
 				var userpwd = $('#userpwd').val();
@@ -81,6 +84,19 @@ $('#loginBtn').on('click', function() {
 					}
 				});//ajax
 			});
+			
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
+				}
+			});
 		});
     	
 	    //영상추가 
@@ -102,13 +118,11 @@ $('#loginBtn').on('click', function() {
 					return false;
 				}
 				
-				
 				if(subtitle.val().trim().length == 0) {
 					alert('파일을 넣어주세요.');
 					subtitle.focus();
 					return false;
 				}
-				
 				return true;
 			});
 		});
@@ -130,12 +144,12 @@ $('#loginBtn').on('click', function() {
 				var decoTarget = target.parent().children(".decommendation").children("#decoCount");
 				var videonum = target.parent().children("input").val();
 				var dataForm = {
-						"tableName":"educationvideo", 
-						"idCode":"videonum", 
-						"useremail":useremail, 
-						"identificationnum":videonum,
-						"recommendtable":"0",
-						"recommendation":"0"
+					"tableName":"educationvideo", 
+					"idCode":"videonum", 
+					"useremail":useremail, 
+					"identificationnum":videonum,
+					"recommendtable":"0",
+					"recommendation":"0"
 				};
 				
 				$.ajax({
@@ -175,12 +189,12 @@ $('#loginBtn').on('click', function() {
 				var recoTarget = target.parent().children(".recommendation").children("#recoCount");
 				var videonum = target.parent().children("input").val();
 				var dataForm = {
-						"tableName":"educationvideo",
-						"idCode":"videonum",  
-						"useremail":useremail, 
-						"identificationnum":videonum, 
-						"recommendtable":"0", 
-						"recommendation":"1"
+					"tableName":"educationvideo",
+					"idCode":"videonum",  
+					"useremail":useremail, 
+					"identificationnum":videonum, 
+					"recommendtable":"0", 
+					"recommendation":"1"
 				};
 				
 				$.ajax({
@@ -209,78 +223,64 @@ $('#loginBtn').on('click', function() {
 			});
 		});
     </script>
-    <style type="text/css">
-		#checkline{
-			text-align: center;
-			color: red;
-		}
-	</style>
 </head>
 <body>
     <header>
-	<!-- Dropdown Structure -->
-	<ul id="dropdown1" class="dropdown-content">
-	  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  		<c:if test="${plzLogin!=null}">
-					<script type="text/javascript">
-							$(function(){
-								alert("${plzLogin}");
-							});
-					</script>
-				</c:if>
-		  </li>
-		  <li class="divider"></li>
-		  <li><a href="searchTest">Youtube Search테스트</a></li>
-	</ul>
+		<!-- nav -->
+		<nav class="nav-extended">
+			<div class="nav-wrapper">
+				<!-- sidenav trigger -->
+			    <ul class="left">
+			    	<li>
+			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+			    			<i class="material-icons">menu</i>
+			    		</a>
+			    	</li>
+			    </ul>
+		    	<a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+		    	<a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+		    	
+			    <ul class="right hide-on-med-and-down">
+				  	<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>		 
+			      	<li><a href="eduBoard">영상게시판</a></li>
+			      	<li><a href="dubbingBoard">더빙게시판</a></li>
+			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
+			      	<li><a href="myPage">마이페이지</a></li>
+			    </ul>
+			</div>
 	
-	<!-- nav -->
-	<nav class="nav-extended">
-	  <div class="nav-wrapper">
-	     <!-- sidenav trigger -->
-		    <ul class="left">
-		    	<li>
-		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-		    			<i class="material-icons">menu</i>
-		    		</a>
-		    	</li>
-		    </ul>
-	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
-	    <ul class="right hide-on-med-and-down">
-		      	<c:if test="${not empty sessionScope.useremail }">
-		      <li>
-					<a href="logout">${sessionScope.useremail }님아logout</a>
-		      </li>
-				</c:if>
-		      <li><a href="eduBoard">영상게시판</a></li>
-		      <li><a href="dubbingBoard">더빙게시판</a></li>
-		      <li><a href="InvestigationBoard">자막검증게시판</a></li>
-		      <!-- Dropdown Trigger -->
-		      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-		    </ul>
-	  </div>
-
-	
-		<div class="nav-content">
-			<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
-        	<i class="medium material-icons" id="sticker">person</i>
-     		 </a>
-		</div>
-	</nav>
+		
+			<div class="nav-content">
+				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
+	        	<i class="medium material-icons" id="sticker">person</i>
+	     		 </a>
+			</div>
+		</nav>
 	</header>
    
    	<ul class="sidenav" id="small-navi">
-	    <li><a href="eduBoard.jsp">영상게시판</a></li>
+		<li>
+        	<div class="input-field">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<i class="material-icons">close</i>
+       		</div>
+		</li>		 
+		<li><a href="eduBoard">영상게시판</a></li>
 		<li><a href="dubbingBoard">더빙게시판</a></li>
 		<li><a href="InvestigationBoard">자막게시판</a></li>
-  	  </ul>
+		<li><a href="myPage">마이페이지</a></li>
+	</ul>
 		
-		<!-- 로그인 MODAL -->
-		<div id="modal1" class="modal">
-			<div class="modal-content">
+	<!-- 로그인 MODAL -->
+	<div id="modal1" class="modal">
+		<div class="modal-content">
 			<div class="container">
-			
 				<form class="col s12" id=loginForm action="login" method="POST">
 				<div class="row">
 					<h4 class="center-align">LOGIN</h4>
@@ -510,34 +510,34 @@ $('#loginBtn').on('click', function() {
 				</li>
 			</ul>
 		</div>
-
-
+		
 	<footer class="page-footer">
-          <div class="container">
-            <div class="row">
-              <div class="col l6 s12">
-                <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-              </div>
-              <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Links</h5>
+    	<div class="container">
+        	<div class="row">
+              	<div class="col l6 s12">
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
+              	</div>
+              	<div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Made By</h5>
                 <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="footer-copyright">
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
             <div class="container">
-            © 2014 Copyright Text
+            © 2018 Copyright 일석칠조
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
-          </div>
-        </footer>
-
+        	</div>
+    	</div>
+    </footer>
 
 <script type="text/javascript" src="js/materialize.min.js"></script>
 </body>

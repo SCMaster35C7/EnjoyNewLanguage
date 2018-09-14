@@ -53,7 +53,6 @@ public class MemberContoller {
 	 * @param session
 	 * @param model
 	 * @return 
-	 * @return
 	 */
 	@RequestMapping(value = "/statusCheck", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String statusCheck(@RequestBody Member member, HttpSession session){
