@@ -4,17 +4,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="author" content="zisung">
+	<meta charset="UTF-8">
+	<meta name="author" content="zisung">
+	
 	<!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
-	<title>Insert title here</title>
+	<style>
+	.scroll-box {
+    	overflow-y: scroll;
+        height: 300px;
+        padding: 1rem
+	    }
+	</style>
+	
+	<title>자막 검증 상세 정보</title>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
 		//css
@@ -46,6 +55,19 @@
 				var userpwd = $('#userpwd');
 				
 				$('#loginForm').submit();
+			});
+			
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
+				}
 			});
 		});
 		
@@ -257,22 +279,29 @@
 	    	
 	    	var result = '';
 			for ( var i in resp) {
-				result += '<div class="subtitle">'
-				result += ' <span class="">'+resp[i].usernick+'</span>'
-				result += ' <span class="">'+resp[i].subtitleName+'</span>'
-				result += '	<input class="subStart btn" type="button" value="자막 실행" data-rno="'+resp[i].subtitleNum+'"/>';
+				result += '<div class="row">';
+				result += '  <div class="subtitle" style="display:inline-block;">';
+				result += '    <span class="">'+resp[i].usernick+'</span>'
+				result += '    <span class="">'+resp[i].subtitleName+'</span>'
+				result += '  </div>';
+				result += '  <div class="right" style="display:inline-block;">';
+				result += '	  <a class="subStart btn-floating tooltipped" data-position="top" data-tooltip="PLAY" style="margin-left:85px;" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">play_arrow</i></a>';
 				if(useremail == resp[i].useremail) {
-					result += '	<a class="subDelete btn-floating" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">add</i></a>';
+					result += '	<a class="subDelete btn-floating" data-rno="'+resp[i].subtitleNum+'"><i class="material-icons">clear</i></a>';
 				}
-				result += '	<button class="btn subRecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
-				result += '		<img alt="" src="images/tup.png"> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
-				result += '	</button>';
-				result += '	<button class="btn subDecommendation" type="button" data-rno="'+resp[i].subtitleNum+'">';
-				result += '		<img alt="" src="images/tdown.png"> <span class="subDecoCount">'+resp[i].decommendation+'</span>';
-				result += '	</button>';
+				result += '	  <button class="btn subRecommendation " style="padding-left:4px; padding-right:4px;" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		  <i class="material-icons">thumb_up</i> <span class="subRecoCount">'+resp[i].recommendation+'</span>';
+				result += '	  </button>';
+				result += '	  <button class="btn subDecommendation " style="padding-left:4px; padding-right:4px;" type="button" data-rno="'+resp[i].subtitleNum+'">';
+				result += '		<i class="material-icons">thumb_down</i> <span class="subDecoCount">'+resp[i].decommendation+'</span>';
+				result += '	  </button>';
+				result += '  </div>';
 				result += '</div>';
+				result += '<br>';
 			}
-
+			
+		
+			
 			$("#subtitleList").html(result);
 			$(".subStart").on('click', subStart);
 			$(".subDelete").on('click', subDelete);
@@ -536,24 +565,18 @@
 		}
 	</script>
 </head>
+
 <body>
 	<header>
-	<!-- Dropdown Structure -->
-		<ul id="dropdown1" class="dropdown-content">
-		  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  		<c:if test="${plzLogin!=null}">
-					<script type="text/javascript">
-							$(function(){
-								alert("${plzLogin}");
-							});
-					</script>
-				</c:if>
-		  </li>
-		  <li class="divider"></li>
-		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		</ul>
-	<!-- nav -->
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
+
+		<!-- nav -->
 		<nav class="nav-extended">
 		  <div class="nav-wrapper">
 		    <!-- sidenav trigger -->
@@ -566,70 +589,77 @@
 		    </ul>
 		    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
-		    <ul class="right hide-on-med-and-down">
-		      	<c:if test="${not empty sessionScope.useremail }">
-			      <li>
-					<a href="logout">${sessionScope.useremail }님아logout</a>
-			      </li>
-				</c:if>
-			      <li><a href="eduBoard">영상게시판</a></li>
-			      <li><a href="dubbingBoard">더빙게시판</a></li>
-			      <li><a href="InvestigationBoard">자막검증게시판</a></li>
-		      <!-- Dropdown Trigger -->
-		      	  <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-		    </ul>
+		    
+			<ul class="right hide-on-med-and-down">
+				  	<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>		 
+			      	<li><a href="eduBoard">영상게시판</a></li>
+			      	<li><a href="dubbingBoard">더빙게시판</a></li>
+			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
+			      	<li><a href="myPage">마이페이지</a></li>
+			    </ul>
 		  </div>
 	
 		  <div class="nav-content">
-				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
+				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="bottom" data-tooltip="LOGIN!" href="#modal1">
 	        		<i class="medium material-icons">person</i>
 	     		</a>
 		  </div>
 		</nav>
 	</header>
 	
-	 <!-- 창 축소시 사이드 nav -->
-		  <ul class="sidenav" id="small-navi">
-		    <li><a href="eduBoard.jsp">영상게시판</a></li>
-		    <li><a href="dubbingBoard">더빙게시판</a></li>
-		    <li><a href="InvestigationBoard">자막게시판</a></li>
-	  	  </ul>
-	  
-	 
+	<!-- 창 축소시 사이드 nav -->
+	<ul class="sidenav" id="small-navi">
+		<li>
+        	<div class="input-field">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<i class="material-icons">close</i>
+       		</div>
+		</li>		 
+		<li><a href="eduBoard">영상게시판</a></li>
+		<li><a href="dubbingBoard">더빙게시판</a></li>
+		<li><a href="InvestigationBoard">자막게시판</a></li>
+		<li><a href="myPage">마이페이지</a></li>
+	</ul>
 	  	  
-	  <!-- 로그인 MODAL -->
-		<div id="modal1" class="modal">
-			<div class="modal-content">
+	<!-- 로그인 MODAL -->
+	<div id="modal1" class="modal">
+		<div class="modal-content">
 			<div class="container">
-			
 				<form class="col s12" id=loginForm action="login" method="POST">
-				<div class="row">
-					<h4 class="center-align">LOGIN</h4>
-				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
-						</c:if>
-					</div>
+						<h4 class="center-align">LOGIN</h4>
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mail</i>
+									<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+									<label for="useremail">EMAIL</label>
+								</div>
+							</c:if>
+						</div>
 				
-					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-							</div>
-						</c:if>
-					</div>
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mode_edit</i>
+									<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+									<label for="userpwd">PASSWORD</label>
+									<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
+								</div>
+							</c:if>
+						</div>
 					
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
-				</div>	
+						<!-- 글씨뜨는거 -->
+						<c:if test="${not empty sessionScope.useremail }">
+							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+						</c:if>
+					</div>	
 				
 					<div class="row">
 						<div class="col s10">
@@ -656,55 +686,108 @@
 						</div>
 						
 						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
-								<i class="large material-icons">person</i>
-								</a>
-								<ul>
-								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
-								</ul>
+							<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+							<i class="large material-icons">person</i>
+							</a>
+							<ul>
+							    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+							    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+							    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+							</ul>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>	
-	  </div>
+	</div>
 	  
-	  <div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<img src="images/">
-							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
+	<div class="wrapper">
+		<!-- sidenav -->	  
+		<aside>	  	  
+			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+				<li>
+					<div class="user-view">
+						<div class="background">
+							<img src="images/">
 						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
-				</ul>
-			</aside>
-		
-			
-			<section>
-				<div class="container">
-				<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-				<!--<div id="youtube"></div>   -->
-					<div class="video-container z-depth-2">
-						<iframe id="youtube" width="960" height="490"
-							src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
-							frameborder="0" allowfullscreen>
-						</iframe>
+						<a href="#user"><img class="circle" src="images/"></a>
+						<a href="#name"><span class="white-text name">${usernick}</span></a> 
+						<a href="#email"><span class="white-text email">${useremail}</span></a>
 					</div>
+				</li>
+				<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+				<li><a href="#!">wishList</a></li>
+				<li><div class="divider"></div></li>
+				<li><a class="subheader">회원정보관리</a></li>
+				<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+				<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+			</ul>
+		</aside>
+		
+		<section>
+			<div class="container" style="width:98%;">
+			<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+			<!--<div id="youtube"></div>   -->
+				<div class="row">
+					<div class="col s8 m8">
+						<div class="video-container z-depth-2" >
+							<iframe id="youtube" width="960" height="490"
+								src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+								frameborder="0" allowfullscreen>
+							</iframe>
+						</div>
+							
+						<div class="row" style="margin-top:15px;">
+							<div class="col s8 m8 l8"><h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:680px; padding:5px; margin-top:0px;"></h6></div>
+							<div class="right" style="margin-right:15px;">
+								<input type="hidden" value="${inv.investigationnum}">
+								<button class="btn recommendation" type="button">
+									<i class="material-icons">thumb_up</i>
+									<span id="recoCount">${inv.recommendation}</span>
+								</button>
+								<button class="btn decommendation" type="button">
+									<i class="material-icons">thumb_down</i> 
+									<span id="decoCount">${inv.decommendation}</span>
+								</button>
+							</div>
+						</div>
+						</div>
+							<div class="col s4 m4 l4">
+					      		<div class="card" style="height:520px; margin-top:0px;">
+									<div class="card-content">
+										<span class="card-title activator grey-text text-darken-4">
+											자막목록
+										</span>
+									</div>
+									<div class="card-content scroll-box">
+			          					<div id="subtitleList"></div>
+			        				</div>
+			        				<div class="card-action" style="padding:10px;">
+							         	 <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
+											 <div class="file-field">
+											     <div class="btn right" style="margin-left:30px;">
+											          <span>File</span>
+											          <input type="file" id="subtitleFile">
+											      </div>
+											  
+											      <div class="file-path-wrapper">
+											      	  <input class="file-path validate" type="text">
+											      </div>
+											  </div>	
+											 <div class="row">
+												 <div class="input-field col s9" style="margin-left:10px;">
+						          					<input id="subtitleName" type="text" class="validate"/>
+						         					 <label for="subtitleName">등록 파일명</label>
+						       					 </div>
+						       				
+												 <div class="input-field col s2" style="margin-top:25px;">
+													<input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
+												 </div>
+											 </div>	
+										</form>
+							        </div>
+							    </div>
+							 </div>
 	<script>
       // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
       var tag = document.createElement('script');
@@ -743,48 +826,10 @@
         }
    </script>
 
-
-					<div class="row">
-						<div class="right" style="margin-top:15px; margin-right:12px;">
-							<input type="hidden" value="${inv.investigationnum}">
-							<button class="btn recommendation" type="button">
-								<i class="material-icons">thumb_up</i>
-								<span id="recoCount">${inv.recommendation}</span>
-							</button>
-							
-							<button class="btn decommendation" type="button">
-								<i class="material-icons">thumb_down</i> 
-								<span id="decoCount">${inv.decommendation}</span>
-							</button>
-						</div>
-	
-						<form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
-							 <div class="file-field input-field col s6 m6 l6">
-							     <div class="btn">
-							          <span>File</span>
-							          <input type="file" id="subtitleFile">
-							      </div>
-							  
-							      <div class="file-path-wrapper">
-							      	  <input class="file-path validate" type="text">
-							      </div>
-							  </div>	
-							 
-							 <div class="input-field col s4 m4 l4">
-	          					<input id="subtitleName" type="text" class="validate" >
-	         					 <label for="subtitleName">등록 파일명</label>
-	       					 </div>
-	       				
-							 <div class="input-field col s2 m2 l2" style="margin-top:25px;">
-								<input type="button" id="registSubtitle" class="btn" value="자막 등록"/>
-							 </div>	
-						</form>
-					</div>
-				<div id="subtitleList">
-					
+						
 				</div>
 
-          		<div id="textbox"></div>
+          		
 
 			          <div>
 			            <form id="replyform" method="post">
@@ -805,33 +850,33 @@
 				</div>
 			</section>
 	</div>
-
-<footer class="page-footer">
-       <div class="container">
-         <div class="row">
-            <div class="col l6 s12">
-              <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-            </div>
-            <div class="col l4 offset-l2 s12">
-              <h5 class="white-text">Links</h5>
+	<footer class="page-footer">
+    	<div class="container">
+        	<div class="row">
+              	<div class="col l6 s12">
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
+              	</div>
+              	<div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Made By</h5>
                 <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-         </div>
-       </div>
-       <div class="footer-copyright">
-          <div class="container">
-             © 2014 Copyright Text
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
+            <div class="container">
+            © 2018 Copyright 일석칠조
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-          </div>
-       </div>
-</footer>
-	
+        	</div>
+    	</div>
+    </footer>
 <script type="text/javascript" src="js/materialize.js"></script>	
 </body>
 </html>

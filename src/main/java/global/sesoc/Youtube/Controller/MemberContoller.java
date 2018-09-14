@@ -53,11 +53,9 @@ public class MemberContoller {
 	 * @param session
 	 * @param model
 	 * @return 
-	 * @return
 	 */
 	@RequestMapping(value = "/statusCheck", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String statusCheck(@RequestBody Member member, HttpSession session){
-		
 		Member selectedM = mRepository.selectOneFromMember(member);
 		
 		/*
@@ -79,11 +77,9 @@ public class MemberContoller {
 				session.setAttribute("useremail", selectedM.getUseremail());
 				session.setAttribute("admin", selectedM.getAdmin());
 				session.setAttribute("usernick", selectedM.getUsernick());
-				
-				System.out.println("닉*********"+ selectedM.getUsernick());
+
 				session.setAttribute("gender", selectedM.getGender());
 				session.setAttribute("birth", selectedM.getBirth());
-
 
 				// 접속일 업뎃
 				mRepository.updateLastAccess(selectedM.getUseremail());
