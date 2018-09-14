@@ -57,11 +57,8 @@ public class MemberContoller {
 	 */
 	@RequestMapping(value = "/statusCheck", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String statusCheck(@RequestBody Member member, HttpSession session){
-		Member m = new Member();
-		m.setUseremail(member.getUseremail());
-		m.setUserpwd(member.getUserpwd());
 		
-		Member selectedM = mRepository.selectOneFromMember(m);
+		Member selectedM = mRepository.selectOneFromMember(member);
 		
 		/*
 		 1. 인증 유무 확인
@@ -79,16 +76,17 @@ public class MemberContoller {
 			if (selectedM.getStatus()==0) {
 				return "checkEmail";
 			} else { //로그인가능
-				session.setAttribute("useremail", member.getUseremail());
-				session.setAttribute("admin", member.getAdmin());
-				session.setAttribute("usernick", member.getUsernick());
-				session.setAttribute("gender", member.getGender());
-				session.setAttribute("birth", member.getBirth());
+				session.setAttribute("useremail", selectedM.getUseremail());
+				session.setAttribute("admin", selectedM.getAdmin());
+				session.setAttribute("usernick", selectedM.getUsernick());
+				
+				System.out.println("닉*********"+ selectedM.getUsernick());
+				session.setAttribute("gender", selectedM.getGender());
+				session.setAttribute("birth", selectedM.getBirth());
 
-				System.out.println("로그인한넘" + member);
 
 				// 접속일 업뎃
-				mRepository.updateLastAccess(member.getUseremail());
+				mRepository.updateLastAccess(selectedM.getUseremail());
 				return "loginSuccess";
 			}
 		} else {
@@ -295,10 +293,14 @@ public class MemberContoller {
 	public String myPage(Model model, HttpSession session) {
 		String useremail = (String) session.getAttribute("useremail");
 		Integer myChallengeCount = mRepository.checkChallengeCount(useremail);
-		// x/0 에러를 방지하기 위해 먼저 분모부분을 체크하고 해당 경우를 반영
 		Member checkIfo = new Member();
+		
+		if(myChallengeCount == null)  
+			checkIfo.setAllChallenge(0);
+		else 
+			checkIfo.setAllChallenge(myChallengeCount);
+		// x/0 에러를 방지하기 위해 먼저 분모부분을 체크하고 해당 경우를 반영
 		checkIfo.setUseremail(useremail);
-		checkIfo.setAllChallenge(myChallengeCount);
 		// 갠정보
 		Member member = mRepository.selectMyInfo(checkIfo);
 		// 갠영상
@@ -325,10 +327,8 @@ public class MemberContoller {
 		model.addAttribute("myInfo", member);
 		model.addAttribute("finished", finished);
 		model.addAttribute("notfinished", notfinished);
-		// System.out.println("완료 영상*******"+finished);
-		// System.out.println("아직 영상*******"+notfinished);
-		// map
-		Map<Integer, Integer> levelMap = new HashMap<>();
+		
+		//배열로 만들자
 
 		int one = 0;
 		int two = 0;
@@ -349,15 +349,22 @@ public class MemberContoller {
 				five++;
 			}
 		}
-
-		levelMap.put(1, one);
-		levelMap.put(2, two);
-		levelMap.put(3, three);
-		levelMap.put(4, four);
-		levelMap.put(5, five);
-
-		model.addAttribute("levelMap", levelMap);
-
+		
+		List<Integer> levelArray = new ArrayList<>();
+		levelArray.add(one);
+		levelArray.add(two);
+		levelArray.add(three);
+		levelArray.add(four);
+		levelArray.add(five);
+		
+		model.addAttribute("levelArray", levelArray);
+		
+		
+		List<Integer> winningRate = new ArrayList<>();
+		winningRate.add(member.getAllSuccess());
+		winningRate.add(member.getAllFailure());
+		
+		model.addAttribute("winningRate", winningRate);
 		return "Member/myPage";
 	}
 

@@ -33,10 +33,6 @@
 			//modal open
 			$('#modal1').modal();
 			
-			$('#back').on('click', function() {
-				
-			});
-			
 			//side-nav open
 			$('.sidenav').sidenav();
 			
@@ -56,9 +52,6 @@
 		
 		
 	</script>
-<style>
-
-</style>
 </head>
 <body>
 	<header>
@@ -195,176 +188,126 @@
 		</div>	
 	  </div>
 
-	
-		<div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<img src="images/">
-							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
+
+	<div class="wrapper">
+		<!-- sidenav -->
+		<aside>
+			<ul id="slide-out" class="sidenav" style="margin-top: 64px;">
+				<li><div class="user-view">
+						<div class="background">
+							<!-- <img src="images/"> -->
 						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
-				</ul>
-			</aside>	
-		
-			<section>
-				<div class="container">
-					<h5>${usernick}님의 mypage</h5>
-						<div class="row">
-							<div class="col s12 m8">
-								<div class="card">
-									<div class="waves-effect waves-block waves-light">
-										<h6>레벨별 성취도</h6>
-										<div class="trending-line-chart-wrapper">
-			 								<canvas id="myChart"></canvas>
-	                                    </div>
-									</div>
+						<a href="#user"><img class="circle" src="images/"></a> <a
+							href="#name"><span class="white-text name">${usernick}</span></a>
+						<a href="#email"><span class="white-text email">${useremail}</span></a>
+					</div></li>
+				<li><a href="#!"><i class="material-icons">cloud</i>First
+						Link With Icon</a></li>
+				<li><a href="#!">wishList</a></li>
+				<li><div class="divider"></div></li>
+				<li><a class="subheader">회원정보관리</a></li>
+				<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+				<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+			</ul>
+		</aside>
+
+		<section>
+			<br />
+			<div class="container">
+				<h4>${usernick}님의 마이페이지</h4>
+				<br />
+				<div class="row">
+					<div class="col s12 m6 l6">
+						<div class="card">
+							<div class="waves-effect waves-block waves-light">
+								<h5>레벨별 성취도</h5>
+								<div class="trending-line-chart-wrapper">
+									<canvas id="myChart"></canvas>
 								</div>
 							</div>
-							<div class="col s12 m4 l4">
-								<div class="card">
-									<div class="waves-effect waves-block waves-light">
-										<h6>승률 : 
-											<span>
-												<c:if test="${myInfo!=null }">
-												${myInfo.winningRate} (승 : ${myInfo.allSuccess}/ 패 :  ${myInfo.allFailure}/ 도전: ${myInfo.allChallenge})
-												</c:if>
-												<c:if test="${myInfo==null }">
+						</div>
+					</div>
+					<div class="col s12 m6 l6">
+						<div class="card">
+							<div class="waves-effect waves-block waves-light">
+								<span> <c:if test="${myInfo!=null }">
+										<div align="center">
+											<h5>승률 : ${myInfo.winningRate}% (승 :
+												${myInfo.allSuccess}/ 패 : ${myInfo.allFailure}/ 도전:
+												${myInfo.allChallenge})</h5>
+										</div>
+									</c:if> <c:if test="${myInfo==null }">
 												승률 데이터 없음 하셈	
-												<br/>
-												</c:if>
-											</span>
-										</h6>
-										<div class="trending-line-chart-wrapper">
-				 							<canvas id="circle"></canvas>
-		                                 </div>
-									</div>
-								</div>	
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col s12 m8">
-								<div class="card">
-									<div class="waves-effect waves-block waves-light">
-										<h6>보고있는 영상</h6>
-										<div class="trending-line-chart-wrapper">
-			 								<c:if test="${not empty notfinished}">
-												<c:forEach var="nf" items="${notfinished}">
-													<a href="detailEduBoard?videoNum=${nf.videoNum}">${nf.title}</a> 
-												</c:forEach>
-											</c:if>
-		
-											<c:if test="${empty notfinished}">
-												없음
-											</c:if> 
-	                                    </div>
-									</div>
+												<br />
+									</c:if>
+								</span>
+								<div class="trending-line-chart-wrapper">
+									<canvas id="circle"></canvas>
 								</div>
 							</div>
-							<div class="col s12 m4 l4">
-								<ul class="collection with-header waves-effect waves-block waves-light">
-									<li class="collection-header"><h6>완료한 영상</h6></li>
-											
-				 							<c:if test="${not empty finished}">
-												<c:forEach var="f" items="${finished}">
-													<li class="collection-item">
-														<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a><br>
-														<a href="TryRetake?videoNum=${f.videoNum}">재시험 도전</a>
-													</li>
-												</c:forEach>
-											</c:if>
-											<c:if test="${empty finished}">
-												없음
-											</c:if> 
-								</ul>
-							</div>
 						</div>
-						
+					</div>
 				</div>
-			</section>
-		</div>	
-		
-		 
-		
-		
-		<br/><br/>
-		
-		<c:if test="${myInfo!=null }">
-		
-		승률 : ${myInfo.winningRate} (승 : ${myInfo.allSuccess}/ 패 :  ${myInfo.allFailure}/ 도전: ${myInfo.allChallenge})
-		<br/>
-		</c:if>
-		<c:if test="${myInfo==null }">
-		승률 데이터 없음 하셈	
-		<br/>
-		</c:if>
-	
-	
-		보고있는 영상 : 
-		<c:if test="${not empty notfinished}">
-			<c:forEach var="nf" items="${notfinished}">
-				<a href="detailEduBoard?videoNum=${nf.videoNum}">${nf.title}</a> 
-			</c:forEach>
-		</c:if>
-		
-		<c:if test="${empty notfinished}">
-			없음
-		</c:if> 
-		<br/>
-		완료한 영상 : 
-		
-		<c:if test="${not empty finished}">
-			<c:forEach var="f" items="${finished}">
-				<a href="detailEduBoard?videoNum=${f.videoNum}"> ${f.title}</a>
-				 <a href="TryRetake?videoNum=${f.videoNum}">재시험 도전</a><br/>
-			</c:forEach>
-		</c:if>
-		<c:if test="${empty finished}">
-			없음
-		</c:if> 
-		
-		<br/>
-	
-	
- 		<c:forEach var="m" items="${levelMap}">
-		 
-		
-			<c:if test="${m.key==1}">
-				레벨1 : ${m.value}
-			</c:if>
-			
-			<c:if test="${m.key==2}">
-				레벨2 : ${m.value}
-			</c:if>
-			
-			<c:if test="${m.key==3}">
-				레벨3 : ${m.value}
-			</c:if>
-			
-			<c:if test="${m.key==4}">
-				레벨4 : ${m.value}
-			</c:if>
-			
-			<c:if test="${m.key==5}">
-				레벨5 : ${m.value}
-			</c:if>
-		
-		</c:forEach> 
-		
-<footer class="page-footer">
+
+				<div class="row" >
+					<div id="table1" class="col s12 m6 l6">
+						<table class="highlight">
+							<thead>
+								<tr>
+									<th>보고있는 영상</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:if test="${not empty notfinished}">
+									<c:forEach var="nf" items="${notfinished}">
+										<tr>
+											<td><a href="detailEduBoard?videoNum=${nf.videoNum}">${nf.title}</a></td>
+										</tr>
+									</c:forEach>
+								</c:if>
+
+								<c:if test="${empty notfinished}">
+									<td>학습중인 영상이 없습니다.</td>
+								</c:if>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="col s12 m6 l6">
+					<div id="table2">
+						<table class="highlight">
+							<thead>
+								<tr>
+									<th colspan="2">학습완료 한 영상</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:if test="${not empty finished}">
+									<c:forEach var="f" items="${finished}">
+										<tr>
+											<td><a href="detailEduBoard?videoNum=${f.videoNum}">${f.title}</a></td>
+											<td><a href="TryRetake?videoNum=${f.videoNum}"
+												class="waves-effect waves-light btn">再試驗ㅇ</a></td>
+										</tr>
+									</c:forEach>
+								</c:if>
+
+								<c:if test="${empty finished}">
+									<td>학습중인 영상이 없습니다.</td>
+								</c:if>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+
+
+	<footer class="page-footer">
        <div class="container">
          <div class="row">
             <div class="col l6 s12">
@@ -400,8 +343,9 @@
 			    data: {
 			        labels: ["lv.1", "lv.2", "lv.3", "lv.4", "lv.5"],
 			        datasets: [{
-			            label: '# of Votes',
-			            data: [12, 19, 3, 5, 2, 3],
+			            
+			          
+			            data:${levelArray},
 			            backgroundColor: [
 			                'rgba(255, 99, 132, 0.2)',
 			                'rgba(54, 162, 235, 0.2)',
@@ -434,20 +378,18 @@
 		 var circle = new Chart(ctx2, {
 			    type: 'doughnut',
 			    data: {
-			    	labels: ["Red", "Blue", "Yellow"],
+			    	labels: ["승", "패"],
 			    	datasets: [{
-				        data: [10, 20, 30],
+				        data: ${winningRate},
 				        backgroundColor: [
-			                'rgba(255, 99, 132, 0.2)',
 			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(255, 206, 86, 0.2)',
+			                'rgba(255, 99, 132, 0.2)'
 			            ]
 				    }]
 				    
 			    }
 			});
 		 
-		
 </script>	
 </body>
 </html>
