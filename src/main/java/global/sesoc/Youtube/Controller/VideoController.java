@@ -119,17 +119,6 @@ public class VideoController {
 	}
 
 	/**
-	 * 교육 영상 추가 페이지로 이동한다.
-	 * 
-	 * @return
-	 */
-	@RequestMapping(value = "/addEduVideo", method = RequestMethod.GET)
-	public String addEduVideo() {
-
-		return "EducationBoard/addEduVideo";
-	}
-
-	/**
 	 * 교육 영상을 DB에 넣어준다.
 	 * 
 	 * @param education
@@ -138,6 +127,8 @@ public class VideoController {
 	 */
 	@RequestMapping(value = "/addEduVideo", method = RequestMethod.POST)
 	public String addEduVideo(Education education, MultipartFile subtitle) {
+		System.out.println("ede : "+education);
+		System.out.println("MultipartFile : "+subtitle);
 		if (subtitle.getSize() != 0) {
 			String originalfile = subtitle.getOriginalFilename();
 			String savedfile = FileService.saveFile(subtitle, eduFileRoot);
@@ -147,7 +138,7 @@ public class VideoController {
 		}
 		
 		int result = eduRepository.insertEduVideo(education);
-		return "EducationBoard/addEduVideo";
+		return "redirect:/eduBoard";
 	}
 
 	@RequestMapping(value = "/slide", method = RequestMethod.GET)
@@ -172,7 +163,7 @@ public class VideoController {
 	@RequestMapping(value="/insertRecommendation", method=RequestMethod.POST)
 	public @ResponseBody String updateRecommendation(@RequestBody Recommendation reco) {
 		Recommendation recoTemp = eduRepository.selectOneFromRecommendation(reco);
-		System.out.println(reco);
+
 		if(recoTemp != null) {
 			int savedReco = recoTemp.getRecommendation();	// 저장되어 있는 값
 			int reqReco	= reco.getRecommendation();			// 요청온 값
@@ -216,5 +207,15 @@ public class VideoController {
 			
 			return "success";
 		}
+	}
+	
+	@RequestMapping(value="/existVideo", method=RequestMethod.GET)
+	public @ResponseBody String existVideo(String url) {
+		Education edu = eduRepository.existVideo(url);
+		
+		if(edu != null) 
+			return "failure";
+		else
+			return "success";
 	}
 }

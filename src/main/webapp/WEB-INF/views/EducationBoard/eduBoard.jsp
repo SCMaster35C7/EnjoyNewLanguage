@@ -25,6 +25,9 @@
 	<script src="YoutubeAPI/auth.js"></script>
 	    
 	<script type="text/javascript">
+		var urlCheck = false;
+		var urlValue = "";
+		
 	    // css용
 	    $(function(){
 			//dropdown
@@ -49,7 +52,6 @@
 			$('.carousel').carousel();
 			
 			$('#sticker').on('click', function() {
-				//alert('emf어오냐');
 				$('#checkline').val('');
 			});
 			
@@ -103,27 +105,104 @@
 		$(function() {
 			$('#checkForm').on('click', function() {
 				var title = $('#title');
-				var url = $('#url');
 				var subtitle = $('#subtitle');
 				
 				if(title.val().trim().length == 0) {
-					alert('영상 제목을 입력해주세요.');
+					alert("제목을 입력해주세요.");
 					title.focus();
-					return false;
+					return;
 				}
 				
-				if(url.val().trim().length == 0) {
-					alert('영상 URL을 입력해주세요.');
-					url.focus();
-					return false;
+				// url 체크 확인 추가
+				if(urlCheck == false) {
+					alert("URL중복 검사 통과해주세요.");
+					return;
 				}
 				
 				if(subtitle.val().trim().length == 0) {
 					alert('파일을 넣어주세요.');
 					subtitle.focus();
-					return false;
+					return;
 				}
-				return true;
+				$('#addEduVideoForm').submit();
+			});
+			
+			$('#urlCheck').on('click', function() {
+				var url = $('#url');
+				var originalURL = url.val();				// 원본 URL
+				
+				// 영상 URL 입력 확인
+				if(originalURL.trim().length == 0) {
+					alert('영상 URL을 입력해주세요.');
+					url.focus();
+					urlCheck = false;
+					return;
+				}
+				
+				// 중복 검사를 시행했던 URL인지 확인 -> 즉, 변경된 URL로 중복검사를 재요청했는지 확인
+				if(urlValue == originalURL) {
+					if(urlCheck == false) {
+						alert("이미 등록되어 있는 영상입니다.");
+					}else {
+						alert("등록 가능한 영상입니다.");
+					}
+					return;
+				}
+				urlValue = originalURL;
+				
+				// VideoID 추출
+	       		var markIndex = originalURL.indexOf("?");	// GET방식 인자를 제외한 실제 주소
+	       		var findVideoId = "";
+	       		if(markIndex == -1) {
+	       			if(originalURL.includes("embed") == false) {
+	       				alert("Youtube Video URL을 제대로 입력해주세요.");
+	       				urlCheck = false;
+	       				return;
+	       			}
+	       			
+	       			var embedIndex = originalURL.indexOf("embed")+6;
+	       			findVideoId = originalURL.substring(embedIndex);	//iframe에서 선택시 VideoId추출
+	       		}else {
+	       			if(originalURL.includes("youtube.com") == false || originalURL.indexOf("v=") == -1) {
+	       				alert("Youtube Video URL을 제대로 입력해주세요.");
+	       				urlCheck =false;
+	       				return;
+	       			}
+	       			
+	       			var vIndex = originalURL.indexOf("v=")+2;
+	       			var firstAmpIndex = originalURL.substring(vIndex).indexOf("&");
+	       			
+	       			if(firstAmpIndex == -1) {
+	       				findVideoId = originalURL.substring(vIndex);
+	       			}else {
+	       				findVideoId = originalURL.substring(vIndex, vIndex+firstAmpIndex);
+	       			}
+	       		}
+	       		
+	       		// 영상 중복 검사
+	       		$.ajax({
+	       			method: 'get'
+	       			, url : 'existVideo'
+	       			, data: 'url='+findVideoId
+	       			, dataType: 'text'
+	       			, async: false
+	       			, success: function(resp) {
+	       				if(resp == 'success') {
+	       					$('#videoId').val(findVideoId);
+	       					urlCheck = true;
+	       					
+	       					alert("등록 가능한 영상입니다.");
+	       				}else {
+	       					urlCheck = false;
+	       					
+	       					alert("이미 등록되어 있는 영상입니다.");
+	       				}
+	       			}, error:function(resp, code, error) {
+						alert("resp : "+resp+", code:"+code+", error:"+error);
+					}
+	       		});
+				alert("videoID"+$('#videoId').val());
+				alert("유무 확인 : "+urlCheck);
 			});
 		});
     
@@ -224,6 +303,7 @@
 		});
     </script>
 </head>
+
 <body>
     <header>
 		<!-- nav -->
@@ -296,18 +376,17 @@
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
+						<c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mode_edit</i>
 								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
 								<label for="userpwd">PASSWORD</label>
+								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
 							</div>
 						</c:if>
 					</div>
-					
+						
 					<!-- 글씨뜨는거 -->
-						 <input id="checkline" value="" type="text" style="border-bottom: none;"  />
-					
 					<c:if test="${not empty sessionScope.useremail }">
 						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 					</c:if>
@@ -365,17 +444,19 @@
   	<!-- 영상추가 모달 -->
   	<div id="addvideo" class="modal">
   		<div class="container">
-  		<div class="modal-content">
+  			<div class="modal-content">
 		      <h5 class="center">교육 영상 삽입</h5>
 		      <div class="row">
-			      <form action="addEduVideo" method="post" enctype="multipart/form-data">
+			      <form id="addEduVideoForm" action="addEduVideo" method="post" enctype="multipart/form-data">
+			      		<input type="hidden" name="useremail" value="${sessionScope.useremail}"/> 
 						<div class="input-field col s12">
 							<input type="text" class="validate" id="title" name="title"/>
 							<label for="title">영상제목입력</label>
 						</div>
 						<div class="row">
 							<div class="input-field col s8">
-								<input type="text" class="validate" id="url" name="url"/>
+								<input type="text" class="validate" id="url"/>
+								<input type="hidden" id="videoId" name="url"/> 
 								<label for="url">URL입력</label>
 							</div>
 							<div class="input-field col s4">
@@ -392,85 +473,84 @@
 								</div>	
 							</div>
 					</form>	
-							<div class="center">
-								<input type="submit" id="checkForm" class="btn" value="영상 등록"/>
-								<input type="reset" class="btn" value="재입력"/>
-							</div>
+					<div class="center">
+						<input type="button" id="checkForm" class="btn" value="영상 등록"/>
+						<input type="reset" class="btn" value="재입력"/>
+					</div>
 				</div>
-		 </div>
-		 </div>
-		    <div class="modal-footer">
-		      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-			</div>
+		 	</div>
+		</div>
+		<div class="modal-footer">
+		 	<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+		</div>
   	</div>		
 	
 	<div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<img src="images/">
-							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
+		<!-- sidenav -->	  
+		<aside>	  	  
+			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+				<li>
+					<div class="user-view">
+						<div class="background">
+							<img src="images/">
 						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
-				</ul>
-			</aside>	
+						<a href="#user"><img class="circle" src="images/"></a>
+						<a href="#name"><span class="white-text name">${usernick}</span></a> 
+						<a href="#email"><span class="white-text email">${useremail}</span></a>
+					</div>
+				</li>
+				<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+				<li><a href="#!">wishList</a></li>
+				<li><div class="divider"></div></li>
+				<li><a class="subheader">회원정보관리</a></li>
+				<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+				<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+			</ul>
+		</aside>	
 	<section>
-    <!-- Page Content -->
-	<div class="container">
-		<h4 class="left"><a href="eduBoard">추천학습영상</a></h4>
-		<div class="row"></div>
-		<div class="row">
-			
-		<c:if test="${not empty eduList}">
-			<c:forEach var="eduList" items="${eduList}">
-			
-			<div class="col s12 m3 l3">
-				<div class="card" style="height:400px margin-bottom:10px;">
-					<div class="card-image">
-						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-					</div>
-					<div class="card-content" style="height:150px;">
-							<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
-					</div>
-						
-					<div class="card-action" style="height:70px">
-						<div class="row s12 m12">
-							<input type="hidden" value="${eduList.videoNum}"/>
-							<button class="btn recommendation"  style="width:65px; padding-right:4px; padding-left:4px;">
-								<i class="material-icons">thumb_up</i>
-								<span id="recoCount">${eduList.recommendation}</span>
-							</button>
-							<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
-								<i class="material-icons">thumb_down</i>
-								<span id="decoCount">${eduList.decommendation}</span>
-							</button>
-							<button class="btn disabled right decommendation" style="width:80px">
-								<i class="material-icons">touch_app</i>
-								<span>${eduList.hitCount}</span>
-							</button>
-						</div>
-					</div>
-				</div>
+		<!-- Page Content -->
+		<div class="container">
+			<div class="row">
+				<h4 class="left"><a href="eduBoard">추천학습영상</a></h4>
 			</div>
-			</c:forEach>
-		</c:if>
+			
+			<div class="row">
+				<c:if test="${not empty eduList}">
+					<c:forEach var="eduList" items="${eduList}">
+						<div class="col s12 m3 l3">
+							<div class="card" style="height:400px margin-bottom:10px;">
+								<div class="card-image">
+									<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
+									<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+								</div>
+								<div class="card-content" style="height:150px;">
+									<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
+								</div>
+								
+								<div class="card-action" style="height:70px">
+									<div class="row s12 m12">
+										<input type="hidden" value="${eduList.videoNum}"/>
+										<button class="btn recommendation"  style="width:65px; padding-right:4px; padding-left:4px;">
+											<i class="material-icons">thumb_up</i>
+											<span id="recoCount">${eduList.recommendation}</span>
+										</button>
+										<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
+											<i class="material-icons">thumb_down</i>
+											<span id="decoCount">${eduList.decommendation}</span>
+										</button>
+										<button class="btn disabled right decommendation" style="width:80px">
+											<i class="material-icons">touch_app</i>
+											<span>${eduList.hitCount}</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</c:if>
+			</div>
 		</div>
-		
-		</div>
-		</section>
+	</section>
 		</div>
 		<!-- pagination -->
 		<div class="center">

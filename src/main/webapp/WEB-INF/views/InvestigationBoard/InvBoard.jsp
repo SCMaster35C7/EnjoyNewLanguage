@@ -414,7 +414,9 @@
 
 			<section>	
 				<div class="container">
-					<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
+					<div class="row">
+						<h4 class="left"><a href="InvestigationBoard">자막검증게시판</a></h4>
+					</div>
 					<div class="row">
 						<c:if test="${not empty invList}">
 							<c:forEach var="invList" items="${invList}">
@@ -567,19 +569,18 @@
 	       			var embedIndex = originalURL.indexOf("embed")+6;
 	       			findVideoId = originalURL.substring(embedIndex);	//iframe에서 선택시 VideoId추출
 	       		}else {
-	       			if(originalURL.includes("youtube.com") == false) {
-	       				alert("URL을 제대로 입력해주세요.");
+	       			if(originalURL.includes("youtube.com") == false || originalURL.indexOf("v=") == -1) {
+	       				alert("Youtube Video URL을 제대로 입력해주세요.");
 	       				return;
 	       			}
-	       			https://www.youtube.com/watch?v=XfjXGXVnp8E
 	       			var vIndex = originalURL.indexOf("v=")+2;
 	       			var firstAmpIndex = originalURL.substring(vIndex).indexOf("&");
 	       			
 	       			if(firstAmpIndex == -1) {
 	       				findVideoId = originalURL.substring(vIndex);
-	       				alert(findVideoId);
+	       				//alert(findVideoId);
 	       			}else {
-	       				findVideoId = originalURL.substring(vIndex+firstAmpIndex, firstAmpIndex);
+	       				findVideoId = originalURL.substring(vIndex, vIndex+firstAmpIndex);
 	       			}
 	       		}
 	       		

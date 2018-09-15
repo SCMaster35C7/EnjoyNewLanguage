@@ -293,7 +293,7 @@ $(document).ready(function() {
 			<section>	
 		         <div class="container">
 		          <div class="section">
-		          <h4 class="center">더빙게시판</h4>
+		          <h4 class="left">더빙게시판</h4>
 		            <!--DataTables example-->
 		                  <table id="dubbing">
 		                    <thead>
