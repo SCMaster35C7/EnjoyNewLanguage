@@ -213,4 +213,11 @@ public class EducationRepository {
 		
 		return eList;
 	}
+
+	public Education existVideo(String url) {
+		EducationMapper mapper = session.getMapper(EducationMapper.class);
+		Education edu = mapper.existVideo(url);
+		
+		return edu;
+	}
 }

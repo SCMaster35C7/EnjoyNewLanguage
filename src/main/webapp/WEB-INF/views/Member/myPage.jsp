@@ -5,19 +5,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="author" content="zisung">
+	<meta charset="UTF-8">
+	<meta name="author" content="zisung">
 	<!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>마이페이지</title>
-<script type="text/javascript" src="js/Chart.js"></script>
-<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	
+	<title>마이페이지</title>
+	<script type="text/javascript" src="js/Chart.js"></script>
+	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
 			$('select').formSelect();
@@ -36,10 +36,6 @@
 			$('#modal3').modal(); //회원정보수정 모달
 
 			
-			$('#back').on('click', function() {
-				
-			});
-			
 			//side-nav open
 			$('.sidenav').sidenav();
 			
@@ -55,9 +51,20 @@
 				
 				$('#loginForm').submit();
 			});
+			
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
+				}
+			});
 		});
-		
-		
 	</script>
 <style>
 
@@ -65,22 +72,15 @@
 </head>
 <body>
 	<header>
-	<!-- Dropdown Structure -->
-		<ul id="dropdown1" class="dropdown-content">
-		  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  		<c:if test="${plzLogin!=null}">
-					<script type="text/javascript">
-							$(function(){
-								alert("${plzLogin}");
-							});
-					</script>
-				</c:if>
-		  </li>
-		  <li class="divider"></li>
-		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		</ul>
-	<!-- nav -->
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
+		
+		<!-- nav -->
 		<nav class="nav-extended">
 		  <div class="nav-wrapper">
 		    <!-- sidenav trigger -->
@@ -130,8 +130,6 @@
 		<li><a href="myPage">마이페이지</a></li>
 	</ul>
 	  
-	 
-	  	  
 	  <!-- 로그인 MODAL -->
 		<div id="modal1" class="modal">
 			<div class="modal-content">
@@ -152,15 +150,17 @@
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
+						<c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mode_edit</i>
 								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
 								<label for="userpwd">PASSWORD</label>
+								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
 							</div>
 						</c:if>
 					</div>
-					
+						
+					<!-- 글씨뜨는거 -->
 					<c:if test="${not empty sessionScope.useremail }">
 						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 					</c:if>
@@ -471,36 +471,36 @@
 			</c:if>
 		
 		</c:forEach> 
-		
 <footer class="page-footer">
-       <div class="container">
-         <div class="row">
-            <div class="col l6 s12">
-              <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-            </div>
-            <div class="col l4 offset-l2 s12">
-              <h5 class="white-text">Links</h5>
+    	<div class="container">
+        	<div class="row">
+              	<div class="col l6 s12">
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
+              	</div>
+              	<div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Made By</h5>
                 <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-         </div>
-       </div>
-       <div class="footer-copyright">
-          <div class="container">
-             © 2014 Copyright Text
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
+            <div class="container">
+            © 2018 Copyright 일석칠조
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-          </div>
-       </div>
-</footer>
+        	</div>
+    	</div>
+    </footer>
 
-
-<script type="text/javascript" src="js/materialize.js"></script>
-<script>
+	<script type="text/javascript" src="js/materialize.js"></script>
+	<script>
 		//chart.js
 		var ctx = document.getElementById("myChart");
 		 var myChart = new Chart(ctx, {
@@ -554,8 +554,6 @@
 				    
 			    }
 			});
-		 
-		
-</script>	
+	</script>	
 </body>
 </html>

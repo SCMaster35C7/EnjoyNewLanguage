@@ -53,7 +53,6 @@ public class MemberContoller {
 	 * @param session
 	 * @param model
 	 * @return 
-	 * @return
 	 */
 	@RequestMapping(value = "/statusCheck", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String statusCheck(@RequestBody Member member, HttpSession session){
@@ -78,11 +77,8 @@ public class MemberContoller {
 				session.setAttribute("useremail", selectedM.getUseremail());
 				session.setAttribute("admin", selectedM.getAdmin());
 				session.setAttribute("usernick", selectedM.getUsernick());
-				System.out.println("닉네임 확인 : " +  selectedM.getUsernick());
 				session.setAttribute("gender", selectedM.getGender());
 				session.setAttribute("birth", selectedM.getBirth());
-
-				System.out.println("로그인한넘" + selectedM);
 
 				// 접속일 업뎃
 				mRepository.updateLastAccess(selectedM.getUseremail());
@@ -200,8 +196,6 @@ public class MemberContoller {
 
 	@RequestMapping(value = "mailSending", method = RequestMethod.POST)
 	public String mailSending(HttpServletRequest request, Member member, HttpSession session) {
-		System.out.println("횐갑하는넘**********" + member);
-
 		mRepository.insertMember(member);
 		session.setAttribute("waitingEmail", member.getUseremail());
 
@@ -240,8 +234,6 @@ public class MemberContoller {
 	
 	@RequestMapping(value = "recoveryMail", method = RequestMethod.POST)
 	public String recoveryID(HttpServletRequest request, String  recoveryEmail, HttpSession session) {
-		System.out.println("리커버리하는넘**********" + recoveryEmail);
-
 		//mRepository.insertMember(member);
 		session.setAttribute("recoveringEmail", recoveryEmail);
 
@@ -302,11 +294,6 @@ public class MemberContoller {
 		List<Video> video = mRepository.selectMyVideo(useremail);
 		// 갠레벨스
 		List<TestResult> levelList = mRepository.selectLevels(useremail);
-
-		System.out.println("마이페이지에 나올 넘*******" + member);
-		System.out.println("마이페이지에 나올 영상*******" + video);
-		System.out.println("마이페이지에 나올 레벨스****" + levelList);
-
 		List<Video> notfinished = new ArrayList<>();
 		List<Video> finished = new ArrayList<>();
 

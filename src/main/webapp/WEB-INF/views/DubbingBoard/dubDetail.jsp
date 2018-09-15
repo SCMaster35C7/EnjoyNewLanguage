@@ -40,12 +40,56 @@
 			//tooltip
 			$('.tooltipped').tooltip();
 			
+			//캐러셀
+			$('.carousel').carousel();
+			
+			$('#sticker').on('click', function() {
+				$('#checkline').val('');
+			});
 			
 			$('#loginBtn').on('click',function(){
 				var useremail = $('#useremail');
 				var userpwd = $('#userpwd');
 				
-				$('#loginForm').submit();
+
+				var sendData = {	
+						"useremail":useremail
+						,"userpwd": userpwd
+				};
+				
+				$.ajax({
+					method	:	'post'
+					, url	: 'statusCheck'
+					, data	: JSON.stringify(sendData)
+					, dataType	: 'text'
+					, contentType: 'application/json; charset=utf-8'
+					, success	: function(resp){
+						if (resp=="checkEmail") {
+							$("#checkline").val('이메일 인증 먼저 해주세요!');
+						}else if (resp=="loginFailure") {
+							//alert('담으로가자');
+							//$('#loginForm').submit();
+							$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
+						} else {
+							window.location.reload();
+						}
+					}, error:function(resp, code, error) {
+						alert("resp : "+resp+", code:"+code+", error:"+error);
+					}
+				});//ajax
+			});
+			
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
+				}
 			});
 		});
 	
@@ -329,7 +373,7 @@
 		}
 
 		function sinkTime(){
-			var videoTime=(${dubbing.starttime});
+			var videoTime=('${dubbing.starttime}');
 			 player.playVideo();
 			 player.seekTo(videoTime, true);
 			 var checkpoint=true;
@@ -356,21 +400,14 @@
 </head>
 <body>
 	<header>
-		<!-- Dropdown Structure -->
-		<ul id="dropdown1" class="dropdown-content">
-		  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  		<c:if test="${plzLogin!=null}">
-					<script type="text/javascript">
-							$(function(){
-								alert("${plzLogin}");
-							});
-					</script>
-				</c:if>
-		  </li>
-		  <li class="divider"></li>
-		  <li><a href="searchTest">Youtube Search테스트</a></li>
-		</ul>
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
+
 		<!-- nav -->
 		<nav class="nav-extended">
 		  <div class="nav-wrapper">
@@ -400,11 +437,12 @@
 	
 		  <div class="nav-content">
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
-	        		<i class="medium material-icons">person</i>
-	     		</a>
-		  </div>
+		        	<i class="medium material-icons" id="sticker">person</i>
+		     	</a>
+			</div>
 		</nav>
 	</header>
+	
 	
 	<!-- 창 축소시 사이드 nav -->
 			<ul class="sidenav" id="small-navi">
@@ -421,38 +459,56 @@
 				<li><a href="myPage">마이페이지</a></li>
 			</ul>
 	  	  
-	<!-- 로그인 MODAL -->
-	<div id="modal1" class="modal">
-		<div class="modal-content">
+	 <!-- 창 축소시 사이드 nav -->
+	<ul class="sidenav" id="small-navi">
+		<li>
+        	<div class="input-field">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<i class="material-icons">close</i>
+       		</div>
+		</li>		 
+		<li><a href="eduBoard">영상게시판</a></li>
+		<li><a href="dubbingBoard">더빙게시판</a></li>
+		<li><a href="InvestigationBoard">자막게시판</a></li>
+		<li><a href="myPage">마이페이지</a></li>
+	</ul>
+
+	  	  
+	  <!-- 로그인 MODAL -->
+		<div id="modal1" class="modal">
+			<div class="modal-content">
 			<div class="container">
+			
 				<form class="col s12" id=loginForm action="login" method="POST">
+				<div class="row">
+					<h4 class="center-align">LOGIN</h4>
+				
 					<div class="row">
-						<h4 class="center-align">LOGIN</h4>
-					
-						<div class="row">
-							<c:if test="${empty sessionScope.useremail }">
-								<div class="input-field col s12">
-									<i class="material-icons prefix">mail</i>
-									<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-									<label for="useremail">EMAIL</label>
-								</div>
-							</c:if>
-						</div>
-					
-						<div class="row">
 						<c:if test="${empty sessionScope.useremail }">
-								<div class="input-field col s12">
-									<i class="material-icons prefix">mode_edit</i>
-									<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-									<label for="userpwd">PASSWORD</label>
-								</div>
-							</c:if>
-						</div>
-						
-						<c:if test="${not empty sessionScope.useremail }">
-							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mail</i>
+								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+								<label for="useremail">EMAIL</label>
+							</div>
 						</c:if>
-					</div>	
+					</div>
+				
+					<div class="row">
+						<c:if test="${empty sessionScope.useremail }">
+							<div class="input-field col s12">
+								<i class="material-icons prefix">mode_edit</i>
+								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+								<label for="userpwd">PASSWORD</label>
+								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
+							</div>
+						</c:if>
+					</div>
+					<!-- 글씨뜨는거 -->
+					<c:if test="${not empty sessionScope.useremail }">
+						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+					</c:if>
+				</div>	
 				
 					<div class="row">
 						<div class="col s10">
@@ -595,20 +651,21 @@
 	
 	<div class="wrapper">
 		<!-- sidenav -->	  
-		<aside>	  	  
-	 		<ul id="slide-out" class="sidenav" style="margin-top:64px;">
-				<li>
-					<div class="user-view">
-						<div class="background">
-							<!--  <img src="images/">  -->
-						</div>
-							<a href="#user"> <!-- <img class="circle" src="images/"> --></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
+		  <aside>	  	  
+		  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+		    <li>
+          <div class="user-view">
+		        <div class="background">
+		        <!-- <img src="images/"> -->
+		        </div>
+		        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
+		        <a href="#name"><span class="white-text name">${usernick}</span></a> 
+		        <a href="#email"><span class="white-text email">${useremail}</span></a>
 					</div>
 				</li>
 				<li>
-					<a href="#!"><i class="material-icons">cloud</i>FirstLink With Icon</a>
+					<a href="#!">
+					<i class="material-icons">cloud</i>First Link With Icon</a>
 				</li>
 				<li>
 					<a href="#!">wishList</a>
@@ -629,12 +686,13 @@
 		<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 		<!--<div id="youtube"></div>   -->
 		<section>
-			<div class="container">
-			<h3 class="center">더빙게시판상세</h3>
+			<div class="container" style="width:80%;">
+			<h5 class="left">${dubbing.usernick} 님의 더빙</h5>
+			<div class="row"></div>
 				<div class="row col s12">
 						<div class="video-container z-depth-2">
 							<iframe id="youtube" width="960" height="490"
-								src="http://www.youtube.com/embed/${dubbing.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=0&modestbranding=1"
+								src="http://www.youtube.com/embed/${dubbing.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
 								frameborder="0" allowfullscreen>
 							</iframe>
 					</div>
@@ -736,30 +794,33 @@
 	</c:if> --%>
 	
 <footer class="page-footer">
-       <div class="container">
-         <div class="row">
-            <div class="col l6 s12">
-              <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-            </div>
-            <div class="col l4 offset-l2 s12">
-              <h5 class="white-text">Links</h5>
+    	<div class="container">
+        	<div class="row">
+              	<div class="col l6 s12">
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p></p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
+              	</div>
+              	<div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Made By</h5>
                 <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-         </div>
-       </div>
-       <div class="footer-copyright">
-          <div class="container">
-             © 2014 Copyright Text
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
+            <div class="container">
+            © 2018 Copyright 일석칠조
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-          </div>
-       </div>
-</footer>
+        	</div>
+    	</div>
+    </footer>
   <script type="text/javascript" src="js/materialize.js"></script>	
 </body>
 </html>

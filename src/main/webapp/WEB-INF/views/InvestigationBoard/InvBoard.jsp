@@ -14,7 +14,13 @@
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
       
 	<title>자막검증게시판</title>
-	    
+	
+	<style type="text/css">
+		#checkline{
+			text-align: center;
+			color: red;
+		}
+	</style>    
 	    
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script src="YoutubeAPI/auth.js"></script>
@@ -46,27 +52,21 @@
 		//캐러셀
 		$('.carousel').carousel();
 		
-		$('#back').on('click', function() {
-			
-		});
-		
 		$('#sticker').on('click', function() {
-			//alert('emf어오냐');
 			$('#checkline').val('');
 		});
 		
 		$('#loginBtn').on('click', function() {
-			
 			var useremail = $('#useremail').val();
 			var userpwd = $('#userpwd').val();
 			
 			var sendData = {	
-					"useremail":useremail
-					,"userpwd": userpwd
+				"useremail":useremail
+				,"userpwd": userpwd
 			};
 			
 			$.ajax({
-				method	:	'post'
+				method	: 'post'
 				, url	: 'statusCheck'
 				, data	: JSON.stringify(sendData)
 				, dataType	: 'text'
@@ -85,6 +85,19 @@
 					alert("resp : "+resp+", code:"+code+", error:"+error);
 				}
 			});//ajax
+		});
+		
+		$('.search').on('keydown', function(key) {
+			if (key.keyCode == 13) {
+				// naver 검색
+				$.each($('.search'), function(index, item) {
+					if(item.value.length != 0) {
+						var searchText = item.value;
+						var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+						window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+					}
+				});
+			}
 		});
 	});
 		
@@ -190,28 +203,16 @@
 		});
 	});
     </script>
-    <style type="text/css">
-		#checkline{
-			text-align: center;
-			color: red;
-		}
-	</style>
 </head>
 <body>
     <header>
-	<!-- Dropdown Structure -->
-	<ul id="dropdown1" class="dropdown-content">
-	  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  	<c:if test="${plzLogin!=null}">
-				<script type="text/javascript">
-					$(function(){
-						alert("${plzLogin}");
-					});
-				</script>
-			</c:if>
-		</li>
-	</ul>
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
 	
 	<!-- nav -->
 	<nav class="nav-extended">
@@ -281,16 +282,16 @@
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
+						<c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mode_edit</i>
 								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
 								<label for="userpwd">PASSWORD</label>
+								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
 							</div>
 						</c:if>
 					</div>
-						 <!-- 글씨뜨는거 -->
-						 <input id="checkline" value="" type="text" style="border-bottom: none;"  />
+					<!-- 글씨뜨는거 -->
 					<c:if test="${not empty sessionScope.useremail }">
 						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 					</c:if>
@@ -434,12 +435,12 @@
 	  	</div>
 	  </div>
    	  
-   	  <!-- 영상추가버튼 -->	
-   	  <div class="fixed-action-btn">
-		  <a class="btn-floating btn-large red modal-trigger tooltipped" id="requestInvestigation" data-position="top" data-tooltip="+VIDEO" href="#requestInv">
-		    <i class="large material-icons">add_a_photo</i>
-		  </a>
-	  </div>
+   	<!-- 영상추가버튼 -->	
+   	<div class="fixed-action-btn">
+		<a class="btn-floating btn-large red modal-trigger tooltipped" id="requestInvestigation" data-position="top" data-tooltip="+VIDEO" href="#requestInv">
+			<i class="large material-icons">add_a_photo</i>
+		</a>
+	</div>
 	
 	<!-- 영상추가 모달 -->
 	<div id="requestInv" class="modal">
@@ -484,20 +485,20 @@
 	
     <!-- Page Content -->
 	<div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<img src="images/">
-							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
+		<!-- sidenav -->	  
+		<aside>	  	  
+			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+				<li>
+					<div class="user-view">
+						<div class="background">
+							<!--<img src="images/">-->
 						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
+						<a href="#user"><img class="circle" src="images/"></a>
+						<a href="#name"><span class="white-text name">${usernick}</span></a> 
+						<a href="#email"><span class="white-text email">${useremail}</span></a>
+					</div>
+				</li>
+					<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
 					<li><a href="#!">wishList</a></li>
 					<li><div class="divider"></div></li>
 					<li><a class="subheader">회원정보관리</a></li>
@@ -508,9 +509,8 @@
 
 			<section>	
 				<div class="container">
-					<h4 class="center"><a href="InvestigationBoard">자막검증게시판</a></h4>
 					<div class="row">
-					
+            <h4 class="left"><a href="InvestigationBoard">자막검증게시판</a></h4>
 					<c:if test="${not empty invList}">
 						<c:forEach var="invList" items="${invList}">
 						
@@ -544,49 +544,46 @@
 											</button>
 									</div>
 								</div>
-							</div>
-						</div>
 						</c:forEach>
 					</c:if>
-					</div>
+				</div>
 					
-					<div class="center">
-						<ul class="pagination">
+				<div class="center">
+					<ul class="pagination">
 						<li class="waves-effect">
 							<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">first_page</i>
 							</a>
 						</li>
+					
+						<li class="waves-effect">
+							<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+								<i class="material-icons">chevron_left</i>
+							</a>
+						</li>
+					
+						<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
+							<c:if test="${navi.currentPage == page }">
+								<li class="page-item active"><a class="page-link">${page}</a></li>
+							</c:if>
+							<c:if test="${navi.currentPage != page }">
+								<li class="page-item"><a class="page-link"
+									href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+							</c:if>
+						</c:forEach>
 						
-							<li class="waves-effect">
-								<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
-									<i class="material-icons">chevron_left</i>
-								</a>
-							</li>
+						<li class="waves-effect">
+							<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+								<i class="material-icons">chevron_right</i> 
+							</a>
+						</li>
 						
-							<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
-								<c:if test="${navi.currentPage == page }">
-									<li class="page-item active"><a class="page-link">${page}</a></li>
-								</c:if>
-								<c:if test="${navi.currentPage != page }">
-									<li class="page-item"><a class="page-link"
-										href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
-								</c:if>
-							</c:forEach>
-						
-							<li class="waves-effect">
-								<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
-									<i class="material-icons">chevron_right</i> 
-								</a>
-							</li>
-						
-							<li class="waves-effect">
-								<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-									<i class="material-icons">last_page</i> 
-								</a>
-							</li>
-						</ul>
-					</div>
+						<li class="waves-effect">
+							<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+								<i class="material-icons">last_page</i> 
+							</a>
+						</li>
+					</ul>
 				</div>
 			</section>
 		</div>
@@ -594,28 +591,31 @@
 	<footer class="page-footer">
     	<div class="container">
         	<div class="row">
-            	<div class="col l6 s12">
-                	<h5 class="white-text">Footer Content</h5>
-                	<p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              	<div class="col l6 s12">
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
               	</div>
               	<div class="col l4 offset-l2 s12">
-                	<h5 class="white-text">Links</h5>
-                	<ul>
-                  		<li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-		                <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-		                <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-		                <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-		      		</ul>
-              	</div>
-            </div>
-          </div>
-          <div class="footer-copyright">
+                <h5 class="white-text">Made By</h5>
+                <ul>
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
             <div class="container">
-            	© 2014 Copyright Text
-            	<a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            © 2018 Copyright 일석칠조
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
         	</div>
     	</div>
 	</footer>
+          
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 	<script type="text/javascript" src="YoutubeAPI/search.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=init"></script>
@@ -661,33 +661,28 @@
 	       			var embedIndex = originalURL.indexOf("embed")+6;
 	       			findVideoId = originalURL.substring(embedIndex);	//iframe에서 선택시 VideoId추출
 	       		}else {
-	       			if(originalURL.includes("youtube.com") == false) {
-	       				alert("URL을 제대로 입력해주세요.");
+	       			if(originalURL.includes("youtube.com") == false || originalURL.indexOf("v=") == -1) {
+	       				alert("Youtube Video URL을 제대로 입력해주세요.");
 	       				return;
 	       			}
-	       			https://www.youtube.com/watch?v=XfjXGXVnp8E
 	       			var vIndex = originalURL.indexOf("v=")+2;
 	       			var firstAmpIndex = originalURL.substring(vIndex).indexOf("&");
 	       			
 	       			if(firstAmpIndex == -1) {
 	       				findVideoId = originalURL.substring(vIndex);
-	       				alert(findVideoId);
+	       				//alert(findVideoId);
 	       			}else {
-	       				findVideoId = originalURL.substring(vIndex+firstAmpIndex, firstAmpIndex);
+	       				findVideoId = originalURL.substring(vIndex, vIndex+firstAmpIndex);
 	       			}
 	       		}
+       		
+	       		var dataForm = {
+	       			"useremail":"${sessionScope.useremail}",
+	       			"title":title.val(),
+	       			"url":findVideoId,
+	       			"content":content
+	       		};
 	       		
-	       		//$('#videoId').val(findVideoId);
-       			// alert($('#videoId').val());
-				
-       			var dataForm = {
-       				"useremail":"${sessionScope.useremail}",
-       				"title":title.val(),
-       				"url":findVideoId,
-       				"content":content
-       			};
-       			alert(JSON.stringify(dataForm));
-       			
 				$.ajax({
 					method:'post'
 					, url: 'requestInvestigation'
@@ -695,21 +690,23 @@
 					, dataType: "json"
 					, contentType:"application/json; charset=utf-8"
 					, success:function(resp) {
-						
 						if(resp.result == "success") {
 							location.href="InvestigationBoard";
-						}else if(resp.result == "failure") {
+						}else if(resp.result == "invExist") {
 							if(confirm("이미 자막 요청된 영상입니다. 해당 영상으로 이동하시겠습니까?")) {
 								location.href = "detailInvBoard?investigationnum="+resp.investigationnum;
 							}
+						}else if(resp.result == "eduExist") {
+							if(confirm("교육 영상에 등록되어 있습니다. 해당 영상으로 이동하시겠습니까?")) {
+								location.href = "detailEduBoard?videoNum="+resp.videonum;
+							}
 						}
-					}
-					, error:function(resp, code, error) {
+					}, error:function(resp, code, error) {
 						alert("resp : "+resp+", code : "+code+", error : "+error);
 					}
 				});
-       		});
-        });
+	       	});
+		});
 	</script>
 </body>
 </html>

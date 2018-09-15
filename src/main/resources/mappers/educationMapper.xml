@@ -50,8 +50,8 @@
 			, savedfile
 		)values (
 			EDUCATION_VIDEO_SEQ.nextval
-			, #{title}
 			, #{useremail}
+			, #{title}
 			, #{url}
 			, #{originalfile}
 			, #{savedfile}
@@ -299,5 +299,14 @@
 		    ) e
 		where
 		  rownum &lt;= 5
+	</select>
+	
+	<select id="existVideo" parameterType="string" resultType="Education">
+		select
+			*
+		from
+			educationvideo
+		where
+			url = #{url}
 	</select>
 </mapper>

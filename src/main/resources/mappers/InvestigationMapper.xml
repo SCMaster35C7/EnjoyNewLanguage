@@ -206,4 +206,20 @@
 		and
 			i.useremail = m.useremail
 	</select>
+	
+	<select id="existVideo" parameterType="string" resultType="Investigation">
+		select
+			*
+		from
+			investigation
+		where
+			url = #{url}
+	</select>
+	
+	<delete id="deleteInvUseURL" parameterType="string">
+		delete from
+			investigation
+		where
+			url = #{url}
+	</delete>
 </mapper>
