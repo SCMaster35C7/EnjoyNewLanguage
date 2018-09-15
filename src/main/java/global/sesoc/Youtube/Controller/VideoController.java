@@ -132,13 +132,8 @@ public class VideoController {
 	 */
 	@RequestMapping(value = "/addEduVideo", method = RequestMethod.POST)
 	public String addEduVideo(Education education, MultipartFile subtitle, boolean invDelete) {
-		//System.out.println("ede : "+education);
-		//System.out.println("MultipartFile : "+subtitle);
-		//System.out.println("invDelete : "+invDelete);
-		
 		if(invDelete == true) {
 			int result = invRepository.deleteInvUseURL(education.getUrl());
-			//System.out.println("result : "+result);
 		}
 		
 		if (subtitle.getSize() != 0) {
@@ -228,7 +223,6 @@ public class VideoController {
 		
 		if(inv != null) 
 			return "invExist";
-		
 		if(edu != null) 
 			return "eduExist";
 		else

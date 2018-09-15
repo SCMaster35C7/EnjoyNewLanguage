@@ -585,7 +585,6 @@
 	       			"url":findVideoId,
 	       			"content":content
 	       		};
-	       		//alert(JSON.stringify(dataForm));
 	       		
 				$.ajax({
 					method:'post'
@@ -607,10 +606,10 @@
 						}
 					}, error:function(resp, code, error) {
 						alert("resp : "+resp+", code : "+code+", error : "+error);
-						}
-					});
-	       		});
-			});
+					}
+				});
+	       	});
+		});
 	</script>
 </body>
 </html>
