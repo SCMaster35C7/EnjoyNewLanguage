@@ -333,9 +333,9 @@
 		</div>
 	
 		   
-		    <div class="col s12 m4 l4">
-			 <div class="card">
-			 <div class="card-content  scroll-box" style="height:450px; width:100%; margin-top:0px;">
+   <div class="col s12 m4 l4">
+	  <div class="card">
+	   <div class="card-content  scroll-box" style="height:450px; width:100%; margin-top:0px;">
               
               <div class="container">
 		<div class="form-horizontal">
@@ -374,10 +374,7 @@
              </div>
 		    </div>
 		  </div>
-		   </div>
-		</section>
-	</div>
-	<hr />
+		   <hr />
 
 	<div>
 		<form id="savedubbing" action="savedubbing" method="post"
@@ -410,6 +407,11 @@
 		</form>
 
 	</div>
+		   </div>
+		   
+		</section>
+	</div>
+	
 	
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.

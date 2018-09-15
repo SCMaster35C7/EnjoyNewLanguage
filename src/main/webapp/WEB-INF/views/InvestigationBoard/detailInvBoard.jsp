@@ -254,22 +254,38 @@
 		}
 	      
 	    function outputReply(resp) {
-	       	var result = '';
-	    
-	       	for ( var i in resp) {
-	          	result += '<div class="content">'
-	          	result += ' <p class="email" >' + resp[i].useremail + '</p>';
-	          	result += ' <p class="nick" >' + resp[i].usernick + '</p>';
-	          	result += ' <p class="text" >' + resp[i].content + '</p>';
-	          	result += '<p class="date" >' + resp[i].regdate + '</p>';
-	          	result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-	      		if (usernick==resp[i].usernick) {
-					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+	    	var result = '';
+			
+			result += '<div class="row">'
+			result += '<table cellpadding="5" cellspacing="2" border="1" align="center" word-break:break-all;" style="width: 80%; margin-left: 3%;">';
+			result += 	'<thead>';
+			result +=		'<tr>';
+			result +=			'<th>' + 'usernick' + '</th>';
+			result +=			'<th class="replycontent" style="width: 50%;">' + 'content' + '</th>';
+			result +=			'<th>' + 'date' + '</th>';
+			result +=			'<th colspan="2">' + '수정/취소' + '</th>';
+			result +=			'<th>' + '신고' + '</th>';
+			result +=		'</tr>';
+			result += 	'</thead>';
+			for (var i in resp) {
+				result += 	'<tbody>';
+				result +=		'<tr>';
+				result +=			'<td>' + resp[i].usernick + '</td>';
+				result +=			'<td class="replycontent">' + resp[i].content + '</td>';
+				result +=			'<td>' + resp[i].regdate + '</td>';
+				result +=			'<td colspan="2">';
+				if ('${sessionScope.useremail}'==resp[i].useremail) {
+					result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+					result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
-				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
-	          	result += ' </div>';
+				result +=			'</td>';
+				result +=		'<td>';
+				result += '<img class="report" src="images/warning.jpg" style="margin: 1%;" data-rno="'+resp[i].replynum+'" />';
+				result +=		'</td></tr>';
+				result += 	'</tbody>';
 			}
+			result += '</table>';
+			result += ' </div>';
 	         
 	       	$("#result").html(result);
 	       	$("input:button.replyDelete").click(replyDelete);
@@ -509,8 +525,9 @@
 				//돌려놓기
 				$("#replytext").val('');
 			} else if (btnname == '댓글수정') {
+				$('#replylabel').show();
 				var replytext = $("#replytext").val();
-				var replynum = $("#replynum").val();
+				var replynum =$("#updatereplynum").val();
 				var sendData = {
 					"replynum" : replynum,
 					"content" : replytext,
@@ -532,11 +549,6 @@
 		}
 
 		function replyDelete() {
-			var nick = $(this).parent().children('.nick').text();
-			if ("${usernick}" != nick) {
-				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-				return;
-			}
 			replynum = $(this).attr('data-rno');
 			$.ajax({
 				method : 'get',
@@ -549,22 +561,12 @@
 
 		function replyUpdate() {
 			replynum = $(this).attr('data-rno');
-
-			var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
-			var replytext = $(this).parent().children('.text').text();
-
-			if ("${usernick}" != nick) {
-				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-				return;
-			}
-
-			$("#usernick").val(nick);
+			var replytext = $(this).parent().parent().children('.replycontent').text();
+			$('#replylabel').hide();
+			$('#updatereplynum').val(replynum);
 			$("#replytext").val(replytext);
 			$("#replyInsert").val("댓글수정");
-			$("#usernick").prop('readonly', 'readonly');
 			$("#cancelUpdate").css("visibility", "visible");
-			
-			$("#replynum").val(replynum);
 		}
 	</script>
 </head>
@@ -980,22 +982,23 @@
 
           		
 
-			          <div>
-			            <form id="replyform" method="post">
-			              <input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
-			              <input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
-			
-			              <input type="hidden" id="useremail" name="useremail" value="" /> 
-			              <input type="hidden" id="replynum" name="replynum" value="" /> 
-			
-			              <input id="replyInsert" type="button" value="댓글등록" />
-			              <input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
-			            </form>
-			
-			            <div id="result">
-			              <!-- 반복적으로 나오게 -->
-			            </div>
+			       	<div class="row"> 
+						<div class="row"  style="margin-left: 3%;">
+							<div class="input-field col s4">
+								<input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
+								<label id="replylabel" for="replytext">리뷰를 작성해주세요 ^ㅅ^</label>		
+							</div>
+							<input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
+							<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>	
+						</div>
+						
+					<input type="hidden" id="useremail" value="${sessionScope.useremail}">
+					<input type="hidden" id="updatereplynum">
+					
+					<div id="result"> 
+						<!-- 반복적으로 나오게 -->
 					</div>
+				</div>
 				</div>
 			</section>
 	</div>
