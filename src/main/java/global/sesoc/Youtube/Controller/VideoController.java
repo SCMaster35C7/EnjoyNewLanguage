@@ -19,6 +19,7 @@ import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dao.InvestigationRepository;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
+import global.sesoc.Youtube.dto.InvSubtitle;
 import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.dto.SubtitlesList;
@@ -38,6 +39,8 @@ public class VideoController {
 	// 교육용 자막파일 경로
 	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 	
+	// 자막검증용 자막파일 경로
+	private final String subtitleFileRoot ="/YoutubeEduCenter/InvSubtitle";
 	/***
 	 * Home 기본 페이지 이동
 	 * 
@@ -133,6 +136,17 @@ public class VideoController {
 	@RequestMapping(value = "/addEduVideo", method = RequestMethod.POST)
 	public String addEduVideo(Education education, MultipartFile subtitle, boolean invDelete) {
 		if(invDelete == true) {
+			Investigation invTemp = new Investigation();
+			invTemp.setUrl(education.getUrl());
+			
+			invTemp = invRepository.selectOneFromInvUseURL(invTemp);
+			List<InvSubtitle> invSubList = invRepository.subtitleAllFromInv(invTemp.getInvestigationnum());
+			
+			for(int i=0; i<invSubList.size(); i++) {
+				String pullPath = subtitleFileRoot+"/"+invSubList.get(i).getSavedFile();
+				FileService.deleteFile(pullPath);
+			}
+			
 			int result = invRepository.deleteInvUseURL(education.getUrl());
 		}
 		

@@ -208,9 +208,13 @@ public class InvestigationController {
 		//System.out.println("subtitlenum: "+subtitleNum+", recommendtable: "+recommendtable);
 		eduRepository.deleteAllRecommend(subtitleNum, recommendtable);
 		
+		InvSubtitle invSub = invRepository.selectOneFromSubUseNum(subtitleNum);
 		int result = invRepository.deleteInvSubtitle(subtitleNum);
-
-		if (result == 1)
+		String pullPath = subtitleFileRoot+"/"+invSub.getSavedFile();
+		
+		boolean isDelete = FileService.deleteFile(pullPath);
+		
+		if (result == 1 && isDelete == true)
 			return "success";
 		else
 			return "failure";
