@@ -123,7 +123,7 @@
 			    
 			    <ul class="right hide-on-med-and-down">
 				  	<li>
-				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:200px; margin-left:-5%;">
 	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
 	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
 	              		</div>
