@@ -258,9 +258,12 @@
 				<a href="#" data-target="small-navi" class="sidenav-trigger"><i
 					class="material-icons">menu</i></a>
 				<ul class="right hide-on-med-and-down">
-					<c:if test="${not empty sessionScope.useremail }">
-						<li><a href="logout">${sessionScope.useremail }Logout</a></li>
-					</c:if>
+					<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>		 
 					<li><a href="eduBoard">영상게시판</a></li>
 					<li><a href="dubbingBoard">더빙게시판</a></li>
 					<li><a href="InvestigationBoard">자막검증게시판</a></li>
