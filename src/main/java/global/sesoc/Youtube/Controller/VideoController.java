@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dao.InvestigationRepository;
 import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
+import global.sesoc.Youtube.dto.InvSubtitle;
+import global.sesoc.Youtube.dto.Investigation;
 import global.sesoc.Youtube.dto.Recommendation;
 import global.sesoc.Youtube.dto.SubtitlesList;
 import global.sesoc.Youtube.dto.TestResult;
@@ -29,10 +32,15 @@ import global.sesoc.Youtube.util.SubtitlesMaker;
 public class VideoController {
 	@Autowired
 	EducationRepository eduRepository;
+	
+	@Autowired
+	InvestigationRepository invRepository;
 
 	// 교육용 자막파일 경로
 	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 	
+	// 자막검증용 자막파일 경로
+	private final String subtitleFileRoot ="/YoutubeEduCenter/InvSubtitle";
 	/***
 	 * Home 기본 페이지 이동
 	 * 
@@ -87,13 +95,13 @@ public class VideoController {
 	 */
 	@RequestMapping(value="/detailEduBoard", method=RequestMethod.GET)
 	public String detailEduBoard(
-      HttpSession session,
-      int videoNum, 
-			@RequestParam(value="currentPage", defaultValue="0") int currentPage, 
+			HttpSession session,
+			int videoNum, 
+			@RequestParam(value="currentPage", defaultValue="1") int currentPage, 
 			@RequestParam(value="searchType", defaultValue="") String searchType, 
 			@RequestParam(value="searchWord", defaultValue="") String searchWord, 
 			Model model) {
-
+		System.out.println(videoNum);
 		Education edu = eduRepository.selectOneFromEduVideo(videoNum);
 
 		if (edu != null) {
@@ -126,9 +134,22 @@ public class VideoController {
 	 * @return
 	 */
 	@RequestMapping(value = "/addEduVideo", method = RequestMethod.POST)
-	public String addEduVideo(Education education, MultipartFile subtitle) {
-		System.out.println("ede : "+education);
-		System.out.println("MultipartFile : "+subtitle);
+	public String addEduVideo(Education education, MultipartFile subtitle, boolean invDelete) {
+		if(invDelete == true) {
+			Investigation invTemp = new Investigation();
+			invTemp.setUrl(education.getUrl());
+			
+			invTemp = invRepository.selectOneFromInvUseURL(invTemp);
+			List<InvSubtitle> invSubList = invRepository.subtitleAllFromInv(invTemp.getInvestigationnum());
+			
+			for(int i=0; i<invSubList.size(); i++) {
+				String pullPath = subtitleFileRoot+"/"+invSubList.get(i).getSavedFile();
+				FileService.deleteFile(pullPath);
+			}
+			
+			int result = invRepository.deleteInvUseURL(education.getUrl());
+		}
+		
 		if (subtitle.getSize() != 0) {
 			String originalfile = subtitle.getOriginalFilename();
 			String savedfile = FileService.saveFile(subtitle, eduFileRoot);
@@ -211,10 +232,13 @@ public class VideoController {
 	
 	@RequestMapping(value="/existVideo", method=RequestMethod.GET)
 	public @ResponseBody String existVideo(String url) {
+		Investigation inv = invRepository.existVideo(url);
 		Education edu = eduRepository.existVideo(url);
 		
+		if(inv != null) 
+			return "invExist";
 		if(edu != null) 
-			return "failure";
+			return "eduExist";
 		else
 			return "success";
 	}

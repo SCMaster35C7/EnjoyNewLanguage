@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import global.sesoc.Youtube.dao.EducationRepository;
 import global.sesoc.Youtube.dao.InvestigationRepository;
 import global.sesoc.Youtube.dto.Investigation;
+import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.InvSubtitle;
 import global.sesoc.Youtube.dto.Reply;
 import global.sesoc.Youtube.util.EasySubtitlesMaker;
@@ -66,14 +67,21 @@ public class InvestigationController {
 	@RequestMapping(value="/requestInvestigation", method=RequestMethod.POST)
 	public @ResponseBody Map requestInvestigation(@RequestBody Investigation inv) {
 		Investigation finInv = invRepository.selectOneFromInvUseURL(inv);
+		Education edu = eduRepository.existVideo(inv.getUrl());
 		Map<String, Object> map = new HashMap<>();
+
+		if(edu != null) {
+			map.put("result", "eduExist");
+			map.put("videonum", edu.getVideoNum());
+			return map;
+		}
 		
-		if(finInv == null) {
+		if(finInv != null) {
+			map.put("result", "invExist");
+			map.put("investigationnum", finInv.getInvestigationnum());
+		}else {
 			int result = invRepository.insertInvestigation(inv);
 			map.put("result", "success");
-		}else {
-			map.put("result", "failure");
-			map.put("investigationnum", finInv.getInvestigationnum());
 		}
 		
 		return map;
@@ -200,9 +208,13 @@ public class InvestigationController {
 		//System.out.println("subtitlenum: "+subtitleNum+", recommendtable: "+recommendtable);
 		eduRepository.deleteAllRecommend(subtitleNum, recommendtable);
 		
+		InvSubtitle invSub = invRepository.selectOneFromSubUseNum(subtitleNum);
 		int result = invRepository.deleteInvSubtitle(subtitleNum);
-
-		if (result == 1)
+		String pullPath = subtitleFileRoot+"/"+invSub.getSavedFile();
+		
+		boolean isDelete = FileService.deleteFile(pullPath);
+		
+		if (result == 1 && isDelete == true)
 			return "success";
 		else
 			return "failure";
