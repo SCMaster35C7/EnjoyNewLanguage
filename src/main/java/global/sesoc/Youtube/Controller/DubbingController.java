@@ -34,9 +34,8 @@ public class DubbingController {
 	DubbingRepository dubRepository;
 
 	private final String DubbingFileRoot = "/YoutubeEduCenter/EducationDubbing";
-	private final String eduFileRoot = "/YoutubeEduCenter/EducationVideo";
 
-	// 더빙겟
+	// 더빙게시판 호출
 	@RequestMapping(value = "/dubbingBoard", method = RequestMethod.GET)
 	public String dubbingBoard(HttpSession session, Model model) {
 		List<Dubbing> dubbing = dubRepository.dubbingBoard();
@@ -44,11 +43,6 @@ public class DubbingController {
 
 		return "DubbingBoard/dubbingBoard";
 	}
-
-	/*@RequestMapping(value = "VideoSearch", method = RequestMethod.GET)
-	public String VideoSearch() {
-		return "DubbingBoard/VideoSearch";
-	}*/
 
 	// 더빙 디테일
 	@RequestMapping(value = "dubDetail", method = RequestMethod.GET)
@@ -157,8 +151,6 @@ public class DubbingController {
   
 	@RequestMapping(value="/insertBlack", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public @ResponseBody String insertBlack(@RequestBody Black black ) {
-		System.out.println("신고고ㅗ고고고고고고ㅗ"+black);
-		
 		Black b = dubRepository.existedBlack(black);
 		if (b==null) {
 			dubRepository.insertBlack(black);
