@@ -79,21 +79,7 @@
 		});
 		
 	});
-	var correct = "";
-	var quizIndex = "";
-	var TestType = false; //문제유형용 변수 false : text, true : mic
-	var saveTime = null; //자막 싱크용 시간저장변수
-	var TestSuccess = false; //시험을 끝까지 다 마쳤는지 확인
-	var TestFinish = false; //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
-	var focusingReady = false;
 
-	//음성인식 서비스 ,textbar: 클릭한 입력창
-	function startAnnyang(textbar) {
-		annyang.start({
-			autoRestart : false,
-			continuous : false
-
-		});
 		var correct = "";
 		var quizIndex = "";
 		var TestType = false; //문제유형용 변수 false : text, true : mic
@@ -288,13 +274,15 @@
 				}
 			});
 		}
-	
-		function goback() {
-			history.back();
-		}
 	</script>
 </head>
-
+<style>
+.scroll-box {
+	overflow-y: scroll;
+	height: 300px;
+	padding: 1rem
+}
+</style>
 <body>
 <header>
 		<c:if test="${plzLogin!=null}">

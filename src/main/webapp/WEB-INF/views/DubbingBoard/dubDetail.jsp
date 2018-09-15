@@ -17,9 +17,13 @@
 	<title>Insert title here</title>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
-		//css
+		
+	  $(document).ready(function() {
+	    $('input#replytext').characterCounter();
+	  });
+	    //css
 		$(function() {
-			$('select').formSelect();
+			//$('select').formSelect();
 			
 			//dropdown
 			$(".dropdown-trigger").dropdown();
@@ -90,19 +94,13 @@
 				}
 			});
 		});
-	
-	//주말 
 	 	var useremail = "${sessionScope.useremail}";
 		var usernick = "${sessionScope.usernick}";
-		var dubbingnum = "${dubbing.dubbingnum}"
-		
+		var dubbingnum = "${dubbing.dubbingnum}"	
 		var soundA=new Audio("getDubbingSoundFile?voiceFile=${dubbing.voiceFile}");
 		var saveTime=null;     //자막 싱크용 시간저장변수
 	
 		$(function() {
-			$('#deletedub').on('click',function(){
-				$('#deletedubbing').submit();
-			})
 			
 			// 주말
 			init();		
@@ -197,6 +195,7 @@
 				$("#replytext").val('');
 				$("#replyInsert").val("댓글등록");
 				$("#cancelUpdate").css("visibility", "hidden");
+				$('#replylabel').show();
 			});
 		});
 			
@@ -214,13 +213,14 @@
 			var result = '';
 		
 			result += '<div class="row">'
-			result += '<table cellpadding="5" cellspacing="2" border="1" align="center" word-break:break-all;">';
+			result += '<table cellpadding="5" cellspacing="2" border="1" align="center" word-break:break-all;" style="width: 80%; margin-left: 3%;">';
 			result += 	'<thead>';
 			result +=		'<tr>';
 			result +=			'<th>' + 'usernick' + '</th>';
-			result +=			'<th class="replycontent" size="40%;">' + 'content' + '</th>';
+			result +=			'<th class="replycontent" style="width: 50%;">' + 'content' + '</th>';
 			result +=			'<th>' + 'date' + '</th>';
 			result +=			'<th colspan="2">' + '수정/취소' + '</th>';
+			result +=			'<th>' + '신고' + '</th>';
 			result +=		'</tr>';
 			result += 	'</thead>';
 			for (var i in resp) {
@@ -230,13 +230,14 @@
 				result +=			'<td class="replycontent">' + resp[i].content + '</td>';
 				result +=			'<td>' + resp[i].regdate + '</td>';
 				result +=			'<td colspan="2">';
-				if (useremail==resp[i].useremail) {
+				if ('${sessionScope.useremail}'==resp[i].useremail) {
 					result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
 					result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
-				result += '<img class="report" src="images/warning.jpg" style="margin: 1%;" data-rno="'+resp[i].replynum+'" />';
 				result +=			'</td>';
-				result +=		'</tr>';
+				result +=		'<td>';
+				result += '<img class="report" src="images/warning.jpg" style="margin: 1%;" data-rno="'+resp[i].replynum+'" />';
+				result +=		'</td></tr>';
 				result += 	'</tbody>';
 			}
 			result += '</table>';
@@ -310,16 +311,15 @@
 				 //돌려놓기
 				$("#replytext").val('');
 			}else if (btnname == '댓글수정') { 	
+				$('#replylabel').show();
 				//댓글수정이면
 				var replytext = $("#replytext").val();
-				var replynum = $("#replynum").val();
-			 
-				//alert(replynum);
+				var replynum = $("#updatereplynum").val();
 		 		var sendData = {
 					"replynum" : replynum,
 					"content" : replytext
 				} 
-		
+
 				$.ajax({
 					method : 'post',
 					url : 'replyDubUpdate',
@@ -336,11 +336,6 @@
 		}
 
 		function replyDelete() {
-			var nick = $(this).parent().children('.nick').text();
-			if ("${usernick}" != nick) {
-				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-				return;
-			}
 			replynum = $(this).attr('data-rno');
 			$.ajax({
 				method : 'get',
@@ -351,23 +346,14 @@
 		}
 
 		function replyUpdate() {
-			replynum = $(this).attr('data-rno');
-
-			var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
-			var replytext = $(this).parent().children('.text').text();
-			alert(nick);
-			if ("${usernick}" != nick) {
-				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-				return;
-			}
-
-			$("#usernick").val(nick);
+			replynum = $(this).attr('data-rno');	
+			var replytext = $(this).parent().parent().children('.replycontent').text();	
+			$('#replylabel').hide();
+            $('#updatereplynum').val(replynum);
 			$("#replytext").val(replytext);
 			$("#replyInsert").val("댓글수정");
-			$("#usernick").prop('readonly', 'readonly');
 			$("#cancelUpdate").css("visibility", "visible");
-			
-			$("#replynum").val(replynum);
+
 		}
 
 		function sinkTime(){
@@ -391,10 +377,23 @@
 				videoTime=player.getCurrentTime();
 			}, 10);
 		}
+		
+		function deleteDubbing(){
+			var dubbingnum=${dubbing.dubbingnum};
+			console.log(dubbingnum);
+			$.ajax({
+				method:'post'
+			   ,url: 'deleteDubbing'
+			   ,data: 'dubbingnum='+dubbingnum
+			})
+		}
+		
+		
 		function goback(){
 			history.back();
 		}
 	</script>
+	
 </head>
 <body>
 	<header>
@@ -577,17 +576,12 @@
 			</ul>
 		</aside>
 		
-		<div>
-			<a onclick="goback()">더빙게시판</a>
-		</div>
-
-		<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-		<!--<div id="youtube"></div>   -->
 		<section>
-			<div class="container" style="width:80%;">
-			<h5 class="left">${dubbing.usernick} 님의 더빙</h5>
-			<div class="row"></div>
-				<div class="row col s12">
+		<div class="row">
+			<div class="container" style="width:98%;">
+			<div class="row">
+			</div>
+				<div class="col s12 m8 l8">
 						<div class="video-container z-depth-2">
 							<iframe id="youtube" width="960" height="490"
 								src="http://www.youtube.com/embed/${dubbing.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
@@ -595,13 +589,31 @@
 							</iframe>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col s8">
-						<h5 style="display:inline-block;">더빙타임  &nbsp; : &nbsp; ${
-						dubbing.starttime} ~ ${dubbing.endtime} &nbsp; <input type="button" class="btn" value="더빙 재생하기" onclick="sinkTime()"></h5>
-						<input type="hidden" value="${dubbing.dubbingnum}">
-					</div>
-					<div class="right" style="margin-right:15px;">
+			</div>	
+			
+		 <div class="col s12 m4 l4">
+	       <div class="card">
+	         <div class="card-content  scroll-box" style="height:450px; width:100%; margin-top:0px;">
+			 <!-- 카드패널 -->
+			<div class="row">
+			<div class="col s8">
+			 <h5 style="display:inline-block;">${dubbing.title}</h5>
+			 
+			 <c:if test="${sessionScope.useremail eq dubbing.useremail}">
+			<i class="medium material-icons right tooltipped" data-tooltip="더빙 삭제" style="color: grey" onclick="deleteDubbing()">delete</i> 
+			</c:if>	
+			</div>
+			</div>
+			 녹음: ${dubbing.usernick}<br><br>
+			 작성자의 한마디: <br> 
+			 ${dubbing.content}
+			<div class="row">
+				<h6 style="display:inline-block;">더빙타임  &nbsp; : &nbsp; ${
+				dubbing.starttime} ~ ${dubbing.endtime} &nbsp; <input type="button" class="btn" value="더빙 재생하기" onclick="sinkTime()"></h6>
+				<input type="hidden" value="${dubbing.dubbingnum}">			
+			</div>
+			 
+			 <div class="right" style="margin-right:15px; margin-top: 35%;">
 						<p>
 						<button class="btn recommendation">
 							<i class="material-icons">thumb_up</i>
@@ -614,28 +626,25 @@
 						</button>
 						</p>
 					</div>
-				</div>
+			 
+			 </div>
+			</div>
+		 </div>
+	
 				
 				<!--댓글 영역-->
-				<div> 
-					<form id="replyform" class="col s12" method="post" >
-						<div class="row">
-							<div class="input-field col s12 m2" style="margin-bottom:0px;">
-								<input class="center" id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly"/>
+				<div class="row"> 
+						<div class="row"  style="margin-left: 3%;">
+							<div class="input-field col s4">
+								<input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
+								<label id="replylabel" for="replytext">리뷰를 작성해주세요 ^ㅅ^</label>		
 							</div>
+							<input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
+							<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>	
 						</div>
-						<div class="row">
-							<div class="input-field col s6">
-								<textarea id=replytext name="replytext" class="materialize-textarea" placeholder="리뷰를 작성해주세요 ^ㅅ^"></textarea>
-								<input hidden="useremail" id="useremail" name="useremail" value=""/>
-								<input hidden="replynum" id="replynum" name="replynum" value=""/>
-							</div>
-							<div class="input-field col s6">								
-								<input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
-								<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
-							</div>	
-						</div>
-					</form>
+						
+					<input type="hidden" id="useremail" value="${sessionScope.useremail}">
+					<input type="hidden" id="updatereplynum">
 					
 					<div id="result"> 
 						<!-- 반복적으로 나오게 -->
@@ -661,17 +670,11 @@
 				//width : '960',
 				//videoId : '3MteSlpxCpo',
 				events : {
-					'onReady' : onPlayerReady,
 					'onStateChange' : onPlayerStateChange
 				}
 			});
 		}
 	
-		// 4. Youtube Player의 준비가 끝나면 호출할 함수
-		function onPlayerReady(event) {
-			event.target.playVideo();
-		}
-		
 		// 5. Youtube Player의 state가 변하면 적용할 함수
 		var playerState;
         function onPlayerStateChange(event) {
