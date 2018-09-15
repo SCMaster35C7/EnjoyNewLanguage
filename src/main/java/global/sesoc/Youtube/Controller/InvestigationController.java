@@ -59,15 +59,6 @@ public class InvestigationController {
 	}
 	
 	/***
-	 * 자막 요청 등록페이지로 이동
-	 * @return
-	 */
-	@RequestMapping(value="/requestInvestigation", method=RequestMethod.GET)
-	public String requestInvestigation() {
-		return "InvestigationBoard/requestInvestigation";
-	}
-	
-	/***
 	 * 자막 요청 게시글 등록
 	 * @param inv
 	 * @return

@@ -13,7 +13,16 @@
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
 	<title>Enjoy Language</title>
+    	
+	<style type="text/css">
+		#checkline{
+			text-align: center;
+			color: red;
+		}
+	</style>
+    
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script>
 		$(function() {
@@ -88,12 +97,6 @@
 			});
 		});
 	</script>
-	<style type="text/css">
-		#checkline{
-			text-align: center;
-			color: red;
-		}
-	</style>
 </head>
 
 <body>
@@ -112,14 +115,12 @@
 			    <!-- sidenav trigger -->
 			    <ul class="left">
 			    	<li>
-			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-			    			<i class="material-icons">menu</i>
-			    		</a>
+			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline"><i class="material-icons">menu</i></a>
 			    	</li>
 			    </ul>
 			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-			     
 			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+			    
 			    <ul class="right hide-on-med-and-down">
 				  	<li>
 				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:200px; margin-left:-5%;">
@@ -134,7 +135,6 @@
 			    </ul>
 			</div>		
 			<div class="nav-content">
-
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 		        	<i class="medium material-icons" id="sticker">person</i>
 		     	</a>
@@ -142,7 +142,7 @@
 		</nav>
 	</header>
 	
-	 <!-- 창 축소시 사이드 nav -->
+	<!-- 창 축소시 사이드 nav -->
 	<ul class="sidenav" id="small-navi">
 		<li>
         	<div class="input-field">
@@ -156,42 +156,40 @@
 		<li><a href="InvestigationBoard">자막게시판</a></li>
 		<li><a href="myPage">마이페이지</a></li>
 	</ul>
-
 	  	  
-	  <!-- 로그인 MODAL -->
-		<div id="modal1" class="modal">
-			<div class="modal-content">
+	<!-- 로그인 MODAL -->
+	<div id="modal1" class="modal">
+		<div class="modal-content">
 			<div class="container">
-			
 				<form class="col s12" id=loginForm action="login" method="POST">
-				<div class="row">
-					<h4 class="center-align">LOGIN</h4>
-				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
+						<h4 class="center-align">LOGIN</h4>
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mail</i>
+									<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+									<label for="useremail">EMAIL</label>
+								</div>
+							</c:if>
+						</div>
+					
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mode_edit</i>
+									<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+									<label for="userpwd">PASSWORD</label>
+									<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
+								</div>
+							</c:if>
+						</div>
+						
+						<!-- 글씨뜨는거 -->
+						<c:if test="${not empty sessionScope.useremail }">
+							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 						</c:if>
-					</div>
-				
-					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
-							</div>
-						</c:if>
-					</div>
-					<!-- 글씨뜨는거 -->
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
-				</div>	
+					</div>	
 				
 					<div class="row">
 						<div class="col s10">
@@ -218,14 +216,14 @@
 						</div>
 						
 						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
-								<i class="large material-icons">person</i>
-								</a>
-								<ul>
-								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
-								</ul>
+							<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+							<i class="large material-icons">person</i>
+							</a>
+							<ul>
+								<li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+								<li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+								<li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+							</ul>
 						</div>
 					</div>
 				</form>
@@ -234,18 +232,16 @@
 	</div>
 	  
 	<!-- 메인 -->
-  <div class="wrapper">
-	<!-- sidenav -->	  
-	  <aside>	  	  
-		  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-		    <li>
-          <div class="user-view">
-		        <div class="background">
-		        <!-- <img src="images/"> -->
-		        </div>
-		        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
-		        <a href="#name"><span class="white-text name">${usernick}</span></a> 
-		        <a href="#email"><span class="white-text email">${useremail}</span></a>
+	<div class="wrapper">
+		<!-- sidenav -->	  
+		<aside>	  	  
+			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+		    	<li>
+          			<div class="user-view">
+		        		<div class="background"><!-- <img src="images/"> --></div>
+				        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
+				        <a href="#name"><span class="white-text name">${usernick}</span></a> 
+				        <a href="#email"><span class="white-text email">${useremail}</span></a>
 					</div>
 				</li>
 				<li>
@@ -291,7 +287,6 @@
               	<div class="col l6 s12">
                 	<h5 class="white-text">One jewelry 7th Group</h5>
                 	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
-                	<p></p>
                 	<p class="grey-text text-lighten-4">We support your English</p>
               	</div>
               	<div class="col l4 offset-l2 s12">

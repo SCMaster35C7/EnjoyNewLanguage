@@ -295,6 +295,7 @@ $(document).ready(function() {
 		         <div class="container">
 		          <div class="section">
 		          <h4 class="left"><a href="dubbingBoard">더빙게시판</a></h4>
+
 		            <!--DataTables example-->
 		                  <table id="dubbing">
 		                    <thead>
