@@ -28,7 +28,10 @@
 			});
 			
 			//modal open
-			$('#modal1').modal();
+			$('#modal1').modal(); //로그인 모달
+			$('#modal2').modal(); //회원탈퇴 모달
+			$('#modal3').modal(); //회원정보수정 모달
+			
 			
 			//side-nav open
 			$('.sidenav').sidenav();
@@ -37,7 +40,9 @@
 			$('.tooltipped').tooltip();
 			
 			//캐러셀
-			$('.carousel').carousel();
+			$('.carousel').carousel({
+				indicators: true
+			});
 			
 			$('#sticker').on('click', function() {
 				$('#checkline').val('');
@@ -87,7 +92,122 @@
 				}
 			});
 		});
+		//회원탈퇴
+		function closeID(){
+			var useremail=$('#useremail').val();
+			var pwd=$('#pwd').val();
+			var dataForm={
+					"useremail":useremail,
+					"userpwd":pwd
+			}
+			
+			$.ajax({
+				method:'post'
+				, url:'closeIDsubmit'
+				, data:JSON.stringify(dataForm)
+				, contentType: "application/json; charset=utf-8"
+				, success:function(resp){
+					if(resp=='ok'){
+						var finalCheck=confirm('정말 탈퇴하시겠습니까?');
+						if(finalCheck){
+							alert('이용해주셔서 감사합니다. \n계정 복구는 한달안으로 가능합니다.\n 계정복구시 기존 기록을 모두 보존가능합니다.');
+							$('#submitform').submit();
+						}else{
+							alert('취소합니다!');
+							location.href="//";
+						}
+					}else{
+						alert('아이디 또는 패스워드를 확인해주세요.');
+					}
+				}	
+			})
+		}
+		
+		//회원정보수정
+		$(function(){
+			//닉네임중복검사
+			$('#usernick').keyup(function(){
+				
+				var usernick = $(this).val();   			
+					
+					$.ajax({
+							method	:	'post'
+							,url	: 'nickCheck'
+							,data	: "usernick="+usernick
+							,dataType	: 'text'
+							,success	: function(resp){
+								
+								$("#nickcheck").text(resp);
+								/* if(resp=='true'){
+									$("#nickcheck").text("사용가능!!!!! 아이디입니다.");
+								}else{
+									$("#nickcheck").html('<span style="color: red; font-weight: bold;">중복된 아이디입니다.</span>');
+								}  */
+								
+			            	 	
+						}, error:function(resp, code, error) {
+							alert("resp : "+resp+", code:"+code+", error:"+error);
+						}    					
+					});    			
+			});
+			
+			$('#btnUpdate').on('click', function(){
+				
+				var usernick = $("#usernick").val();
+				var nickcheck = $("#nickcheck").text();
+				
+				$pattern = '^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';			
+				
+				
+				if (nickcheck.length<=0||nickcheck=='중복된 닉네임 입니다') {
+						alert('닉네임 다시 한 번 확인해주세요');
+						$("#usernick").select();
+						$("#usernick").focus();
+						return;
+				}
+				
+				if($('#currpwd').val() == $('#newpwd').val()){
+					alert('새로입력한 비밀번호와 현재 비밀번호가 달라야 합니다.');
+					return;
+				}
+				
+				if($('#newpwd').val() != $('#checkpwd').val()){
+					alert('새로입력한 비밀번호와 비밀번호 확인 값은 같아야 합니다.');
+					return;
+				}
+				
+				if($('#newpwd').val().match($pattern)){
+					
+					alert('비밀번호 수정이 완료되었습니다. 다시 로그인해주세요');
+					
+				} else {
+					alert('비밀번호는 대/소문자, 숫자, 특수 문자 포함, 8자 이상');
+				
+					return;
+				}
+				
+				$('#updateMember').submit();
+			
+			});
+			
+			$('#btnCancel').on('click', function(){
+				
+				location.href = "${pageContext.request.contextPath}/"
+			});
+			
+		});
 	</script>
+	
+	<c:if test="${not empty msg}">
+	<script>
+	$(function(){
+		alert("${msg}");
+		location.href = "${pageContext.request.contextPath}/";
+		
+	});
+	</script>
+	</c:if>
+	
 	<style type="text/css">
 		#checkline{
 			text-align: center;
@@ -130,7 +250,7 @@
 			      	<li><a href="eduBoard">영상게시판</a></li>
 			      	<li><a href="dubbingBoard">더빙게시판</a></li>
 			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
-			      	<li><a href="myPage">마이페이지</a></li>
+			      	<li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
 			    </ul>
 			</div>		
 			<div class="nav-content">
@@ -145,9 +265,9 @@
 	 <!-- 창 축소시 사이드 nav -->
 	<ul class="sidenav" id="small-navi">
 		<li>
-        	<div class="input-field">
+        	<div class="input-field" style="width:70%; margin-left:15%;">
           		<input class="search" type="search" required>
-          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          		<label class="label-icon" for="search" style="margin-left:-18%;"><i class="material-icons">search</i></label>
           		<i class="material-icons">close</i>
        		</div>
 		</li>		 
@@ -224,7 +344,7 @@
 								<ul>
 								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
 								    <li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
 					</div>
@@ -232,6 +352,104 @@
 			</div>
 		</div>	
 	</div>
+	  
+	  <!-- 회원수정모달 -->
+	  <div id="modal3" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5>회원정보수정</h5>
+				<form id="updateMember" action="updateMember" method="post">
+					<div class="row" style="margin-top:10%;">
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>EMAIL</th>
+									<td>${sessionScope.useremail}</td>
+								</tr>
+								<tr>
+									<th>성별</th>
+									<td>${sessionScope.gender}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>NICK</th>
+									<td>${sessionScope.usernick}</td>
+								</tr>
+								<tr>
+									<th>생일</th>
+									<td>${sessionScope.birth}</td>
+								</tr>
+							</table>
+						</div>
+						
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input type="text" id="usernick" name="usernick" placeholder="변경 닉네임 입력" />
+							<span id="nickcheck"></span>
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">create</i>
+							<input id="currpwd" type="password" name="currpwd" placeholder="현재 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">border_color</i>
+							<input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">check</i>
+							<input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" />
+						</div>
+						
+						<div class="col s12">
+							<input type="button" class="btn" value="수정" id="btnUpdate" />
+							<input type="button" class="btn" value="취소" id="btnCancel" />
+						</div>
+					</div>	
+				</form>
+			</div>
+		</div>
+	</div>	
+	  
+	  <!-- 회원탈퇴 모달 -->
+	  <div id="modal2" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5>탈퇴하시겠습니까?</h5>
+				
+				<div class="row">
+					<form action="insertCloseID" method="post" id="submitform">
+						<div class="input-field col s12">
+			          		<i class="material-icons prefix">mail</i>
+			          		<input id="useremail" name="useremail" type="text" class="validate">
+			          		<label for="useremail">USERMAIL</label>
+			        	</div>
+					</form>
+			        <div class="input-field col s12">
+			          <i class="material-icons prefix">mode_edit</i>
+			          <input id="pwd" type="password" class="validate">
+			          <label for="pwd">PASSWORD</label>
+			        </div>
+				<div class="row">
+					<span class="flow-text">
+						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+							<i class="material-icons right">keyboard_return</i>
+						</button>
+					</span>
+					<span class="flow-text">
+						<button class="btn" onclick="closeID()">QUIT
+							<i class="material-icons right">mood_bad</i>
+						</button>
+					</span>	
+				</div>	
+			</div>
+				<p style="color:red;">회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
+				<p style="margin-top:0;">기간 이후에는 회원정보가 영구 삭제됩니다.</p>
+			</div>
+	  	</div>
+	  </div>
 	  
 	<!-- 메인 -->
   <div class="wrapper">
@@ -262,25 +480,32 @@
 					<a class="subheader">회원정보관리</a>
 				</li>
 				<li>
-					<a class="waves-effect" href="updateMember">회원정보수정</a>
+					<a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a>
 				</li>
 				<li>
-					<a class="waves-effect" href="#">회원탈퇴</a>
+					<a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a>
 				</li>
 			</ul>
 		</aside>			
 
 		<section>	
-			<div class="container">
+			<div class="container" style="width:80%;">
 			  	<h3 class="center">인기 항목</h3>
 			</div>
-								
-			<div class="carousel" >
-				<c:forEach var="eList" items="${eList}">
-					<a class="carousel-item" href="#one!" style="width:500px; height:auto;">
-						<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>
-					</a>
-				</c:forEach>
+			<div class="row">					
+				<div class="col s1 center">
+					d
+				</div>
+				<div class="carousel carousel-slider col s10 m10 l10">
+					<c:forEach var="eList" items="${eList}">
+						<a class="carousel-item" href="#one!" style="width:512px; height:auto;">
+							<iframe class="video w100" width="512" height="324" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+						</a>
+					</c:forEach>
+				</div>
+				<div class="col s1 center">
+					d
+				</div>
 			</div>	  
 		</section>
 	</div>
@@ -314,6 +539,6 @@
     	</div>
     </footer>
 
-	<script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript" src="js/materialize.js"></script>
 </body>
 </html>
