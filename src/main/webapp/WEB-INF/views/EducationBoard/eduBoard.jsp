@@ -26,7 +26,6 @@
 	    
 	<script type="text/javascript">
 		var urlCheck = false;
-		var urlValue = "";
 		
 	    // css용
 	    $(function(){
@@ -139,17 +138,6 @@
 					return;
 				}
 				
-				// 중복 검사를 시행했던 URL인지 확인 -> 즉, 변경된 URL로 중복검사를 재요청했는지 확인
-				if(urlValue == originalURL) {
-					if(urlCheck == false) {
-						alert("이미 등록되어 있는 영상입니다.");
-					}else {
-						alert("등록 가능한 영상입니다.");
-					}
-					return;
-				}
-				urlValue = originalURL;
-				
 				// VideoID 추출
 	       		var markIndex = originalURL.indexOf("?");	// GET방식 인자를 제외한 실제 주소
 	       		var findVideoId = "";
@@ -178,7 +166,7 @@
 	       				findVideoId = originalURL.substring(vIndex, vIndex+firstAmpIndex);
 	       			}
 	       		}
-	       		
+	       		alert(findVideoId);
 	       		// 영상 중복 검사
 	       		$.ajax({
 	       			method: 'get'
@@ -189,20 +177,33 @@
 	       			, success: function(resp) {
 	       				if(resp == 'success') {
 	       					$('#videoId').val(findVideoId);
+	       					$('#invDelete').val('false');
 	       					urlCheck = true;
 	       					
 	       					alert("등록 가능한 영상입니다.");
-	       				}else {
+	       				}else if(resp == 'eduExist') {
 	       					urlCheck = false;
 	       					
 	       					alert("이미 등록되어 있는 영상입니다.");
+	       				}else if(resp == 'invExist') {
+	       					if(confirm('자막 검증 게시글에 있는 영상입니다. 그래도 등록하시겠습니까?')) {
+	       						$('#videoId').val(findVideoId);
+	       						$('#invDelete').val('true');
+	       						urlCheck = true;
+	       						
+	       						alert("등록 진행");
+	       					}else {
+	       						urlCheck = false;
+	       						alert("등록 취소");
+	       					}
 	       				}
 	       			}, error:function(resp, code, error) {
 						alert("resp : "+resp+", code:"+code+", error:"+error);
 					}
 	       		});
-				alert("videoID"+$('#videoId').val());
-				alert("유무 확인 : "+urlCheck);
+				//alert("videoID : "+$('#videoId').val());
+				//alert("invDelete : "+$('#invDelete').val());
+				//alert("유무 확인 : "+urlCheck);
 			});
 		});
     
@@ -417,14 +418,14 @@
 						</div>
 						
 						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
-									<i class="large material-icons">person</i>
-								</a>
-								<ul>
-								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
-								</ul>
+							<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+								<i class="large material-icons">person</i>
+							</a>
+							<ul>
+							    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+							    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+							    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+							</ul>
 						</div>
 					</div>
 				</form>
@@ -448,7 +449,8 @@
 		      <h5 class="center">교육 영상 삽입</h5>
 		      <div class="row">
 			      <form id="addEduVideoForm" action="addEduVideo" method="post" enctype="multipart/form-data">
-			      		<input type="hidden" name="useremail" value="${sessionScope.useremail}"/> 
+			      		<input type="hidden" name="useremail" value="${sessionScope.useremail}"/>
+			      		<input type="hidden" id="invDelete" name="invDelete" value=""/> 
 						<div class="input-field col s12">
 							<input type="text" class="validate" id="title" name="title"/>
 							<label for="title">영상제목입력</label>

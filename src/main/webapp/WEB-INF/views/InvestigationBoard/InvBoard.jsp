@@ -14,7 +14,13 @@
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
       
 	<title>자막검증게시판</title>
-	    
+	
+	<style type="text/css">
+		#checkline{
+			text-align: center;
+			color: red;
+		}
+	</style>    
 	    
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script src="YoutubeAPI/auth.js"></script>
@@ -42,10 +48,6 @@
 		
 		//캐러셀
 		$('.carousel').carousel();
-		
-		$('#back').on('click', function() {
-			
-		});
 		
 		$('#sticker').on('click', function() {
 			$('#checkline').val('');
@@ -198,12 +200,6 @@
 		});
 	});
     </script>
-    <style type="text/css">
-		#checkline{
-			text-align: center;
-			color: red;
-		}
-	</style>
 </head>
 <body>
     <header>
@@ -395,15 +391,14 @@
 				<li>
 					<div class="user-view">
 						<div class="background">
-							<img src="images/">
+							<!--<img src="images/">-->
 						</div>
 						<a href="#user"><img class="circle" src="images/"></a>
 						<a href="#name"><span class="white-text name">${usernick}</span></a> 
 						<a href="#email"><span class="white-text email">${useremail}</span></a>
 					</div>
 				</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
+					<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
 					<li><a href="#!">wishList</a></li>
 					<li><div class="divider"></div></li>
 					<li><a class="subheader">회원정보관리</a></li>
@@ -583,18 +578,15 @@
 	       				findVideoId = originalURL.substring(vIndex, vIndex+firstAmpIndex);
 	       			}
 	       		}
+       		
+	       		var dataForm = {
+	       			"useremail":"${sessionScope.useremail}",
+	       			"title":title.val(),
+	       			"url":findVideoId,
+	       			"content":content
+	       		};
+	       		//alert(JSON.stringify(dataForm));
 	       		
-	       		//$('#videoId').val(findVideoId);
-       			// alert($('#videoId').val());
-				
-       			var dataForm = {
-       				"useremail":"${sessionScope.useremail}",
-       				"title":title.val(),
-       				"url":findVideoId,
-       				"content":content
-       			};
-       			alert(JSON.stringify(dataForm));
-       			
 				$.ajax({
 					method:'post'
 					, url: 'requestInvestigation'
@@ -602,21 +594,23 @@
 					, dataType: "json"
 					, contentType:"application/json; charset=utf-8"
 					, success:function(resp) {
-						
 						if(resp.result == "success") {
 							location.href="InvestigationBoard";
-						}else if(resp.result == "failure") {
+						}else if(resp.result == "invExist") {
 							if(confirm("이미 자막 요청된 영상입니다. 해당 영상으로 이동하시겠습니까?")) {
 								location.href = "detailInvBoard?investigationnum="+resp.investigationnum;
 							}
+						}else if(resp.result == "eduExist") {
+							if(confirm("교육 영상에 등록되어 있습니다. 해당 영상으로 이동하시겠습니까?")) {
+								location.href = "detailEduBoard?videoNum="+resp.videonum;
+							}
 						}
-					}
-					, error:function(resp, code, error) {
+					}, error:function(resp, code, error) {
 						alert("resp : "+resp+", code : "+code+", error : "+error);
-					}
-				});
-       		});
-        });
+						}
+					});
+	       		});
+			});
 	</script>
 </body>
 </html>
