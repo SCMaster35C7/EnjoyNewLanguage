@@ -15,9 +15,9 @@ public class Scheduler {
 	/**
 	 * 매년 매월 매일 자정(0시 0분 1초)에 한 번씩 수행하는 메소드
 	 */
-	@Scheduled(cron = "1 0 0 * * *")
+	@Scheduled(cron = "0 0 0 * * *")
 	public void idCompletelyDelete() {
-		System.out.println("자정 : 아이디 삭제 실행");
+		//System.out.println("자정 : 아이디 삭제 실행");
 		mRepository.idCompletelyDeleteFromMember();
 		mRepository.idCompletelyDeleteFromConfirmmeber();
 	}

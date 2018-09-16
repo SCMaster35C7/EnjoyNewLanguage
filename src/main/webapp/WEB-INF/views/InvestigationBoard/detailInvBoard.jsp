@@ -50,6 +50,28 @@
 			//캐러셀
 			$('.carousel').carousel();
 			
+			$("#deleteInvBoard").on('click', function() {
+				if('${inv.useremail}'!= '${sessionScope.useremail}') {
+					alert("등록자만 삭제할 수 있습니다.");
+					return;
+				}
+				var dataForm = {
+					url : '${inv.url}'
+					, IDCode : ${inv.investigationnum}
+					, recommendtable : 1
+				};
+				$.ajax({
+					method:'get'
+					, url:'deleteInvBoard'
+					, data:dataForm
+					, contentType: 'application/json; charset=utf-8'
+					, success:function(resp) {
+						if(resp == 'success')
+							location.href = "InvestigationBoard";
+					}
+				});
+			});
+			
 			$('#loginBtn').on('click',function(){
 				var useremail = $('#useremail');
 				var userpwd = $('#userpwd');
@@ -180,7 +202,7 @@
 				var subtitleName = $('#subtitleName');
 				
 	           	if(useremail.trim().length == 0) {
-	           		$('#modal1').modal().open();
+	           		$('#modal1').modal('open');
 	            	return;
 	           	}
 				
@@ -316,8 +338,6 @@
 				result += '<br>';
 			}
 			
-		
-			
 			$("#subtitleList").html(result);
 			$(".subStart").on('click', subStart);
 			$(".subDelete").on('click', subDelete);
@@ -327,7 +347,6 @@
 	    
 	   	function subStart() {
 	   		alert("자막 실행");
-	   		
 	   		var subnum = $(this).attr('data-rno');
 	   		
 	   		$.ajax({
@@ -465,9 +484,7 @@
 		function reportReply() {
 			//alert('신고');
 			var useremail = "${sessionScope.useremail}";
-			//alert(useremail);
 			replynum = $(this).attr('data-rno');
-			//alert(replynum);
 			var sendData = {
 					"useremail":useremail
 					,"whichboard":  "1"
@@ -624,8 +641,6 @@
        		</div>
 		</li>		 
 		<li><a href="eduBoard">영상게시판</a></li>
-		<li><a href="dubbingBoard">더빙게시판</a></li>
-		<li><a href="InvestigationBoard">자막게시판</a></li>
 		<li><a href="myPage">마이페이지</a></li>
 	</ul>
 	  	  
@@ -728,8 +743,8 @@
 		
 		<section>
 			<div class="container" style="width:98%;">
-			<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-			<!--<div id="youtube"></div>   -->
+				<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+				<!--<div id="youtube"></div>   -->
 				<div class="row">
 					<div class="col s8 m8">
 						<div class="video-container z-depth-2" >
@@ -740,7 +755,7 @@
 						</div>
 							
 						<div class="row" style="margin-top:15px;">
-							<div class="col s8 m8 l8"><h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:680px; padding:5px; margin-top:0px;"></h6></div>
+							<div class="col s8 m8 l8"><h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:630px; padding:5px; margin-top:0px;"></h6></div>
 							<div class="right" style="margin-right:15px;">
 								<input type="hidden" value="${inv.investigationnum}">
 								<button class="btn recommendation" type="button">
@@ -751,66 +766,91 @@
 									<i class="material-icons">thumb_down</i> 
 									<span id="decoCount">${inv.decommendation}</span>
 								</button>
+								<button class="btn" id="deleteInvBoard" type="button">
+									<i class="material-icons">delete</i> 
+								</button>
 							</div>
 						</div>
 						</div>
-							<div class="col s4 m4 l4">
-					      		<div class="card" style="height:520px; margin-top:0px;">
-									<div class="card-content">
-										<span class="card-title activator grey-text text-darken-4">
-											자막목록
-										</span>
-									</div>
-									<div class="card-content scroll-box">
-			          					<div id="subtitleList"></div>
-			        				</div>
-			        				<div class="card-action" style="padding:10px;">
-							         	 <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
-											 <div class="file-field">
-											     <div class="btn right" style="margin-left:30px;">
-											          <span>File</span>
-											          <input type="file" id="subtitleFile">
-											      </div>
-											  
-											      <div class="file-path-wrapper">
-											      	  <input class="file-path validate" type="text">
-											      </div>
-											  </div>	
-											 <div class="row">
-												 <div class="input-field col s9" style="margin-left:10px;">
-						          					<input id="subtitleName" type="text" class="validate"/>
-						         					 <label for="subtitleName">등록 파일명</label>
-						       					 </div>
-						       				
-												 <div class="input-field col s2" style="margin-top:25px;">
-													<input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
-												 </div>
-											 </div>	
-										</form>
-							        </div>
-							    </div>
-							 </div>
+						<div class="col s4 m4 l4">
+					    	<div class="card" style="height:520px; margin-top:0px;">
+								<div class="card-content">
+									<span class="card-title activator grey-text text-darken-4">
+										자막목록
+									</span>
+								</div>
+								<div class="card-content scroll-box">
+			          				<div id="subtitleList"></div>
+			        			</div>
+			        			<div class="card-action" style="padding:10px;">
+						         	 <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
+										 <div class="file-field">
+										     <div class="btn right" style="margin-left:30px;">
+										          <span>File</span>
+										          <input type="file" id="subtitleFile">
+										      </div>
+										  
+										      <div class="file-path-wrapper">
+										      	  <input class="file-path validate" type="text">
+										      </div>
+										  </div>	
+										 <div class="row">
+											 <div class="input-field col s9" style="margin-left:10px;">
+						         					<input id="subtitleName" type="text" class="validate"/>
+						        					 <label for="subtitleName">등록 파일명</label>
+						      					 </div>
+						      				
+											 <div class="input-field col s2" style="margin-top:25px;">
+												<input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
+											 </div>
+										 </div>	
+									</form>
+						        </div>
+						    </div>
+						 </div>
+					</div>
+
+			       	<div class="row"> 
+						<div class="row"  style="margin-left: 3%;">
+							<div class="input-field col s4">
+								<input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
+								<label id="replylabel" for="replytext">리뷰를 작성해주세요 ^ㅅ^</label>		
+							</div>
+							<input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
+							<input id="cancelUpdate" type="button" class="btn" style="visibility:hidden; margin-top:10px;" value="수정취소"/>	
+						</div>
+						
+					<input type="hidden" id="useremail" value="${sessionScope.useremail}">
+					<input type="hidden" id="updatereplynum">
+					
+					<div id="result"> 
+						<!-- 반복적으로 나오게 -->
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 	<script>
-      // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
-      var tag = document.createElement('script');
+		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
+		var tag = document.createElement('script');
 
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      // 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
-      var player;
-      function onYouTubeIframeAPIReady() {
-         player = new YT.Player('youtube', {
-            events : {
-               'onReady' : onPlayerReady,
-               'onStateChange' : onPlayerStateChange
-            }
-         });
-      }
+		// 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
+		var player;
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('youtube', {
+            	events : {
+               		'onReady' : onPlayerReady,
+               		'onStateChange' : onPlayerStateChange
+            	}
+         	});
+      	}
    
-      // 4. Youtube Player의 준비가 끝나면 호출할 함수
-      	function onPlayerReady(event) {
+      	// 4. Youtube Player의 준비가 끝나면 호출할 함수
+		function onPlayerReady(event) {
          	event.target.playVideo();
       	}
       
@@ -826,33 +866,8 @@
             
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
-   </script>
-
-						
-				</div>
-
-          		
-
-			       	<div class="row"> 
-						<div class="row"  style="margin-left: 3%;">
-							<div class="input-field col s4">
-								<input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
-								<label id="replylabel" for="replytext">리뷰를 작성해주세요 ^ㅅ^</label>		
-							</div>
-							<input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
-							<input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>	
-						</div>
-						
-					<input type="hidden" id="useremail" value="${sessionScope.useremail}">
-					<input type="hidden" id="updatereplynum">
-					
-					<div id="result"> 
-						<!-- 반복적으로 나오게 -->
-					</div>
-				</div>
-				</div>
-			</section>
-	</div>
+	</script>
+	
 	<footer class="page-footer">
     	<div class="container">
         	<div class="row">
@@ -880,6 +895,6 @@
         	</div>
     	</div>
     </footer>
-<script type="text/javascript" src="js/materialize.js"></script>	
+	<script type="text/javascript" src="js/materialize.js"></script>	
 </body>
 </html>
