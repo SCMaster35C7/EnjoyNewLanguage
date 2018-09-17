@@ -169,8 +169,32 @@
 	</delete>
 	
 	<select id="selectInConfirm" parameterType="String" resultType="Member">
-		select useremail
-		from confirmmember
-		where useremail = #{value}
+		select 
+			useremail
+		from 
+			confirmmember
+		where 
+			useremail = #{value}
 	</select>
+	
+	<delete id="idCompletelyDeleteFromMember">
+ 		delete from
+    		member
+ 	 	where
+    		useremail in (
+      			select
+        			useremail
+      			from
+        			confirmmember
+      			where
+         			months_between(sysdate, outdate) >= 1
+    			)
+	</delete>
+	
+	<delete id="idCompletelyDeleteFromConfirmmeber">
+ 		delete from
+    		confirmmember
+ 	 	where
+  			months_between(sysdate, outdate) >= 1
+	</delete>
 </mapper>

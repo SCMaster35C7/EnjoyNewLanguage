@@ -109,9 +109,9 @@ public class MemberRepository {
 		return levelList;
 	}
 
-	public int checkChallengeCount(String useremail) {
+	public Integer checkChallengeCount(String useremail) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		int result = mapper.checkChallengeCount(useremail);
+		Integer result = mapper.checkChallengeCount(useremail);
 		return result;
 	}
 
@@ -131,5 +131,19 @@ public class MemberRepository {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		Member member = mapper.selectInConfirm(useremail);
 		return member;
+	}
+
+	public int idCompletelyDeleteFromMember() {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int result = mapper.idCompletelyDeleteFromMember();
+		
+		return result;
+	}
+	
+	public int idCompletelyDeleteFromConfirmmeber() {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int result = mapper.idCompletelyDeleteFromConfirmmeber();
+		
+		return result;
 	}
 }

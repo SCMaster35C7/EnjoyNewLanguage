@@ -43,7 +43,7 @@ function search(pageCode) {
 								+ '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
 					addVideo += '</div>';
 					addVideo += '<input type="button" class="decideURL btn right" style="margin-top:5px;" data-rno="http://www.youtube.com/embed/'
-								+ videoId + '" value="영상 선택"/> <br/>';
+								+ videoId + '" value="Choice"/> <br/>';
 					addVideo += '</div>';
 					addVideo += '</div>';
 
@@ -54,7 +54,7 @@ function search(pageCode) {
 
 				if (prevPage) {
 					$("#results").append(
-						"<input type='button' class='btn' id='prevPage' value='이전'/>");
+						"<input type='button' class='btn' id='prevPage' value='Prev'/>");
 					$("#prevPage").on('click', function() {
 						console.log('p: ' + prevPage);
 						search(prevPage);
@@ -63,7 +63,7 @@ function search(pageCode) {
 
 				if (nextPage) {
 					$("#results").append(
-							"<input type='button' class='btn' id='nextPage' value='다음'/>");
+							"<input type='button' class='btn' id='nextPage' value='Next'/>");
 					$("#nextPage").on('click', function() {
 						console.log('n: ' + nextPage);
 						search(nextPage);

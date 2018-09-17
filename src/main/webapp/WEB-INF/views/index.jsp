@@ -24,8 +24,10 @@
 	</style>
     
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="js/LanguageSet.js"></script>
 	<script>
 		$(function() {
+			SetLanguage();
 			$('select').formSelect();
 			
 			//dropdown
@@ -57,36 +59,7 @@
 				$('#checkline').val('');
 			});
 			
-			$('#loginBtn').on('click', function() {
-				var useremail = $('#useremail').val();
-				var userpwd = $('#userpwd').val();
-				
-				var sendData = {	
-						"useremail":useremail
-						,"userpwd": userpwd
-				};
-				
-				$.ajax({
-					method	:	'post'
-					, url	: 'statusCheck'
-					, data	: JSON.stringify(sendData)
-					, dataType	: 'text'
-					, contentType: 'application/json; charset=utf-8'
-					, success	: function(resp){
-						if (resp=="checkEmail") {
-							$("#checkline").val('이메일 인증 먼저 해주세요!');
-						}else if (resp=="loginFailure") {
-							//alert('담으로가자');
-							//$('#loginForm').submit();
-							$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
-						} else {
-							window.location.reload();
-						}
-					}, error:function(resp, code, error) {
-						alert("resp : "+resp+", code:"+code+", error:"+error);
-					}
-				});//ajax
-			});
+			
 			
 			$('.search').on('keydown', function(key) {
 				if (key.keyCode == 13) {
@@ -100,136 +73,19 @@
 					});
 				}
 			});
-		});
-		//회원탈퇴
-		function closeID(){
-			var useremail=$('#useremail').val();
-			var pwd=$('#pwd').val();
-			var dataForm={
-					"useremail":useremail,
-					"userpwd":pwd
-			}
+		});		
+	</script>
+	<!-- 페이지 언어팩 -->
+	<script>
+	function languageChange_Page(lang){
+		if(lang=='kor'){
 			
-			$.ajax({
-				method:'post'
-				, url:'closeIDsubmit'
-				, data:JSON.stringify(dataForm)
-				, contentType: "application/json; charset=utf-8"
-				, success:function(resp){
-					if(resp=='ok'){
-						var finalCheck=confirm('정말 탈퇴하시겠습니까?');
-						if(finalCheck){
-							alert('이용해주셔서 감사합니다. \n계정 복구는 한달안으로 가능합니다.\n 계정복구시 기존 기록을 모두 보존가능합니다.');
-							$('#submitform').submit();
-						}else{
-							alert('취소합니다!');
-							location.href="//";
-						}
-					}else{
-						alert('아이디 또는 패스워드를 확인해주세요.');
-					}
-				}	
-			})
+		}else if(lang=='jp'){
+			
+			
 		}
-		
-		//회원정보수정
-		$(function(){
-			//닉네임중복검사
-			$('#usernick').keyup(function(){
-				
-				var usernick = $(this).val();   			
-					
-					$.ajax({
-							method	:	'post'
-							,url	: 'nickCheck'
-							,data	: "usernick="+usernick
-							,dataType	: 'text'
-							,success	: function(resp){
-								
-								$("#nickcheck").text(resp);
-								/* if(resp=='true'){
-									$("#nickcheck").text("사용가능!!!!! 아이디입니다.");
-								}else{
-									$("#nickcheck").html('<span style="color: red; font-weight: bold;">중복된 아이디입니다.</span>');
-								}  */
-								
-			            	 	
-						}, error:function(resp, code, error) {
-							alert("resp : "+resp+", code:"+code+", error:"+error);
-						}    					
-					});    			
-			});
-			
-			$('#btnUpdate').on('click', function(){
-				
-				var usernick = $("#usernick").val();
-				var nickcheck = $("#nickcheck").text();
-				
-				$pattern = '^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';			
-				
-				
-				if (nickcheck.length<=0||nickcheck=='중복된 닉네임 입니다') {
-						alert('닉네임 다시 한 번 확인해주세요');
-						$("#usernick").select();
-						$("#usernick").focus();
-						return;
-				}
-				
-				if($('#currpwd').val() == $('#newpwd').val()){
-					alert('새로입력한 비밀번호와 현재 비밀번호가 달라야 합니다.');
-					return;
-				}
-				
-				if($('#newpwd').val() != $('#checkpwd').val()){
-					alert('새로입력한 비밀번호와 비밀번호 확인 값은 같아야 합니다.');
-					return;
-				}
-				
-				if($('#newpwd').val().match($pattern)){
-					
-					alert('비밀번호 수정이 완료되었습니다. 다시 로그인해주세요');
-					
-				} else {
-					alert('비밀번호는 대/소문자, 숫자, 특수 문자 포함, 8자 이상');
-				
-					return;
-				}
-				
-				$('#updateMember').submit();
-			
-			});
-			
-			$('#btnCancel').on('click', function(){
-				
-				location.href = "${pageContext.request.contextPath}/"
-			});
-			
-		});
-	</script>
-	
-	<!-- 계정복구 -->
-	<script type="text/javascript">
-	function check() {
-		var recoveryEmail = $("#recoveryEmail").val();
-		//alert(recoveryEmail);
-		$.ajax({
-					type : 'post',
-					url : 'selectInConfirm',
-					data : recoveryEmail,
-					dataType:'text',
-					contentType: "application/text; charset=UTF-8",
-					success : function(resp){
-						if (resp=="notok") {
-							alert("이메일을 다시 한 번 확인해주세요.");
-						} else {
-							$('#req').submit();
-						}
-					}
-				});
 	}
-
 	</script>
-	
 </head>
 
 <body>
@@ -261,10 +117,10 @@
 	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
 	              		</div>
 				  	</li>		 
-			      	<li><a href="eduBoard">영상게시판</a></li>
-			      	<li><a href="dubbingBoard">더빙게시판</a></li>
-			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
-			      	<li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
+			      	<li><a href="eduBoard" data-langNum=1></a></li>
+			      	<li><a href="dubbingBoard" data-langNum=2></a></li>
+			      	<li><a href="InvestigationBoard" data-langNum=3></a></li>
+			      	<li><a href="myPage" style="margin-right:20px;" data-langNum=4></a></li>
 			    </ul>
 			</div>		
 			<div class="nav-content">
@@ -284,10 +140,10 @@
           		<i class="material-icons">close</i>
        		</div>
 		</li>		 
-		<li><a href="eduBoard">영상게시판</a></li>
-		<li><a href="dubbingBoard">더빙게시판</a></li>
-		<li><a href="InvestigationBoard">자막게시판</a></li>
-		<li><a href="myPage">마이페이지</a></li>
+		<li><a href="eduBoard" data-langNum=1></a></li>
+		<li><a href="dubbingBoard" data-langNum=2></a></li>
+		<li><a href="InvestigationBoard" data-langNum=3></a></li>
+		<li><a href="myPage" data-langNum=4></a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->
@@ -320,7 +176,7 @@
 						
 						<!-- 글씨뜨는거 -->
 						<c:if test="${not empty sessionScope.useremail }">
-							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+							<h4 class="center">${sessionScope.useremail} <span data-langNum=5></span></h4>
 						</c:if>
 					</div>	
 				
@@ -368,7 +224,7 @@
 	  <div id="modal3" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5>회원정보수정</h5>
+				<h5 data-langNum=6></h5>
 				<form id="updateMember" action="updateMember" method="post">
 					<div class="row" style="margin-top:10%;">
 						<div class="col s6">
@@ -378,7 +234,7 @@
 									<td>${sessionScope.useremail}</td>
 								</tr>
 								<tr>
-									<th>성별</th>
+									<th data-langNum=7>성별</th>
 									<td>${sessionScope.gender}</td>
 								</tr>
 							</table>
@@ -390,7 +246,7 @@
 									<td>${sessionScope.usernick}</td>
 								</tr>
 								<tr>
-									<th>생일</th>
+									<th data-langNum=8></th>
 									<td>${sessionScope.birth}</td>
 								</tr>
 							</table>
@@ -444,21 +300,21 @@
 	  <div id="modal2" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5>탈퇴하시겠습니까?</h5>
+				<h5 data-langNum=9></h5>
 				
 				<div class="row">
 					<form action="insertCloseID" method="post" id="submitform">
 						<div class="input-field col s12">
 			          		<i class="material-icons prefix">mail</i>
-			          		<input id="useremail" name="useremail" type="text" class="validate">
-			          		<label for="useremail">USERMAIL</label>
+			          		<input id="checkuseremail" name="useremail" type="text" class="validate">
+			          		<label for="checkuseremail">USERMAIL</label>
 			        	</div>
+				        <div class="input-field col s12">
+				          <i class="material-icons prefix">mode_edit</i>
+				          <input id="pwd" type="password" class="validate">
+				          <label for="pwd">PASSWORD</label>
+				        </div>
 					</form>
-			        <div class="input-field col s12">
-			          <i class="material-icons prefix">mode_edit</i>
-			          <input id="pwd" type="password" class="validate">
-			          <label for="pwd">PASSWORD</label>
-			        </div>
 				<div class="row">
 					<span class="flow-text">
 						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
@@ -472,8 +328,8 @@
 					</span>	
 				</div>	
 			</div>
-				<p style="color:red;">회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
-				<p style="margin-top:0;">기간 이후에는 회원정보가 영구 삭제됩니다.</p>
+				<p style="color:red;" data-langNum=10></p>
+				<p style="margin-top:0;" data-langNum=11></p>
 			</div>
 	  	</div>
 	  </div>
@@ -502,18 +358,27 @@
 					<div class="divider"></div>
 				</li>
 				<li>
-					<a class="subheader">회원정보관리</a>
+					<a class="subheader" data-langNum=12></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a>
+					<a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum=13></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a>
+					<a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum=14></a>
 				</li>
 			</ul>
 		</aside>			
 
 		<section>	
+		
+		<!--  언어팩 제작중 -->
+		<div>
+		<input id="test1" type="button" onclick="languageChange('kor')" value="한국어"> 
+		<div></div>
+		<input id="test2" type="button" onclick="languageChange('jp')" value="日本語">
+		</div>
+		
+		
 			<div class="container" style="width:80%;">
 			  	<h3 class="center">인기 항목</h3>
 			</div>
@@ -564,5 +429,6 @@
     </footer>
 
 <script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript" src="js/LoginMenu.js"></script>
 </body>
 </html>

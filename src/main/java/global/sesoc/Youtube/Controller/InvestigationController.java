@@ -234,4 +234,24 @@ public class InvestigationController {
 		
 		return null;
 	}
+	
+	@RequestMapping(value = "/deleteInvBoard", method = RequestMethod.GET)
+	public @ResponseBody String deleteInvBoard(String url, int IDCode, int recommendtable) {
+		//System.out.println(url+", "+IDCode+", "+recommendtable);
+		Investigation invTemp = new Investigation();
+		invTemp.setUrl(url);
+		
+		invTemp = invRepository.selectOneFromInvUseURL(invTemp);
+		List<InvSubtitle> invSubList = invRepository.subtitleAllFromInv(invTemp.getInvestigationnum());
+		eduRepository.deleteAllRecommend(IDCode, recommendtable);
+		
+		for(int i=0; i<invSubList.size(); i++) {
+			String pullPath = subtitleFileRoot+"/"+invSubList.get(i).getSavedFile();
+			FileService.deleteFile(pullPath);
+		}
+		
+		int result = invRepository.deleteInvUseURL(url);
+		
+		return "success";
+	}
 }

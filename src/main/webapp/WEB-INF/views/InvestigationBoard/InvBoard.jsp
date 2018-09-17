@@ -40,8 +40,7 @@
 		$('#modal1').modal();
 		$('#modal2').modal();
 		$('#modal3').modal(); //회원정보수정 모달
-		$('#modal4').modal(); //계정복구 모달
-
+    $('#modal4').modal(); //계정복구 모달
 
 		
 		//$('#requestInv').modal();
@@ -329,7 +328,7 @@
 							</a>
 							<ul>
 							    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								<li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
+							   	<li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
 								<li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
 							</ul>
 						</div>
@@ -397,9 +396,9 @@
 				</form>
 			</div>
 		</div>
-	</div>	
-	
-	 <!-- 계정복구 모달 -->
+	</div>
+  
+  <!-- 계정복구 모달 -->
 	  	<div id="modal4" class="modal">
 			<div class="modal-content">
 				<div class="container center">
@@ -529,18 +528,18 @@
 			<section>	
 				<div class="container">
 					<div class="row">
-           			 <h4 class="left"><a href="InvestigationBoard">자막검증게시판</a></h4>
-           			 </div>
+            			<h4 class="left"><a href="InvestigationBoard">자막검증게시판</a></h4>
+            		</div>	
 					<div class="row">
 					<c:if test="${not empty invList}">
 						<c:forEach var="invList" items="${invList}">
 						
 						<div class="col s12 m3 l3">
 							<div class="card" style="height:400px margin-bottom:10px;">
-								<div class="card-image">
-										<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
-										<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-								</div>
+										<div class="card-image">
+											<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
+											<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistSubWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+										</div>
 								
 								<div class="card-content" style="height:150px; word-break:break-all;">
 									<span>
@@ -563,24 +562,25 @@
 												<i class="material-icons">touch_app</i>
 												<span>${invList.hitcount}</span>
 											</button>
+											</div>
+										</div>
 									</div>
-								</div>
-								</div>
 								</div>
 						</c:forEach>
 					</c:if>
 				</div>
-					</div>
+				</div>
+					
 				<div class="center">
 					<ul class="pagination">
 						<li class="waves-effect">
-							<a href="InvestigationBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">first_page</i>
 							</a>
 						</li>
 					
 						<li class="waves-effect">
-							<a href="InvestigationBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+							<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
 								<i class="material-icons">chevron_left</i>
 							</a>
 						</li>
@@ -591,18 +591,18 @@
 							</c:if>
 							<c:if test="${navi.currentPage != page }">
 								<li class="page-item"><a class="page-link"
-									href="InvestigationBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+									href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
 							</c:if>
 						</c:forEach>
 						
 						<li class="waves-effect">
-							<a href="InvestigationBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">chevron_right</i> 
 							</a>
 						</li>
 						
 						<li class="waves-effect">
-							<a href="InvestigationBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">last_page</i> 
 							</a>
 						</li>

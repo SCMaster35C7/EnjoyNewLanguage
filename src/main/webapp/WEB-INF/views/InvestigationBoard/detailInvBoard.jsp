@@ -41,8 +41,8 @@
          //modal open
          $('#modal1').modal();
          $('#modal2').modal(); //회원탈퇴 모달
-		 $('#modal3').modal(); //회원정보수정 모달
-	     $('#modal4').modal(); //계정복구 모달
+		     $('#modal3').modal(); //회원정보수정 모달
+	       $('#modal4').modal(); //계정복구 모달
 
          
          //side-nav open
@@ -60,6 +60,28 @@
             
             $('#loginForm').submit();
          });
+        
+       $("#deleteInvBoard").on('click', function() {
+				if('${inv.useremail}'!= '${sessionScope.useremail}') {
+					alert("등록자만 삭제할 수 있습니다.");
+					return;
+				}
+				var dataForm = {
+					url : '${inv.url}'
+					, IDCode : ${inv.investigationnum}
+					, recommendtable : 1
+				};
+				$.ajax({
+					method:'get'
+					, url:'deleteInvBoard'
+					, data:dataForm
+					, contentType: 'application/json; charset=utf-8'
+					, success:function(resp) {
+						if(resp == 'success')
+							location.href = "InvestigationBoard";
+					}
+				});
+			});
          
          $('.search').on('keydown', function(key) {
             if (key.keyCode == 13) {
@@ -75,7 +97,6 @@
          });
       });
       
-   
       var useremail = "${sessionScope.useremail}";
       var usernick = "${sessionScope.usernick}";
       var investigationnum = "${inv.investigationnum}"
@@ -85,7 +106,6 @@
           initSubtitle();
             
            $("#replyInsert").on('click', replyInsert);
- 
            $('.recommendation').on('click', function() {
                  if(useremail.trim().length == 0) {
                   location.href="login";
@@ -374,6 +394,7 @@
               var subDecoTarget = target.parent().children(".subDecommendation").children(".subDecoCount");
               var subnum = $(this).attr('data-rno');
               var dataForm = {
+
                 "tableName":"InvestigationSubtitle", 
                 "idCode":"subtitleNum", 
                 "useremail":useremail, 
@@ -449,7 +470,6 @@
                }
            });
        }
-
       function reportReply() {
          //alert('신고');
          var useremail = "${sessionScope.useremail}";
@@ -913,25 +933,26 @@
       // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
       var tag = document.createElement('script');
 
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      // 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
-      var player;
-      function onYouTubeIframeAPIReady() {
-         player = new YT.Player('youtube', {
-            events : {
-               'onReady' : onPlayerReady,
-               'onStateChange' : onPlayerStateChange
-            }
-         });
-      }
-   
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+		// 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
+		var player;
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('youtube', {
+            	events : {
+               		'onReady' : onPlayerReady,
+               		'onStateChange' : onPlayerStateChange
+            	}
+         	});
+      	}
       // 4. Youtube Player의 준비가 끝나면 호출할 함수
          function onPlayerReady(event) {
             event.target.playVideo();
          }
+
       
          // 5. Youtube Player의 state가 변하면 적용할 함수
          var playerState;
@@ -946,13 +967,7 @@
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
    </script>
-				
-				
-                  
         	</div>
-
-                
-
                    <div>
                      <form id="replyform" method="post">
                        <input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
@@ -982,6 +997,7 @@
                    <p class="grey-text text-lighten-4">We support your English</p>
                  </div>
                  <div class="col l4 offset-l2 s12">
+
                 <h5 class="white-text">Made By</h5>
                 <ul>
                      <li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
@@ -1000,6 +1016,8 @@
            </div>
        </div>
     </footer>
-<script type="text/javascript" src="js/materialize.js"></script>   
+
+	<script type="text/javascript" src="js/materialize.js"></script>	
 </body>
 </html>
+

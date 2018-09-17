@@ -11399,7 +11399,6 @@ defaults._set('global', {
 		},
 
 		onHover: null,
-
 		labels: {
 			boxWidth: 40,
 			padding: 10,

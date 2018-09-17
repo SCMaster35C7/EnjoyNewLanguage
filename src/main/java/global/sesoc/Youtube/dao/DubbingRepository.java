@@ -37,9 +37,9 @@ public class DubbingRepository {
     return result;
 	}
   
-  public int deleteDubbing(Dubbing dub) {
+  public int deleteDubbing(int dubbingnum) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
-		int result = mapper.deleteDubbing(dub);
+		int result = mapper.deleteDubbing(dubbingnum);
 		return result;
 	}
 
@@ -62,9 +62,9 @@ public class DubbingRepository {
 		return result;
 	}
 	
-	public int replysDelete(Reply reply) {
+	public int replysDelete(int dubbingnum) {
 		DubbingMapper mapper = session.getMapper(DubbingMapper.class);
-		int result = mapper.replysDelete(reply);
+		int result = mapper.replysDelete(dubbingnum);
 		
 		return result;
 	}

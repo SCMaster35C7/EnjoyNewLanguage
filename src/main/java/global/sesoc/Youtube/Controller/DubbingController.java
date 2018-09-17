@@ -111,15 +111,13 @@ public class DubbingController {
 
 	@RequestMapping(value = "deleteDubbing", method = RequestMethod.POST)
 	public String deleteDubbing(int dubbingnum) {
+		System.out.println(dubbingnum);
 		Dubbing dub = dubRepository.selectOneDub(dubbingnum);
 		String fullPath = DubbingFileRoot + "/" + dub.getVoiceFile();
 		FileService.deleteFile(fullPath);
-		Reply reply=new Reply();
-		reply.setUseremail(dub.getUseremail());
-		reply.setIdnum(dub.getDubbingnum());
-		dubRepository.replysDelete(reply);
-		eduRepository.deleteAllRecommend(dub.getDubbingnum(), 2);
-		dubRepository.deleteDubbing(dub);
+		dubRepository.replysDelete(dubbingnum);
+		eduRepository.deleteAllRecommend(dubbingnum, 2);
+		dubRepository.deleteDubbing(dubbingnum);
 		return "redirect:dubbingBoard";
 	}
 

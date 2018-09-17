@@ -454,9 +454,9 @@
 		</div>
 	
 		   
-		    <div class="col s12 m4 l4">
-			 <div class="card">
-			 <div class="card-content  scroll-box" style="height:450px; width:100%; margin-top:0px;">
+   <div class="col s12 m4 l4">
+	  <div class="card">
+	   <div class="card-content  scroll-box" style="height:450px; width:100%; margin-top:0px;">
               
               <div class="container">
 		<div class="form-horizontal">
@@ -492,23 +492,20 @@
 	</div>
               
           
-             </div>
-		    </div>
-		  </div>
-		   </div>
-		</section>
+      </div>
 	</div>
-	<hr />
-
-	<div>
-		<form id="savedubbing" action="savedubbing" method="post"
-			enctype="multipart/form-data">
-			<div class="file-field">
-		   <div class="btn left" style="margin-left:30px;">
-	       <span>File</span>
-		   <input type="file" id="saveFile" name="saveFile" ></div>
-		   <div class="file-path-wrapper" style="width: 15%;">
-		   <input class="file-path validate" type="text">
+  </div>
+</div>
+<!-- 하단 녹음 입력부분 -->
+	<div style="margin-top: 2%;">
+    <form id="savedubbing" action="savedubbing" method="post" enctype="multipart/form-data">
+	  <div class="file-field">
+		<div class="btn left" style="margin-left:30px;">
+	        <span>File</span>
+		    <input type="file" id="saveFile" name="saveFile" >
+		</div>
+		<div class="file-path-wrapper" style="width: 15%;">
+		    <input class="file-path validate" type="text">
 		</div>
 	 </div>	
 	<div class="row">
@@ -531,6 +528,11 @@
 		</form>
 
 	</div>
+		   
+		   
+		</section>
+	</div>
+	
 	
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -548,17 +550,10 @@
 				//width : '960',
 				//videoId : '3MteSlpxCpo',
 				events : {
-					'onReady' : onPlayerReady,
 					'onStateChange' : onPlayerStateChange
 				}
 			});
 		}
-
-		// 4. Youtube Player의 준비가 끝나면 호출할 함수
-		function onPlayerReady(event) {
-			event.target.playVideo();
-		}
-
 		// 5. Youtube Player의 state가 변하면 적용할 함수
 		var playerState;
 		function onPlayerStateChange(event) {

@@ -83,21 +83,7 @@
 		});
 		
 	});
-	var correct = "";
-	var quizIndex = "";
-	var TestType = false; //문제유형용 변수 false : text, true : mic
-	var saveTime = null; //자막 싱크용 시간저장변수
-	var TestSuccess = false; //시험을 끝까지 다 마쳤는지 확인
-	var TestFinish = false; //음성시험의 경우 채점이 끝났을때 더는 진행이 안되도록 하기 위한 변수
-	var focusingReady = false;
 
-	//음성인식 서비스 ,textbar: 클릭한 입력창
-	function startAnnyang(textbar) {
-		annyang.start({
-			autoRestart : false,
-			continuous : false
-
-		});
 		var correct = "";
 		var quizIndex = "";
 		var TestType = false; //문제유형용 변수 false : text, true : mic
@@ -292,13 +278,26 @@
 				}
 			});
 		}
-	
-		function goback() {
-			history.back();
-		}
+		
+  function deleteEdu(){
+	  var eduNum=${edu.videoNum};
+	  console.log(eduNum);
+	  $.ajax({
+		  method:'post'
+		 ,url: 'deleteEdu'
+		 ,data: 'eduNum='+eduNum
+		  
+	  })
+  }
 	</script>
 </head>
-
+<style>
+.scroll-box {
+	overflow-y: scroll;
+	height: 300px;
+	padding: 1rem
+}
+</style>
 <body>
 <header>
 		<c:if test="${plzLogin!=null}">
@@ -601,7 +600,12 @@
 						</div>
 					<div class="col s12 m4 l4">
 						<div class="card" style="height:466px;; margin-top: 0px;">
-		
+		                    <c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
+		                    <div id="deleteEdu">
+		                    <i class="medium material-icons right tooltipped" data-tooltip="더빙 삭제" style="color: grey" onclick="deleteEdu()">delete</i> 
+		                    </div>
+		                    </c:if>
+		                    
 							<div id=TestControlForm class="card-content" style="display: none">
 		
 								<span class="card-title activator grey-text text-darken-4">
@@ -638,28 +642,20 @@
 						//width : '960',
 						//videoId : '3MteSlpxCpo',
 						events : {
-							'onReady' : onPlayerReady,
 							'onStateChange' : onPlayerStateChange
 						}
 					});
 				}
-		
-				// 4. Youtube Player의 준비가 끝나면 호출할 함수
-				function onPlayerReady(event) {
-					event.target.playVideo();
-				}
-		
 				// 5. Youtube Player의 state가 변하면 적용할 함수
 				var playerState;
 				function onPlayerStateChange(event) {
 					playerState = event.data == YT.PlayerState.ENDED ? '종료됨'
-							: event.data == YT.PlayerState.PLAYING ? '재생 중'
-									: event.data == YT.PlayerState.PAUSED ? '일시중지 됨'
-											: event.data == YT.PlayerState.BUFFERING ? '버퍼링 중'
-													: event.data == YT.PlayerState.CUED ? '재생준비 완료됨'
-															: event.data == -1 ? '시작되지 않음'
-																	: '예외';
-		
+					: event.data == YT.PlayerState.PLAYING ? '재생 중'
+					: event.data == YT.PlayerState.PAUSED ? '일시중지 됨'
+					: event.data == YT.PlayerState.BUFFERING ? '버퍼링 중'
+					: event.data == YT.PlayerState.CUED ? '재생준비 완료됨'
+				    : event.data == -1 ? '시작되지 않음'
+				    : '예외';
 					console.log('onPlayerStateChange 실행: ' + playerState);
 				}
 		
