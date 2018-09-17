@@ -4,18 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
-import global.sesoc.Youtube.dto.Education;
-import global.sesoc.Youtube.dto.TestResult;
-import global.sesoc.Youtube.dto.WrongAnswer;
 
-import global.sesoc.Youtube.dto.Dubbing;
 import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.Recommendation;
+import global.sesoc.Youtube.dto.TestResult;
+import global.sesoc.Youtube.dto.WrongAnswer;
 
 public interface EducationMapper {
 	public List<Education> selectEduList(RowBounds bound); 					// 교육영상 목록
 	public Education selectOneFromEduVideo(int videoNum); 					// 교육 영상 가져오기
 	public int insertEduVideo(Education education); 						// 교육 영상 삽입
+	public Education existVideo(String url);								// 교육 영상 중복 확인
 	public int getTotalCount(Map<String, Object> map); 						// 교육 영상 개수 추출
 	public int updateHitCount(int videoNum); 								// 교육 영상 조회수 증가
 	public List<Education> selectBestFive();								// 인기 교육 영상 5개 추출
@@ -26,6 +25,7 @@ public interface EducationMapper {
 	public int updateRecommend(Recommendation reco); 						// 추천/비추천 변경
 	public int updateIncreRecommend(Map<String, Object> map); 				// 추천/비추천수 증가
 	public int updateDecreRecommend(Map<String, Object> map); 				// 추천/비추천수 감소
+	public int deleteAllRecommend(Map<String, Object> map);					// 추천/비추천 항목 삭제	
 	
 	public String selectSubName(int videoNum); 								// 자막파일 이름가져오기
 	public String selectSubName2(String url);
@@ -38,4 +38,8 @@ public interface EducationMapper {
 	public List<WrongAnswer> selectWrongAnswerList(WrongAnswer wa);			// 재시험용 문제 리스트 가져오기
 	public int deleteWrongAnswer(WrongAnswer wa); 							// 재시험에서 맞춘 문제는 오답리스트에서 삭제
 	public int deleteAllRecommend(Map<String, Object> map);					// 추천/비추천 항목 삭제	
+	public int deleteAllWishList(String url);                               // 위시리스트 삭제
+	public int deleteUserStudyByURL(String url);                            // 유저 학습정보 삭제(사용자 오답은 eduvideo에 cascade)
+	public int deleteVideo(int videoNum);                                   // 교육영상정보 제거
+
 }
