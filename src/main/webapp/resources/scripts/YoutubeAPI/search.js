@@ -1,4 +1,3 @@
-
 // Youtube 검색 메소드
 function search(pageCode) {
 	console.log("search 시작");
@@ -43,7 +42,7 @@ function search(pageCode) {
 								+ '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
 					addVideo += '</div>';
 					addVideo += '<input type="button" class="decideURL btn right" style="margin-top:5px;" data-rno="http://www.youtube.com/embed/'
-								+ videoId + '" value="Choice"/> <br/>';
+								+ videoId + '" value="Choice"/>';
 					addVideo += '</div>';
 					addVideo += '</div>';
 

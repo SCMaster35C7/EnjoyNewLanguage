@@ -556,13 +556,13 @@
 				<div class="center">
 					<ul class="pagination">
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="InvestigationBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">first_page</i>
 							</a>
 						</li>
 					
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+							<a href="InvestigationBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
 								<i class="material-icons">chevron_left</i>
 							</a>
 						</li>
@@ -573,18 +573,18 @@
 							</c:if>
 							<c:if test="${navi.currentPage != page }">
 								<li class="page-item"><a class="page-link"
-									href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+									href="InvestigationBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
 							</c:if>
 						</c:forEach>
 						
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="InvestigationBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">chevron_right</i> 
 							</a>
 						</li>
 						
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="InvestigationBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">last_page</i> 
 							</a>
 						</li>

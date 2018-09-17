@@ -4,130 +4,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>DJ DJ 더빙 시작</title>
-<meta name="author" content="zisung">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<!--Import Google Icon Font-->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link type="text/css" rel="stylesheet" href="css/materialize1.css" media="screen,projection" />
-<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
-<script>
-	var saveTime = null; //자막 싱크용 시간저장변수
-	var videoStartTime = 0; //비디오 시작타임, 파일이름생성에 쓰인다.
-	var cherkPoint = true;
-
-	$(function() {
-		$('#record').on('click', function() {
-			saveVideoStartTime();
-			cherkPoint = (!cherkPoint);
-		});
-		$('#directions').modal();
-		$('#directions').modal('open');
-		
-		//modal open
-		$('#modal1').modal();	
-		//floating actionbutton
-		$(".fixed-action-btn").floatingActionButton({
-			/* direction:'left' */
-		});		
-		//side-nav open
-		$('.sidenav').sidenav();
-		
-		//tooltip
-		$('.tooltipped').tooltip();
-		
-		//캐러셀
-		$('.carousel').carousel();
-		
-		$('#sticker').on('click', function() {
-			$('#checkline').val('');
-		});
-		
-		$('#loginBtn').on('click',function(){
-			var useremail = $('#useremail');
-			var userpwd = $('#userpwd');
+	<meta charset="UTF-8">
+	<title>DJ DJ 더빙 시작</title>
+	<meta name="author" content="zisung">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<!--Import Google Icon Font-->
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="css/materialize1.css" media="screen,projection" />
+	<style>
+	.scroll-box {
+		overflow-y: scroll;
+		height: 300px;
+		padding: 1rem
+	}
+	</style>
+	
+	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<script>
+		var saveTime = null; //자막 싱크용 시간저장변수
+		var videoStartTime = 0; //비디오 시작타임, 파일이름생성에 쓰인다.
+		var cherkPoint = true;
+	
+		$(function() {
+			$('#record').on('click', function() {
+				saveVideoStartTime();
+				cherkPoint = (!cherkPoint);
+			});
+			$('#directions').modal();
+			$('#directions').modal('open');
 			
-
-			var sendData = {	
+			//modal open
+			$('#modal1').modal();	
+			//floating actionbutton
+			$(".fixed-action-btn").floatingActionButton({
+				/* direction:'left' */
+			});		
+			//side-nav open
+			$('.sidenav').sidenav();
+			
+			//tooltip
+			$('.tooltipped').tooltip();
+			
+			//캐러셀
+			$('.carousel').carousel();
+			
+			$('#sticker').on('click', function() {
+				$('#checkline').val('');
+			});
+			
+			$('#loginBtn').on('click',function(){
+				var useremail = $('#useremail');
+				var userpwd = $('#userpwd');
+				
+	
+				var sendData = {	
 					"useremail":useremail
 					,"userpwd": userpwd
-			};
+				};
+				
+				$.ajax({
+					method	:	'post'
+					, url	: 'statusCheck'
+					, data	: JSON.stringify(sendData)
+					, dataType	: 'text'
+					, contentType: 'application/json; charset=utf-8'
+					, success	: function(resp){
+						if (resp=="checkEmail") {
+							$("#checkline").val('이메일 인증 먼저 해주세요!');
+						}else if (resp=="loginFailure") {
+							//alert('담으로가자');
+							//$('#loginForm').submit();
+							$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
+						} else {
+							window.location.reload();
+						}
+					}, error:function(resp, code, error) {
+						alert("resp : "+resp+", code:"+code+", error:"+error);
+					}
+				});//ajax
+			});
 			
-			$.ajax({
-				method	:	'post'
-				, url	: 'statusCheck'
-				, data	: JSON.stringify(sendData)
-				, dataType	: 'text'
-				, contentType: 'application/json; charset=utf-8'
-				, success	: function(resp){
-					if (resp=="checkEmail") {
-						$("#checkline").val('이메일 인증 먼저 해주세요!');
-					}else if (resp=="loginFailure") {
-						//alert('담으로가자');
-						//$('#loginForm').submit();
-						$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
-					} else {
-						window.location.reload();
-					}
-				}, error:function(resp, code, error) {
-					alert("resp : "+resp+", code:"+code+", error:"+error);
+			$('.search').on('keydown', function(key) {
+				if (key.keyCode == 13) {
+					// naver 검색
+					$.each($('.search'), function(index, item) {
+						if(item.value.length != 0) {
+							var searchText = item.value;
+							var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+							window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+						}
+					});
 				}
-			});//ajax
+			});
 		});
-		
-		$('.search').on('keydown', function(key) {
-			if (key.keyCode == 13) {
-				// naver 검색
-				$.each($('.search'), function(index, item) {
-					if(item.value.length != 0) {
-						var searchText = item.value;
-						var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
-						window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
-					}
-				});
-			}
-		});
-	});
-		
-
-	function closeModal(){
-		var elem=document.getElementById('directions');
-		var instance = M.Modal.getInstance(elem);
-		instance.close();
-		//$('#directions').modal('hide');
-	}
+			
 	
-	function saveVideoStartTime() {
-		if (cherkPoint) {
-			player.playVideo();
-			videoStartTime = player.getCurrentTime().toFixed(2);
+		function closeModal(){
+			var elem=document.getElementById('directions');
+			var instance = M.Modal.getInstance(elem);
+			instance.close();
+			//$('#directions').modal('hide');
 		}
-	}
-	function submitDubbing() {
-		var fileValue = $("#saveFile").val().split("\\");
-		var fileName = fileValue[fileValue.length - 1];
-		var fileType = fileName.substring(fileName.length - 3);
-		if (!(fileType == 'mp3' || fileType == 'wav')) {
-			alert('mp3 또는 wav 타입의 음성파일만 올려주세요!!');
-			return;
+		
+		function saveVideoStartTime() {
+			if (cherkPoint) {
+				player.playVideo();
+				videoStartTime = player.getCurrentTime().toFixed(2);
+			}
 		}
-		var submitForm = document.getElementById('savedubbing');
-		submitForm.submit();
-	}
-</script>
-<style>
-.scroll-box {
-	overflow-y: scroll;
-	height: 300px;
-	padding: 1rem
-}
-</style>
-
+		
+		function submitDubbing() {
+			var fileValue = $("#saveFile").val().split("\\");
+			var fileName = fileValue[fileValue.length - 1];
+			var fileType = fileName.substring(fileName.length - 3);
+			if (!(fileType == 'mp3' || fileType == 'wav')) {
+				alert('mp3 또는 wav 타입의 음성파일만 올려주세요!!');
+				return;
+			}
+			var submitForm = document.getElementById('savedubbing');
+			submitForm.submit();
+		}
+	</script>
 </head>
 
 <body>
-<header>
+	<header>
 		<c:if test="${plzLogin!=null}">
 			<script type="text/javascript">
 				$(function(){
@@ -164,7 +165,6 @@
 			    </ul>
 			</div>		
 			<div class="nav-content">
-
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 		        	<i class="medium material-icons" id="sticker">person</i>
 		     	</a>
@@ -188,7 +188,7 @@
 		<li><a href="myPage">마이페이지</a></li>
 	</ul>
 
-<!-- 첫 설명서 모달 -->
+	<!-- 첫 설명서 모달 -->
 	<div id="directions" class="modal" style="width:50%; ">
 		<div class="container">
 	    	<div class="modal-content" style="margin-left: -20%; margin-right: -20%;">
@@ -204,42 +204,40 @@
 			</div>
 		</div>
 	</div>
-
 	  	  
-	  <!-- 로그인 MODAL -->
-		<div id="modal1" class="modal">
-			<div class="modal-content">
+	<!-- 로그인 MODAL -->
+	<div id="modal1" class="modal">
+		<div class="modal-content">
 			<div class="container">
-			
 				<form class="col s12" id=loginForm action="login" method="POST">
-				<div class="row">
-					<h4 class="center-align">LOGIN</h4>
-				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
+						<h4 class="center-align">LOGIN</h4>
+					
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mail</i>
+									<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+									<label for="useremail">EMAIL</label>
+								</div>
+							</c:if>
+						</div>
+					
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mode_edit</i>
+									<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+									<label for="userpwd">PASSWORD</label>
+									<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
+								</div>
+							</c:if>
+						</div>
+						<!-- 글씨뜨는거 -->
+						<c:if test="${not empty sessionScope.useremail }">
+							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
 						</c:if>
-					</div>
-				
-					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
-							</div>
-						</c:if>
-					</div>
-					<!-- 글씨뜨는거 -->
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
-				</div>	
+					</div>	
 				
 					<div class="row">
 						<div class="col s10">
@@ -266,14 +264,14 @@
 						</div>
 						
 						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
-								<i class="large material-icons">person</i>
-								</a>
-								<ul>
-								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
-								</ul>
+							<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+							<i class="large material-icons">person</i>
+							</a>
+							<ul>
+							    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+							    <li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+							    <li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+							</ul>
 						</div>
 					</div>
 				</form>
@@ -282,18 +280,18 @@
 	</div>
 	
 	<div class="wrapper">
-	<!-- sidenav -->	  
+		<!-- sidenav -->	  
 		  <aside>	  	  
-		  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-		    <li>
-          <div class="user-view">
-		        <div class="background">
-		        <!-- <img src="images/"> -->
-		        </div>
-		        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
-		        <a href="#name"><span class="white-text name">${usernick}</span></a> 
-		        <a href="#email"><span class="white-text email">${useremail}</span></a>
-					</div>
+			  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
+			    <li>
+	          <div class="user-view">
+			        <div class="background">
+			        <!-- <img src="images/"> -->
+			        </div>
+			        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
+			        <a href="#name"><span class="white-text name">${usernick}</span></a> 
+			        <a href="#email"><span class="white-text email">${useremail}</span></a>
+				</div>
 				</li>
 				<li>
 					<a href="#!">
@@ -317,101 +315,84 @@
 			</ul>
 		</aside>
 		
-       <section>
-       <div class="row">
-			<div class="container" style="width:98%;">
-			<h5 class="left">Enjoy~ Dubbing!</h5>
-			<div class="row"></div>
-				<div class="col s12 m8 l8">
+		<section>
+			<div class="container" style="width:98%; margin-top:2%">
+				<div class="row">
+					<div class="col s12 m8 l8">
 						<div class="video-container z-depth-2">
-	<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-	<!--<div id="youtube"></div>   -->
-	<iframe id="youtube" width="960" height="490"src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen>
-	</iframe>
-	         </div>
-		  </div>
-		</div>
-	
-		   
-   <div class="col s12 m4 l4">
-	  <div class="card">
-	   <div class="card-content  scroll-box" style="height:450px; width:100%; margin-top:0px;">
-              
-              <div class="container">
-		<div class="form-horizontal">
-			<div class="form-group">
-				<!-- <div class="col-sm-3"></div> -->
-				<div class="col-sm-2">
-					<label> <input type="checkbox" class="filled-in" id="microphone" /> <span>Microphone</span>
-					</label>
+							<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+							<!--<div id="youtube"></div>   -->
+							<iframe id="youtube" width="960" height="490"src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen>
+							</iframe>
+	         			</div>
+		  			</div>
+				
+					<div class="col s12 m4 l4">
+						<div class="card">
+		   					<div class="card-content  scroll-box" style="height:450px; width:100%; margin-top:0px;">
+	            				<div class="container">
+									<div class="col-sm-2">
+										<label> <input type="checkbox" class="filled-in" id="microphone" /> <span>Microphone</span></label>
+									</div>
+									<div class="col-sm-3">
+										<input id="microphone-level" type="range" min="0" max="100" value="0" class="hidden">
+									</div>
+									
+									<div class="col-sm-3 control-label">
+										<span id="recording" class="text-danger hidden"><strong>RECORDING</strong></span>&nbsp;
+										<span id="time-display">00:00</span>
+									</div>
+									
+									<div class="row">
+										<button id="record" class="btn">RECORD</button>
+										<button id="cancel" class="btn">CANCEL</button>
+										<span id="date-time" class="text-info"></span>
+									</div>
+								</div>
+								<hr>
+								<h5>Dubbing LIST</h5>
+								<div id="recording-list"></div>
+	      					</div>
+						</div>
+	  				</div>
 				</div>
-				<div class="col-sm-3">
-					<input id="microphone-level" type="range" min="0" max="100"
-						value="0" class="hidden">
+				
+				<!-- 하단 녹음 입력부분 -->
+				<div style="margin-top: 2%;">
+				   	<form id="savedubbing" action="savedubbing" method="post" enctype="multipart/form-data">
+						<div class="row">
+							<div class="file-field col s3 m3 l3" style="margin-top: 1.2%">
+								<div class="btn left">
+							        <span>File</span>
+								    <input type="file" id="saveFile" name="saveFile">
+								</div>
+								<div class="file-path-wrapper">
+								    <input class="file-path validate" type="text">
+								</div>
+							</div>	
+							 
+						 	<div class="input-field col s4 m4 l4">
+						  		<input name="title" type="text" class="validate"/>
+								<label for="subtitleName">등록 파일명</label>
+						 	</div>
+						 	
+						 	<div class="input-field col s4 m4 l4">
+						  		<input name="content" type="text" class="validate"/>
+								<label for="subtitleName">간단 코멘트</label>
+						 	</div>
+						 	
+						 	<div class="input-field col s1 m1 l1"> 
+						 		<i class="small material-icons left tooltipped" data-tooltip="등록" onclick="submitDubbing()" style="color: #097cdb">description</i>
+						 	</div>
+					    </div>
+				
+						<input type="hidden" name="url" value="${edu.url}"> 
+						<input type="hidden" name="useremail" value="${sessionScope.useremail}">
+					</form>
 				</div>
 			</div>
-			<br>
-			<div class="form-group">
-				<div class="col-sm-3 control-label">
-					<span id="recording" class="text-danger hidden"><strong>RECORDING</strong></span>&nbsp;
-					<span id="time-display">00:00</span>
-				</div>
-				<div class="col-sm-3">
-					<button id="record" class="btn btn-danger">RECORD</button>
-					<button id="cancel" class="btn btn-default hidden">CANCEL</button>
-				</div>
-				<div class="col-sm-6">
-					<span id="date-time" class="text-info"></span>
-				</div>
-			</div>
-		</div>
-		<hr>
-		<h5>Dubbing LIST</h5>
-		<div id="recording-list"></div>
-	</div>
-              
-          
-      </div>
-	</div>
-  </div>
-</div>
-<!-- 하단 녹음 입력부분 -->
-	<div style="margin-top: 2%;">
-    <form id="savedubbing" action="savedubbing" method="post" enctype="multipart/form-data">
-	  <div class="file-field">
-		<div class="btn left" style="margin-left:30px;">
-	        <span>File</span>
-		    <input type="file" id="saveFile" name="saveFile" >
-		</div>
-		<div class="file-path-wrapper" style="width: 15%;">
-		    <input class="file-path validate" type="text">
-		</div>
-	 </div>	
-	<div class="row">
-	 <div class="input-field col s3" style="margin-left:1%;">
-	  <input name="title" type="text" class="validate"/>
-		<label for="subtitleName">등록 파일명</label>
-	 </div>
-    </div>	
-    <div class="row">
-	 <div class="input-field col s4" style="margin-left:1%; margin-top:-20px;">
-	  <input name="content" type="text" class="validate"/>
-		<label for="subtitleName">간단 코멘트</label>
-		 
-	 </div>
-	 <i class="small material-icons left tooltipped" data-tooltip="등록" onclick="submitDubbing()" style="color: #097cdb">description</i>
-    </div>
-	
-	 <input type="hidden" name="url" value="${edu.url}"> 
-	 <input type="hidden" name="useremail" value="${sessionScope.useremail}">
-		</form>
-
-	</div>
-		   
-		   
 		</section>
 	</div>
-	
 	
 	<script>
 		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
@@ -438,18 +419,16 @@
 		function onPlayerStateChange(event) {
 			playerState = event.data == YT.PlayerState.ENDED ? '종료됨'
 					: event.data == YT.PlayerState.PLAYING ? '재생 중'
-							: event.data == YT.PlayerState.PAUSED ? '일시중지 됨'
-									: event.data == YT.PlayerState.BUFFERING ? '버퍼링 중'
-											: event.data == YT.PlayerState.CUED ? '재생준비 완료됨'
-													: event.data == -1 ? '시작되지 않음'
-															: '예외';
+					: event.data == YT.PlayerState.PAUSED ? '일시중지 됨'
+					: event.data == YT.PlayerState.BUFFERING ? '버퍼링 중'
+					: event.data == YT.PlayerState.CUED ? '재생준비 완료됨'
+					: event.data == -1 ? '시작되지 않음'
+					: '예외';
 
 			console.log('onPlayerStateChange 실행: ' + playerState);
 		}
 	</script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script>
 		Mp3LameEncoderConfig = {
 			memoryInitializerPrefixURL : "js/"

@@ -652,8 +652,7 @@
 						  <a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>
 					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
+					<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
 					<li><a href="#!">wishList</a></li>
 					<li><div class="divider"></div></li>
 					<li><a class="subheader">회원정보관리</a></li>
@@ -673,7 +672,7 @@
 					<c:forEach var="eduList" items="${eduList}">
 						<div class="col s12 m3 l3">
 							<div class="card" style="height:400px margin-bottom:10px;">
-	<div class="card-image">
+					<div class="card-image">
 						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
 						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
 					</div>
