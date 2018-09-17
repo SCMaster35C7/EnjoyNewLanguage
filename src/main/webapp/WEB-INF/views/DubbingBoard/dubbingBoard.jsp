@@ -19,14 +19,14 @@
 <title>더빙게시판</title>
 
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>	
+<script type="text/javascript" src="js/LanguageSet.js"></script>
 
 <script>
 $(document).ready(function() {
     var table = $('#dubbing').DataTable();
- 
 });
-	
 	$(function(){
+		SetLanguage();
 		 $('select').formSelect();
 		
 		//dropdown
@@ -59,39 +59,6 @@ $(document).ready(function() {
 			$('#checkline').val('');
 		});
 		
-		$('#loginBtn').on('click', function() {
-			
-			var useremail = $('#useremail').val();
-			var userpwd = $('#userpwd').val();
-			
-			var sendData = {	
-					"useremail":useremail
-					,"userpwd": userpwd
-			};
-			
-			$.ajax({
-				method	:	'post'
-				, url	: 'statusCheck'
-				, data	: JSON.stringify(sendData)
-				, dataType	: 'text'
-				, contentType: 'application/json; charset=utf-8'
-				, success	: function(resp){
-					if (resp=="checkEmail") {
-						$("#checkline").val('이메일 인증 먼저 해주세요!');
-					}else if (resp=="loginFailure") {
-						//alert('담으로가자');
-						//$('#loginForm').submit();
-						$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
-					} else {
-						window.location.reload();
-					}
-				}, error:function(resp, code, error) {
-					alert("resp : "+resp+", code:"+code+", error:"+error);
-				}
-			});//ajax
-		});
-	
-	
 		$('#VideoSearchbtn').on('click', function() {
 			var useremail = "${sessionScope.useremail}";
 			
@@ -103,7 +70,7 @@ $(document).ready(function() {
 				$(document).keyup(function(event){
 	    			if(event.keyCode=='13'){
 	    				if($('#search').val().length == 0) {
-	           				alert("검색어를 입력하세요.");
+	           				alert("Please enter a title");
 	           				$('#search').focus();
 	           				return;
 	           			}
@@ -112,8 +79,61 @@ $(document).ready(function() {
 	    			}
 	    		});  		
 		}); 
+		$('.search').on('keydown', function(key) {
+			if (key.keyCode == 13) {
+				// naver 검색
+				$.each($('.search'), function(index, item) {
+					if(item.value.length != 0) {
+						var searchText = item.value;
+						var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+						window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+					}
+				});
+			}
+		});
 	});
 </script>
+<!-- 페이지 언어팩 -->
+	<script>
+	var koPage={
+			101:'더빙게시판'
+	       ,102:'글번호'
+	       ,103:'글제목'
+	       ,104:'닉네임'
+	       ,105:'조회수'
+	       ,106:'날짜'
+	       ,107:'추천'
+	       ,108:'비추천'
+	       ,109:'더빙영상검색'
+	}
+	var jpPage={
+			101:'吹き替え掲示板'
+		   ,102:'文番号'
+		   ,103:'文タイトル'
+		   ,104:'ニック'
+		   ,105:'クリック'
+		   ,106:'日付'
+		   ,107:'推薦'
+		   ,108:'非推薦'
+		   ,109:'吹き替え映像検索'
+	}
+	function languageChange_Page(lang){
+		if(lang=='kor'){
+			$('[data-langNum2]').each(function() {
+			    var $this = $(this); 
+			    $this.html(koPage[$this.data('langnum2')]); 
+			});
+			
+		}else if(lang=='jp'){
+			$('[data-langNum2]').each(function() {
+			    var $this = $(this); 
+			    $this.html(jpPage[$this.data('langnum2')]); 
+			});
+			
+		}
+	}
+	</script>
+
 <style type="text/css">
 		#checkline{
 			text-align: center;
@@ -152,10 +172,10 @@ $(document).ready(function() {
 	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
 	              		</div>
 				  	</li>		 
-			      	<li><a href="eduBoard">영상게시판</a></li>
-			      	<li><a href="dubbingBoard">더빙게시판</a></li>
-			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
-			      	<li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
+			      	<li><a href="eduBoard" data-langNum=1>영상게시판</a></li>
+			      	<li><a href="dubbingBoard" data-langNum=2>더빙게시판</a></li>
+			      	<li><a href="InvestigationBoard" data-langNum=3>자막검증게시판</a></li>
+			      	<li><a href="myPage" style="margin-right:20px;" data-langNum=4>마이페이지</a></li>
 			    </ul>
 			</div>		
 		
@@ -177,10 +197,10 @@ $(document).ready(function() {
 		          		<i class="material-icons">close</i>
 		       		</div>
 				</li>		 
-				<li><a href="eduBoard">영상게시판</a></li>
-				<li><a href="dubbingBoard">더빙게시판</a></li>
-				<li><a href="InvestigationBoard">자막게시판</a></li>
-				<li><a href="myPage">마이페이지</a></li>
+				<li><a href="eduBoard" data-langNum=1>영상게시판</a></li>
+				<li><a href="dubbingBoard" data-langNum=2>더빙게시판</a></li>
+				<li><a href="InvestigationBoard" data-langNum=3>자막게시판</a></li>
+				<li><a href="myPage" data-langNum=4>마이페이지</a></li>
 			</ul>
 		
 			  <!-- 로그인 MODAL -->
@@ -214,7 +234,7 @@ $(document).ready(function() {
 					</div>
 					<!-- 글씨뜨는거 -->
 					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+						<h4 class="center">${sessionScope.useremail}<span data-langNum=5>환영합니다.</span></h4>
 					</c:if>
 				</div>	
 				
@@ -262,7 +282,7 @@ $(document).ready(function() {
 	  <div id="modal3" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5>회원정보수정</h5>
+				<h5 data-langNum=6>회원정보수정</h5>
 				<form id="updateMember" action="updateMember" method="post">
 					<div class="row" style="margin-top:10%;">
 						<div class="col s6">
@@ -272,7 +292,7 @@ $(document).ready(function() {
 									<td>${sessionScope.useremail}</td>
 								</tr>
 								<tr>
-									<th>성별</th>
+									<th data-langNum=7>성별</th>
 									<td>${sessionScope.gender}</td>
 								</tr>
 							</table>
@@ -284,7 +304,7 @@ $(document).ready(function() {
 									<td>${sessionScope.usernick}</td>
 								</tr>
 								<tr>
-									<th>생일</th>
+									<th data-langNum=8>생일</th>
 									<td>${sessionScope.birth}</td>
 								</tr>
 							</table>
@@ -322,13 +342,13 @@ $(document).ready(function() {
 	  <div id="modal2" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5>탈퇴하시겠습니까?</h5>
+				<h5 data-langNum=9>탈퇴하시겠습니까?</h5>
 				
 				<div class="row">
 					<form action="insertCloseID" method="post" id="submitform">
 						<div class="input-field col s12">
 			          		<i class="material-icons prefix">mail</i>
-			          		<input id="useremail" name="useremail" type="text" class="validate">
+			          		<input id="checkuseremail" name="useremail" type="text" class="validate">
 			          		<label for="useremail">USERMAIL</label>
 			        	</div>
 					</form>
@@ -350,8 +370,8 @@ $(document).ready(function() {
 					</span>	
 				</div>	
 			</div>
-				<p style="color:red;">회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
-				<p style="margin-top:0;">기간 이후에는 회원정보가 영구 삭제됩니다.</p>
+				<p style="color:red;" data-langNum=10>회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
+				<p style="margin-top:0;" data-langNum=11>기간 이후에는 회원정보가 영구 삭제됩니다.</p>
 			</div>
 	  	</div>
 	  </div>
@@ -363,7 +383,7 @@ $(document).ready(function() {
 			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
 					<li><div class="user-view">
 							<div class="background">
-								<img src="images/">
+								<!-- <img src="images/"> -->
 							</div>
 							<a href="#user"><img class="circle" src="images/"></a>
 							<a href="#name"><span class="white-text name">${usernick}</span></a> 
@@ -374,28 +394,28 @@ $(document).ready(function() {
 							Link With Icon</a></li>
 					<li><a href="#!">wishList</a></li>
 					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a></li>
-					<li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
+					<li><a class="subheader" data-langNum=12>회원정보관리</a></li>
+					<li><a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum=13>회원정보수정</a></li>
+					<li><a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum=14>회원탈퇴</a></li>
 				</ul>
 			</aside>
 			
 			<section>	
 		         <div class="container">
 		          <div class="section">
-		          <h4 class="left"><a href="dubbingBoard">더빙게시판</a></h4>
+		          <h4 class="left"><a href="dubbingBoard" data-langNum2=101>더빙게시판</a></h4>
 
 		            <!--DataTables example-->
 		                  <table id="dubbing">
 		                    <thead>
 		                        <tr>
-		                            <th>글번호</th>
-		                            <th>글제목</th>
-		                            <th>닉네임</th>
-		                            <th>조회수</th>
-		                            <th>날짜</th>
-		                            <th>추천</th>
-		                            <th>비추천</th>
+		                            <th data-langNum2=102>글번호</th>
+		                            <th data-langNum2=103>글제목</th>
+		                            <th data-langNum2=104>닉네임</th>
+		                            <th data-langNum2=105>조회수</th>
+		                            <th data-langNum2=106>날짜</th>
+		                            <th data-langNum2=107>추천</th>
+		                            <th data-langNum2=108>비추천</th>
 		                        </tr>
 		                    </thead>
 		                 
@@ -430,7 +450,7 @@ $(document).ready(function() {
 	<div id="VideoSearch" class="modal">
 		<div class="container">
 			<div class="madal-content">
-				<h5 class="center">더빙영상검색</h5>
+				<h5 class="center" data-langNum2=109>더빙영상검색</h5>
 				<input type="hidden" id="url" /> 
 
 	 			<h4 class="center" style="color:red;">YouTube Viral Search</h4>
@@ -517,5 +537,6 @@ $(document).ready(function() {
        		console.log('findVideoId: '+findVideoId);
    		}
 	</script>	
+	<script type="text/javascript" src="js/LoginMenu.js"></script>
 </body>
 </html>

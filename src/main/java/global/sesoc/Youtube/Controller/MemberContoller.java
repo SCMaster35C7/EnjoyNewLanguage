@@ -391,7 +391,9 @@ public class MemberContoller {
 
 	@RequestMapping(value = "closeIDsubmit", method = RequestMethod.POST)
 	public @ResponseBody String closeIDsubmit(@RequestBody Member member) {
+		System.out.println(member);
 		Member checkresult = mRepository.selectOneFromMember(member);
+		System.out.println(checkresult);
 		if (checkresult != null)
 			return "ok";
 		else
