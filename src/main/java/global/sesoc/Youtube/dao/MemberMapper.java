@@ -20,6 +20,8 @@ public interface MemberMapper {
 	public int checkChallengeCount(String useremail); 			// x/0을 방지하기 위한 분모체크용
 	public int insertCloseID(String useremail);					// 잠구는 계정 추가
 	public int recoveryID(String useremail); 					//계정 복구
-	public int deleteID(); 										// 아이디 삭제(아직 미구현)
 	public Member selectInConfirm(String useremail);
+	
+	public int idCompletelyDeleteFromMember();					// 한 달된 계정 삭제(Member)
+	public int idCompletelyDeleteFromConfirmmeber();			// 한 달된 계정 삭제(ConfirmMember)
 }

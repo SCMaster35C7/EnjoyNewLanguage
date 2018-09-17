@@ -52,7 +52,6 @@ public class VideoController {
 		model.addAttribute("plzLogin", plzLogin);
 		
 		List<Education> eList = eduRepository.selectBestFive();
-		System.out.println(eList);
 		model.addAttribute("eList", eList);
 		
 		return "index";

@@ -73,8 +73,7 @@
 					});
 				}
 			});
-		});
-		
+		});		
 	</script>
 	<!-- 페이지 언어팩 -->
 	<script>
@@ -295,12 +294,12 @@
 			          		<input id="checkuseremail" name="useremail" type="text" class="validate">
 			          		<label for="checkuseremail">USERMAIL</label>
 			        	</div>
+				        <div class="input-field col s12">
+				          <i class="material-icons prefix">mode_edit</i>
+				          <input id="pwd" type="password" class="validate">
+				          <label for="pwd">PASSWORD</label>
+				        </div>
 					</form>
-			        <div class="input-field col s12">
-			          <i class="material-icons prefix">mode_edit</i>
-			          <input id="pwd" type="password" class="validate">
-			          <label for="pwd">PASSWORD</label>
-			        </div>
 				<div class="row">
 					<span class="flow-text">
 						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK

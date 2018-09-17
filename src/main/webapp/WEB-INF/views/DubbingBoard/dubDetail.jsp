@@ -714,7 +714,7 @@
 				<input type="hidden" value="${dubbing.dubbingnum}">			
 			</div>
 			 
-			 <div class="right" style="margin-right:15px; margin-top: 35%;">
+			<div class="right" style="margin-right:15px; margin-top: 35%;">
 						<p>
 						<button class="btn recommendation">
 							<i class="material-icons">thumb_up</i>
@@ -726,13 +726,11 @@
 							<span id="decoCount">${dubbing.decommendation}</span>
 						</button>
 						</p>
-					</div>
+			</div>
 			 
 			 </div>
 			</div>
 		 </div>
-	
-				
 				<!--댓글 영역-->
 				<div class="row"> 
 						<div class="row"  style="margin-left: 3%;">

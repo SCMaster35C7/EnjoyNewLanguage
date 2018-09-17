@@ -510,7 +510,9 @@
 			<section>	
 				<div class="container">
 					<div class="row">
-            <h4 class="left"><a href="InvestigationBoard">자막검증게시판</a></h4>
+            			<h4 class="left"><a href="InvestigationBoard">자막검증게시판</a></h4>
+            		</div>	
+					<div class="row">
 					<c:if test="${not empty invList}">
 						<c:forEach var="invList" items="${invList}">
 						
@@ -542,10 +544,13 @@
 												<i class="material-icons">touch_app</i>
 												<span>${invList.hitcount}</span>
 											</button>
+											</div>
+										</div>
 									</div>
 								</div>
 						</c:forEach>
 					</c:if>
+				</div>
 				</div>
 					
 				<div class="center">
