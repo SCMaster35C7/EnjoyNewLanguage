@@ -221,6 +221,7 @@
 							</a>
 							<ul>
 								<li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+								<li><a href="resendEmail" class="btn-floating pink tooltipped" data-position="top" data-tooltip="Resend Certification Mail"><i class="material-icons">mail</i></a></li>
 								<li><a href="recovery" class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
 								<li><a href="closeID" class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
 							</ul>

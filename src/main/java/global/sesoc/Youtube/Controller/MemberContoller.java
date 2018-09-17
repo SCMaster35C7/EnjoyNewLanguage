@@ -439,4 +439,10 @@ public class MemberContoller {
 		}
 		
 	}
+	
+	@RequestMapping(value = "resendEmail", method = RequestMethod.GET)
+	public String resendEmail() {
+		return "Member/resendEmail";
+	}
+	
 }
