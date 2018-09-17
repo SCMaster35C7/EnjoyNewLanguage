@@ -252,6 +252,52 @@
 			});
 		});
 		
+		$(function(){
+    		//위시리스트에 비디오 등록
+    		$('.btnRegistDubWish').on('click', function(){
+    			var target = $(this);
+				var useremail = "${sessionScope.useremail}";
+				var investigationnum = target.parent().children("#investigationnum").val();
+				var title = target.parent().parent().children('.card-content').children("a").html();
+				var url = target.parent().children("#url").val();
+				
+				alert("title : "+title+"investigationnum:"+investigationnum+"url:"+url);
+				//로그인된 세션이 있는지 확인
+				if(useremail.trim().length == 0) {
+					location.href="login";
+					return;
+				}else{
+					//선택된 더빙 정보를 위시리스트로 보내기
+					var dataFormVideo = {
+							"wishtable": 2,							
+							"useremail":useremail, 
+							"identificationnum":investigationnum,
+							"title"	: title,
+							"url" : url							
+					};
+					
+					$.ajax({
+						method:'post'
+						, url:'insertWish'
+						, data: JSON.stringify(dataFormVideo)
+						, contentType: "application/json; charset=utf-8"
+						, async : false
+						, success:function(resp) {
+							if(resp == "success")
+								alert("더빙을 찜한 목록에 등록하였습니다.");
+							else if(resp == "failure")
+								alert("더빙이 이미 찜한 목록에 있습니다.");
+							else if(resp == "failRegist")
+								alert("더빙을 찜한 목록 등록하는데 실패하였습니다.")
+						  }
+						, error:function(resp, code, error) {
+							alert("resp : "+resp+", code : "+code+", error : "+error);
+						}
+					});					
+				}    			
+    		});    		
+    	});
+		
 		function initReply() {
 	        $.ajax({
 	            method : 'post',

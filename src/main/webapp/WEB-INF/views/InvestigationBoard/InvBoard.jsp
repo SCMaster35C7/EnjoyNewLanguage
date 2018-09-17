@@ -518,10 +518,10 @@
 						
 						<div class="col s12 m3 l3">
 							<div class="card" style="height:400px margin-bottom:10px;">
-								<div class="card-image">
-										<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
-										<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-								</div>
+										<div class="card-image">
+											<img alt="" src="https://img.youtube.com/vi/${invList.url}/0.jpg">
+											<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistSubWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+										</div>
 								
 								<div class="card-content" style="height:150px; word-break:break-all;">
 									<span>

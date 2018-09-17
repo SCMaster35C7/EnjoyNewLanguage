@@ -21,7 +21,8 @@
 	</typeAliases>
 	
 	<mappers>
-		<mapper resource="mappers/memberMapper.xml"/>
+		<mapper resource="mappers/wishMapper.xml"/>
+		<mapper resource="mappers/memberMapper.xml"/>		
 		<mapper resource="mappers/dubbingMapper.xml"/>
 		<mapper resource="mappers/educationMapper.xml"/>
 		<mapper resource="mappers/InvestigationMapper.xml"/>
