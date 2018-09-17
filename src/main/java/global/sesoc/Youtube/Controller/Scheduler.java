@@ -13,7 +13,7 @@ public class Scheduler {
 	@Autowired
 	MemberRepository mRepository;
 	/**
-	 * 매년 매월 매일 자정(0시 0분 1초)에 한 번씩 수행하는 메소드
+	 * 매년 매월 매일 자정(0시 0분 0초)에 한 번씩 수행하는 메소드
 	 */
 	@Scheduled(cron = "0 0 0 * * *")
 	public void idCompletelyDelete() {
