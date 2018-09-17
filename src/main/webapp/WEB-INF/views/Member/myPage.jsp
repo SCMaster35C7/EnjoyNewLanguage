@@ -305,6 +305,7 @@
 								<c:if test="${empty finished}">
 									<td>학습중인 영상이 없습니다.</td>
 								</c:if>
+								<a href="wishList">위시리스트[임시]</a>
 							</tbody>
 						</table>
 					</div>
