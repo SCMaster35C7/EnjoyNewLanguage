@@ -84,15 +84,14 @@ CREATE SEQUENCE USER_STUDY_SEQ;
 
 -- 5. 찜한 목록 테이블
 CREATE TABLE WishList(	
-	wishnum			NUMBER			CONSTRAINT wishlist_wishnum_pk		PRIMARY KEY,			-- 찜목록 번호
-	useremail		VARCHAR2(100),																-- 사용자 아이디
-	url				VARCHAR2(1000) 	CONSTRAINT wishlist_url_nn			NOT NULL,				-- 영상URL
-	title			VARCHAR2(1000) 	CONSTRAINT wishlist_title_nn		NOT NULL,				-- 영상제목
-	regDate			DATE			DEFAULT SYSDATE,											-- 등록일
-	CONSTRAINT wishlist_useremail_fk FOREIGN KEY(useremail) REFERENCES Member(useremail) ON DELETE CASCADE
+	wishtable			NUMBER,																			-- 테이블 식별코드(0-교육영상 게시글, 1-자막검증 게시글, 2-더빙 게시글)
+	identificationnum	NUMBER,																			-- 테이블 안 데이터 식별코드(각 게시판 글들의 번호)
+	useremail			VARCHAR2(100),																	-- 사용자 아이디
+	url					VARCHAR2(1000) 		CONSTRAINT wishlist_url_nn			NOT NULL,				-- 영상URL
+	title				VARCHAR2(1000) 		CONSTRAINT wishlist_title_nn		NOT NULL,				-- 영상제목
+	regDate				DATE				DEFAULT SYSDATE,											-- 등록일
+	CONSTRAINT wishlist_fk PRIMARY KEY(useremail, wishtable, identificationnum)
 );
-
-CREATE SEQUENCE WISH_LIST_SEQ;
 
 -- 6. 자막요청 게시판 테이블
 CREATE TABLE Investigation(
