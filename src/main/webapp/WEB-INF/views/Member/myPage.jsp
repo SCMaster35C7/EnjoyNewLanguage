@@ -32,9 +32,6 @@
 			
 			//modal open
 			$('#modal1').modal();
-			$('#modal2').modal();
-			$('#modal3').modal(); //회원정보수정 모달
-
 			
 			//side-nav open
 			$('.sidenav').sidenav();
@@ -91,17 +88,17 @@
 		    <a href="${pageContext.request.contextPath}" class="brand-logo" >Logo</a>
 		    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 		    <ul class="right hide-on-med-and-down">
-		      	  <li>
-				  	<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
-	                  	<i class="material-icons" style="margin-left:-50px;">search</i>
-	                  	<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
-	              	</div>
-				  </li>		 
-			      <li><a href="eduBoard">영상게시판</a></li>
-			      <li><a href="dubbingBoard">더빙게시판</a></li>
-			      <li><a href="InvestigationBoard">자막검증게시판</a></li>
-		     	  <li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
-		    </ul>
+				<li>
+					<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	          			<i class="material-icons" style="margin-left:-50px;">search</i>
+	           			<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	         		</div>
+				</li>		 
+			    <li><a href="eduBoard">영상게시판</a></li>
+			    <li><a href="dubbingBoard">더빙게시판</a></li>
+			    <li><a href="InvestigationBoard">자막검증게시판</a></li>
+			    <li><a href="myPage">마이페이지</a></li>
+			</ul>
 		  </div>
 
 		  <div class="nav-content">
@@ -112,12 +109,12 @@
 		</nav>
 	</header>
 	
-	 <!-- 창 축소시 사이드 nav -->
+	<!-- 창 축소시 사이드 nav -->
 	<ul class="sidenav" id="small-navi">
 		<li>
-        	<div class="input-field" style="width:70%; margin-left:15%;">
+        	<div class="input-field">
           		<input class="search" type="search" required>
-          		<label class="label-icon" for="search" style="margin-left:-18%;"><i class="material-icons">search</i></label>
+          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
           		<i class="material-icons">close</i>
        		</div>
 		</li>		 
@@ -194,7 +191,7 @@
 								<ul>
 								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
 								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
 					</div>
@@ -202,140 +199,41 @@
 			</div>
 		</div>	
 	  </div>
-	  
-	   <!-- 회원수정모달 -->
-	  <div id="modal3" class="modal">
-		<div class="modal-content">
-			<div class="container center">
-				<h5>회원정보수정</h5>
-				<form id="updateMember" action="updateMember" method="post">
-					<div class="row" style="margin-top:10%;">
-						<div class="col s6">
-							<table class="highlight">
-								<tr>
-									<th>EMAIL</th>
-									<td>${sessionScope.useremail}</td>
-								</tr>
-								<tr>
-									<th>성별</th>
-									<td>${sessionScope.gender}</td>
-								</tr>
-							</table>
+
+	<div class="wrapper">
+		<!-- sidenav -->
+		<aside>
+			<ul id="slide-out" class="sidenav" style="margin-top: 64px;">
+				<li><div class="user-view">
+						<div class="background">
+							<!-- <img src="images/"> -->
 						</div>
-						<div class="col s6">
-							<table class="highlight">
-								<tr>
-									<th>NICK</th>
-									<td>${sessionScope.usernick}</td>
-								</tr>
-								<tr>
-									<th>생일</th>
-									<td>${sessionScope.birth}</td>
-								</tr>
-							</table>
-						</div>
-						
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mail</i>
-							<input type="text" id="usernick" name="usernick" placeholder="변경 닉네임 입력" />
-							<span id="nickcheck"></span>
-						</div>
-						<div class="input-field col s12">
-							<i class="material-icons prefix">create</i>
-							<input id="currpwd" type="password" name="currpwd" placeholder="현재 비밀번호 입력" />
-						</div>
-						<div class="input-field col s12">
-							<i class="material-icons prefix">border_color</i>
-							<input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" />
-						</div>
-						<div class="input-field col s12">
-							<i class="material-icons prefix">check</i>
-							<input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" />
-						</div>
-						
-						<div class="col s12">
-							<input type="button" class="btn" value="수정" id="btnUpdate" />
-							<input type="button" class="btn" value="취소" id="btnCancel" />
-						</div>
-					</div>	
-				</form>
-			</div>
-		</div>
-	</div>	
-		
-		 <!-- 회원탈퇴 모달 -->
-	  <div id="modal2" class="modal">
-		<div class="modal-content">
-			<div class="container center">
-				<h5>탈퇴하시겠습니까?</h5>
-				
+						<a href="#user"><img class="circle" src="images/"></a> <a
+							href="#name"><span class="white-text name">${usernick}</span></a>
+						<a href="#email"><span class="white-text email">${useremail}</span></a>
+					</div></li>
+				<li><a href="#!"><i class="material-icons">cloud</i>First
+						Link With Icon</a></li>
+				<li><a href="#!">wishList</a></li>
+				<li><div class="divider"></div></li>
+				<li><a class="subheader">회원정보관리</a></li>
+				<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
+				<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+			</ul>
+		</aside>
+
+		<section>
+			<br />
+			<div class="container">
+				<h4>${usernick}님의 마이페이지</h4>
+				<br />
 				<div class="row">
-					<form action="insertCloseID" method="post" id="submitform">
-						<div class="input-field col s12">
-			          		<i class="material-icons prefix">mail</i>
-			          		<input id="useremail" name="useremail" type="text" class="validate">
-			          		<label for="useremail">USERMAIL</label>
-			        	</div>
-					</form>
-			        <div class="input-field col s12">
-			          <i class="material-icons prefix">mode_edit</i>
-			          <input id="pwd" type="password" class="validate">
-			          <label for="pwd">PASSWORD</label>
-			        </div>
-				<div class="row">
-					<span class="flow-text">
-						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
-							<i class="material-icons right">keyboard_return</i>
-						</button>
-					</span>
-					<span class="flow-text">
-						<button class="btn" onclick="closeID()">QUIT
-							<i class="material-icons right">mood_bad</i>
-						</button>
-					</span>	
-				</div>	
-			</div>
-				<p style="color:red;">회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
-				<p style="margin-top:0;">기간 이후에는 회원정보가 영구 삭제됩니다.</p>
-			</div>
-	  	</div>
-	  </div>
-	
-		<div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<img src="images/">
-							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
-						</div>
-					</li>
-					<li><a href="#!"><i class="material-icons">cloud</i>First
-							Link With Icon</a></li>
-					<li><a href="#!">wishList</a></li>
-					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a></li>
-					<li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
-				</ul>
-			</aside>	
-		
-			<section>
-				<div class="container">
-					<h5>${usernick}님의 mypage</h5>
-						<div class="row">
-							<div class="col s12 m8">
-								<div class="card">
-									<div class="waves-effect waves-block waves-light">
-										<h6>레벨별 성취도</h6>
-										<div class="trending-line-chart-wrapper">
-			 								<canvas id="myChart"></canvas>
-	                                    </div>
-                  </div>
+					<div class="col s12 m6 l6">
+						<div class="card">
+							<div class="waves-effect waves-block waves-light">
+								<h5>레벨별 성취도</h5>
+								<div class="trending-line-chart-wrapper">
+									<canvas id="myChart"></canvas>
 								</div>
 							</div>
 						</div>
@@ -399,7 +297,7 @@
 										<tr>
 											<td><a href="detailEduBoard?videoNum=${f.videoNum}">${f.title}</a></td>
 											<td><a href="TryRetake?videoNum=${f.videoNum}"
-												class="waves-effect waves-light btn">再試驗ㅇ</a></td>
+												class="waves-effect waves-light btn">再試驗</a></td>
 										</tr>
 									</c:forEach>
 								</c:if>
@@ -407,7 +305,6 @@
 								<c:if test="${empty finished}">
 									<td>학습중인 영상이 없습니다.</td>
 								</c:if>
-								<a href="wishList">위시리스트[임시]</a>
 							</tbody>
 						</table>
 					</div>
