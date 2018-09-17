@@ -1,28 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+   pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="author" content="zisung">
-	
-	<!--Import Google Icon Font-->
+   <meta charset="UTF-8">
+   <meta name="author" content="zisung">
+   
+   <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	
-	<style>
-	.scroll-box {
-    	overflow-y: scroll;
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   
+   <style>
+   .scroll-box {
+       overflow-y: scroll;
         height: 300px;
         padding: 1rem
 	    }
 	</style>
-	
 	<title>자막 검증 상세 정보</title>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
@@ -50,6 +49,28 @@
 			//캐러셀
 			$('.carousel').carousel();
 			
+			$("#deleteInvBoard").on('click', function() {
+				if('${inv.useremail}'!= '${sessionScope.useremail}') {
+					alert("등록자만 삭제할 수 있습니다.");
+					return;
+				}
+				var dataForm = {
+					url : '${inv.url}'
+					, IDCode : ${inv.investigationnum}
+					, recommendtable : 1
+				};
+				$.ajax({
+					method:'get'
+					, url:'deleteInvBoard'
+					, data:dataForm
+					, contentType: 'application/json; charset=utf-8'
+					, success:function(resp) {
+						if(resp == 'success')
+							location.href = "InvestigationBoard";
+					}
+				});
+			});
+			
 			$('#loginBtn').on('click',function(){
 				var useremail = $('#useremail');
 				var userpwd = $('#userpwd');
@@ -76,12 +97,13 @@
 		var usernick = "${sessionScope.usernick}";
 		var investigationnum = "${inv.investigationnum}"
           
-	    $(function() {
-	    	initReply();
-	    	initSubtitle();
-	         
-	        $("#replyInsert").on('click', replyInsert);
+       $(function() {
+          initReply();
+          initSubtitle();
+            
+           $("#replyInsert").on('click', replyInsert);
  
+
 	        $('.recommendation').on('click', function() {
 	           	if(useremail.trim().length == 0) {
 	            	location.href="login";
@@ -180,7 +202,7 @@
 				var subtitleName = $('#subtitleName');
 				
 	           	if(useremail.trim().length == 0) {
-	           		$('#modal1').modal().open();
+	           		$('#modal1').modal('open');
 	            	return;
 	           	}
 				
@@ -230,6 +252,52 @@
 			});
 		});
 		
+		$(function(){
+    		//위시리스트에 비디오 등록
+    		$('.btnRegistDubWish').on('click', function(){
+    			var target = $(this);
+				var useremail = "${sessionScope.useremail}";
+				var investigationnum = target.parent().children("#investigationnum").val();
+				var title = target.parent().parent().children('.card-content').children("a").html();
+				var url = target.parent().children("#url").val();
+				
+				alert("title : "+title+"investigationnum:"+investigationnum+"url:"+url);
+				//로그인된 세션이 있는지 확인
+				if(useremail.trim().length == 0) {
+					location.href="login";
+					return;
+				}else{
+					//선택된 더빙 정보를 위시리스트로 보내기
+					var dataFormVideo = {
+							"wishtable": 2,							
+							"useremail":useremail, 
+							"identificationnum":investigationnum,
+							"title"	: title,
+							"url" : url							
+					};
+					
+					$.ajax({
+						method:'post'
+						, url:'insertWish'
+						, data: JSON.stringify(dataFormVideo)
+						, contentType: "application/json; charset=utf-8"
+						, async : false
+						, success:function(resp) {
+							if(resp == "success")
+								alert("더빙을 찜한 목록에 등록하였습니다.");
+							else if(resp == "failure")
+								alert("더빙이 이미 찜한 목록에 있습니다.");
+							else if(resp == "failRegist")
+								alert("더빙을 찜한 목록 등록하는데 실패하였습니다.")
+						  }
+						, error:function(resp, code, error) {
+							alert("resp : "+resp+", code : "+code+", error : "+error);
+						}
+					});					
+				}    			
+    		});    		
+    	});
+		
 		function initReply() {
 	        $.ajax({
 	            method : 'post',
@@ -251,22 +319,38 @@
 		}
 	      
 	    function outputReply(resp) {
-	       	var result = '';
-	    
-	       	for ( var i in resp) {
-	          	result += '<div class="content">'
-	          	result += ' <p class="email" >' + resp[i].useremail + '</p>';
-	          	result += ' <p class="nick" >' + resp[i].usernick + '</p>';
-	          	result += ' <p class="text" >' + resp[i].content + '</p>';
-	          	result += '<p class="date" >' + resp[i].regdate + '</p>';
-	          	result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-	      		if (usernick==resp[i].usernick) {
-					result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-					result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+	    	var result = '';
+			
+			result += '<div class="row">'
+			result += '<table cellpadding="5" cellspacing="2" border="1" align="center" word-break:break-all;" style="width: 80%; margin-left: 3%;">';
+			result += 	'<thead>';
+			result +=		'<tr>';
+			result +=			'<th>' + 'usernick' + '</th>';
+			result +=			'<th class="replycontent" style="width: 50%;">' + 'content' + '</th>';
+			result +=			'<th>' + 'date' + '</th>';
+			result +=			'<th colspan="2">' + '수정/취소' + '</th>';
+			result +=			'<th>' + '신고' + '</th>';
+			result +=		'</tr>';
+			result += 	'</thead>';
+			for (var i in resp) {
+				result += 	'<tbody>';
+				result +=		'<tr>';
+				result +=			'<td>' + resp[i].usernick + '</td>';
+				result +=			'<td class="replycontent">' + resp[i].content + '</td>';
+				result +=			'<td>' + resp[i].regdate + '</td>';
+				result +=			'<td colspan="2">';
+				if ('${sessionScope.useremail}'==resp[i].useremail) {
+					result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+					result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
 				}
-				result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
-	          	result += ' </div>';
+				result +=			'</td>';
+				result +=		'<td>';
+				result += '<img class="report" src="images/warning.jpg" style="margin: 1%;" data-rno="'+resp[i].replynum+'" />';
+				result +=		'</td></tr>';
+				result += 	'</tbody>';
 			}
+			result += '</table>';
+			result += ' </div>';
 	         
 	       	$("#result").html(result);
 	       	$("input:button.replyDelete").click(replyDelete);
@@ -300,8 +384,6 @@
 				result += '<br>';
 			}
 			
-		
-			
 			$("#subtitleList").html(result);
 			$(".subStart").on('click', subStart);
 			$(".subDelete").on('click', subDelete);
@@ -311,7 +393,6 @@
 	    
 	   	function subStart() {
 	   		alert("자막 실행");
-	   		
 	   		var subnum = $(this).attr('data-rno');
 	   		
 	   		$.ajax({
@@ -376,44 +457,44 @@
                 "identificationnum":subnum, 
                 "recommendtable":"3", 
                 "recommendation":"0"
-           	};
+              };
            
             $.ajax({
-            	method:'post'
-               	, url:'insertRecommendation'
-               	, data: JSON.stringify(dataForm)
-               	, contentType: "application/json; charset=utf-8"
-               	, async: false
-               	, success:function(resp) {
-                	if(resp == "success") {
-                     	alert("영상을 좋아합니다.");
-                     	target.children("span").html(subRecoCount+1);
-                  	}else if(resp == "cancel") {
-                     	alert("좋아요를 취소합니다.");
-                     	target.children("span").html(subRecoCount-1);
-                  	}else if(resp == "change") {
-                     	alert("좋아요로 변경하셨습니다.");
-                     	subDecoTarget.html(Number(subDecoTarget.text())-1);
-                     	target.children("span").html(subRecoCount+1);
-                  	}
-               	}
-               	, error:function(resp, code, error) {
-                  	alert("resp : "+resp+", code : "+code+", error : "+error);
-               	}
+               method:'post'
+                  , url:'insertRecommendation'
+                  , data: JSON.stringify(dataForm)
+                  , contentType: "application/json; charset=utf-8"
+                  , async: false
+                  , success:function(resp) {
+                   if(resp == "success") {
+                        alert("영상을 좋아합니다.");
+                        target.children("span").html(subRecoCount+1);
+                     }else if(resp == "cancel") {
+                        alert("좋아요를 취소합니다.");
+                        target.children("span").html(subRecoCount-1);
+                     }else if(resp == "change") {
+                        alert("좋아요로 변경하셨습니다.");
+                        subDecoTarget.html(Number(subDecoTarget.text())-1);
+                        target.children("span").html(subRecoCount+1);
+                     }
+                  }
+                  , error:function(resp, code, error) {
+                     alert("resp : "+resp+", code : "+code+", error : "+error);
+                  }
             });
-	    }
-	    
-	    function subDecommendation() {
-	    	if(useremail.trim().length == 0) {
-               	location.href="login";
-               	return;
+       }
+       
+       function subDecommendation() {
+          if(useremail.trim().length == 0) {
+                  location.href="login";
+                  return;
             }
             var target = $(this);
             var subDecoCount = Number(target.children("span").text());
             var subRecoTarget = target.parent().children(".subRecommendation").children(".subRecoCount");
-	    	var subnum = $(this).attr('data-rno');
+          var subnum = $(this).attr('data-rno');
             var dataForm = {
-            	"tableName":"InvestigationSubtitle", 
+               "tableName":"InvestigationSubtitle", 
                 "idCode":"subtitleNum", 
                 "useremail":useremail, 
                 "identificationnum":subnum, 
@@ -422,23 +503,23 @@
             };
             
             $.ajax({
-               	method:'post'
-               	, url:'insertRecommendation'
-               	, data: JSON.stringify(dataForm)
-               	, contentType: "application/json; charset=utf-8"
-               	, async: false
-               	, success:function(resp) {
-                  	if(resp == "success") {
-                     	alert("영상을 싫어합니다.");
-                     	target.children("span").html(subDecoCount+1);
-                  	}else if(resp == "cancel") {
-                     	alert("싫어요를 취소합니다.");
-                     	target.children("span").html(subDecoCount-1);
-                  	}else if(resp == "change"){
-                     	alert("싫어요로 변경하셨습니다.");
-                     	subRecoTarget.html(Number(subRecoTarget.text())-1);
-                     	target.children("span").html(subDecoCount+1);
-                  	}
+                  method:'post'
+                  , url:'insertRecommendation'
+                  , data: JSON.stringify(dataForm)
+                  , contentType: "application/json; charset=utf-8"
+                  , async: false
+                  , success:function(resp) {
+                     if(resp == "success") {
+                        alert("영상을 싫어합니다.");
+                        target.children("span").html(subDecoCount+1);
+                     }else if(resp == "cancel") {
+                        alert("싫어요를 취소합니다.");
+                        target.children("span").html(subDecoCount-1);
+                     }else if(resp == "change"){
+                        alert("싫어요로 변경하셨습니다.");
+                        subRecoTarget.html(Number(subRecoTarget.text())-1);
+                        target.children("span").html(subDecoCount+1);
+                     }
                  }
                	, error:function(resp, code, error) {
                   	alert("resp : "+resp+", code : "+code+", error : "+error);
@@ -449,9 +530,7 @@
 		function reportReply() {
 			//alert('신고');
 			var useremail = "${sessionScope.useremail}";
-			//alert(useremail);
 			replynum = $(this).attr('data-rno');
-			//alert(replynum);
 			var sendData = {
 					"useremail":useremail
 					,"whichboard":  "1"
@@ -479,102 +558,106 @@
 		function replyInsert() {
 			$("#useremail").val(useremail);
 
-			var btnname = $("#replyInsert").val();
+      function reportReply() {
+         //alert('신고');
+         var useremail = "${sessionScope.useremail}";
+         //alert(useremail);
+         replynum = $(this).attr('data-rno');
+         //alert(replynum);
+         var sendData = {
+               "useremail":useremail
+               ,"whichboard":  "1"
+               ,"replynum":  replynum
+            };
+            
+         $.ajax({
+            type : 'post',
+            url : 'insertBlack',
+            data : JSON.stringify(sendData),
+            dataType:'text',
+            contentType: "application/json; charset=UTF-8",
+            success : function(resp){
+               alert(JSON.stringify(resp));
+               initReply();
+            },
+            error:function(resp, code, error) {
+               //alert("resp : "+resp+", code : "+code+", error : "+error);
+               alert("로그인이 필요합니다.");
+               location.href="./";
+            }
+         }); 
+      }
+       
+      function replyInsert() {
+         $("#useremail").val(useremail);
 
-			if (btnname == '댓글등록') {
-				var replytext = $("#replytext").val();
+         var btnname = $("#replyInsert").val();
 
-				if (replytext.length == 0) {
-					alert("댓글을 작성해주세요!");
-					return;
-				}
+         if (btnname == '댓글등록') {
+            var replytext = $("#replytext").val();
 
-				var sendData = {
-					"idnum" : investigationnum,
-					"useremail" : useremail,
-					"content" : replytext
-				};
+            if (replytext.length == 0) {
+               alert("댓글을 작성해주세요!");
+               return;
+            }
 
-				$.ajax({
-					type : 'post',
-					url : 'replyInvInsert',
-					data : JSON.stringify(sendData),
-					dataType : 'text',
-					contentType : "application/json; charset=UTF-8",
-					success : initReply
-				});
-				//돌려놓기
-				$("#replytext").val('');
-			} else if (btnname == '댓글수정') {
-				var replytext = $("#replytext").val();
-				var replynum = $("#replynum").val();
-				var sendData = {
-					"replynum" : replynum,
-					"content" : replytext,
-				}
+            var sendData = {
+               "idnum" : investigationnum,
+               "useremail" : useremail,
+               "content" : replytext
+            };
 
-				$.ajax({
-					method : 'post',
-					url : 'replyInvUpdate',
-					data : JSON.stringify(sendData),
-					dataType : 'text',
-					contentType : "application/json; charset=UTF-8",
-					success : initReply
-				});
+            $.ajax({
+               type : 'post',
+               url : 'replyInvInsert',
+               data : JSON.stringify(sendData),
+               dataType : 'text',
+               contentType : "application/json; charset=UTF-8",
+               success : initReply
+            });
+            //돌려놓기
+            $("#replytext").val('');
+         } else if (btnname == '댓글수정') {
+            var replytext = $("#replytext").val();
+            var replynum = $("#replynum").val();
+            var sendData = {
+               "replynum" : replynum,
+               "content" : replytext,
+            }
 
-				$("#replytext").val('');
-				$("#replyInsert").val("리뷰등록");
-				$("#cancelUpdate").css("visibility", "hidden");
-			}
-		}
+            $.ajax({
+               method : 'post',
+               url : 'replyInvUpdate',
+               data : JSON.stringify(sendData),
+               dataType : 'text',
+               contentType : "application/json; charset=UTF-8",
+               success : initReply
+            });
 
-		function replyDelete() {
-			var nick = $(this).parent().children('.nick').text();
-			if ("${usernick}" != nick) {
-				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-				return;
-			}
-			replynum = $(this).attr('data-rno');
-			$.ajax({
-				method : 'get',
-				url : 'replyInvDelete',
-				data : 'replynum=' + replynum,
-				dataType : 'text',
-				success : initReply
-			});
-		}
+            $("#replytext").val('');
+            $("#replyInsert").val("리뷰등록");
+            $("#cancelUpdate").css("visibility", "hidden");
+         }
+      }
 
-		function replyUpdate() {
-			replynum = $(this).attr('data-rno');
+      function replyDelete() {
+         var nick = $(this).parent().children('.nick').text();
+         if ("${usernick}" != nick) {
+            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
+            return;
+         }
+         replynum = $(this).attr('data-rno');
+         $.ajax({
+            method : 'get',
+            url : 'replyInvDelete',
+            data : 'replynum=' + replynum,
+            dataType : 'text',
+            success : initReply
+         });
+      }
 
-			var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
-			var replytext = $(this).parent().children('.text').text();
-
-			if ("${usernick}" != nick) {
-				alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-				return;
-			}
-
-			$("#usernick").val(nick);
-			$("#replytext").val(replytext);
-			$("#replyInsert").val("댓글수정");
-			$("#usernick").prop('readonly', 'readonly');
-			$("#cancelUpdate").css("visibility", "visible");
-			
-			$("#replynum").val(replynum);
-		}
-	</script>
-</head>
-
-<body>
-	<header>
-		<c:if test="${plzLogin!=null}">
-			<script type="text/javascript">
-				$(function(){
-					alert("${plzLogin}");
-				});
-			</script>
-		</c:if>
+      function replyUpdate() {
+         replynum = $(this).attr('data-rno');
 
 		<!-- nav -->
 		<nav class="nav-extended">
@@ -622,8 +705,6 @@
        		</div>
 		</li>		 
 		<li><a href="eduBoard">영상게시판</a></li>
-		<li><a href="dubbingBoard">더빙게시판</a></li>
-		<li><a href="InvestigationBoard">자막게시판</a></li>
 		<li><a href="myPage">마이페이지</a></li>
 	</ul>
 	  	  
@@ -726,8 +807,8 @@
 		
 		<section>
 			<div class="container" style="width:98%;">
-			<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-			<!--<div id="youtube"></div>   -->
+				<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+				<!--<div id="youtube"></div>   -->
 				<div class="row">
 					<div class="col s8 m8">
 						<div class="video-container z-depth-2" >
@@ -738,7 +819,7 @@
 						</div>
 							
 						<div class="row" style="margin-top:15px;">
-							<div class="col s8 m8 l8"><h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:680px; padding:5px; margin-top:0px;"></h6></div>
+							<div class="col s8 m8 l8"><h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:630px; padding:5px; margin-top:0px;"></h6></div>
 							<div class="right" style="margin-right:15px;">
 								<input type="hidden" value="${inv.investigationnum}">
 								<button class="btn recommendation" type="button">
@@ -749,66 +830,91 @@
 									<i class="material-icons">thumb_down</i> 
 									<span id="decoCount">${inv.decommendation}</span>
 								</button>
+								<button class="btn" id="deleteInvBoard" type="button">
+									<i class="material-icons">delete</i> 
+								</button>
 							</div>
 						</div>
 						</div>
-							<div class="col s4 m4 l4">
-					      		<div class="card" style="height:520px; margin-top:0px;">
-									<div class="card-content">
-										<span class="card-title activator grey-text text-darken-4">
-											자막목록
-										</span>
-									</div>
-									<div class="card-content scroll-box">
-			          					<div id="subtitleList"></div>
-			        				</div>
-			        				<div class="card-action" style="padding:10px;">
-							         	 <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
-											 <div class="file-field">
-											     <div class="btn right" style="margin-left:30px;">
-											          <span>File</span>
-											          <input type="file" id="subtitleFile">
-											      </div>
-											  
-											      <div class="file-path-wrapper">
-											      	  <input class="file-path validate" type="text">
-											      </div>
-											  </div>	
-											 <div class="row">
-												 <div class="input-field col s9" style="margin-left:10px;">
-						          					<input id="subtitleName" type="text" class="validate"/>
-						         					 <label for="subtitleName">등록 파일명</label>
-						       					 </div>
-						       				
-												 <div class="input-field col s2" style="margin-top:25px;">
-													<input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
-												 </div>
-											 </div>	
-										</form>
-							        </div>
-							    </div>
-							 </div>
+						<div class="col s4 m4 l4">
+					    	<div class="card" style="height:520px; margin-top:0px;">
+								<div class="card-content">
+									<span class="card-title activator grey-text text-darken-4">
+										자막목록
+									</span>
+								</div>
+								<div class="card-content scroll-box">
+			          				<div id="subtitleList"></div>
+			        			</div>
+			        			<div class="card-action" style="padding:10px;">
+						         	 <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
+										 <div class="file-field">
+										     <div class="btn right" style="margin-left:30px;">
+										          <span>File</span>
+										          <input type="file" id="subtitleFile">
+										      </div>
+										  
+										      <div class="file-path-wrapper">
+										      	  <input class="file-path validate" type="text">
+										      </div>
+										  </div>	
+										 <div class="row">
+											 <div class="input-field col s9" style="margin-left:10px;">
+						         					<input id="subtitleName" type="text" class="validate"/>
+						        					 <label for="subtitleName">등록 파일명</label>
+						      					 </div>
+						      				
+											 <div class="input-field col s2" style="margin-top:25px;">
+												<input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
+											 </div>
+										 </div>	
+									</form>
+						        </div>
+						    </div>
+						 </div>
+					</div>
+
+			       	<div class="row"> 
+						<div class="row"  style="margin-left: 3%;">
+							<div class="input-field col s4">
+								<input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
+								<label id="replylabel" for="replytext">리뷰를 작성해주세요 ^ㅅ^</label>		
+							</div>
+							<input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
+							<input id="cancelUpdate" type="button" class="btn" style="visibility:hidden; margin-top:10px;" value="수정취소"/>	
+						</div>
+						
+					<input type="hidden" id="useremail" value="${sessionScope.useremail}">
+					<input type="hidden" id="updatereplynum">
+					
+					<div id="result"> 
+						<!-- 반복적으로 나오게 -->
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 	<script>
-      // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
-      var tag = document.createElement('script');
+		// 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
+		var tag = document.createElement('script');
 
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      // 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
-      var player;
-      function onYouTubeIframeAPIReady() {
-         player = new YT.Player('youtube', {
-            events : {
-               'onReady' : onPlayerReady,
-               'onStateChange' : onPlayerStateChange
-            }
-         });
-      }
+		// 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
+		var player;
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('youtube', {
+            	events : {
+               		'onReady' : onPlayerReady,
+               		'onStateChange' : onPlayerStateChange
+            	}
+         	});
+      	}
    
-      // 4. Youtube Player의 준비가 끝나면 호출할 함수
-      	function onPlayerReady(event) {
+      	// 4. Youtube Player의 준비가 끝나면 호출할 함수
+		function onPlayerReady(event) {
          	event.target.playVideo();
       	}
       
@@ -824,32 +930,8 @@
             
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
-   </script>
-
-						
-				</div>
-
-          		
-
-			          <div>
-			            <form id="replyform" method="post">
-			              <input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
-			              <input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
-			
-			              <input type="hidden" id="useremail" name="useremail" value="" /> 
-			              <input type="hidden" id="replynum" name="replynum" value="" /> 
-			
-			              <input id="replyInsert" type="button" value="댓글등록" />
-			              <input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
-			            </form>
-			
-			            <div id="result">
-			              <!-- 반복적으로 나오게 -->
-			            </div>
-					</div>
-				</div>
-			</section>
-	</div>
+	</script>
+	
 	<footer class="page-footer">
     	<div class="container">
         	<div class="row">
@@ -877,6 +959,7 @@
         	</div>
     	</div>
     </footer>
-<script type="text/javascript" src="js/materialize.js"></script>	
+	<script type="text/javascript" src="js/materialize.js"></script>	
 </body>
 </html>
+

@@ -25,6 +25,8 @@
 	<script src="YoutubeAPI/auth.js"></script>
 	    
 	<script type="text/javascript">
+		var urlCheck = false;
+		
 	    // css용
 	    $(function(){
 			//dropdown
@@ -36,9 +38,11 @@
 			});
 			
 			//modal open
-			$('#modal1').modal(); //로그인모달 
-			$('#addvideo').modal();  //영상추가 모달 
-			
+			$('#modal1').modal(); 	//로그인모달 
+			$('#modal2').modal();
+			$('#modal3').modal(); 	//회원정보수정 모달
+			$('#addvideo').modal(); //영상추가 모달 
+
 			//side-nav open
 			$('.sidenav').sidenav();
 			
@@ -49,7 +53,6 @@
 			$('.carousel').carousel();
 			
 			$('#sticker').on('click', function() {
-				//alert('emf어오냐');
 				$('#checkline').val('');
 			});
 			
@@ -103,27 +106,106 @@
 		$(function() {
 			$('#checkForm').on('click', function() {
 				var title = $('#title');
-				var url = $('#url');
 				var subtitle = $('#subtitle');
 				
 				if(title.val().trim().length == 0) {
-					alert('영상 제목을 입력해주세요.');
+					alert("제목을 입력해주세요.");
 					title.focus();
-					return false;
+					return;
 				}
 				
-				if(url.val().trim().length == 0) {
-					alert('영상 URL을 입력해주세요.');
-					url.focus();
-					return false;
+				// url 체크 확인 추가
+				if(urlCheck == false) {
+					alert("URL중복 검사 통과해주세요.");
+					return;
 				}
 				
 				if(subtitle.val().trim().length == 0) {
 					alert('파일을 넣어주세요.');
 					subtitle.focus();
-					return false;
+					return;
 				}
-				return true;
+				$('#addEduVideoForm').submit();
+			});
+			
+			$('#urlCheck').on('click', function() {
+				var url = $('#url');
+				var originalURL = url.val();				// 원본 URL
+				
+				// 영상 URL 입력 확인
+				if(originalURL.trim().length == 0) {
+					alert('영상 URL을 입력해주세요.');
+					url.focus();
+					urlCheck = false;
+					return;
+				}
+				
+				// VideoID 추출
+	       		var markIndex = originalURL.indexOf("?");	// GET방식 인자를 제외한 실제 주소
+	       		var findVideoId = "";
+	       		if(markIndex == -1) {
+	       			if(originalURL.includes("embed") == false) {
+	       				alert("Youtube Video URL을 제대로 입력해주세요.");
+	       				urlCheck = false;
+	       				return;
+	       			}
+	       			
+	       			var embedIndex = originalURL.indexOf("embed")+6;
+	       			findVideoId = originalURL.substring(embedIndex);	//iframe에서 선택시 VideoId추출
+	       		}else {
+	       			if(originalURL.includes("youtube.com") == false || originalURL.indexOf("v=") == -1) {
+	       				alert("Youtube Video URL을 제대로 입력해주세요.");
+	       				urlCheck =false;
+	       				return;
+	       			}
+	       			
+	       			var vIndex = originalURL.indexOf("v=")+2;
+	       			var firstAmpIndex = originalURL.substring(vIndex).indexOf("&");
+	       			
+	       			if(firstAmpIndex == -1) {
+	       				findVideoId = originalURL.substring(vIndex);
+	       			}else {
+	       				findVideoId = originalURL.substring(vIndex, vIndex+firstAmpIndex);
+	       			}
+	       		}
+	       		alert(findVideoId);
+	       		// 영상 중복 검사
+	       		$.ajax({
+	       			method: 'get'
+	       			, url : 'existVideo'
+	       			, data: 'url='+findVideoId
+	       			, dataType: 'text'
+	       			, async: false
+	       			, success: function(resp) {
+	       				if(resp == 'success') {
+	       					$('#videoId').val(findVideoId);
+	       					$('#invDelete').val('false');
+	       					urlCheck = true;
+	       					
+	       					alert("등록 가능한 영상입니다.");
+	       				}else if(resp == 'eduExist') {
+	       					urlCheck = false;
+	       					
+	       					alert("이미 등록되어 있는 영상입니다.");
+	       				}else if(resp == 'invExist') {
+	       					if(confirm('자막 검증 게시글에 있는 영상입니다. 그래도 등록하시겠습니까?')) {
+	       						$('#videoId').val(findVideoId);
+	       						$('#invDelete').val('true');
+	       						urlCheck = true;
+	       						
+	       						alert("등록 진행");
+	       					}else {
+	       						urlCheck = false;
+	       						alert("등록 취소");
+	       					}
+	       				}
+	       			}, error:function(resp, code, error) {
+						alert("resp : "+resp+", code:"+code+", error:"+error);
+					}
+	       		});
+				//alert("videoID : "+$('#videoId').val());
+				//alert("invDelete : "+$('#invDelete').val());
+				//alert("유무 확인 : "+urlCheck);
 			});
 		});
     
@@ -222,39 +304,91 @@
 				});
 			});
 		});
+    	$(function(){
+    		//위시리스트에 비디오 등록
+    		$('.btnRegistVideoWish').on('click', function(){
+    			var target = $(this);
+				var useremail = "${sessionScope.useremail}";
+				var videonum = target.parent().children("#videonum").val();
+				var title = target.parent().parent().children('.card-content').children("a").html();
+				var url = target.parent().children("#url").val();
+				
+				alert("title : "+title+"videonum:"+videonum+"url:"+url);
+				//로그인된 세션이 있는지 확인
+				if(useremail.trim().length == 0) {
+					location.href="login";
+					return;
+				}else{
+					//선택된 비디오 정보를 위시리스트로 보내기
+					var dataFormVideo = {
+							"wishtable": 0,							
+							"useremail":useremail, 
+							"identificationnum":videonum,
+							"title"	: title,
+							"url" : url							
+					};
+					
+					$.ajax({
+						method:'post'
+						, url:'insertWish'
+						, data: JSON.stringify(dataFormVideo)
+						, contentType: "application/json; charset=utf-8"
+						, async : false
+						, success:function(resp) {
+							if(resp == "success")
+								alert("영상을 찜한 목록에 등록하였습니다.");
+							else if(resp == "failure")
+								alert("영상이 이미 찜한 목록에 있습니다.");
+							else if(resp == "failRegist")
+								alert("영상을 찜한 목록 등록하는데 실패하였습니다.")
+						  }
+						, error:function(resp, code, error) {
+							alert("resp : "+resp+", code : "+code+", error : "+error);
+						}
+					});					
+				}    			
+    		});    		
+    	});
     </script>
 </head>
+
 <body>
     <header>
+		<c:if test="${plzLogin!=null}">
+			<script type="text/javascript">
+				$(function(){
+					alert("${plzLogin}");
+				});
+			</script>
+		</c:if>
+	
 		<!-- nav -->
 		<nav class="nav-extended">
 			<div class="nav-wrapper">
 				<!-- sidenav trigger -->
-			    <ul class="left">
-			    	<li>
-			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-			    			<i class="material-icons">menu</i>
-			    		</a>
-			    	</li>
-			    </ul>
-		    	<a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-		    	<a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
-		    	
-			    <ul class="right hide-on-med-and-down">
-				  	<li>
-				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
-	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
-	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
-	              		</div>
-				  	</li>		 
-			      	<li><a href="eduBoard">영상게시판</a></li>
-			      	<li><a href="dubbingBoard">더빙게시판</a></li>
-			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
-			      	<li><a href="myPage">마이페이지</a></li>
-			    </ul>
+				<ul class="left">
+					<li>
+						<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+							<i class="material-icons">menu</i>
+						</a>
+					</li>
+				</ul>
+			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+				<ul class="right hide-on-med-and-down">
+					<li>
+						<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+			                <i class="material-icons" style="margin-left:-50px;">search</i>
+							<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+						</div>
+					</li>		 
+					<li><a href="eduBoard">영상게시판</a></li>
+					<li><a href="dubbingBoard">더빙게시판</a></li>
+					<li><a href="InvestigationBoard">자막검증게시판</a></li>
+					<li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
+				</ul>
 			</div>
-	
-		
+
 			<div class="nav-content">
 				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
 	        	<i class="medium material-icons" id="sticker">person</i>
@@ -263,13 +397,14 @@
 		</nav>
 	</header>
    
-   	<ul class="sidenav" id="small-navi">
+   	<!-- 창 축소시 사이드 nav -->
+	<ul class="sidenav" id="small-navi">
 		<li>
-        	<div class="input-field">
-          		<input class="search" type="search" required>
-          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
-          		<i class="material-icons">close</i>
-       		</div>
+			<div class="input-field" style="width:70%; margin-left:15%;">
+				<input class="search" type="search" required>
+				<label class="label-icon" for="search" style="margin-left:-18%;"><i class="material-icons">search</i></label>
+				<i class="material-icons">close</i>
+			</div>
 		</li>		 
 		<li><a href="eduBoard">영상게시판</a></li>
 		<li><a href="dubbingBoard">더빙게시판</a></li>
@@ -282,37 +417,36 @@
 		<div class="modal-content">
 			<div class="container">
 				<form class="col s12" id=loginForm action="login" method="POST">
-				<div class="row">
-					<h4 class="center-align">LOGIN</h4>
-				
 					<div class="row">
-						<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mail</i>
-								<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
-								<label for="useremail">EMAIL</label>
-							</div>
-						</c:if>
-					</div>
-				
-					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
-							<div class="input-field col s12">
-								<i class="material-icons prefix">mode_edit</i>
-								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
-								<label for="userpwd">PASSWORD</label>
-							</div>
-						</c:if>
-					</div>
+						<h4 class="center-align">LOGIN</h4>
 					
-					<!-- 글씨뜨는거 -->
-						 <input id="checkline" value="" type="text" style="border-bottom: none;"  />
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mail</i>
+									<input id="useremail" type="text" class="validate" name="useremail" value="${useremail}">
+									<label for="useremail">EMAIL</label>
+								</div>
+							</c:if>
+						</div>
 					
-					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
-					</c:if>
-				</div>	
-				
+						<div class="row">
+							<c:if test="${empty sessionScope.useremail }">
+								<div class="input-field col s12">
+									<i class="material-icons prefix">mode_edit</i>
+									<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
+									<label for="userpwd">PASSWORD</label>
+									<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
+								</div>
+							</c:if>
+						</div>
+							
+						<!-- 글씨뜨는거 -->
+						<c:if test="${not empty sessionScope.useremail }">
+							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+						</c:if>
+					</div>	
+					
 					<div class="row">
 						<div class="col s10">
 							<c:if test="${empty sessionScope.useremail }">
@@ -338,19 +472,117 @@
 						</div>
 						
 						<div class="fixed-action-btn">
-								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
-									<i class="large material-icons">person</i>
-								</a>
-								<ul>
-								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
-								</ul>
+							<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+								<i class="large material-icons">person</i>
+							</a>
+							<ul>
+							    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+							    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+							    <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
+							</ul>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>	
+	</div>
+	  
+	<!-- 회원수정모달 -->
+	  <div id="modal3" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5>회원정보수정</h5>
+				<form id="updateMember" action="updateMember" method="post">
+					<div class="row" style="margin-top:10%;">
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>EMAIL</th>
+									<td>${sessionScope.useremail}</td>
+								</tr>
+								<tr>
+									<th>성별</th>
+									<td>${sessionScope.gender}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>NICK</th>
+									<td>${sessionScope.usernick}</td>
+								</tr>
+								<tr>
+									<th>생일</th>
+									<td>${sessionScope.birth}</td>
+								</tr>
+							</table>
+						</div>
+						
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input type="text" id="usernick" name="usernick" placeholder="변경 닉네임 입력" />
+							<span id="nickcheck"></span>
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">create</i>
+							<input id="currpwd" type="password" name="currpwd" placeholder="현재 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">border_color</i>
+							<input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">check</i>
+							<input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" />
+						</div>
+						
+						<div class="col s12">
+							<input type="button" class="btn" value="수정" id="btnUpdate" />
+							<input type="button" class="btn" value="취소" id="btnCancel" />
+						</div>
+					</div>	
+				</form>
+			</div>
+		</div>
+	</div>	
+	  
+	  <!-- 회원탈퇴 모달 -->
+	  <div id="modal2" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5>탈퇴하시겠습니까?</h5>
+				
+				<div class="row">
+					<form action="insertCloseID" method="post" id="submitform">
+						<div class="input-field col s12">
+			          		<i class="material-icons prefix">mail</i>
+			          		<input id="useremail" name="useremail" type="text" class="validate">
+			          		<label for="useremail">USERMAIL</label>
+			        	</div>
+					</form>
+			        <div class="input-field col s12">
+			          <i class="material-icons prefix">mode_edit</i>
+			          <input id="pwd" type="password" class="validate">
+			          <label for="pwd">PASSWORD</label>
+			        </div>
+				<div class="row">
+					<span class="flow-text">
+						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+							<i class="material-icons right">keyboard_return</i>
+						</button>
+					</span>
+					<span class="flow-text">
+						<button class="btn" onclick="closeID()">QUIT
+							<i class="material-icons right">mood_bad</i>
+						</button>
+					</span>	
+				</div>	
+			</div>
+				<p style="color:red;">회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
+				<p style="margin-top:0;">기간 이후에는 회원정보가 영구 삭제됩니다.</p>
+			</div>
+	  	</div>
 	  </div>
    
    <!-- admin 영상추가 -->	
@@ -365,17 +597,20 @@
   	<!-- 영상추가 모달 -->
   	<div id="addvideo" class="modal">
   		<div class="container">
-  		<div class="modal-content">
+  			<div class="modal-content">
 		      <h5 class="center">교육 영상 삽입</h5>
 		      <div class="row">
-			      <form action="addEduVideo" method="post" enctype="multipart/form-data">
+			      <form id="addEduVideoForm" action="addEduVideo" method="post" enctype="multipart/form-data">
+			      		<input type="hidden" name="useremail" value="${sessionScope.useremail}"/>
+			      		<input type="hidden" id="invDelete" name="invDelete" value=""/> 
 						<div class="input-field col s12">
 							<input type="text" class="validate" id="title" name="title"/>
 							<label for="title">영상제목입력</label>
 						</div>
 						<div class="row">
 							<div class="input-field col s8">
-								<input type="text" class="validate" id="url" name="url"/>
+								<input type="text" class="validate" id="url"/>
+								<input type="hidden" id="videoId" name="url"/> 
 								<label for="url">URL입력</label>
 							</div>
 							<div class="input-field col s4">
@@ -392,29 +627,29 @@
 								</div>	
 							</div>
 					</form>	
-							<div class="center">
-								<input type="submit" id="checkForm" class="btn" value="영상 등록"/>
-								<input type="reset" class="btn" value="재입력"/>
-							</div>
+					<div class="center">
+						<input type="button" id="checkForm" class="btn" value="영상 등록"/>
+						<input type="reset" class="btn" value="재입력"/>
+					</div>
 				</div>
-		 </div>
-		 </div>
-		    <div class="modal-footer">
-		      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
-			</div>
+		 	</div>
+		</div>
+		<div class="modal-footer">
+		 	<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+		</div>
   	</div>		
 	
 	<div class="wrapper">
-			 <!-- sidenav -->	  
-			<aside>	  	  
-			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-					<li><div class="user-view">
-							<div class="background">
-								<img src="images/">
-							</div>
-							<a href="#user"><img class="circle" src="images/"></a>
-							<a href="#name"><span class="white-text name">${usernick}</span></a> 
-							<a href="#email"><span class="white-text email">${useremail}</span></a>
+		<!-- sidenav -->	  
+		<aside>	  	  
+			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+				<li>
+					<div class="user-view">
+						<div class="background">
+							<img src="images/">
+              <a href="#user"><img class="circle" src="images/"></a>
+						  <a href="#name"><span class="white-text name">${usernick}</span></a> 
+						  <a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>
 					</li>
 					<li><a href="#!"><i class="material-icons">cloud</i>First
@@ -422,55 +657,55 @@
 					<li><a href="#!">wishList</a></li>
 					<li><div class="divider"></div></li>
 					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+					<li><a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a></li>
+					<li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
 				</ul>
 			</aside>	
 	<section>
-    <!-- Page Content -->
-	<div class="container">
-		<h4 class="left"><a href="eduBoard">추천학습영상</a></h4>
-		<div class="row"></div>
-		<div class="row">
-			
-		<c:if test="${not empty eduList}">
-			<c:forEach var="eduList" items="${eduList}">
-			
-			<div class="col s12 m3 l3">
-				<div class="card" style="height:400px margin-bottom:10px;">
-					<div class="card-image">
-						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-					</div>
-					<div class="card-content" style="height:150px;">
-							<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
-					</div>
-						
-					<div class="card-action" style="height:70px">
-						<div class="row s12 m12">
-							<input type="hidden" value="${eduList.videoNum}"/>
-							<button class="btn recommendation"  style="width:65px; padding-right:4px; padding-left:4px;">
-								<i class="material-icons">thumb_up</i>
-								<span id="recoCount">${eduList.recommendation}</span>
-							</button>
-							<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
-								<i class="material-icons">thumb_down</i>
-								<span id="decoCount">${eduList.decommendation}</span>
-							</button>
-							<button class="btn disabled right decommendation" style="width:80px">
-								<i class="material-icons">touch_app</i>
-								<span>${eduList.hitCount}</span>
-							</button>
-						</div>
-					</div>
-				</div>
+		<!-- Page Content -->
+		<div class="container">
+			<div class="row">
+				<h4 class="left"><a href="eduBoard">추천학습영상</a></h4>
 			</div>
-			</c:forEach>
-		</c:if>
+			
+			<div class="row">
+				<c:if test="${not empty eduList}">
+					<c:forEach var="eduList" items="${eduList}">
+						<div class="col s12 m3 l3">
+							<div class="card" style="height:400px margin-bottom:10px;">
+	<div class="card-image">
+						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
+						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+					</div>
+								<div class="card-content" style="height:150px;">
+									<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
+								</div>
+								
+								<div class="card-action" style="height:70px">
+									<div class="row s12 m12">
+										<input type="hidden" value="${eduList.videoNum}"/>
+										<button class="btn recommendation"  style="width:65px; padding-right:4px; padding-left:4px;">
+											<i class="material-icons">thumb_up</i>
+											<span id="recoCount">${eduList.recommendation}</span>
+										</button>
+										<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
+											<i class="material-icons">thumb_down</i>
+											<span id="decoCount">${eduList.decommendation}</span>
+										</button>
+										<button class="btn disabled right decommendation" style="width:80px">
+											<i class="material-icons">touch_app</i>
+											<span>${eduList.hitCount}</span>
+										</button>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</c:forEach>
+				</c:if>
+			</div>
 		</div>
-		
-		</div>
-		</section>
+	</section>
 		</div>
 		<!-- pagination -->
 		<div class="center">

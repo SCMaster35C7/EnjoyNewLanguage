@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import global.sesoc.Youtube.dao.EducationRepository;
+import global.sesoc.Youtube.dto.Education;
 import global.sesoc.Youtube.dto.SubtitlesList;
 import global.sesoc.Youtube.dto.TestResult;
 import global.sesoc.Youtube.dto.WrongAnswer;
+import global.sesoc.Youtube.util.FileService;
 import global.sesoc.Youtube.util.RetakeMaker;
 import global.sesoc.Youtube.util.SubtitlesMaker;
 
@@ -109,10 +111,6 @@ public class EducationController {
 	@ResponseBody
 	public String RetakeResult(int WronganswerCount, String[] CorrectanswerList, String useremail, String url,
 			boolean testType) {
-		System.out.println("WronganswerCount: " + WronganswerCount);
-		System.out.println("useremail: " + useremail);
-		System.out.println("url:" + url);
-		System.out.println("CorrectanswerList:" + CorrectanswerList);
 		// WronganwerCount : 오답갯수, CorrectanswerList: 정답 단어의 2차원 인덱스정보, userid 로그인한
 		// 아이디,
 		// url : 영상 주소값, testType: 시험 타입(false text true mic)
@@ -159,5 +157,20 @@ public class EducationController {
 	@RequestMapping(value = "dictionaryBoard", method = RequestMethod.GET)
 	public String dicionaryBoard() {
 		return "EducationBoard/dictionaryBoard";
+	}
+	
+	
+	@RequestMapping(value="deleteEdu",method= RequestMethod.POST)
+	public String deleteEdu(int eduNum) {
+		Education edu=eduRepository.selectOneFromEduVideo(eduNum);
+		eduRepository.deleteAllRecommend(edu.getVideoNum(),0); //추천정보 삭제
+		eduRepository.deleteAllWishList(edu.getUrl());         //위시리스트 삭제
+		eduRepository.deleteUserStudyByURL(edu.getUrl());      //유저 학습정보삭제
+		String fullPath=eduFileRoot+"/"+edu.getSavedfile();    
+		FileService.deleteFile(fullPath);                    // 자막파일 삭제
+		eduRepository.deleteVideo(edu.getVideoNum());        //교육테이블 제거
+		
+		// 지워야할 사항 1. 교육테이블, 2. 자막 3. 학습정보 4. 오답정보 5.위시리스트 6. 추천정보
+		return "redirect:eduBoard";	
 	}
 }

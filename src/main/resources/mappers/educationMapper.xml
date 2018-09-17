@@ -50,8 +50,8 @@
 			, savedfile
 		)values (
 			EDUCATION_VIDEO_SEQ.nextval
-			, #{title}
 			, #{useremail}
+			, #{title}
 			, #{url}
 			, #{originalfile}
 			, #{savedfile}
@@ -300,4 +300,29 @@
 		where
 		  rownum &lt;= 5
 	</select>
+	
+	<select id="existVideo" parameterType="string" resultType="Education">
+		select
+			*
+		from
+			educationvideo
+		where
+			url = #{url}
+	</select>
+	
+	<delete id="deleteAllWishList" parameterType="String">
+	delete from wishlist
+	where url=#{value}
+	</delete>
+
+    <delete id="deleteUserStudyByURL" parameterType="String">
+    delete from userstudy
+    where url=#{value}
+    </delete>
+    
+    <delete id="deleteVideo" parameterType="int">
+    delete from educationvideo
+    where videonum=#{value}
+    </delete>
+	
 </mapper>

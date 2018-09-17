@@ -19,29 +19,18 @@
 <title>더빙게시판</title>
 
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>	
+<script type="text/javascript" src="js/LanguageSet.js"></script>
 
 <script>
 $(document).ready(function() {
     var table = $('#dubbing').DataTable();
- 
-    /* $('a.toggle-vis').on( 'click', function (e) {
-        e.preventDefault();
- 
-        // Get the column API object
-        var column = table.column( $(this).attr('data-column') );
- 
-        // Toggle the visibility
-        column.visible( ! column.visible() );
-    } ); */
-    
 });
-	
 	$(function(){
-	 	//$('#dubbing').DataTable();
+		SetLanguage();
 		 $('select').formSelect();
 		
 		//dropdown
-		$(".dropdown-trigger").dropdown();
+	/* 	$(".dropdown-trigger").dropdown(); */
 		
 		//floating actionbutton
 		$(".fixed-action-btn").floatingActionButton({
@@ -49,6 +38,8 @@ $(document).ready(function() {
 		
 		//modal open
 		$('#modal1').modal();
+		$('#modal2').modal();
+		$('#modal3').modal(); //회원정보수정 모달
 		
 		$('#back').on('click', function() {
 			
@@ -65,43 +56,9 @@ $(document).ready(function() {
 		
 
 		$('#sticker').on('click', function() {
-			//alert('emf어오냐');
 			$('#checkline').val('');
 		});
 		
-		$('#loginBtn').on('click', function() {
-			
-			var useremail = $('#useremail').val();
-			var userpwd = $('#userpwd').val();
-			
-			var sendData = {	
-					"useremail":useremail
-					,"userpwd": userpwd
-			};
-			
-			$.ajax({
-				method	:	'post'
-				, url	: 'statusCheck'
-				, data	: JSON.stringify(sendData)
-				, dataType	: 'text'
-				, contentType: 'application/json; charset=utf-8'
-				, success	: function(resp){
-					if (resp=="checkEmail") {
-						$("#checkline").val('이메일 인증 먼저 해주세요!');
-					}else if (resp=="loginFailure") {
-						//alert('담으로가자');
-						//$('#loginForm').submit();
-						$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
-					} else {
-						window.location.reload();
-					}
-				}, error:function(resp, code, error) {
-					alert("resp : "+resp+", code:"+code+", error:"+error);
-				}
-			});//ajax
-		});
-	
-	
 		$('#VideoSearchbtn').on('click', function() {
 			var useremail = "${sessionScope.useremail}";
 			
@@ -113,7 +70,7 @@ $(document).ready(function() {
 				$(document).keyup(function(event){
 	    			if(event.keyCode=='13'){
 	    				if($('#search').val().length == 0) {
-	           				alert("검색어를 입력하세요.");
+	           				alert("Please enter a title");
 	           				$('#search').focus();
 	           				return;
 	           			}
@@ -122,8 +79,61 @@ $(document).ready(function() {
 	    			}
 	    		});  		
 		}); 
+		$('.search').on('keydown', function(key) {
+			if (key.keyCode == 13) {
+				// naver 검색
+				$.each($('.search'), function(index, item) {
+					if(item.value.length != 0) {
+						var searchText = item.value;
+						var http="https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N";
+						window.open("https://endic.naver.com/search.nhn?sLn=kr&dicQuery="+searchText+"&x=0&y=0&query="+searchText+"&target=endic&ie=utf8&query_utf=&isOnlyViewEE=N","_blank", "width=700px, height=400px");	
+					}
+				});
+			}
+		});
 	});
 </script>
+<!-- 페이지 언어팩 -->
+	<script>
+	var koPage={
+			101:'더빙게시판'
+	       ,102:'글번호'
+	       ,103:'글제목'
+	       ,104:'닉네임'
+	       ,105:'조회수'
+	       ,106:'날짜'
+	       ,107:'추천'
+	       ,108:'비추천'
+	       ,109:'더빙영상검색'
+	}
+	var jpPage={
+			101:'吹き替え掲示板'
+		   ,102:'文番号'
+		   ,103:'文タイトル'
+		   ,104:'ニック'
+		   ,105:'クリック'
+		   ,106:'日付'
+		   ,107:'推薦'
+		   ,108:'非推薦'
+		   ,109:'吹き替え映像検索'
+	}
+	function languageChange_Page(lang){
+		if(lang=='kor'){
+			$('[data-langNum2]').each(function() {
+			    var $this = $(this); 
+			    $this.html(koPage[$this.data('langnum2')]); 
+			});
+			
+		}else if(lang=='jp'){
+			$('[data-langNum2]').each(function() {
+			    var $this = $(this); 
+			    $this.html(jpPage[$this.data('langnum2')]); 
+			});
+			
+		}
+	}
+	</script>
+
 <style type="text/css">
 		#checkline{
 			text-align: center;
@@ -133,66 +143,67 @@ $(document).ready(function() {
 </head>
 <body>
 <header>
-	<!-- Dropdown Structure -->
-	<ul id="dropdown1" class="dropdown-content">
-	  <li><a href="myPage">마이페이지</a></li>
-		  <li><a href="TryRetake?videoNum=9">재시험테스트</a>
-		  		<c:if test="${plzLogin!=null}">
-					<script type="text/javascript">
-							$(function(){
-								alert("${plzLogin}");
-							});
-					</script>
-				</c:if>
-	  <li class="divider"></li>
-	  <li><a href="searchTest">Youtube Search테스트</a></li>
-	</ul>
+  <c:if test="${plzLogin!=null}">
+    <script type="text/javascript">
+		  $(function(){
+			  alert("${plzLogin}");
+			});
+		</script>
+	</c:if>
 	
-	<!-- nav -->
-	<nav class="nav-extended">
-	  <div class="nav-wrapper">
-	    <!-- sidenav trigger -->
-		    <ul class="left">
-		    	<li>
-		    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-		    			<i class="material-icons">menu</i>
-		    		</a>
-		    	</li>
-		    </ul>
-	    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-	    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
-	    <ul class="right hide-on-med-and-down">
-		      	<c:if test="${not empty sessionScope.useremail }">
-		      <li>
-						<a href="logout">${sessionScope.useremail }님아logout</a>
-					
-		      </li>
-				</c:if>
-		      <li><a href="eduBoard">영상게시판</a></li>
-		      <li><a href="dubbingBoard">더빙게시판</a></li>
-		      <li><a href="InvestigationBoard">자막검증게시판</a></li>
-		      <!-- Dropdown Trigger -->
-		      <li><a class="dropdown-trigger" href="#" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
-		    </ul>
-		  </div>
+<!-- nav -->
+		<nav class="nav-extended">
+		  	<div class="nav-wrapper">
+			    <!-- sidenav trigger -->
+			    <ul class="left">
+			    	<li>
+			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
+			    			<i class="material-icons">menu</i>
+			    		</a>
+			    	</li>
+			    </ul>
+			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+			     
+			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+			    <ul class="right hide-on-med-and-down">
+				  	<li>
+				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:300px; margin-left:-5%;">
+	                  		<i class="material-icons" style="margin-left:-50px;">search</i>
+	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
+	              		</div>
+				  	</li>		 
+			      	<li><a href="eduBoard" data-langNum=1>영상게시판</a></li>
+			      	<li><a href="dubbingBoard" data-langNum=2>더빙게시판</a></li>
+			      	<li><a href="InvestigationBoard" data-langNum=3>자막검증게시판</a></li>
+			      	<li><a href="myPage" style="margin-right:20px;" data-langNum=4>마이페이지</a></li>
+			    </ul>
+			</div>		
+		
+			<div class="nav-content">
 
-	
-		<div class="nav-content">
-			<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
-        	<i class="medium material-icons" id="sticker">person</i>
-     		 </a>
-		</div>
-	</nav>
+				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
+		        	<i class="medium material-icons" id="sticker">person</i>
+		     	</a>
+			</div>
+		</nav>
 	</header>
 	  
 	  <!-- 창 축소시 사이드 nav -->
-	  <ul class="sidenav" id="small-navi">
-	    <li><a href="eduBoard">영상게시판</a></li>
- 	    <li><a href="dubbingBoard">더빙게시판</a></li>
-	    <li><a href="InvestigationBoard">자막게시판</a></li>
-  	  </ul>
+			<ul class="sidenav" id="small-navi">
+				<li>
+		        	<div class="input-field" style="width:70%; margin-left:15%;">
+		          		<input class="search" type="search" required>
+		          		<label class="label-icon" for="search" style="margin-left:-18%;"><i class="material-icons">search</i></label>
+		          		<i class="material-icons">close</i>
+		       		</div>
+				</li>		 
+				<li><a href="eduBoard" data-langNum=1>영상게시판</a></li>
+				<li><a href="dubbingBoard" data-langNum=2>더빙게시판</a></li>
+				<li><a href="InvestigationBoard" data-langNum=3>자막게시판</a></li>
+				<li><a href="myPage" data-langNum=4>마이페이지</a></li>
+			</ul>
 		
-		<!-- 로그인 MODAL -->
+			  <!-- 로그인 MODAL -->
 		<div id="modal1" class="modal">
 			<div class="modal-content">
 			<div class="container">
@@ -212,18 +223,18 @@ $(document).ready(function() {
 					</div>
 				
 					<div class="row">
-					<c:if test="${empty sessionScope.useremail }">
+						<c:if test="${empty sessionScope.useremail }">
 							<div class="input-field col s12">
 								<i class="material-icons prefix">mode_edit</i>
 								<input id="userpwd" type="password" class="validate" name="userpwd" value="${userpwd}">
 								<label for="userpwd">PASSWORD</label>
+								<input id="checkline" value="" type="text" style="border-bottom: none;" readonly="readonly"/>
 							</div>
 						</c:if>
 					</div>
-						 <!-- 글씨뜨는거 -->
-						 <input id="checkline" value="" type="text" style="border-bottom: none;"  />
+					<!-- 글씨뜨는거 -->
 					<c:if test="${not empty sessionScope.useremail }">
-						<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+						<h4 class="center">${sessionScope.useremail}<span data-langNum=5>환영합니다.</span></h4>
 					</c:if>
 				</div>	
 				
@@ -258,14 +269,113 @@ $(document).ready(function() {
 								<ul>
 								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
 								    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-								    <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
 								</ul>
 						</div>
-				</div>
+					</div>
 				</form>
 			</div>
 		</div>	
+	</div>
+	  
+	  <!-- 회원수정모달 -->
+	  <div id="modal3" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5 data-langNum=6>회원정보수정</h5>
+				<form id="updateMember" action="updateMember" method="post">
+					<div class="row" style="margin-top:10%;">
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>EMAIL</th>
+									<td>${sessionScope.useremail}</td>
+								</tr>
+								<tr>
+									<th data-langNum=7>성별</th>
+									<td>${sessionScope.gender}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>NICK</th>
+									<td>${sessionScope.usernick}</td>
+								</tr>
+								<tr>
+									<th data-langNum=8>생일</th>
+									<td>${sessionScope.birth}</td>
+								</tr>
+							</table>
+						</div>
+						
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input type="text" id="usernick" name="usernick" placeholder="변경 닉네임 입력" />
+							<span id="nickcheck"></span>
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">create</i>
+							<input id="currpwd" type="password" name="currpwd" placeholder="현재 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">border_color</i>
+							<input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">check</i>
+							<input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" />
+						</div>
+						
+						<div class="col s12">
+							<input type="button" class="btn" value="수정" id="btnUpdate" />
+							<input type="button" class="btn" value="취소" id="btnCancel" />
+						</div>
+					</div>	
+				</form>
+			</div>
+		</div>
+	</div>	
+	  
+	  <!-- 회원탈퇴 모달 -->
+	  <div id="modal2" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5 data-langNum=9>탈퇴하시겠습니까?</h5>
+				
+				<div class="row">
+					<form action="insertCloseID" method="post" id="submitform">
+						<div class="input-field col s12">
+			          		<i class="material-icons prefix">mail</i>
+			          		<input id="checkuseremail" name="useremail" type="text" class="validate">
+			          		<label for="useremail">USERMAIL</label>
+			        	</div>
+					</form>
+			        <div class="input-field col s12">
+			          <i class="material-icons prefix">mode_edit</i>
+			          <input id="pwd" type="password" class="validate">
+			          <label for="pwd">PASSWORD</label>
+			        </div>
+				<div class="row">
+					<span class="flow-text">
+						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+							<i class="material-icons right">keyboard_return</i>
+						</button>
+					</span>
+					<span class="flow-text">
+						<button class="btn" onclick="closeID()">QUIT
+							<i class="material-icons right">mood_bad</i>
+						</button>
+					</span>	
+				</div>	
+			</div>
+				<p style="color:red;" data-langNum=10>회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
+				<p style="margin-top:0;" data-langNum=11>기간 이후에는 회원정보가 영구 삭제됩니다.</p>
+			</div>
+	  	</div>
 	  </div>
+	  
 	  
 	  <div class="wrapper">
 			 <!-- sidenav -->	  
@@ -273,7 +383,7 @@ $(document).ready(function() {
 			  	  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
 					<li><div class="user-view">
 							<div class="background">
-								<img src="images/">
+								<!-- <img src="images/"> -->
 							</div>
 							<a href="#user"><img class="circle" src="images/"></a>
 							<a href="#name"><span class="white-text name">${usernick}</span></a> 
@@ -284,27 +394,28 @@ $(document).ready(function() {
 							Link With Icon</a></li>
 					<li><a href="#!">wishList</a></li>
 					<li><div class="divider"></div></li>
-					<li><a class="subheader">회원정보관리</a></li>
-					<li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-					<li><a class="waves-effect" href="#">회원탈퇴</a></li>
+					<li><a class="subheader" data-langNum=12>회원정보관리</a></li>
+					<li><a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum=13>회원정보수정</a></li>
+					<li><a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum=14>회원탈퇴</a></li>
 				</ul>
 			</aside>
 			
 			<section>	
 		         <div class="container">
 		          <div class="section">
-		          <h4 class="center">더빙게시판</h4>
+		          <h4 class="left"><a href="dubbingBoard" data-langNum2=101>더빙게시판</a></h4>
+
 		            <!--DataTables example-->
 		                  <table id="dubbing">
 		                    <thead>
 		                        <tr>
-		                            <th>글번호</th>
-		                            <th>글제목</th>
-		                            <th>닉네임</th>
-		                            <th>조회수</th>
-		                            <th>날짜</th>
-		                            <th>추천</th>
-		                            <th>비추천</th>
+		                            <th data-langNum2=102>글번호</th>
+		                            <th data-langNum2=103>글제목</th>
+		                            <th data-langNum2=104>닉네임</th>
+		                            <th data-langNum2=105>조회수</th>
+		                            <th data-langNum2=106>날짜</th>
+		                            <th data-langNum2=107>추천</th>
+		                            <th data-langNum2=108>비추천</th>
 		                        </tr>
 		                    </thead>
 		                 
@@ -339,7 +450,7 @@ $(document).ready(function() {
 	<div id="VideoSearch" class="modal">
 		<div class="container">
 			<div class="madal-content">
-				<h5 class="center">더빙영상검색</h5>
+				<h5 class="center" data-langNum2=109>더빙영상검색</h5>
 				<input type="hidden" id="url" /> 
 
 	 			<h4 class="center" style="color:red;">YouTube Viral Search</h4>
@@ -368,30 +479,33 @@ $(document).ready(function() {
 	</c:if>
   
   <footer class="page-footer">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Footer Content</h5>
-          <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-       </div>
-       <div class="col l4 offset-l2 s12">
-        <h5 class="white-text">Links</h5>
-        <ul>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-        </ul>
-    </div>
-  </div>
-  </div>
-    <div class="footer-copyright">
-      <div class="container">
-        © 2014 Copyright Text
-      <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-    </div>
-  </div>
-</footer>
+    	<div class="container">
+        	<div class="row">
+              	<div class="col l6 s12">
+                	<h5 class="white-text">One jewelry 7th Group</h5>
+                	<p class="grey-text text-lighten-4">Enjoy & Try study English</p>
+                	<p></p>
+                	<p class="grey-text text-lighten-4">We support your English</p>
+              	</div>
+              	<div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Made By</h5>
+                <ul>
+                  	<li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">AHN JISUNG</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">LEE YEOREUM</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">IM KWANGMUK</a></li>
+                  	<li><a class="grey-text text-lighten-3" href="#!">JUNG DANA</a></li>
+                	</ul>
+            	</div>
+       		</div>
+        </div>
+       	<div class="footer-copyright">
+            <div class="container">
+            © 2018 Copyright 일석칠조
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        	</div>
+    	</div>
+    </footer>
         
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>        
@@ -423,5 +537,6 @@ $(document).ready(function() {
        		console.log('findVideoId: '+findVideoId);
    		}
 	</script>	
+	<script type="text/javascript" src="js/LoginMenu.js"></script>
 </body>
 </html>

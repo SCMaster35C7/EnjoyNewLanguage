@@ -110,6 +110,7 @@
 			m.useremail, m.usernick, m.point
 	</select>
 
+
 	<select id="checkChallengeCount" parameterType="String" resultType="int"> 
 		select 
 	 		sum(s.CHALLENGECOUNT)
@@ -145,7 +146,8 @@
 		where 
 			s.url = e.url
 		and 
-			s.useremail = #{useremail}
+			s.useremail = #{value}
+
 	</select> 
 	
 	<!-- 회원탈퇴 정보 입력(삭제 예정 회원정보에 저장) -->
@@ -167,8 +169,32 @@
 	</delete>
 	
 	<select id="selectInConfirm" parameterType="String" resultType="Member">
-		select useremail
-		from confirmmember
-		where useremail = #{value}
+		select 
+			useremail
+		from 
+			confirmmember
+		where 
+			useremail = #{value}
 	</select>
+	
+	<delete id="idCompletelyDeleteFromMember">
+ 		delete from
+    		member
+ 	 	where
+    		useremail in (
+      			select
+        			useremail
+      			from
+        			confirmmember
+      			where
+         			months_between(sysdate, outdate) >= 1
+    			)
+	</delete>
+	
+	<delete id="idCompletelyDeleteFromConfirmmeber">
+ 		delete from
+    		confirmmember
+ 	 	where
+  			months_between(sysdate, outdate) >= 1
+	</delete>
 </mapper>

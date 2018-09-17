@@ -124,4 +124,18 @@ public class InvestigationRepository {
 		
 		return sub;
 	}
+
+	public Investigation existVideo(String url) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		Investigation inv = mapper.existVideo(url);
+		
+		return inv;
+	}
+
+	public int deleteInvUseURL(String url) {
+		InvestigationMapper mapper = session.getMapper(InvestigationMapper.class);
+		int result = mapper.deleteInvUseURL(url);
+		
+		return result;
+	}
 }
