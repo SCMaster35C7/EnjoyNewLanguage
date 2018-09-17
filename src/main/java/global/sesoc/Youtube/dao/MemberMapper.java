@@ -21,6 +21,7 @@ public interface MemberMapper {
 	public int insertCloseID(String useremail);					// 잠구는 계정 추가
 	public int recoveryID(String useremail); 					//계정 복구
 	public Member selectInConfirm(String useremail);
+	
 	public int idCompletelyDeleteFromMember();					// 한 달된 계정 삭제(Member)
 	public int idCompletelyDeleteFromConfirmmeber();			// 한 달된 계정 삭제(ConfirmMember)
 }

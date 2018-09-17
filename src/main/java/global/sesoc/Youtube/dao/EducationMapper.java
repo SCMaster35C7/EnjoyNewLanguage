@@ -25,6 +25,7 @@ public interface EducationMapper {
 	public int updateRecommend(Recommendation reco); 						// 추천/비추천 변경
 	public int updateIncreRecommend(Map<String, Object> map); 				// 추천/비추천수 증가
 	public int updateDecreRecommend(Map<String, Object> map); 				// 추천/비추천수 감소
+	public int deleteAllRecommend(Map<String, Object> map);					// 추천/비추천 항목 삭제	
 	
 	public String selectSubName(int videoNum); 								// 자막파일 이름가져오기
 	public String selectSubName2(String url);
@@ -36,5 +37,4 @@ public interface EducationMapper {
 	public int insertWrongAnswer(WrongAnswer wa); 							// 시험결과중 오답리스트 삽입
 	public List<WrongAnswer> selectWrongAnswerList(WrongAnswer wa);			// 재시험용 문제 리스트 가져오기
 	public int deleteWrongAnswer(WrongAnswer wa); 							// 재시험에서 맞춘 문제는 오답리스트에서 삭제
-	public int deleteAllRecommend(Map<String, Object> map);					// 추천/비추천 항목 삭제	
 }
