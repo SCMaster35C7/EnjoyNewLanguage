@@ -41,7 +41,7 @@
 			$('#modal1').modal(); 	//로그인모달 
 			$('#modal2').modal();
 			$('#modal3').modal(); 	//회원정보수정 모달
-      $('#modal4').modal();   //계정복구 모달 
+      		$('#modal4').modal();   //계정복구 모달 
         
 			$('#addvideo').modal(); //영상추가 모달 
 
@@ -665,10 +665,11 @@
 					<div class="user-view">
 						<div class="background">
 							<img src="images/">
-              <a href="#user"><img class="circle" src="images/"></a>
+              			<a href="#user"><img class="circle" src="images/"></a>
 						  <a href="#name"><span class="white-text name">${usernick}</span></a> 
 						  <a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>
+					</div>
 					</li>
 					<li><a href="#!"><i class="material-icons">cloud</i>First
 							Link With Icon</a></li>
@@ -690,11 +691,11 @@
 				<c:if test="${not empty eduList}">
 					<c:forEach var="eduList" items="${eduList}">
 						<div class="col s12 m3 l3">
-							<div class="card" style="height:400px margin-bottom:10px;">
-	<div class="card-image">
-						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-					</div>
+							<div class="card" style="height:400px; margin-bottom:10px;">
+								<div class="card-image">
+									<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
+									<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+								</div>
 								<div class="card-content" style="height:150px;">
 									<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
 								</div>

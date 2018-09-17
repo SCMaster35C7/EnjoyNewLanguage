@@ -32,6 +32,9 @@
          
          //modal open
          $('#modal1').modal();
+         $('#modal2').modal(); //회원탈퇴 모달
+		 $('#modal3').modal(); //회원정보수정 모달
+		 $('#modal4').modal(); //계정복구 모달
          
          //side-nav open
          $('.sidenav').sidenav();
@@ -97,7 +100,7 @@
              <li><a href="eduBoard">영상게시판</a></li>
              <li><a href="dubbingBoard">더빙게시판</a></li>
              <li><a href="InvestigationBoard">자막검증게시판</a></li>
-             <li><a href="myPage">마이페이지</a></li>
+			 <li><a href="myPage" style="margin-right:20px;" data-langNum=4>마이페이지</a></li>
          </ul>
         </div>
 
@@ -190,8 +193,8 @@
                         </a>
                         <ul>
                             <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-                            <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-                            <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+							<li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
+						    <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
                         </ul>
                   </div>
                </div>
@@ -199,6 +202,120 @@
          </div>
       </div>   
      </div>
+     
+     <!-- 회원수정모달 -->
+	  <div id="modal3" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5 data-langNum=6></h5>
+				<form id="updateMember" action="updateMember" method="post">
+					<div class="row" style="margin-top:10%;">
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>EMAIL</th>
+									<td>${sessionScope.useremail}</td>
+								</tr>
+								<tr>
+									<th data-langNum=7>성별</th>
+									<td>${sessionScope.gender}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>NICK</th>
+									<td>${sessionScope.usernick}</td>
+								</tr>
+								<tr>
+									<th data-langNum=8></th>
+									<td>${sessionScope.birth}</td>
+								</tr>
+							</table>
+						</div>
+						
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input type="text" id="usernick" name="usernick" placeholder="변경 닉네임 입력" />
+							<span id="nickcheck"></span>
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">create</i>
+							<input id="currpwd" type="password" name="currpwd" placeholder="현재 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">border_color</i>
+							<input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">check</i>
+							<input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" />
+						</div>
+						
+						<div class="col s12">
+							<input type="button" class="btn" value="수정" id="btnUpdate" />
+							<input type="button" class="btn" value="취소" id="btnCancel" />
+						</div>
+					</div>	
+				</form>
+			</div>
+		</div>
+	</div>	
+	  
+	  <!-- 계정복구 모달 -->
+	  	<div id="modal4" class="modal">
+			<div class="modal-content">
+				<div class="container center">
+					<h5>계정을 복구하시겠습니까?</h5>
+					<form id="req" action="recoveryMail" method="post">
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="recoveryEmail" type="text" name="recoveryEmail" placeholder="이메일 주소를 입력하세요."/>
+						</div>
+						<input type="button" class="btn" value="이메일인증" onclick="check()">
+					</form>
+					<!-- 이메일 인증을 하고 인증이 되면 해당 이메일 주소를 recoveryID tag에 넣고 recovery() 메소드 호출-->
+				</div>
+			</div>
+		</div>
+	  <!-- 회원탈퇴 모달 -->
+	  <div id="modal2" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5 data-langNum=9></h5>
+				
+				<div class="row">
+					<form action="insertCloseID" method="post" id="submitform">
+						<div class="input-field col s12">
+			          		<i class="material-icons prefix">mail</i>
+			          		<input id="checkuseremail" name="useremail" type="text" class="validate">
+			          		<label for="checkuseremail">USERMAIL</label>
+			        	</div>
+				        <div class="input-field col s12">
+				          <i class="material-icons prefix">mode_edit</i>
+				          <input id="pwd" type="password" class="validate">
+				          <label for="pwd">PASSWORD</label>
+				        </div>
+					</form>
+				<div class="row">
+					<span class="flow-text">
+						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+							<i class="material-icons right">keyboard_return</i>
+						</button>
+					</span>
+					<span class="flow-text">
+						<button class="btn" onclick="closeID()">QUIT
+							<i class="material-icons right">mood_bad</i>
+						</button>
+					</span>	
+				</div>	
+			</div>
+				<p style="color:red;" data-langNum=10></p>
+				<p style="margin-top:0;" data-langNum=11></p>
+			</div>
+	  	</div>
+	  </div>
 
    <div class="wrapper">
       <!-- sidenav -->
@@ -217,8 +334,8 @@
             <li><a href="#!">wishList</a></li>
             <li><div class="divider"></div></li>
             <li><a class="subheader">회원정보관리</a></li>
-            <li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-            <li><a class="waves-effect" href="#">회원탈퇴</a></li>
+			<li><a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum=13>회원정보수정</a></li>
+			<li><a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum=14>회원탈퇴</a></li>
          </ul>
       </aside>
 
@@ -297,7 +414,7 @@
                               <tr>
                                  <td><a href="detailEduBoard?videoNum=${f.videoNum}">${f.title}</a></td>
                                  <td><a href="TryRetake?videoNum=${f.videoNum}"
-                                    class="waves-effect waves-light btn">再試驗ㅇ</a></td>
+                                    class="waves-effect waves-light btn">再試驗</a></td>
                               </tr>
                            </c:forEach>
                         </c:if>

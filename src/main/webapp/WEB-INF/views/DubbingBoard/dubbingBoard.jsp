@@ -482,8 +482,8 @@ $(document).ready(function() {
 			                <p><input type="button" id="searchBtn" value="Search" class="btn"></p>
 			            </div>
 			      
-			        	<div id="results"></div>
 			      	</div>
+			       <div id="results"></div>
 			  	</div>
 			</div>
 		</div>

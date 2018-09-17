@@ -40,7 +40,7 @@
 		$('#modal1').modal();
 		$('#modal2').modal();
 		$('#modal3').modal(); //회원정보수정 모달
-    $('#modal4').modal(); //계정복구 모달
+    	$('#modal4').modal(); //계정복구 모달
 
 		
 		//$('#requestInv').modal();
@@ -495,8 +495,8 @@
 			        <div class="input-field col s3">
 			        	<input type="button" id="searchBtn" value="Search" class="btn">
 			        </div>
-			       	<div id="results"></div>
 				</div>
+			    <div id="results"></div>
 			</div>
 		</div>
 	</div>
@@ -574,13 +574,13 @@
 				<div class="center">
 					<ul class="pagination">
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="InvestigationBoard?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">first_page</i>
 							</a>
 						</li>
 					
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+							<a href="InvestigationBoard?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
 								<i class="material-icons">chevron_left</i>
 							</a>
 						</li>
@@ -591,18 +591,18 @@
 							</c:if>
 							<c:if test="${navi.currentPage != page }">
 								<li class="page-item"><a class="page-link"
-									href="eduBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+									href="InvestigationBoard?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
 							</c:if>
 						</c:forEach>
 						
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="InvestigationBoard?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">chevron_right</i> 
 							</a>
 						</li>
 						
 						<li class="waves-effect">
-							<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+							<a href="InvestigationBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
 								<i class="material-icons">last_page</i> 
 							</a>
 						</li>
