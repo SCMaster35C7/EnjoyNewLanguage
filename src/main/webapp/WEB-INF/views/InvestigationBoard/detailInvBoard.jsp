@@ -1,28 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
+   pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="author" content="zisung">
-	
-	<!--Import Google Icon Font-->
+   <meta charset="UTF-8">
+   <meta name="author" content="zisung">
+   
+   <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
     <!--Let browser know website is optimized for mobile-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	
-	<style>
-	.scroll-box {
-    	overflow-y: scroll;
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   
+   <style>
+   .scroll-box {
+       overflow-y: scroll;
         height: 300px;
         padding: 1rem
 	    }
 	</style>
-	
 	<title>자막 검증 상세 정보</title>
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript">
@@ -98,12 +97,13 @@
 		var usernick = "${sessionScope.usernick}";
 		var investigationnum = "${inv.investigationnum}"
           
-	    $(function() {
-	    	initReply();
-	    	initSubtitle();
-	         
-	        $("#replyInsert").on('click', replyInsert);
+       $(function() {
+          initReply();
+          initSubtitle();
+            
+           $("#replyInsert").on('click', replyInsert);
  
+
 	        $('.recommendation').on('click', function() {
 	           	if(useremail.trim().length == 0) {
 	            	location.href="login";
@@ -411,44 +411,44 @@
                 "identificationnum":subnum, 
                 "recommendtable":"3", 
                 "recommendation":"0"
-           	};
+              };
            
             $.ajax({
-            	method:'post'
-               	, url:'insertRecommendation'
-               	, data: JSON.stringify(dataForm)
-               	, contentType: "application/json; charset=utf-8"
-               	, async: false
-               	, success:function(resp) {
-                	if(resp == "success") {
-                     	alert("영상을 좋아합니다.");
-                     	target.children("span").html(subRecoCount+1);
-                  	}else if(resp == "cancel") {
-                     	alert("좋아요를 취소합니다.");
-                     	target.children("span").html(subRecoCount-1);
-                  	}else if(resp == "change") {
-                     	alert("좋아요로 변경하셨습니다.");
-                     	subDecoTarget.html(Number(subDecoTarget.text())-1);
-                     	target.children("span").html(subRecoCount+1);
-                  	}
-               	}
-               	, error:function(resp, code, error) {
-                  	alert("resp : "+resp+", code : "+code+", error : "+error);
-               	}
+               method:'post'
+                  , url:'insertRecommendation'
+                  , data: JSON.stringify(dataForm)
+                  , contentType: "application/json; charset=utf-8"
+                  , async: false
+                  , success:function(resp) {
+                   if(resp == "success") {
+                        alert("영상을 좋아합니다.");
+                        target.children("span").html(subRecoCount+1);
+                     }else if(resp == "cancel") {
+                        alert("좋아요를 취소합니다.");
+                        target.children("span").html(subRecoCount-1);
+                     }else if(resp == "change") {
+                        alert("좋아요로 변경하셨습니다.");
+                        subDecoTarget.html(Number(subDecoTarget.text())-1);
+                        target.children("span").html(subRecoCount+1);
+                     }
+                  }
+                  , error:function(resp, code, error) {
+                     alert("resp : "+resp+", code : "+code+", error : "+error);
+                  }
             });
-	    }
-	    
-	    function subDecommendation() {
-	    	if(useremail.trim().length == 0) {
-               	location.href="login";
-               	return;
+       }
+       
+       function subDecommendation() {
+          if(useremail.trim().length == 0) {
+                  location.href="login";
+                  return;
             }
             var target = $(this);
             var subDecoCount = Number(target.children("span").text());
             var subRecoTarget = target.parent().children(".subRecommendation").children(".subRecoCount");
-	    	var subnum = $(this).attr('data-rno');
+          var subnum = $(this).attr('data-rno');
             var dataForm = {
-            	"tableName":"InvestigationSubtitle", 
+               "tableName":"InvestigationSubtitle", 
                 "idCode":"subtitleNum", 
                 "useremail":useremail, 
                 "identificationnum":subnum, 
@@ -457,23 +457,23 @@
             };
             
             $.ajax({
-               	method:'post'
-               	, url:'insertRecommendation'
-               	, data: JSON.stringify(dataForm)
-               	, contentType: "application/json; charset=utf-8"
-               	, async: false
-               	, success:function(resp) {
-                  	if(resp == "success") {
-                     	alert("영상을 싫어합니다.");
-                     	target.children("span").html(subDecoCount+1);
-                  	}else if(resp == "cancel") {
-                     	alert("싫어요를 취소합니다.");
-                     	target.children("span").html(subDecoCount-1);
-                  	}else if(resp == "change"){
-                     	alert("싫어요로 변경하셨습니다.");
-                     	subRecoTarget.html(Number(subRecoTarget.text())-1);
-                     	target.children("span").html(subDecoCount+1);
-                  	}
+                  method:'post'
+                  , url:'insertRecommendation'
+                  , data: JSON.stringify(dataForm)
+                  , contentType: "application/json; charset=utf-8"
+                  , async: false
+                  , success:function(resp) {
+                     if(resp == "success") {
+                        alert("영상을 싫어합니다.");
+                        target.children("span").html(subDecoCount+1);
+                     }else if(resp == "cancel") {
+                        alert("싫어요를 취소합니다.");
+                        target.children("span").html(subDecoCount-1);
+                     }else if(resp == "change"){
+                        alert("싫어요로 변경하셨습니다.");
+                        subRecoTarget.html(Number(subRecoTarget.text())-1);
+                        target.children("span").html(subDecoCount+1);
+                     }
                  }
                	, error:function(resp, code, error) {
                   	alert("resp : "+resp+", code : "+code+", error : "+error);
@@ -512,88 +512,106 @@
 		function replyInsert() {
 			$("#useremail").val(useremail);
 
-			var btnname = $("#replyInsert").val();
+      function reportReply() {
+         //alert('신고');
+         var useremail = "${sessionScope.useremail}";
+         //alert(useremail);
+         replynum = $(this).attr('data-rno');
+         //alert(replynum);
+         var sendData = {
+               "useremail":useremail
+               ,"whichboard":  "1"
+               ,"replynum":  replynum
+            };
+            
+         $.ajax({
+            type : 'post',
+            url : 'insertBlack',
+            data : JSON.stringify(sendData),
+            dataType:'text',
+            contentType: "application/json; charset=UTF-8",
+            success : function(resp){
+               alert(JSON.stringify(resp));
+               initReply();
+            },
+            error:function(resp, code, error) {
+               //alert("resp : "+resp+", code : "+code+", error : "+error);
+               alert("로그인이 필요합니다.");
+               location.href="./";
+            }
+         }); 
+      }
+       
+      function replyInsert() {
+         $("#useremail").val(useremail);
 
-			if (btnname == '댓글등록') {
-				var replytext = $("#replytext").val();
+         var btnname = $("#replyInsert").val();
 
-				if (replytext.length == 0) {
-					alert("댓글을 작성해주세요!");
-					return;
-				}
+         if (btnname == '댓글등록') {
+            var replytext = $("#replytext").val();
 
-				var sendData = {
-					"idnum" : investigationnum,
-					"useremail" : useremail,
-					"content" : replytext
-				};
+            if (replytext.length == 0) {
+               alert("댓글을 작성해주세요!");
+               return;
+            }
 
-				$.ajax({
-					type : 'post',
-					url : 'replyInvInsert',
-					data : JSON.stringify(sendData),
-					dataType : 'text',
-					contentType : "application/json; charset=UTF-8",
-					success : initReply
-				});
-				//돌려놓기
-				$("#replytext").val('');
-			} else if (btnname == '댓글수정') {
-				$('#replylabel').show();
-				var replytext = $("#replytext").val();
-				var replynum =$("#updatereplynum").val();
-				var sendData = {
-					"replynum" : replynum,
-					"content" : replytext,
-				}
+            var sendData = {
+               "idnum" : investigationnum,
+               "useremail" : useremail,
+               "content" : replytext
+            };
 
-				$.ajax({
-					method : 'post',
-					url : 'replyInvUpdate',
-					data : JSON.stringify(sendData),
-					dataType : 'text',
-					contentType : "application/json; charset=UTF-8",
-					success : initReply
-				});
+            $.ajax({
+               type : 'post',
+               url : 'replyInvInsert',
+               data : JSON.stringify(sendData),
+               dataType : 'text',
+               contentType : "application/json; charset=UTF-8",
+               success : initReply
+            });
+            //돌려놓기
+            $("#replytext").val('');
+         } else if (btnname == '댓글수정') {
+            var replytext = $("#replytext").val();
+            var replynum = $("#replynum").val();
+            var sendData = {
+               "replynum" : replynum,
+               "content" : replytext,
+            }
 
-				$("#replytext").val('');
-				$("#replyInsert").val("리뷰등록");
-				$("#cancelUpdate").css("visibility", "hidden");
-			}
-		}
+            $.ajax({
+               method : 'post',
+               url : 'replyInvUpdate',
+               data : JSON.stringify(sendData),
+               dataType : 'text',
+               contentType : "application/json; charset=UTF-8",
+               success : initReply
+            });
 
-		function replyDelete() {
-			replynum = $(this).attr('data-rno');
-			$.ajax({
-				method : 'get',
-				url : 'replyInvDelete',
-				data : 'replynum=' + replynum,
-				dataType : 'text',
-				success : initReply
-			});
-		}
+            $("#replytext").val('');
+            $("#replyInsert").val("리뷰등록");
+            $("#cancelUpdate").css("visibility", "hidden");
+         }
+      }
 
-		function replyUpdate() {
-			replynum = $(this).attr('data-rno');
-			var replytext = $(this).parent().parent().children('.replycontent').text();
-			$('#replylabel').hide();
-			$('#updatereplynum').val(replynum);
-			$("#replytext").val(replytext);
-			$("#replyInsert").val("댓글수정");
-			$("#cancelUpdate").css("visibility", "visible");
-		}
-	</script>
-</head>
+      function replyDelete() {
+         var nick = $(this).parent().children('.nick').text();
+         if ("${usernick}" != nick) {
+            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
+            return;
+         }
+         replynum = $(this).attr('data-rno');
+         $.ajax({
+            method : 'get',
+            url : 'replyInvDelete',
+            data : 'replynum=' + replynum,
+            dataType : 'text',
+            success : initReply
+         });
+      }
 
-<body>
-	<header>
-		<c:if test="${plzLogin!=null}">
-			<script type="text/javascript">
-				$(function(){
-					alert("${plzLogin}");
-				});
-			</script>
-		</c:if>
+      function replyUpdate() {
+         replynum = $(this).attr('data-rno');
 
 		<!-- nav -->
 		<nav class="nav-extended">
@@ -898,3 +916,4 @@
 	<script type="text/javascript" src="js/materialize.js"></script>	
 </body>
 </html>
+

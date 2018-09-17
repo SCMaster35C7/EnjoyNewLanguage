@@ -382,7 +382,6 @@
 		
 		function deleteDubbing(){
 			var dubbingnum=${dubbing.dubbingnum};
-			console.log(dubbingnum);
 			$.ajax({
 				method:'post'
 			   ,url: 'deleteDubbing'

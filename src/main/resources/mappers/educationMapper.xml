@@ -309,4 +309,20 @@
 		where
 			url = #{url}
 	</select>
+	
+	<delete id="deleteAllWishList" parameterType="String">
+	delete from wishlist
+	where url=#{value}
+	</delete>
+
+    <delete id="deleteUserStudyByURL" parameterType="String">
+    delete from userstudy
+    where url=#{value}
+    </delete>
+    
+    <delete id="deleteVideo" parameterType="int">
+    delete from educationvideo
+    where videonum=#{value}
+    </delete>
+	
 </mapper>

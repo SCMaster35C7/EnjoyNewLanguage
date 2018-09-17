@@ -371,20 +371,20 @@
 	</div>
               
           
-             </div>
-		    </div>
-		  </div>
-		   <hr />
-
-	<div>
-		<form id="savedubbing" action="savedubbing" method="post"
-			enctype="multipart/form-data">
-			<div class="file-field">
-		   <div class="btn left" style="margin-left:30px;">
-	       <span>File</span>
-		   <input type="file" id="saveFile" name="saveFile" ></div>
-		   <div class="file-path-wrapper" style="width: 15%;">
-		   <input class="file-path validate" type="text">
+      </div>
+	</div>
+  </div>
+</div>
+<!-- 하단 녹음 입력부분 -->
+	<div style="margin-top: 2%;">
+    <form id="savedubbing" action="savedubbing" method="post" enctype="multipart/form-data">
+	  <div class="file-field">
+		<div class="btn left" style="margin-left:30px;">
+	        <span>File</span>
+		    <input type="file" id="saveFile" name="saveFile" >
+		</div>
+		<div class="file-path-wrapper" style="width: 15%;">
+		    <input class="file-path validate" type="text">
 		</div>
 	 </div>	
 	<div class="row">
@@ -407,7 +407,7 @@
 		</form>
 
 	</div>
-		   </div>
+		   
 		   
 		</section>
 	</div>
@@ -429,17 +429,10 @@
 				//width : '960',
 				//videoId : '3MteSlpxCpo',
 				events : {
-					'onReady' : onPlayerReady,
 					'onStateChange' : onPlayerStateChange
 				}
 			});
 		}
-
-		// 4. Youtube Player의 준비가 끝나면 호출할 함수
-		function onPlayerReady(event) {
-			event.target.playVideo();
-		}
-
 		// 5. Youtube Player의 state가 변하면 적용할 함수
 		var playerState;
 		function onPlayerStateChange(event) {

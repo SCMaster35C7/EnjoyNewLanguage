@@ -37,4 +37,9 @@ public interface EducationMapper {
 	public int insertWrongAnswer(WrongAnswer wa); 							// 시험결과중 오답리스트 삽입
 	public List<WrongAnswer> selectWrongAnswerList(WrongAnswer wa);			// 재시험용 문제 리스트 가져오기
 	public int deleteWrongAnswer(WrongAnswer wa); 							// 재시험에서 맞춘 문제는 오답리스트에서 삭제
+	public int deleteAllRecommend(Map<String, Object> map);					// 추천/비추천 항목 삭제	
+	public int deleteAllWishList(String url);                               // 위시리스트 삭제
+	public int deleteUserStudyByURL(String url);                            // 유저 학습정보 삭제(사용자 오답은 eduvideo에 cascade)
+	public int deleteVideo(int videoNum);                                   // 교육영상정보 제거
+
 }
