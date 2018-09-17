@@ -165,7 +165,7 @@
 		delete from 
 			confirmmember
 		where 
-			userid=#{value}
+			useremail=#{value}
 	</delete>
 	
 	<select id="selectInConfirm" parameterType="String" resultType="Member">
