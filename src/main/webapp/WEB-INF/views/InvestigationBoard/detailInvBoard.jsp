@@ -865,7 +865,7 @@
          <div class="container" style="width:98%;">
             <!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
             <!--<div id="youtube"></div>   -->
-            <div class="row">
+            <div class="row" style="margin-top: 2%;">
                <div class="col s12 m8 l8">
                   <div class="video-container z-depth-2" >
                      <iframe id="youtube" width="960" height="490"
@@ -900,7 +900,7 @@
                       <div class="card" style="height:520px; margin-top:0px;">
                         <div class="card-content">
                            <span class="card-title activator grey-text text-darken-4">
-                              자막목록
+                              	자막목록
                            </span>
                         </div>
                         <div class="card-content scroll-box">
@@ -933,9 +933,9 @@
                       </div>
                    </div>
                </div>
-
+               
                    <div class="row"> 
-                  <div class="row"  style="margin-left: 3%;">
+                  <div class="row" style="margin-left: 3%;">
                      <div class="input-field col s4">
                         <input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
                         <label id="replylabel" for="replytext">리뷰를 작성해주세요 ^ㅅ^</label>      

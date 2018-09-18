@@ -467,8 +467,6 @@
              data: {
                  labels: ["lv.1", "lv.2", "lv.3", "lv.4", "lv.5"],
                  datasets: [{
-                     
-                   
                      data:${levelArray},
                      backgroundColor: [
                          'rgba(255, 99, 132, 0.2)',
@@ -488,6 +486,9 @@
                  }]
              },
              options: {
+                legend: {
+                   display: false
+                      },
                  scales: {
                      yAxes: [{
                          ticks: {
@@ -508,7 +509,12 @@
                     backgroundColor: [
                          'rgba(54, 162, 235, 0.2)',
                          'rgba(255, 99, 132, 0.2)'
-                     ]
+                     ],
+                     borderColor: [
+                         'rgba(54, 162, 235, 1)',
+                         'rgba(255, 99, 132, 1)'
+                     ],
+                     borderWidth: 1
                 }]
                 
              }

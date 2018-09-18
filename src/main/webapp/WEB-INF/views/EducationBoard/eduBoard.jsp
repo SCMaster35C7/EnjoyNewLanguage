@@ -679,50 +679,53 @@
 					<li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
 				</ul>
 			</aside>	
-			<section>
-		<!-- Page Content -->
-		<div class="container">
-			<div class="row">
-				<h4 class="left"><a href="eduBoard">추천학습영상</a></h4>
-			</div>
 			
-			<div class="row">
-				<c:if test="${not empty eduList}">
-					<c:forEach var="eduList" items="${eduList}">
-						<div class="col s12 m3 l3">
-							<div class="card" style="height:400px; margin-bottom:10px;">
-								<div class="card-image">
-									<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-									<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-								</div>
-								<div class="card-content" style="height:150px;">
-									<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
-								</div>
-								
-								<div class="card-action" style="height:70px">
-									<div class="row s12 m12">
-										<input type="hidden" value="${eduList.videoNum}"/>
-										<button class="btn recommendation"  style="width:65px; padding-right:4px; padding-left:4px;">
-											<i class="material-icons">thumb_up</i>
-											<span id="recoCount">${eduList.recommendation}</span>
-										</button>
-										<button class="btn decommendation" style="width:65px; padding-right:4px; padding-left:4px;">
-											<i class="material-icons">thumb_down</i>
-											<span id="decoCount">${eduList.decommendation}</span>
-										</button>
-										<button class="btn disabled right decommendation" style="width:80px">
-											<i class="material-icons">touch_app</i>
-											<span>${eduList.hitCount}</span>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</c:forEach>
-				</c:if>
-			</div>
-		</div>
-	</section>
+			<section>
+      <!-- Page Content -->
+      <div class="container">
+         <div class="row">
+            <h4 class="left"><a href="eduBoard">추천학습영상</a></h4>
+         </div>
+         
+         <div class="row">
+            <c:if test="${not empty eduList}">
+               <c:forEach var="eduList" items="${eduList}">
+                  <div class="col s12 m3 l3">
+                     <div class="card" style="height:440px; margin-bottom:10%;">
+                        <div class="card-image">
+                           <img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
+                           <a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+                        </div>
+                        <div class="card-content" style="height:150px;">
+                           <a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
+                        </div>
+                        
+                        <div class="card-action" style="height:60px; padding-left:5%; padding-right:5%;">
+                           <div class="row">
+                              <div class="col s12 m12 l12">
+                                 <input type="hidden" value="${eduList.videoNum}"/>
+                                 <button class="btn recommendation">
+                                    <i class="material-icons">thumb_up</i>
+                                    <span id="recoCount">${eduList.recommendation}</span>
+                                 </button>
+                                 <button class="btn decommendation">
+                                    <i class="material-icons">thumb_down</i>
+                                    <span id="decoCount">${eduList.decommendation}</span>
+                                 </button>
+                                 <button class="btn disabled right decommendation">
+                                    <i class="material-icons">touch_app</i>
+                                    <span>${eduList.hitCount}</span>
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </c:forEach>
+            </c:if>
+         </div>
+      </div>
+   </section>
 		</div>
 		<!-- pagination -->
 		<div class="center">
