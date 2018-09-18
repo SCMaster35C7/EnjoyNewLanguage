@@ -109,9 +109,9 @@ public class MemberRepository {
 		return levelList;
 	}
 
-	public int checkChallengeCount(String useremail) {
+	public Integer checkChallengeCount(String useremail) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
-		int result = mapper.checkChallengeCount(useremail);
+		Integer result = mapper.checkChallengeCount(useremail);
 		return result;
 	}
 
