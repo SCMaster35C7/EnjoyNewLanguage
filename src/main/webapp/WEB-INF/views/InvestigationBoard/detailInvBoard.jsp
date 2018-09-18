@@ -41,9 +41,8 @@
          //modal open
          $('#modal1').modal();
          $('#modal2').modal(); //회원탈퇴 모달
-		     $('#modal3').modal(); //회원정보수정 모달
-	       $('#modal4').modal(); //계정복구 모달
-
+	     $('#modal3').modal(); //회원정보수정 모달
+      	 $('#modal4').modal(); //계정복구 모달
          
          //side-nav open
          $('.sidenav').sidenav();
@@ -54,34 +53,36 @@
          //캐러셀
          $('.carousel').carousel();
          
+         $("#deleteInvBoard").on('click', function() {
+            if('${inv.useremail}'!= '${sessionScope.useremail}') {
+               alert("등록자만 삭제할 수 있습니다.");
+               return;
+            }
+            
+            var dataForm = {
+               url : '${inv.url}'
+               , IDCode : ${inv.investigationnum}
+               , recommendtable : 1
+            };
+            
+            $.ajax({
+               method:'get'
+               , url:'deleteInvBoard'
+               , data:dataForm
+               , contentType: 'application/json; charset=utf-8'
+               , success:function(resp) {
+                  if(resp == 'success')
+                     location.href = "InvestigationBoard";
+               }
+            });
+         });
+         
          $('#loginBtn').on('click',function(){
             var useremail = $('#useremail');
             var userpwd = $('#userpwd');
             
             $('#loginForm').submit();
          });
-        
-       $("#deleteInvBoard").on('click', function() {
-				if('${inv.useremail}'!= '${sessionScope.useremail}') {
-					alert("등록자만 삭제할 수 있습니다.");
-					return;
-				}
-				var dataForm = {
-					url : '${inv.url}'
-					, IDCode : ${inv.investigationnum}
-					, recommendtable : 1
-				};
-				$.ajax({
-					method:'get'
-					, url:'deleteInvBoard'
-					, data:dataForm
-					, contentType: 'application/json; charset=utf-8'
-					, success:function(resp) {
-						if(resp == 'success')
-							location.href = "InvestigationBoard";
-					}
-				});
-			});
          
          $('.search').on('keydown', function(key) {
             if (key.keyCode == 13) {
@@ -96,7 +97,7 @@
             }
          });
       });
-      
+   
       var useremail = "${sessionScope.useremail}";
       var usernick = "${sessionScope.usernick}";
       var investigationnum = "${inv.investigationnum}"
@@ -106,6 +107,7 @@
           initSubtitle();
             
            $("#replyInsert").on('click', replyInsert);
+ 
            $('.recommendation').on('click', function() {
                  if(useremail.trim().length == 0) {
                   location.href="login";
@@ -204,7 +206,7 @@
             var subtitleName = $('#subtitleName');
             
                  if(useremail.trim().length == 0) {
-                    $('#modal1').modal().open();
+                    $('#modal1').modal('open');
                   return;
                  }
             
@@ -275,22 +277,38 @@
       }
          
        function outputReply(resp) {
-             var result = '';
-       
-             for ( var i in resp) {
-                result += '<div class="content">'
-                result += ' <p class="email" >' + resp[i].useremail + '</p>';
-                result += ' <p class="nick" >' + resp[i].usernick + '</p>';
-                result += ' <p class="text" >' + resp[i].content + '</p>';
-                result += '<p class="date" >' + resp[i].regdate + '</p>';
-                result += '<p class="blackcount" >' + resp[i].blackcount + '</p>';
-               if (usernick==resp[i].usernick) {
-               result += '<input class="replyUpdate" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
-               result += '<input class="replyDelete" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
+          var result = '';
+         
+         result += '<div class="row">'
+         result += '<table cellpadding="5" cellspacing="2" border="1" align="center" word-break:break-all;" style="width: 80%; margin-left: 3%;">';
+         result +=    '<thead>';
+         result +=      '<tr>';
+         result +=         '<th>' + 'usernick' + '</th>';
+         result +=         '<th class="replycontent" style="width: 50%;">' + 'content' + '</th>';
+         result +=         '<th>' + 'date' + '</th>';
+         result +=         '<th colspan="2">' + '수정/취소' + '</th>';
+         result +=         '<th>' + '신고' + '</th>';
+         result +=      '</tr>';
+         result +=    '</thead>';
+         for (var i in resp) {
+            result +=    '<tbody>';
+            result +=      '<tr>';
+            result +=         '<td>' + resp[i].usernick + '</td>';
+            result +=         '<td class="replycontent">' + resp[i].content + '</td>';
+            result +=         '<td>' + resp[i].regdate + '</td>';
+            result +=         '<td colspan="2">';
+            if ('${sessionScope.useremail}'==resp[i].useremail) {
+               result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+               result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
             }
-            result += '<img class="report" src="images/절미2.jpg"  data-rno="'+resp[i].replynum+'" />';
-                result += ' </div>';
+            result +=         '</td>';
+            result +=      '<td>';
+            result += '<img class="report" src="images/warning.jpg" style="margin: 1%;" data-rno="'+resp[i].replynum+'" />';
+            result +=      '</td></tr>';
+            result +=    '</tbody>';
          }
+         result += '</table>';
+         result += ' </div>';
             
              $("#result").html(result);
              $("input:button.replyDelete").click(replyDelete);
@@ -324,8 +342,6 @@
             result += '<br>';
          }
          
-      
-         
          $("#subtitleList").html(result);
          $(".subStart").on('click', subStart);
          $(".subDelete").on('click', subDelete);
@@ -335,7 +351,6 @@
        
          function subStart() {
             alert("자막 실행");
-            
             var subnum = $(this).attr('data-rno');
             
             $.ajax({
@@ -394,7 +409,6 @@
               var subDecoTarget = target.parent().children(".subDecommendation").children(".subDecoCount");
               var subnum = $(this).attr('data-rno');
               var dataForm = {
-
                 "tableName":"InvestigationSubtitle", 
                 "idCode":"subtitleNum", 
                 "useremail":useremail, 
@@ -470,12 +484,11 @@
                }
            });
        }
+
       function reportReply() {
          //alert('신고');
          var useremail = "${sessionScope.useremail}";
-         //alert(useremail);
          replynum = $(this).attr('data-rno');
-         //alert(replynum);
          var sendData = {
                "useremail":useremail
                ,"whichboard":  "1"
@@ -530,8 +543,9 @@
             //돌려놓기
             $("#replytext").val('');
          } else if (btnname == '댓글수정') {
+            $('#replylabel').show();
             var replytext = $("#replytext").val();
-            var replynum = $("#replynum").val();
+            var replynum =$("#updatereplynum").val();
             var sendData = {
                "replynum" : replynum,
                "content" : replytext,
@@ -553,11 +567,6 @@
       }
 
       function replyDelete() {
-         var nick = $(this).parent().children('.nick').text();
-         if ("${usernick}" != nick) {
-            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-            return;
-         }
          replynum = $(this).attr('data-rno');
          $.ajax({
             method : 'get',
@@ -570,22 +579,12 @@
 
       function replyUpdate() {
          replynum = $(this).attr('data-rno');
-
-         var nick = $(this).parent().children('.nick').text(); //!!!!!!!this는 수정버튼이니까
-         var replytext = $(this).parent().children('.text').text();
-
-         if ("${usernick}" != nick) {
-            alert('회원님이 작성하신 리뷰만 삭제 가능합니다!');
-            return;
-         }
-
-         $("#usernick").val(nick);
+         var replytext = $(this).parent().parent().children('.replycontent').text();
+         $('#replylabel').hide();
+         $('#updatereplynum').val(replynum);
          $("#replytext").val(replytext);
          $("#replyInsert").val("댓글수정");
-         $("#usernick").prop('readonly', 'readonly');
          $("#cancelUpdate").css("visibility", "visible");
-         
-         $("#replynum").val(replynum);
       }
    </script>
 </head>
@@ -624,7 +623,7 @@
                   <li><a href="eduBoard">영상게시판</a></li>
                   <li><a href="dubbingBoard">더빙게시판</a></li>
                   <li><a href="InvestigationBoard">자막검증게시판</a></li>
-                  <li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
+                   <li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
              </ul>
         </div>
    
@@ -715,7 +714,7 @@
                      </a>
                      <ul>
                          <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-						 <li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
+                        	 <li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
 						 <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
                      </ul>
                   </div>
@@ -724,8 +723,7 @@
          </div>
       </div>   
    </div>
-     
-   <!-- 회원수정모달 -->
+     <!-- 회원수정모달 -->
 	  <div id="modal3" class="modal">
 		<div class="modal-content">
 			<div class="container center">
@@ -839,7 +837,7 @@
 			</div>
 	  	</div>
 	  </div>  
-     
+	  
    <div class="wrapper">
       <!-- sidenav -->     
       <aside>          
@@ -865,8 +863,8 @@
       
       <section>
          <div class="container" style="width:98%;">
-         <!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
-         <!--<div id="youtube"></div>   -->
+            <!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
+            <!--<div id="youtube"></div>   -->
             <div class="row">
                <div class="col s12 m8 l8">
                   <div class="video-container z-depth-2" >
@@ -878,7 +876,7 @@
                      
                   <div class="row" style="margin-top:15px;">
                      <div class="col s10 m8 l8">
-                     	<h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:125%; padding:5px; margin-top:0px;"></h6>
+                     	<h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:630px; padding:5px; margin-top:0px;"></h6>
                      </div>
                      <div class="right" style="margin-right:15px;">
                         <input type="hidden" value="${inv.investigationnum}">
@@ -886,73 +884,99 @@
                            <i class="material-icons">thumb_up</i>
                            <span id="recoCount">${inv.recommendation}</span>
                         </button>
+                        
                         <button class="btn decommendation" type="button">
                            <i class="material-icons">thumb_down</i> 
                            <span id="decoCount">${inv.decommendation}</span>
                         </button>
+                        
+                        <button class="btn" id="deleteInvBoard" type="button">
+                           <i class="material-icons">delete</i> 
+                        </button>
                      </div>
                   </div>
-               </div>
-                     <div class="col s12 m4 l4">
-                           <div class="card" style="height:520px; margin-top:0px;">
-                           <div class="card-content">
-                              <span class="card-title activator grey-text text-darken-4">
-                               		  자막목록
-                              </span>
-                           </div>
-                           <div class="card-content scroll-box">
-                                  <div id="subtitleList"></div>
-                           </div>
-                             <div class="card-action" style="padding:10px;">
-                                  <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
-	                                  <div class="file-field">
-	                                      <div class="btn right" style="width:62px; margin-left:26px;">
-	                                           <span>File</span>
-	                                           <input type="file" id="subtitleFile">
-	                                       </div>
-	                                   
-	                                       <div class="file-path-wrapper">
-	                                            <input class="file-path validate" type="text">
-	                                       </div>
-	                                   </div>   
-	                                  <div class="row">
-	                                     <div class="input-field col s8 m9 l9" style="margin-left:10px;">
-	                                           <input id="subtitleName" type="text" class="validate"/>
-	                                           <label for="subtitleName">등록 파일명</label>
-	                                         </div>
-	                                     
-	                                     <div class="input-field col s1">
-	                                       <input type="button" id="registSubtitle" class="btn" style="height:3rem;  margin-left:10%; padding-left:2px; padding-right:2px;" value="자막등록"/>
-	                                     </div>
-	                                  </div>   
-                              	</form>
-                             </div>
-                         </div>
+                  </div>
+                  <div class="col s4 m4 l4">
+                      <div class="card" style="height:520px; margin-top:0px;">
+                        <div class="card-content">
+                           <span class="card-title activator grey-text text-darken-4">
+                              자막목록
+                           </span>
+                        </div>
+                        <div class="card-content scroll-box">
+                               <div id="subtitleList"></div>
+                          </div>
+                          <div class="card-action" style="padding:10px;">
+                               <form id="fileForm" class="col s12 center" method="post" enctype="multipart/form-data" action="">
+                               <div class="file-field">
+                                   <div class="btn right" style="margin-left:30px;">
+                                        <span>File</span>
+                                        <input type="file" id="subtitleFile">
+                                    </div>
+                                
+                                    <div class="file-path-wrapper">
+                                         <input class="file-path validate" type="text">
+                                    </div>
+                                </div>   
+                               <div class="row">
+                                  <div class="input-field col s9" style="margin-left:10px;">
+                                          <input id="subtitleName" type="text" class="validate"/>
+                                          <label for="subtitleName">등록 파일명</label>
+                                        </div>
+                                    
+                                  <div class="input-field col s2" style="margin-top:25px;">
+                                    <input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
+                                  </div>
+                               </div>   
+                           </form>
+                          </div>
                       </div>
+                   </div>
+               </div>
+
+                   <div class="row"> 
+                  <div class="row"  style="margin-left: 3%;">
+                     <div class="input-field col s4">
+                        <input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
+                        <label id="replylabel" for="replytext">리뷰를 작성해주세요 ^ㅅ^</label>      
+                     </div>
+                     <input id="replyInsert" type="button" class="btn" value="댓글등록" style="margin-top:10px;"/>
+                     <input id="cancelUpdate" type="button" class="btn" style="visibility:hidden; margin-top:10px;" value="수정취소"/>   
+                  </div>
+                  
+               <input type="hidden" id="useremail" value="${sessionScope.useremail}">
+               <input type="hidden" id="updatereplynum">
+               
+               <div id="result"> 
+                  <!-- 반복적으로 나오게 -->
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
    <script>
       // 2.  Youtube Player IFrame API 코드를 비동기 방식으로 가져온다.
       var tag = document.createElement('script');
 
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-		tag.src = "https://www.youtube.com/iframe_api";
-		var firstScriptTag = document.getElementsByTagName('script')[0];
-		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-		// 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
-		var player;
-		function onYouTubeIframeAPIReady() {
-			player = new YT.Player('youtube', {
-            	events : {
-               		'onReady' : onPlayerReady,
-               		'onStateChange' : onPlayerStateChange
-            	}
-         	});
-      	}
-      // 4. Youtube Player의 준비가 끝나면 호출할 함수
-         function onPlayerReady(event) {
+      // 3. API코등 다운로드 끝나면 <iframe> 태그를 생성하면서 Youtube Player를 만들어준다.
+      var player;
+      function onYouTubeIframeAPIReady() {
+         player = new YT.Player('youtube', {
+               events : {
+                     'onReady' : onPlayerReady,
+                     'onStateChange' : onPlayerStateChange
+               }
+            });
+         }
+   
+         // 4. Youtube Player의 준비가 끝나면 호출할 함수
+      function onPlayerReady(event) {
             event.target.playVideo();
          }
-
       
          // 5. Youtube Player의 state가 변하면 적용할 함수
          var playerState;
@@ -967,27 +991,7 @@
             console.log('onPlayerStateChange 실행: ' + playerState);
         }
    </script>
-        	</div>
-                   <div>
-                     <form id="replyform" method="post">
-                       <input id="usernick" name="usernick" type="text" value="${sessionScope.usernick}" readonly="readonly" /> 
-                       <input id="replytext" name="replytext" type="text" placeholder="리뷰를 작성해주세요 ^ㅅ^" /> 
-         
-                       <input type="hidden" id="useremail" name="useremail" value="" /> 
-                       <input type="hidden" id="replynum" name="replynum" value="" /> 
-         
-                       <input id="replyInsert" type="button" value="댓글등록" />
-                       <input id="cancelUpdate" type="button"  style="visibility:hidden;" value="수정취소"/>
-                     </form>
-         
-                     <div id="result">
-                       <!-- 반복적으로 나오게 -->
-                     </div>
-               </div>
-            </div> 
-            <!-- //container -->
-         </section>
-   </div>
+   
    <footer class="page-footer">
        <div class="container">
            <div class="row">
@@ -997,7 +1001,6 @@
                    <p class="grey-text text-lighten-4">We support your English</p>
                  </div>
                  <div class="col l4 offset-l2 s12">
-
                 <h5 class="white-text">Made By</h5>
                 <ul>
                      <li><a class="grey-text text-lighten-3" href="#!">WOO SUK</a></li>
@@ -1016,8 +1019,6 @@
            </div>
        </div>
     </footer>
-
-	<script type="text/javascript" src="js/materialize.js"></script>	
+   <script type="text/javascript" src="js/materialize.js"></script>   
 </body>
 </html>
-
