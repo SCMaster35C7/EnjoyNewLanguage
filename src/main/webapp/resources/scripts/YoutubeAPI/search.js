@@ -34,7 +34,7 @@ function search(pageCode) {
 					var title = item.snippet.title;
 					var videoId = item.id.videoId;
 					
-					var addVideo = '<div class="container">';
+					var addVideo = '<div class="container" style="width:90%;">';
 					addVideo += '<div class="item">';
 					addVideo += '<h6 class="center">' + title + '</h6>';
 					addVideo += '<div class="video-container z-depth-2">';
@@ -45,6 +45,7 @@ function search(pageCode) {
 								+ videoId + '" value="Choice"/>';
 					addVideo += '</div>';
 					addVideo += '</div>';
+					addVideo += '<br>';
 
 					$("#results").append(addVideo);
 				});

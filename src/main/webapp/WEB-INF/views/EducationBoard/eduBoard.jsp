@@ -41,6 +41,8 @@
 			$('#modal1').modal(); 	//로그인모달 
 			$('#modal2').modal();
 			$('#modal3').modal(); 	//회원정보수정 모달
+			$('#modal4').modal();   //계정복구 모달 
+			
 			$('#addvideo').modal(); //영상추가 모달 
 
 			//side-nav open
@@ -57,13 +59,12 @@
 			});
 			
 			$('#loginBtn').on('click', function() {
-				
 				var useremail = $('#useremail').val();
 				var userpwd = $('#userpwd').val();
 				
 				var sendData = {	
-						"useremail":useremail
-						,"userpwd": userpwd
+					"useremail":useremail
+					,"userpwd": userpwd
 				};
 				
 				$.ajax({
@@ -304,6 +305,7 @@
 				});
 			});
 		});
+    	
     	$(function(){
     		//위시리스트에 비디오 등록
     		$('.btnRegistVideoWish').on('click', function(){
@@ -477,7 +479,7 @@
 							</a>
 							<ul>
 							    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-							    <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
+							    <li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
 							    <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
 							</ul>
 						</div>
@@ -584,6 +586,23 @@
 			</div>
 	  	</div>
 	  </div>
+	  
+	  <!-- 계정복구 모달 -->
+	  	<div id="modal4" class="modal">
+			<div class="modal-content">
+				<div class="container center">
+					<h5>계정을 복구하시겠습니까?</h5>
+					<form id="req" action="recoveryMail" method="post">
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="recoveryEmail" type="text" name="recoveryEmail" placeholder="이메일 주소를 입력하세요."/>
+						</div>
+						<input type="button" class="btn" value="이메일인증" onclick="check()">
+					</form>
+					<!-- 이메일 인증을 하고 인증이 되면 해당 이메일 주소를 recoveryID tag에 넣고 recovery() 메소드 호출-->
+				</div>
+			</div>
+		</div>
    
    <!-- admin 영상추가 -->	
 	<c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
@@ -647,9 +666,9 @@
 					<div class="user-view">
 						<div class="background">
 							<img src="images/">
-              <a href="#user"><img class="circle" src="images/"></a>
-						  <a href="#name"><span class="white-text name">${usernick}</span></a> 
-						  <a href="#email"><span class="white-text email">${useremail}</span></a>
+              				<a href="#user"><img class="circle" src="images/"></a>
+						  	<a href="#name"><span class="white-text name">${usernick}</span></a> 
+						  	<a href="#email"><span class="white-text email">${useremail}</span></a>
 						</div>
 					</li>
 					<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
@@ -660,7 +679,7 @@
 					<li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
 				</ul>
 			</aside>	
-	<section>
+			<section>
 		<!-- Page Content -->
 		<div class="container">
 			<div class="row">
@@ -671,11 +690,11 @@
 				<c:if test="${not empty eduList}">
 					<c:forEach var="eduList" items="${eduList}">
 						<div class="col s12 m3 l3">
-							<div class="card" style="height:400px margin-bottom:10px;">
-					<div class="card-image">
-						<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-						<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-					</div>
+							<div class="card" style="height:400px; margin-bottom:10px;">
+								<div class="card-image">
+									<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
+									<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+								</div>
 								<div class="card-content" style="height:150px;">
 									<a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
 								</div>
@@ -698,7 +717,6 @@
 									</div>
 								</div>
 							</div>
-
 						</div>
 					</c:forEach>
 				</c:if>
@@ -739,7 +757,7 @@
 			
 				<li class="waves-effect">
 					<a href="eduBoard?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
-						<i class="material-icons">last_page</i> 
+						<id class="material-icons">last_page</i> 
 					</a>
 				</li>
 			</ul>

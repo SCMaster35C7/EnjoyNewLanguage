@@ -40,6 +40,9 @@
          
          //modal open
          $('#modal1').modal();
+         $('#modal2').modal(); //회원탈퇴 모달
+	     $('#modal3').modal(); //회원정보수정 모달
+      	 $('#modal4').modal(); //계정복구 모달
          
          //side-nav open
          $('.sidenav').sidenav();
@@ -94,7 +97,6 @@
             }
          });
       });
-      
    
       var useremail = "${sessionScope.useremail}";
       var usernick = "${sessionScope.usernick}";
@@ -621,7 +623,7 @@
                   <li><a href="eduBoard">영상게시판</a></li>
                   <li><a href="dubbingBoard">더빙게시판</a></li>
                   <li><a href="InvestigationBoard">자막검증게시판</a></li>
-                  <li><a href="myPage">마이페이지</a></li>
+                   <li><a href="myPage" style="margin-right:20px;">마이페이지</a></li>
              </ul>
         </div>
    
@@ -643,6 +645,8 @@
              </div>
       </li>       
       <li><a href="eduBoard">영상게시판</a></li>
+      <li><a href="dubbingBoard">더빙게시판</a></li>
+      <li><a href="InvestigationBoard">자막게시판</a></li>
       <li><a href="myPage">마이페이지</a></li>
    </ul>
           
@@ -710,8 +714,8 @@
                      </a>
                      <ul>
                          <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-                         <li><a class="btn-floating green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY"><i class="material-icons">sync</i></a></li>
-                         <li><a class="btn-floating yellow darken-1 tooltipped" data-position="top" data-tooltip="QUIT US"><i class="material-icons">clear</i></a></li>
+                        	 <li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
+						 <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
                      </ul>
                   </div>
                </div>
@@ -719,7 +723,121 @@
          </div>
       </div>   
    </div>
-     
+     <!-- 회원수정모달 -->
+	  <div id="modal3" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5>회원정보수정</h5>
+				<form id="updateMember" action="updateMember" method="post">
+					<div class="row" style="margin-top:10%;">
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>EMAIL</th>
+									<td>${sessionScope.useremail}</td>
+								</tr>
+								<tr>
+									<th>성별</th>
+									<td>${sessionScope.gender}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col s6">
+							<table class="highlight">
+								<tr>
+									<th>NICK</th>
+									<td>${sessionScope.usernick}</td>
+								</tr>
+								<tr>
+									<th>생일</th>
+									<td>${sessionScope.birth}</td>
+								</tr>
+							</table>
+						</div>
+						
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input type="text" id="usernick" name="usernick" placeholder="변경 닉네임 입력" />
+							<span id="nickcheck"></span>
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">create</i>
+							<input id="currpwd" type="password" name="currpwd" placeholder="현재 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">border_color</i>
+							<input id="newpwd" type="password" name="newpwd" placeholder="새 비밀번호 입력" />
+						</div>
+						<div class="input-field col s12">
+							<i class="material-icons prefix">check</i>
+							<input id="checkpwd" type="password"  placeholder="새 비밀번호 확인" />
+						</div>
+						
+						<div class="col s12">
+							<input type="button" class="btn" value="수정" id="btnUpdate" />
+							<input type="button" class="btn" value="취소" id="btnCancel" />
+						</div>
+					</div>	
+				</form>
+			</div>
+		</div>
+	</div>	
+	  
+	  <!-- 계정복구 모달 -->
+	  	<div id="modal4" class="modal">
+			<div class="modal-content">
+				<div class="container center">
+					<h5>계정을 복구하시겠습니까?</h5>
+					<form id="req" action="recoveryMail" method="post">
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="recoveryEmail" type="text" name="recoveryEmail" placeholder="이메일 주소를 입력하세요."/>
+						</div>
+						<input type="button" class="btn" value="이메일인증" onclick="check()">
+					</form>
+					<!-- 이메일 인증을 하고 인증이 되면 해당 이메일 주소를 recoveryID tag에 넣고 recovery() 메소드 호출-->
+				</div>
+			</div>
+		</div>
+	  
+	  <!-- 회원탈퇴 모달 -->
+	  <div id="modal2" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5>탈퇴하시겠습니까?</h5>
+				
+				<div class="row">
+					<form action="insertCloseID" method="post" id="submitform">
+						<div class="input-field col s12">
+			          		<i class="material-icons prefix">mail</i>
+			          		<input id="useremail" name="useremail" type="text" class="validate">
+			          		<label for="useremail">USERMAIL</label>
+			        	</div>
+					</form>
+			        <div class="input-field col s12">
+			          <i class="material-icons prefix">mode_edit</i>
+			          <input id="pwd" type="password" class="validate">
+			          <label for="pwd">PASSWORD</label>
+			        </div>
+				<div class="row">
+					<span class="flow-text">
+						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+							<i class="material-icons right">keyboard_return</i>
+						</button>
+					</span>
+					<span class="flow-text">
+						<button class="btn" onclick="closeID()">QUIT
+							<i class="material-icons right">mood_bad</i>
+						</button>
+					</span>	
+				</div>	
+			</div>
+				<p style="color:red;">회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
+				<p style="margin-top:0;">기간 이후에는 회원정보가 영구 삭제됩니다.</p>
+			</div>
+	  	</div>
+	  </div>  
+	  
    <div class="wrapper">
       <!-- sidenav -->     
       <aside>          
@@ -738,8 +856,8 @@
             <li><a href="#!">wishList</a></li>
             <li><div class="divider"></div></li>
             <li><a class="subheader">회원정보관리</a></li>
-            <li><a class="waves-effect" href="updateMember">회원정보수정</a></li>
-            <li><a class="waves-effect" href="#">회원탈퇴</a></li>
+            <li><a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a></li>
+            <li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
          </ul>
       </aside>
       
@@ -748,7 +866,7 @@
             <!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
             <!--<div id="youtube"></div>   -->
             <div class="row">
-               <div class="col s8 m8">
+               <div class="col s12 m8 l8">
                   <div class="video-container z-depth-2" >
                      <iframe id="youtube" width="960" height="490"
                         src="http://www.youtube.com/embed/${inv.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
@@ -757,17 +875,21 @@
                   </div>
                      
                   <div class="row" style="margin-top:15px;">
-                     <div class="col s8 m8 l8"><h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:630px; padding:5px; margin-top:0px;"></h6></div>
+                     <div class="col s10 m8 l8">
+                     	<h6 id="textbox" class="center z-depth-2" style="height:36px; display:inline-block; width:630px; padding:5px; margin-top:0px;"></h6>
+                     </div>
                      <div class="right" style="margin-right:15px;">
                         <input type="hidden" value="${inv.investigationnum}">
                         <button class="btn recommendation" type="button">
                            <i class="material-icons">thumb_up</i>
                            <span id="recoCount">${inv.recommendation}</span>
                         </button>
+                        
                         <button class="btn decommendation" type="button">
                            <i class="material-icons">thumb_down</i> 
                            <span id="decoCount">${inv.decommendation}</span>
                         </button>
+                        
                         <button class="btn" id="deleteInvBoard" type="button">
                            <i class="material-icons">delete</i> 
                         </button>
