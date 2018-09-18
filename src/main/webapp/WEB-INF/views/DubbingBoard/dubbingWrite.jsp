@@ -412,26 +412,13 @@
 			        <a href="#name"><span class="white-text name">${usernick}</span></a> 
 			        <a href="#email"><span class="white-text email">${useremail}</span></a>
 				</div>
-				</li>
-				<li>
-					<a href="#!">
-					<i class="material-icons">cloud</i>First Link With Icon</a>
-				</li>
-				<li>
-					<a href="#!">wishList</a>
-				</li>
-				<li>
-					<div class="divider"></div>
-				</li>
-				<li>
-					<a class="subheader">회원정보관리</a>
-				</li>
-				<li>
-					<a class="waves-effect" href="updateMember">회원정보수정</a>
-				</li>
-				<li>
-					<a class="waves-effect" href="#">회원탈퇴</a>
-				</li>
+			</li>
+			<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+            <li><a href="#!">wishList</a></li>
+            <li><div class="divider"></div></li>
+            <li><a class="subheader">회원정보관리</a></li>
+            <li><a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a></li>
+            <li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
 			</ul>
 		</aside>
 		
