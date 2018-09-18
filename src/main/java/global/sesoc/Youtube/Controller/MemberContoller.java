@@ -432,4 +432,47 @@ public class MemberContoller {
 		}
 		
 	}
+	
+	
+	@RequestMapping(value="/resendValidate", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public @ResponseBody String resendValidate(@RequestBody Member member) {
+		//있나 & 상태 0인가 확인
+		Member selectedM = mRepository.selectOneFromMember(member);
+		System.out.println("뽑힌애"+selectedM);
+		if (selectedM.getStatus()==0) {
+			return "ok";
+		} else {
+			return "notok";
+		} 
+	}
+	
+	
+	
+	@RequestMapping(value="resendEmail",method=RequestMethod.POST)
+	public String resendEmail(HttpServletRequest request, Member member, HttpSession session) {
+		session.setAttribute("waitingEmail", member.getUseremail());
+		String setfrom = "timetravelwithdoctor@gmail.com";
+		String tomail = member.getUseremail(); // 받는 사람 이메일
+
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+			messageHelper.setFrom(setfrom); // 보내는사람 생략하거나 하면 정상작동을 안함
+			messageHelper.setTo(member.getUseremail()); // 받는사람 이메일
+			messageHelper.setSubject("[앤죠애캉] 회원가입 인증"); // 메일제목은 생략이 가능하다
+
+			String host = "http://localhost:8888/Youtube/certification"; // 인증완료페이지
+
+			messageHelper.setText("", " <h2>앤죠애캉 회원가입 인증</h2><br/>" + "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>" + "<a href="
+					+ host + ">"
+					+ "<button style=\"color: white;background-color: #4c586f;border: none;width:200px;height:50px;text-align: center;text-decoration: none;  font-size: 25px;border-radius:10px;\">인증하기♥</button>"); // 메일
+																																																						// 내용
+			mailSender.send(message);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return "Member/waiting";// 대기중
+	}
 }
