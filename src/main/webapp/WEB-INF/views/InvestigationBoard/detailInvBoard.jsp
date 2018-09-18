@@ -900,7 +900,7 @@
                       <div class="card" style="height:520px; margin-top:0px;">
                         <div class="card-content">
                            <span class="card-title activator grey-text text-darken-4">
-                              자막목록
+                              	자막목록
                            </span>
                         </div>
                         <div class="card-content scroll-box">
