@@ -90,17 +90,17 @@
     </ul>
     <div class="tab_Content_Wrap">
         <div id="tabContent01" class="tabPage">
-			<iframe style="width: 100%; height: 100%; " src="http://localhost:8888/Youtube/videoWish" class="myFrame">
+			<iframe style="width: 100%; height: 100%; " src="http://localhost:9999/Youtube/videoWish" class="myFrame">
   				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 			</iframe>			
         </div>
         <div id="tabContent02" class="tabPage">
-           <iframe style="width: 100%; height: 100%;" src="http://localhost:8888/Youtube/subWish" class="myFrame">
+           <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/subWish" class="myFrame">
   				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 			</iframe>			
         </div>
         <div id="tabContent03" class="tabPage">
-            <iframe style="width: 100%; height: 100%;" src="http://localhost:8888/Youtube/dubWish" class="myFrame">
+            <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/dubWish" class="myFrame">
   				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 			</iframe>						
         </div>
