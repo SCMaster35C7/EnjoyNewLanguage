@@ -12,7 +12,7 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
-    <!--Let browser know website is optimized for mobile-->
+   <!--Let browser know website is optimized for mobile-->
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
    
    <style>
@@ -298,7 +298,7 @@
             result +=         '<td>' + resp[i].regdate + '</td>';
             result +=         '<td colspan="2">';
             if ('${sessionScope.useremail}'==resp[i].useremail) {
-               result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
+               result += '<input class="replyUpdate btn" style="margin-right:3%;" type="button" data-rno="'+resp[i].replynum+'" value="수정" />';
                result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="삭제" />';
             }
             result +=         '</td>';
@@ -918,16 +918,16 @@
                                          <input class="file-path validate" type="text">
                                     </div>
                                 </div>   
-                               <div class="row">
-                                  <div class="input-field col s9" style="margin-left:10px;">
-                                          <input id="subtitleName" type="text" class="validate"/>
-                                          <label for="subtitleName">등록 파일명</label>
-                                        </div>
+								<div class="row">
+                                  	<div class="input-field col s8 m9 l9" style="margin-left:10px;">
+                                    	<input id="subtitleName" type="text" class="validate"/>
+                                        <label for="subtitleName">등록 파일명</label>
+                                    </div>
                                     
-                                  <div class="input-field col s2" style="margin-top:25px;">
-                                    <input type="button" id="registSubtitle" class="btn" style="margin-left:5px; padding-left:2px; padding-right:2px;" value="자막등록"/>
-                                  </div>
-                               </div>   
+                                  	<div class="input-field col s1">
+                           				<input type="button" id="registSubtitle" class="btn" style="height:3rem;  margin-left:10%; padding-left:2px; padding-right:2px;" value="자막등록"/>
+                                  	</div>
+                               </div>    
                            </form>
                           </div>
                       </div>
@@ -947,10 +947,10 @@
                <input type="hidden" id="useremail" value="${sessionScope.useremail}">
                <input type="hidden" id="updatereplynum">
                
+            </div>
                <div id="result"> 
                   <!-- 반복적으로 나오게 -->
                </div>
-            </div>
          </div>
       </section>
    </div>
