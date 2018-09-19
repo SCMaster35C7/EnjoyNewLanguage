@@ -29,7 +29,7 @@ function deleteparticularList(){
 </script>
 </head>
 <body>
- <c:if test="${sessionScope.useremail!=null}">
+ 	<c:if test="${sessionScope.useremail!=null}">
 				<c:if test="${empty vWishlist}">
 
 					<table border="1">
@@ -51,12 +51,10 @@ function deleteparticularList(){
 						<c:forEach var="vWishlist" items="${vWishlist}">
 							<tr>							
 								<td>${vWishlist.rnum}</td>									
-								<td><a href="detailSubBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=1" target="_parent">${vWishlist.title}</a></td>
+								<td><a href="detailInvBoard?investigationnum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=1" target="_parent">${vWishlist.title}</a></td>
 								<td>${vWishlist.regdate}</td>
 								<td>
 									<form action="deleteWish" method="get" >
-								<%--    <input type="hidden" name="" value="${sessionScope.Member.userid}">
-										<input type="hidden" name="" value="${vWishList.title}"> --%>
 										<input type="button" id="btnDeleteparticularList" value="삭제"/>										
 									</form>
 								</td>
