@@ -47,6 +47,10 @@
 			//side-nav open
 			$('.sidenav').sidenav();
 			
+			$('#small-navi').sidenav({
+	            edge:'right'
+	         });
+			
 			//tooltip
 			$('.tooltipped').tooltip();
 			
@@ -58,8 +62,6 @@
 			$('#sticker').on('click', function() {
 				$('#checkline').val('');
 			});
-			
-			
 			
 			$('.search').on('keydown', function(key) {
 				if (key.keyCode == 13) {
