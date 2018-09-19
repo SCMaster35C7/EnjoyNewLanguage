@@ -19,15 +19,14 @@ import global.sesoc.Youtube.util.PageNavigator;
 
 @Controller
 public class WishController {
-
 	@Autowired
 	WishRepository wRepository;
-
 
 	/**
 	 * 영상위시리스트 화면으로 이동	 * 
 	 * @return
 	 */
+	/*
 	@RequestMapping(value="/wishList", method=RequestMethod.GET)
 	public String wishList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
 						@RequestParam(value="searchType", defaultValue="title") String searchType,
@@ -35,7 +34,7 @@ public class WishController {
 						HttpSession session,
 						Model model) {
 		
-		int totalRecordCount = wRepository.getTotalCount1(searchType, searchWord);
+		int totalRecordCount = wRepository.getTotalCount(searchType, searchWord);
 		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
 		String useremail = (String)session.getAttribute("useremail");
 		
@@ -49,7 +48,7 @@ public class WishController {
 		return "Member/wishList";
 
 	}
-	
+	*/
 	
 	/**
 	 * 영상위시리스트 탭으로 이동
@@ -61,93 +60,32 @@ public class WishController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/videoWish", method=RequestMethod.GET)
+	@RequestMapping(value="/particularList", method=RequestMethod.GET)
 	public String videoWish(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
-						@RequestParam(value="searchType", defaultValue="title") String searchType,
-						@RequestParam(value="searchWord", defaultValue="") String searchWord,
-						HttpSession session,
+						int wishtable,
+						String useremail,
+						@RequestParam(value="distinguishNum", defaultValue="0")int distinguishNum,
 						Model model) {
 		
-		int totalRecordCount = wRepository.getTotalCount1(searchType, searchWord);
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
-		String useremail = (String)session.getAttribute("useremail");
-		
-		List<WishList> vWishlist =  wRepository.getVideoWishList(useremail, searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
+		int totalRecordCount = wRepository.getTotalCount(wishtable, useremail);
+		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 5);
+		List<WishList> vWishlist =  wRepository.getParticularWishList(wishtable, useremail, navi.getStartRecord(), navi.getcountPerPage());
 		System.out.println(vWishlist);
 		
 		model.addAttribute("vWishlist", vWishlist);
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("wishtable", wishtable);
+		model.addAttribute("useremail", useremail);
 		model.addAttribute("navi", navi);
-
-		return "Member/videoWish";
-
+		
+		if(distinguishNum == 1) {
+			return "Member/videoWish";
+		}else if(distinguishNum == 2) {
+			return "Member/subWish";
+		}else if(distinguishNum == 3) {
+			return "Member/dubWish";
+		}
+		return "Member/wishList";
 	}
-	
-	/**
-	 * 자막위시리스트 탭으로 이동
-	 * 
-	 * @param currentPage
-	 * @param searchType
-	 * @param searchWord
-	 * @param session
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/subWish", method=RequestMethod.GET)
-	public String subWish(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
-						@RequestParam(value="searchType", defaultValue="title") String searchType,
-						@RequestParam(value="searchWord", defaultValue="") String searchWord,
-						HttpSession session,
-						Model model) {
-		
-		int totalRecordCount = wRepository.getTotalCount1(searchType, searchWord);
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
-		String useremail = (String)session.getAttribute("useremail");
-		
-		List<WishList> sWishlist =  wRepository.getSubWishList(useremail, searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
-
-		
-		model.addAttribute("sWishlist", sWishlist);
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchWord", searchWord);
-		model.addAttribute("navi", navi);
-
-		return "Member/subWish";
-
-	}
-	
-	/**
-	 * 더빙위시리스트 탭으로 이동
-	 * 
-	 * @param currentPage
-	 * @param searchType
-	 * @param searchWord
-	 * @param session
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/dubWish", method=RequestMethod.GET)
-	public String dubWish(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
-						@RequestParam(value="searchType", defaultValue="title") String searchType,
-						@RequestParam(value="searchWord", defaultValue="") String searchWord,
-						HttpSession session,
-						Model model) {
-		
-		int totalRecordCount = wRepository.getTotalCount1(searchType, searchWord);
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
-		String useremail = (String)session.getAttribute("useremail");
-		
-		List<WishList> dWishlist =  wRepository.getDubWishList(useremail, searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
-
-		model.addAttribute("dWishlist", dWishlist);
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchWord", searchWord);
-		model.addAttribute("navi", navi);
-
-		return "Member/dubWish";
-
-	}		
 
 	/**
 	 * 영상, 더빙, 자막 위시리스트 삭제
@@ -176,7 +114,7 @@ public class WishController {
 		System.out.println(wishlist);
 		//WishList wishlist = wRepository.selectVideoWish(videoNum);
 		WishList wList = wRepository.selectOneFromWishList(wishlist);
-		
+		System.out.println("대상:"+wList);
 		if(wList == null) {
 			int result = wRepository.insertWish(wishlist);
 			

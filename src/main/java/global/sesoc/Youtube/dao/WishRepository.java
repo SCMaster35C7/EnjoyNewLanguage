@@ -18,14 +18,13 @@ public class WishRepository {
 	SqlSession session;
 
 	//페이징을 위해 데이터수 세기
-	public int getTotalCount1(String searchType, String searchWord) {
-
+	public int getTotalCount(int wishtable, String useremail) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		Map<String, String> map =new HashMap<>();
-		map.put("searchType", searchType);
-		map.put("searchWord", searchWord);
-
-		int result = wMapper.getTotalCount1(map);
+		Map<String, Object> map = new HashMap<>();
+		map.put("wishtable", wishtable);
+		map.put("useremail", useremail);
+		
+		int result = wMapper.getTotalCount(map);
 				
 		return result;
 	}
@@ -38,51 +37,28 @@ public class WishRepository {
 		return wList;
 	}	
 	
+	public WishList selectFromWishList2(WishList wishlist)	{
+		WishMapper wMapper = session.getMapper(WishMapper.class);
+		WishList wList2 = wMapper.selectFromWishList2(wishlist);
+		
+		return wList2;
+	}
+	
 	//비디오파트
-	public List<WishList> getVideoWishList(String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
+	public List<WishList> getParticularWishList(int wishtable, String useremail, int startRecord, int getcountPerPage) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
 		RowBounds bound = new RowBounds(startRecord, getcountPerPage);	
 		Map<String,Object> map = new HashMap<>();
-		
 		map.put("useremail", useremail);
-		map.put("searchType", searchType);
-		map.put("searchWord", searchWord);
-		//System.out.println("잘 들어옴? : "+map);
-		List<WishList> vWishList = wMapper.getAllWishList(map, bound);
+		map.put("wishtable", wishtable);
 		
+		System.out.println("매쁘"+map);
+		
+		List<WishList> vWishList = wMapper.getParticularWishList(map, bound);
+		System.out.println("매쁘 결과"+vWishList);
 		return vWishList;
 	}
 	
-	//자막 파트	
-	public List<WishList> getSubWishList(String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		RowBounds bound = new RowBounds(startRecord, getcountPerPage);	
-		Map<String,Object> map = new HashMap<>();
-		
-		map.put("useremail", useremail);
-		map.put("searchType", searchType);
-		map.put("searchWord", searchWord);
-		//System.out.println("잘 들어옴? : "+map);
-		List<WishList> sWishList = wMapper.getAllWishList(map, bound);
-		
-		return sWishList;
-	}
-	
-	//더빙 파트
-	public List<WishList> getDubWishList(String useremail, String searchType, String searchWord, int startRecord, int getcountPerPage) {
-		WishMapper wMapper = session.getMapper(WishMapper.class);
-		RowBounds bound = new RowBounds(startRecord, getcountPerPage);	
-		Map<String,Object> map = new HashMap<>();
-		
-		map.put("useremail", useremail);
-		map.put("searchType", searchType);
-		map.put("searchWord", searchWord);
-		//System.out.println("잘 들어옴? : "+map);
-		List<WishList> dWishList = wMapper.getAllWishList(map, bound);
-		
-		return dWishList;
-		
-	}
 	//영상, 자막, 더빙 위시리스트에 등록
 	public int insertWish(WishList wishlist) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);

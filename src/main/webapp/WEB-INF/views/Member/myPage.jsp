@@ -11,7 +11,18 @@
    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
    <!--Import materialize.css-->
    <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-
+	
+	<style type="text/css">
+		.tabWrap { width: 900px; height: 500px; }
+    	.tab_Menu { margin: 0px; padding: 0px; list-style: none; }
+    	.tabMenu { width: 150px; margin: 0px; text-align: center;
+               padding-top: 10px; padding-bottom: 10px; float: left; }
+        .tabMenu a { color: #000000; font-weight: bold; text-decoration: none; }
+    	.current { background-color: #FFFFFF;
+               border: 1px solid blue; border-bottom:hidden; }
+    	.tabPage { width: 900px; height: 400px; float: left;
+               border: 1px solid blue; }
+	</style>
    <!--Let browser know website is optimized for mobile-->
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
    
@@ -65,6 +76,49 @@
             }
          });
       });
+      
+      function tabSetting() {
+  	  	// 탭 컨텐츠 hide 후 현재 탭메뉴 페이지만 show
+  	    $('.tabPage').hide();
+  	    $($('.current').find('a').attr('href')).show();
+  	 
+  	    // Tab 메뉴 클릭 이벤트 생성
+  	    $('.moveWishList').click(function (event) {
+  		    var tagName = event.target.tagName; // 현재 선택된 태그네임
+  		    var selectedLiTag = (tagName.toString() == 'A') ? $(event.target).parent('li') : $(event.target); // A태그일 경우 상위 Li태그 선택, Li태그일 경우 그대로 태그 객체
+  		    var currentLiTag = $('li[class~=current]'); // 현재 current 클래스를 가진 탭
+  		    var isCurrent = false; 
+  	             
+  	        // 현재 클릭된 탭이 current를 가졌는지 확인
+  	        isCurrent = $(selectedLiTag).hasClass('current');
+  	             
+  	        // current를 가지지 않았을 경우만 실행
+  	        if (!isCurrent) {
+  	        	$($(currentLiTag).find('a').attr('href')).hide();
+  	            $(currentLiTag).removeClass('current');
+  	 
+  	            $(selectedLiTag).addClass('current');
+  	            $($(selectedLiTag).find('a').attr('href')).show();
+  	        }
+  	 
+  	        return false;
+  			});
+  	    }
+  	 
+  	    $(function () {
+  	        // 탭 초기화 및 설정
+  	        tabSetting();
+  	    });
+  	    
+  	    //iframe 크기 조절관련 제이쿼리
+  	    $(function(){
+  	    	$("iframe.myFrame").load(function(){ //iframe 컨텐츠가 로드 된 후에 호출됩니다.
+  	    		var frame = $(this).get(0);
+  	    		var doc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
+  	    		$(this).height(doc.body.scrollHeight);
+  	    		$(this).width(doc.body.scrollWidth);
+  	    	});
+  	    });
    </script>
 </head>
 
@@ -330,8 +384,7 @@
                      href="#name"><span class="white-text name">${usernick}</span></a>
                   <a href="#email"><span class="white-text email">${useremail}</span></a>
                </div></li>
-            <li><a href="#!"><i class="material-icons">cloud</i>First
-                  Link With Icon</a></li>
+            <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
             <li><a href="#!">wishList</a></li>
             <li><div class="divider"></div></li>
             <li><a class="subheader">회원정보관리</a></li>
@@ -365,9 +418,10 @@
                                     ${myInfo.allSuccess}/ 패 : ${myInfo.allFailure}/ 도전:
                                     ${myInfo.allChallenge})</h5>
                               </div>
-                           </c:if> <c:if test="${myInfo==null }">
-                                    승률 데이터 없음 하셈   
-                                    <br />
+                           </c:if> 
+                           <c:if test="${myInfo==null }">
+                           		승률 데이터 없음 하셈   
+                           		<br />
                            </c:if>
                         </span>
                         <div class="trending-line-chart-wrapper">
@@ -377,6 +431,40 @@
                   </div>
                </div>
             </div>
+            
+            <div class="row">
+				<div class="tabWrap">
+				    <ul class="tab_Menu">
+				        <li class="tabMenu current moveWishList">
+				            <a href="#tabContent01" >영상</a>
+				        </li>
+				        <li class="tabMenu moveWishList">
+				            <a href="#tabContent02" >자막</a>
+				        </li>
+				        <li class="tabMenu moveWishList">
+				            <a href="#tabContent03" >더빙</a>
+				        </li>
+				    </ul>
+				    <div class="tab_Content_Wrap">
+				        <div id="tabContent01" class="tabPage">
+							<iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
+				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
+							</iframe>			
+				        </div>
+				        <div id="tabContent02" class="tabPage">
+				           <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
+				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
+							</iframe>
+				        </div>
+				        <div id="tabContent03" class="tabPage">
+				            <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
+				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
+							</iframe>
+				        </div>
+				    </div>
+				</div>	
+            </div>
+            
             <div class="row" >
                <div id="table1" class="col s12 m6 l6">
                   <table class="highlight">

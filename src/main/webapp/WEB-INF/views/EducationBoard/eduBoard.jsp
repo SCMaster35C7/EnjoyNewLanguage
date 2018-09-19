@@ -332,7 +332,7 @@
 					
 					$.ajax({
 						method:'post'
-						, url:'insertWish'
+						, url:'insertVideoWish'
 						, data: JSON.stringify(dataFormVideo)
 						, contentType: "application/json; charset=utf-8"
 						, async : false
@@ -692,10 +692,14 @@
                <c:forEach var="eduList" items="${eduList}">
                   <div class="col s12 m3 l3">
                      <div class="card" style="height:440px; margin-bottom:10%;">
-                        <div class="card-image">
-                           <img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
-                           <a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
-                        </div>
+                     
+						<div class="card-image">
+							<img alt="" src="https://img.youtube.com/vi/${eduList.url}/0.jpg">
+							<input type="hidden" id="url" value="${eduList.url}"/>
+							<input type="hidden" id="videonum" value="${eduList.videoNum}"/>
+							<a class="btn-floating halfway-fab waves-effect waves-light red tooltipped btnRegistVideoWish" data-position="bottom" data-tooltip="찜!"><i class="material-icons">add</i></a>
+						</div>
+                        
                         <div class="card-content" style="height:150px;">
                            <a href="detailEduBoard?videoNum=${eduList.videoNum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${eduList.title}</a>
                         </div>
