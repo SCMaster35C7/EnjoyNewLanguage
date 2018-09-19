@@ -18,9 +18,7 @@
 	$(function(){
 		//위시삭제버튼 클릭시 내용
 		$('#btnDeleteWish').on('click', function(){
-			
 			/* var temp = "";
-			
 			var += "<td>"++"</td>"; */
 		});		
 	});
@@ -49,7 +47,7 @@
 						<c:forEach var="vWishlist" items="${vWishlist}">
 							<tr>
 								<td>${vWishlist.rnum}</td>	
-								<td><a href="dubDetail?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=2" target="_parent">${vWishlist.title}</a></td>
+								<td><a href="dubDetail?dubbingnum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=2" target="_parent">${vWishlist.title}</a></td>
 								<td>${vWishlist.regdate}</td>
 								<td>
 									<input type="button" id="btnDeleteWish" value="삭제"/>										
