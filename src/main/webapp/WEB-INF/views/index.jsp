@@ -28,7 +28,7 @@
 	<script>
 		$(function() {
 			SetLanguage();
-			$('select').formSelect();
+		/* 	$('select').formSelect(); */
 			
 			//dropdown
 			$(".dropdown-trigger").dropdown();
@@ -42,7 +42,7 @@
 			$('#modal1').modal(); //로그인 모달
 			$('#modal2').modal(); //회원탈퇴 모달
 			$('#modal3').modal(); //회원정보수정 모달
-      $('#modal4').modal(); //계정복구 모달
+            $('#modal4').modal(); //계정복구 모달
 			$('#modal5').modal(); //
 			
 			//side-nav open
@@ -59,9 +59,7 @@
 			$('#sticker').on('click', function() {
 				$('#checkline').val('');
 			});
-			
-			
-			
+	
 			$('.search').on('keydown', function(key) {
 				if (key.keyCode == 13) {
 					// naver 검색
@@ -98,6 +96,11 @@
 				});
 			</script>
 		</c:if>
+<!-- Dropdown Structure -->
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a onclick="languageChange('kor')" style="padding-left:6px; padding-right:6px;"><img src="images/korea.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"><span style="margin-left:4px;">KOR</span></a></li>
+        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JAP</span></a></li>
+      </ul>
 
 		<!-- nav -->
 		<nav class="nav-extended">
@@ -118,10 +121,11 @@
 	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
 	              		</div>
 				  	</li>		 
-			      	<li><a href="eduBoard" data-langNum=1></a></li>
-			      	<li><a href="dubbingBoard" data-langNum=2></a></li>
-			      	<li><a href="InvestigationBoard" data-langNum=3></a></li>
-			      	<li><a href="myPage" style="margin-right:20px;" data-langNum=4></a></li>
+			      	<li><a href="eduBoard" data-langNum="1"></a></li>
+			      	<li><a href="dubbingBoard" data-langNum="2"></a></li>
+			      	<li><a href="InvestigationBoard" data-langNum="3"></a></li>
+			      	<li><a href="myPage" data-langNum="4"></a></li>
+			      	<li><a class="dropdown-trigger" style="margin-right:20px;" href="#!" data-target="dropdown1">Language<i class="material-icons right">language</i></a></li>
 			    </ul>
 			</div>		
 			<div class="nav-content">
@@ -141,10 +145,13 @@
           		<i class="material-icons">close</i>
        		</div>
 		</li>		 
-		<li><a href="eduBoard" data-langNum=1></a></li>
-		<li><a href="dubbingBoard" data-langNum=2></a></li>
-		<li><a href="InvestigationBoard" data-langNum=3></a></li>
-		<li><a href="myPage" data-langNum=4></a></li>
+		<li><a href="eduBoard" data-langNum="1"></a></li>
+		<li><a href="dubbingBoard" data-langNum="2"></a></li>
+		<li><a href="InvestigationBoard" data-langNum="3"></a></li>
+		<li><a href="myPage" data-langNum="4"></a></li>
+		<li><div class="divider"></div></li>
+        <li><a onclick="languageChange('kor')">KOR</a></li>
+        <li><a onclick="languageChange('jp')">JAP</a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->
@@ -177,7 +184,7 @@
 						
 						<!-- 글씨뜨는거 -->
 						<c:if test="${not empty sessionScope.useremail }">
-							<h4 class="center">${sessionScope.useremail} <span data-langNum=5></span></h4>
+							<h4 class="center">${sessionScope.useremail} <span data-langNum="5"></span></h4>
 						</c:if>
 					</div>	
 				
@@ -192,7 +199,7 @@
 							</c:if>
 						
 							<span class="flow-text">
-								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+								<button class="btn waves-effect waves-light modal-close" type="button">BACK
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
@@ -226,7 +233,7 @@
 	  <div id="modal3" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5 data-langNum=6></h5>
+				<h5 data-langNum="6"></h5>
 				<form id="updateMember" action="updateMember" method="post">
 					<div class="row" style="margin-top:10%;">
 						<div class="col s6">
@@ -236,7 +243,7 @@
 									<td>${sessionScope.useremail}</td>
 								</tr>
 								<tr>
-									<th data-langNum=7>성별</th>
+									<th data-langNum="7"></th>
 									<td>${sessionScope.gender}</td>
 								</tr>
 							</table>
@@ -248,7 +255,7 @@
 									<td>${sessionScope.usernick}</td>
 								</tr>
 								<tr>
-									<th data-langNum=8></th>
+									<th data-langNum="8"></th>
 									<td>${sessionScope.birth}</td>
 								</tr>
 							</table>
@@ -286,13 +293,13 @@
 	  	<div id="modal4" class="modal">
 			<div class="modal-content">
 				<div class="container center">
-					<h5>계정을 복구하시겠습니까?</h5>
+					<h5 data-langNum="16">계정을 복구하시겠습니까?</h5>
 					<form id="req" action="recoveryMail" method="post">
 						<div class="input-field col s12">
 							<i class="material-icons prefix">mail</i>
 							<input id="recoveryEmail" type="text" name="recoveryEmail" placeholder="이메일 주소를 입력하세요."/>
 						</div>
-						<input type="button" class="btn" value="이메일인증" onclick="check()">
+						<input id="Ecertification" type="button" class="btn" value="이메일인증" onclick="check()">
 					</form>
 					<!-- 이메일 인증을 하고 인증이 되면 해당 이메일 주소를 recoveryID tag에 넣고 recovery() 메소드 호출-->
 				</div>
@@ -302,7 +309,7 @@
 	  <div id="modal2" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5 data-langNum=9></h5>
+				<h5 data-langNum="9"></h5>
 				
 				<div class="row">
 					<form action="insertCloseID" method="post" id="submitform">
@@ -319,7 +326,7 @@
 					</form>
 				<div class="row">
 					<span class="flow-text">
-						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+						<button class="btn waves-effect waves-light modal-close" type="button">BACK
 							<i class="material-icons right">keyboard_return</i>
 						</button>
 					</span>
@@ -330,8 +337,8 @@
 					</span>	
 				</div>	
 			</div>
-				<p style="color:red;" data-langNum=10></p>
-				<p style="margin-top:0;" data-langNum=11></p>
+				<p style="color:red;" data-langNum="10"></p>
+				<p style="margin-top:0;" data-langNum="11"></p>
 			</div>
 	  	</div>
 	  </div>
@@ -340,7 +347,7 @@
 	  <div id="modal5" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5 data-langNum=15></h5>
+				<h5 data-langNum="15"></h5>
 				
 				<div class="row">
 					<form action="resendEmail" method="post" id="resendForm">
@@ -357,7 +364,7 @@
 					</form>
 				<div class="row">
 					<span class="flow-text">
-						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+						<button class="btn waves-effect waves-light modal-close"  type="button">BACK
 							<i class="material-icons right">keyboard_return</i>
 						</button>
 					</span>
@@ -397,27 +404,18 @@
 					<div class="divider"></div>
 				</li>
 				<li>
-					<a class="subheader" data-langNum=12></a>
+					<a class="subheader" data-langNum="12"></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum=13></a>
+					<a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum="13"></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum=14></a>
+					<a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum="14"></a>
 				</li>
 			</ul>
 		</aside>			
 
 		<section>	
-		
-		<!--  언어팩 제작중 -->
-		<div>
-		<input id="test1" type="button" onclick="languageChange('kor')" value="한국어"> 
-		<div></div>
-		<input id="test2" type="button" onclick="languageChange('jp')" value="日本語">
-		</div>
-		
-		
 			<div class="container" style="width:80%;">
 			  	<h3 class="center">인기 항목</h3>
 			</div>
