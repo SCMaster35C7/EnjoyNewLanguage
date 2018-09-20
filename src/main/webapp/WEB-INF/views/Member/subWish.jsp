@@ -29,16 +29,15 @@ function deleteparticularList(){
 </script>
 </head>
 <body>
+
  	<c:if test="${sessionScope.useremail!=null}">
 				<c:if test="${empty vWishlist}">
-
-					<table border="1">
-						<tr>
-							<td>자막위시리스트가 비어있습니다.</td>
-						</tr>
-					</table>
-				</c:if>
-
+               <table border="1">
+                  <tr>
+                     <td>자막위시리스트가 비어있습니다.</td>
+                  </tr>
+               </table>
+            </c:if>
 				<c:if test="${vWishlist != null}">
 
 					<table border="1">

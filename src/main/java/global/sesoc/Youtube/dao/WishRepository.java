@@ -13,9 +13,9 @@ import global.sesoc.Youtube.dto.WishList;
 
 @Repository
 public class WishRepository {
-	
-	@Autowired
-	SqlSession session;
+   
+   @Autowired
+   SqlSession session;
 
 	//페이징을 위해 데이터수 세기
 	public int getTotalCount(int wishtable, String useremail) {
@@ -76,3 +76,4 @@ public class WishRepository {
 	}
 	
 }
+

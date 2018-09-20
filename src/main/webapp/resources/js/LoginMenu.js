@@ -15,9 +15,9 @@ $('#loginBtn').on('click', function() {
 					, contentType: 'application/json; charset=utf-8'
 					, success	: function(resp){
 						if (resp=="checkEmail") {
-							$("#checkline").val('이메일 인증 먼저 해주세요!');
+							$("#checkline").val('Please check your email first.');
 						}else if (resp=="loginFailure") {
-							$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
+							$("#checkline").val('Please check your ID or password.');
 						} else {
 							window.location.reload();
 						}
@@ -53,6 +53,33 @@ function closeID(){
 				}
 			}else{
 				alert('Please check your ID or password.');
+			}
+		}	
+	})
+}
+
+
+
+//인증메일 재발송하기
+function checkResend() {
+	var useremail=$('#resendemail').val();
+	var pwd=$('#resendpwd').val();
+	var dataForm={
+			"useremail":useremail,
+			"userpwd":pwd
+	}
+	
+	$.ajax({
+		method:'post'
+		, url:'resendValidate'
+		, data:JSON.stringify(dataForm)
+		, dataType	: 'text'
+		, contentType: "application/json; charset=utf-8"
+		, success:function(resp){
+			if(resp=='ok'){
+					$('#resendForm').submit();
+			}else{
+				alert('Enter invalid email or mail is already authenticated.');
 			}
 		}	
 	})
@@ -94,29 +121,29 @@ $(function(){
 		$pattern = '^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';			
 		
 		
-		if (nickcheck.length<=0||nickcheck=='중복된 닉네임 입니다') {
-				alert('닉네임 다시 한 번 확인해주세요');
+		if (nickcheck.length<=0||nickcheck=='The nickname is already existed') {
+				alert('Please check your nickname one more time');
 				$("#usernick").select();
 				$("#usernick").focus();
 				return;
 		}
 		
 		if($('#currpwd').val() == $('#newpwd').val()){
-			alert('새로입력한 비밀번호와 현재 비밀번호가 달라야 합니다.');
+			alert('The new password and current password must be different.');
 			return;
 		}
 		
 		if($('#newpwd').val() != $('#checkpwd').val()){
-			alert('새로입력한 비밀번호와 비밀번호 확인 값은 같아야 합니다.');
+			alert('The new password and the confirm password must be same.');
 			return;
 		}
 		
 		if($('#newpwd').val().match($pattern)){
 			
-			alert('비밀번호 수정이 완료되었습니다. 다시 로그인해주세요');
+			alert('The password is successfully changed. Please Login again');
 			
 		} else {
-			alert('비밀번호는 대/소문자, 숫자, 특수 문자 포함, 8자 이상');
+			alert('Password must be eight characters including one uppercase letter, one special character and alphanumeric characters');
 		
 			return;
 		}
