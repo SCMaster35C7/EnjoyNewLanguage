@@ -51,27 +51,27 @@
     });
     //iframe 크기 조절관련 제이쿼리
     $(function(){
-       $("iframe.myFrame").load(function(){ //iframe 컨텐츠가 로드 된 후에 호출됩니다.
-          var frame = $(this).get(0);
-          var doc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
-          $(this).height(doc.body.scrollHeight);
-          $(this).width(doc.body.scrollWidth);
-       });
+    	$("iframe.myFrame").load(function(){ //iframe 컨텐츠가 로드 된 후에 호출됩니다.
+    		var frame = $(this).get(0);
+    		var doc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
+    		$(this).height(doc.body.scrollHeight);
+    		$(this).width(doc.body.scrollWidth);
+    	});
     });
 /*     //위시리스트 탭 클릭시 ajax 작동
     $(function(){
-       $("iframe.myFrame").load(function(){ //iframe 컨텐츠가 로드 된 후에 호출됩니다.
-          var frame = $(this).get(0);
-          var doc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
-          $(this).height(doc.body.scrollHeight);
-          $(this).width(doc.body.scrollWidth);
-       
-          $.ajax{
-             URL   : "subWish"
-             data : ""
-             type : ""
-          }
-       });
+    	$("iframe.myFrame").load(function(){ //iframe 컨텐츠가 로드 된 후에 호출됩니다.
+    		var frame = $(this).get(0);
+    		var doc = (frame.contentDocument) ? frame.contentDocument : frame.contentWindow.document;
+    		$(this).height(doc.body.scrollHeight);
+    		$(this).width(doc.body.scrollWidth);
+    	
+    		$.ajax{
+    			URL	: "subWish"
+    			data : ""
+    			type : ""
+    		}
+    	});
     });
  */
 </script>
@@ -105,19 +105,19 @@
     </ul>
     <div class="tab_Content_Wrap">
         <div id="tabContent01" class="tabPage">
-         <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
-              <p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
-         </iframe>         
+			<iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
+  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
+			</iframe>			
         </div>
         <div id="tabContent02" class="tabPage">
            <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
-              <p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
-         </iframe>
+  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
+			</iframe>
         </div>
         <div id="tabContent03" class="tabPage">
             <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
-              <p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
-         </iframe>
+  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
+			</iframe>
         </div>
     </div>
 </div>   

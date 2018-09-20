@@ -15,7 +15,7 @@
 <script type="text/javascript">
 $(document).ready(function(){    
     $("#btnDeleteparticularList").on("click", function(){ //삭제하기 버튼
-       deleteparticularList();
+    	deleteparticularList();
     });
 });
 
@@ -29,79 +29,76 @@ function deleteparticularList(){
 </script>
 </head>
 <body>
- <c:if test="${sessionScope.useremail!=null}">
-            <c:if test="${empty vWishlist}">
 
+ 	<c:if test="${sessionScope.useremail!=null}">
+				<c:if test="${empty vWishlist}">
                <table border="1">
                   <tr>
                      <td>자막위시리스트가 비어있습니다.</td>
                   </tr>
                </table>
             </c:if>
+				<c:if test="${vWishlist != null}">
 
-            <c:if test="${vWishlist != null}">
-
-               <table border="1">
-                  <tr>
-                     <td>번호</td>
-                     <td>제목</td>
-                     <td>작성일자</td>
-                     <td>삭제</td>
-                  </tr>
-                  <c:forEach var="vWishlist" items="${vWishlist}">
-                     <tr>                     
-                        <td>${vWishlist.rnum}</td>                           
-                        <td><a href="detailSubBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=1" target="_parent">${vWishlist.title}</a></td>
-                        <td>${vWishlist.regdate}</td>
-                        <td>
-                           <form action="deleteWish" method="get" >
-                        <%--    <input type="hidden" name="" value="${sessionScope.Member.userid}">
-                              <input type="hidden" name="" value="${vWishList.title}"> --%>
-                              <input type="button" id="btnDeleteparticularList" value="삭제"/>                              
-                           </form>
-                        </td>
-                     </tr>
-                  </c:forEach>
-               </table>
-            </c:if>
-         </c:if>
-         
-         <div class="center">
-         <ul class="pagination">
-         <li class="waves-effect">
-            <a href="particularList?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&useremail=${useremail}&wishtable=1">
-               <i class="material-icons">first_page</i>
-            </a>
-         </li>
-         
-            <li class="waves-effect">
-               <a href="particularList?currentPage=${navi.currentPage - 1}&useremail=${useremail}&wishtable=1"> 
-                  <i class="material-icons">chevron_left</i>
-               </a>
-            </li>
-         
-            <c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
-               <c:if test="${navi.currentPage == page }">
-                  <li class="page-item active"><a class="page-link">${page}</a></li>
-               </c:if>
-               <c:if test="${navi.currentPage != page }">
-                  <li class="page-item"><a class="page-link"
-                     href="particularList?currentPage=${page}&useremail=${useremail}&wishtable=1">${page}</a></li>
-               </c:if>
-            </c:forEach>
-         
-            <li class="waves-effect">
-               <a href="particularList?currentPage=${navi.currentPage + 1}&useremail=${useremail}&wishtable=1">
-                  <i class="material-icons">chevron_right</i> 
-               </a>
-            </li>
-         
-            <li class="waves-effect">
-               <a href="particularList?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&useremail=${useremail}&wishtable=1">
-                  <i class="material-icons">last_page</i> 
-               </a>
-            </li>
-         </ul>
-      </div>
+					<table border="1">
+						<tr>
+							<td>번호</td>
+							<td>제목</td>
+							<td>작성일자</td>
+							<td>삭제</td>
+						</tr>
+						<c:forEach var="vWishlist" items="${vWishlist}">
+							<tr>							
+								<td>${vWishlist.rnum}</td>									
+								<td><a href="detailInvBoard?investigationnum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=1" target="_parent">${vWishlist.title}</a></td>
+								<td>${vWishlist.regdate}</td>
+								<td>
+									<form action="deleteWish" method="get" >
+										<input type="button" id="btnDeleteparticularList" value="삭제"/>										
+									</form>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</c:if>
+			</c:if>
+			
+			<div class="center">
+			<ul class="pagination">
+			<li class="waves-effect">
+				<a href="particularList?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&useremail=${useremail}&wishtable=1&distinguishNum=2">
+					<i class="material-icons">first_page</i>
+				</a>
+			</li>
+			
+				<li class="waves-effect">
+					<a href="particularList?currentPage=${navi.currentPage - 1}&useremail=${useremail}&wishtable=1&distinguishNum=2"> 
+						<i class="material-icons">chevron_left</i>
+					</a>
+				</li>
+			
+				<c:forEach var="page" begin="${navi.startPageGroup}" end="${navi.endPageGroup}" step="1">
+					<c:if test="${navi.currentPage == page }">
+						<li class="page-item active"><a class="page-link">${page}</a></li>
+					</c:if>
+					<c:if test="${navi.currentPage != page }">
+						<li class="page-item"><a class="page-link"
+							href="particularList?currentPage=${page}&useremail=${useremail}&wishtable=1&distinguishNum=2">${page}</a></li>
+					</c:if>
+				</c:forEach>
+			
+				<li class="waves-effect">
+					<a href="particularList?currentPage=${navi.currentPage + 1}&useremail=${useremail}&wishtable=1&distinguishNum=2">
+						<i class="material-icons">chevron_right</i> 
+					</a>
+				</li>
+			
+				<li class="waves-effect">
+					<a href="particularList?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&useremail=${useremail}&wishtable=1&distinguishNum=2">
+						<i class="material-icons">last_page</i> 
+					</a>
+				</li>
+			</ul>
+		</div>
 </body>
 </html>

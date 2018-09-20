@@ -42,11 +42,15 @@
 			$('#modal1').modal(); //로그인 모달
 			$('#modal2').modal(); //회원탈퇴 모달
 			$('#modal3').modal(); //회원정보수정 모달
-            $('#modal4').modal(); //계정복구 모달
+      $('#modal4').modal(); //계정복구 모달
 			$('#modal5').modal(); //
 			
 			//side-nav open
 			$('.sidenav').sidenav();
+			
+			$('#small-navi').sidenav({
+	            edge:'right'
+	         });
 			
 			//tooltip
 			$('.tooltipped').tooltip();
@@ -59,7 +63,7 @@
 			$('#sticker').on('click', function() {
 				$('#checkline').val('');
 			});
-	
+
 			$('.search').on('keydown', function(key) {
 				if (key.keyCode == 13) {
 					// naver 검색
@@ -394,11 +398,11 @@
 					</div>
 				</li>
 				<li>
-					<a href="#!">
+					<a href="#!" class="sidenav-close">
 					<i class="material-icons">cloud</i>First Link With Icon</a>
 				</li>
 				<li>
-					<a href="#!">wishList</a>
+					<a href="#!" class="sidenav-close">wishList</a>
 				</li>
 				<li>
 					<div class="divider"></div>
@@ -407,10 +411,10 @@
 					<a class="subheader" data-langNum="12"></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum="13"></a>
+					<a class="waves-effect modal-close modal-trigger sidenav-close" href="#modal3" data-langNum="13"></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum="14"></a>
+					<a class="waves-effect modal-close modal-trigger sidenav-close" href="#modal2" data-langNum="14"></a>
 				</li>
 			</ul>
 		</aside>			

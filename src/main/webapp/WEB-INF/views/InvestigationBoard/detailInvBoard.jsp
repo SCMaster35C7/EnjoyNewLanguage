@@ -12,7 +12,7 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
 
-    <!--Let browser know website is optimized for mobile-->
+   <!--Let browser know website is optimized for mobile-->
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
    
    <style>
@@ -1040,8 +1040,7 @@
                      </div>
                      <input id="replyInsert" type="button" class="btn" value="Register" style="margin-top:10px;"/>
                      <input id="cancelUpdate" type="button" class="btn" style="visibility:hidden; margin-top:10px;" value="Cancel"/>   
-                  </div>
-                  
+                 </div>
 	               <input type="hidden" id="useremail" value="${sessionScope.useremail}">
 	               <input type="hidden" id="updatereplynum">
             </div>
