@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!--Import materialize.css-->
 <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-	
+   
 <title>Insert title here</title>
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
@@ -35,50 +35,41 @@
 			location.href = "${pageContext.request.contextPath}/"
 		});		
 	});	
+  
+   /* $(function() {
 
-	
-	/* $(function() {
+      var dataFormVideo = {
+         "tableName" : "videowish",
+         "idCode" : "videonum",
+         "useremail" : useremail,
+         "title" : title,
+         "url" : url,
+         "wishnum" : videonum
+      };
 
-		var dataFormVideo = {
-			"tableName" : "videowish",
-			"idCode" : "videonum",
-			"useremail" : useremail,
-			"title" : title,
-			"url" : url,
-			"wishnum" : videonum
-		};
-
-		$.ajax({
-			method : 'post',
-			url : 'insertVideoWish',
-			data : JSON.stringify(dataFormVideo),
-			contentType : "application/json; charset=utf-8",
-			async : false,
-			success : function(resp) {
-				alert("영상위시리스트에 등록되었습니다.");
-				
-			},
-			error : function(resp, code, error) {
-				alert("resp : " + resp + ", code : " + code + ", error : " + error);
-			}
-		});
-	}); */
+      $.ajax({
+         method : 'post',
+         url : 'insertVideoWish',
+         data : JSON.stringify(dataFormVideo),
+         contentType : "application/json; charset=utf-8",
+         async : false,
+         success : function(resp) {
+            alert("영상위시리스트에 등록되었습니다.");
+            
+         },
+         error : function(resp, code, error) {
+            alert("resp : " + resp + ", code : " + code + ", error : " + error);
+         }
+      });
+   }); */
 
 </script>
 </head>
 <body>
-	<div id="wrapper">
-		 <c:if test="${sessionScope.useremail!=null}">
-				<c:if test="${empty vWishlist}">
+   <div id="wrapper">
+       <c:if test="${sessionScope.useremail!=null}">
+            <c:if test="${empty vWishlist}">
 
-					<table border="1">
-						<tr>
-							<td>영상위시리스트가 비어있습니다.</td>
-						</tr>
-					</table>
-				</c:if>
-
-				<c:if test="${vWishlist != null}">
 
 					<table border="1">
 						<tr>

@@ -1,6 +1,7 @@
 package global.sesoc.Youtube.dto;
 
 public class WishList {
+
 	private int rnum;
 	private int wishtable;
 	private int identificationnum;
@@ -89,3 +90,4 @@ public class WishList {
 	
 	
 }
+

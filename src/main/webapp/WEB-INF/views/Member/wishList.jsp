@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -12,12 +12,12 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!--Import materialize.css-->
 <link type="text/css" rel="stylesheet" href="css/materialize1.css"  media="screen,projection"/>
-	
+   
 <title>Enjoy Language</title>
 <script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 
-	function tabSetting() {
+   function tabSetting() {
         // 탭 컨텐츠 hide 후 현재 탭메뉴 페이지만 show
         $('.tabPage').hide();
         $($('.current').find('a').attr('href')).show();
@@ -120,6 +120,6 @@
 			</iframe>
         </div>
     </div>
-</div>	
+</div>   
 </head>
 </html>

@@ -21,34 +21,6 @@ import global.sesoc.Youtube.util.PageNavigator;
 public class WishController {
 	@Autowired
 	WishRepository wRepository;
-
-	/**
-	 * 영상위시리스트 화면으로 이동	 * 
-	 * @return
-	 */
-	/*
-	@RequestMapping(value="/wishList", method=RequestMethod.GET)
-	public String wishList(@RequestParam(value="currentPage", defaultValue="1") int currentPage,
-						@RequestParam(value="searchType", defaultValue="title") String searchType,
-						@RequestParam(value="searchWord", defaultValue="") String searchWord,
-						HttpSession session,
-						Model model) {
-		
-		int totalRecordCount = wRepository.getTotalCount(searchType, searchWord);
-		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 8);
-		String useremail = (String)session.getAttribute("useremail");
-		
-		List<WishList> vWishlist =  wRepository.getVideoWishList(useremail, searchType, searchWord, navi.getStartRecord(), navi.getcountPerPage());
-		System.out.println(vWishlist);
-		model.addAttribute("vWishlist", vWishlist);
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchWord", searchWord);
-		model.addAttribute("navi", navi);
-
-		return "Member/wishList";
-
-	}
-	*/
 	
 	/**
 	 * 영상위시리스트 탭으로 이동
