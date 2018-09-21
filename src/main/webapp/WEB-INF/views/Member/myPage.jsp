@@ -706,7 +706,7 @@
        var circle = new Chart(ctx2, {
              type: 'doughnut',
              data: {
-                labels: ["Win", "Lose"],
+                labels: ["승", "패"],
                 datasets: [{
                     data: ${winningRate},
                     backgroundColor: [
