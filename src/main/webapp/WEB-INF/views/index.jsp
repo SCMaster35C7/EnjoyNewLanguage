@@ -115,7 +115,7 @@
 			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline"><i class="material-icons">menu</i></a>
 			    	</li>
 			    </ul>
-			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+			    <a href="${pageContext.request.contextPath}" class="brand-logo"><img src="images/fulllogo.png" style="margin-top:5px;"></a>
 			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			    
 			    <ul class="right hide-on-med-and-down">

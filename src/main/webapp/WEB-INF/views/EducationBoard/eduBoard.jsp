@@ -51,6 +51,10 @@
 			//side-nav open
 			$('.sidenav').sidenav();
 			
+			$('#small-navi').sidenav({
+	            edge:'right'
+	         });
+			
 			//tooltip
 			$('.tooltipped').tooltip();
 			
@@ -384,7 +388,7 @@
 			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline"><i class="material-icons">menu</i></a>
 			    	</li>
 			    </ul>
-			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
+			    <a href="${pageContext.request.contextPath}" class="brand-logo"><img src="images/fulllogo.png" style="margin-top:5px;"></a>
 			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			    
 			    <ul class="right hide-on-med-and-down">
@@ -679,10 +683,10 @@
 					<a class="subheader" data-langNum="12"></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal3" data-langNum="13"></a>
+					<a class="waves-effect modal-close modal-trigger sidenav-close" href="#modal3" data-langNum="13"></a>
 				</li>
 				<li>
-					<a class="waves-effect modal-close modal-trigger" href="#modal2" data-langNum="14"></a>
+					<a class="waves-effect modal-close modal-trigger sidenav-close" href="#modal2" data-langNum="14"></a>
 				</li>
 			</ul>
 		</aside>			
