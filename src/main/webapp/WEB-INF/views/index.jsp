@@ -85,7 +85,6 @@
 			
 		}else if(lang=='jp'){
 			
-			
 		}
 	}
 	</script>
@@ -424,18 +423,12 @@
 			  	<h3 class="center">인기 항목</h3>
 			</div>
 			<div class="row">					
-				<div class="col s1 center">
-					d
-				</div>
 				<div class="carousel carousel-slider col s10 m10 l10">
 					<c:forEach var="eList" items="${eList}">
 						<a class="carousel-item" href="#one!" style="width:512px; height:auto;">
 							<iframe class="video w100" width="512" height="324" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>
 						</a>
 					</c:forEach>
-				</div>
-				<div class="col s1 center">
-					d
 				</div>
 			</div>	  
 		</section>
