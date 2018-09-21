@@ -578,36 +578,94 @@
 				</div>	
             </div>
             
-            <div class="row" >
+             <div class="row" >
                <div id="table1" class="col s12 m6 l6">
                   <table class="highlight">
                      <thead>
                         <tr>
-                           <th data-langNum2="108">보고있는 영상</th>
+                              <th data-langNum2="108">보고있는 영상</th>
+                                 <td class="right">
+                                    <div class="center">
+                                       <ul class="pagination">
+                           
+                                       <li class="waves-effect">
+                                          <a href="myPage?currentPage=${unfinishedfinishedNavi.currentPage - 1}"> 
+                                             <i class="material-icons">chevron_left</i>
+                                          </a>
+                                       </li>
+                           
+                                       <c:forEach var="page" begin="${unfinishedNavi.startPageGroup}" end="${unfinishedNavi.endPageGroup}" step="1">
+                                          <c:if test="${unfinishedNavi.currentPage == page }">
+                                             <li class="page-item active"><a class="page-link">${page}</a></li>
+                                          </c:if>
+                                          <c:if test="${unfinishedNavi.currentPage != page }">
+                                             <li class="page-item"><a class="page-link"
+                                                href="myPage?currentPage=${page}">${page}</a></li>
+                                          </c:if>
+                                       </c:forEach>
+                           
+                                       <li class="waves-effect">
+                                          <a href="myPage?currentPage=${unfinishedNavi.currentPage + 1}">
+                                             <i class="material-icons">chevron_right</i> 
+                                          </a>
+                                       </li>
+                                       </ul>
+                                 </div>
+                                 </td>
                         </tr>
                      </thead>
                      <tbody>
-                        <c:if test="${not empty notfinished}">
-                           <c:forEach var="nf" items="${notfinished}">
+                        <c:if test="${not empty unfinished}">
+                           <c:forEach var="nf" items="${unfinished}">
                               <tr>
                                  <td><a href="detailEduBoard?videoNum=${nf.videoNum}">${nf.title}</a></td>
                               </tr>
                            </c:forEach>
                         </c:if>
-
-                        <c:if test="${empty notfinished}">
+                        <c:if test="${empty unfinished}">
                            <td data-langNum2="109">학습중인 영상이 없습니다.</td>
                         </c:if>
                      </tbody>
                   </table>
                </div>
                
+                  <section>   
                <div class="col s12 m6 l6">
                <div id="table2">
                   <table class="highlight">
                      <thead>
                         <tr>
-                           <th colspan="2"  data-langNum2="110">학습완료 한 영상</th>
+                           <th data-langNum2="110">학습완료 한 영상</th>
+                           <td class="right">
+                              <div class="center">
+                           <ul class="pagination">
+
+                           
+                              <li class="waves-effect">
+                                 <a href="myPage?currentPage=${finishedNavi.currentPage - 1}"> 
+                                    <i class="material-icons">chevron_left</i>
+                                 </a>
+                              </li>
+                           
+                              <c:forEach var="page" begin="${finishedNavi.startPageGroup}" end="${finishedNavi.endPageGroup}" step="1">
+                                 <c:if test="${finishedNavi.currentPage == page }">
+                                    <li class="page-item active"><a class="page-link">${page}</a></li>
+                                 </c:if>
+                                 <c:if test="${finishedNavi.currentPage != page }">
+                                    <li class="page-item"><a class="page-link"
+                                       href="myPage?currentPage=${page}">${page}</a></li>
+                                 </c:if>
+                              </c:forEach>
+                           
+                              <li class="waves-effect">
+                                 <a href="myPage?currentPage=${finishedNavi.currentPage + 1}">
+                                    <i class="material-icons">chevron_right</i> 
+                                 </a>
+                              </li>
+                           
+                           </ul>
+                        </div>
+                           </td>
                         </tr>
                      </thead>
                      <tbody>
@@ -616,13 +674,13 @@
                               <tr>
                                  <td><a href="detailEduBoard?videoNum=${f.videoNum}">${f.title}</a></td>
                                  <td><a href="TryRetake?videoNum=${f.videoNum}"
-                                    class="waves-effect waves-light btn"  data-langNum2="111"></a></td>
+                                    class="waves-effect waves-light btn right" data-langNum2="111"></a></td>
                               </tr>
                            </c:forEach>
                         </c:if>
 
                         <c:if test="${empty finished}">
-                           <td  data-langNum2="112">학습중인 영상이 없습니다.</td>
+                           <td data-langNum2="112">학습중인 영상이 없습니다.</td>
                         </c:if>
                      </tbody>
                   </table>
@@ -706,7 +764,7 @@
        var circle = new Chart(ctx2, {
              type: 'doughnut',
              data: {
-                labels: ["승", "패"],
+                labels: ["Win", "Lose"],
                 datasets: [{
                     data: ${winningRate},
                     backgroundColor: [
