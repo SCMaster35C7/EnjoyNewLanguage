@@ -73,7 +73,7 @@
 			, d.dubbingnum idnum
 			, d.useremail
 			, d.content
-			, d.regDate
+			, to_char(d.regdate,'YYYY-MM-DD') regdate
 			, d.blackCount
 			, m.usernick
 		from 
@@ -104,17 +104,17 @@
 	</update>
 	
 
-	<delete id="replysDelete" parameterType="Reply">
+	<delete id="replysDelete" parameterType="int">
 	delete from dubbingreply
-	where useremail=#{useremail}
-	and dubbingnum=#{idnum}
+	
+	where dubbingnum=#{value}
 	
 	
 	</delete>
 	
-	<delete id="deleteDubbing" parameterType="Dubbing">
+	<delete id="deleteDubbing" parameterType="int">
 	delete from dubbing
-	where dubbingnum=#{dubbingnum}
+	where dubbingnum=#{value}
 	
 	</delete>
 

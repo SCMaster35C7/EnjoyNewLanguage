@@ -103,7 +103,7 @@
 		});
 		//회원탈퇴
 		function closeID(){
-			var useremail=$('#useremail').val();
+			var useremail=$('#useremailDelete').val();
 			var pwd=$('#pwd').val();
 			var dataForm={
 					"useremail":useremail,
@@ -121,9 +121,8 @@
 						if(finalCheck){
 							alert('이용해주셔서 감사합니다. \n계정 복구는 한달안으로 가능합니다.\n 계정복구시 기존 기록을 모두 보존가능합니다.');
 							$('#submitform').submit();
-						}else{
-							alert('취소합니다!');
-							location.href="//";
+						}else {
+							alert("취소합니다.");
 						}
 					}else{
 						alert('아이디 또는 패스워드를 확인해주세요.');
@@ -410,15 +409,15 @@
 					<form action="insertCloseID" method="post" id="submitform">
 						<div class="input-field col s12">
 			          		<i class="material-icons prefix">mail</i>
-			          		<input id="useremail" name="useremail" type="text" class="validate">
+			          		<input id="useremailDelete" name="useremail" type="text" class="validate">
 			          		<label for="useremail">USERMAIL</label>
 			        	</div>
+				        <div class="input-field col s12">
+				          <i class="material-icons prefix">mode_edit</i>
+				          <input id="pwd" type="password" class="validate">
+				          <label for="pwd">PASSWORD</label>
+				        </div>
 					</form>
-			        <div class="input-field col s12">
-			          <i class="material-icons prefix">mode_edit</i>
-			          <input id="pwd" type="password" class="validate">
-			          <label for="pwd">PASSWORD</label>
-			        </div>
 				<div class="row">
 					<span class="flow-text">
 						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK

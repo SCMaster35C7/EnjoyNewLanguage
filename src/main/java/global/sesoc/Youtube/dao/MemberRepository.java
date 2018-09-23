@@ -132,4 +132,18 @@ public class MemberRepository {
 		Member member = mapper.selectInConfirm(useremail);
 		return member;
 	}
+
+	public int idCompletelyDeleteFromMember() {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int result = mapper.idCompletelyDeleteFromMember();
+		
+		return result;
+	}
+	
+	public int idCompletelyDeleteFromConfirmmeber() {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int result = mapper.idCompletelyDeleteFromConfirmmeber();
+		
+		return result;
+	}
 }
