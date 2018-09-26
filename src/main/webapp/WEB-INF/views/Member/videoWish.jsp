@@ -94,7 +94,7 @@
 								<td><a href="detailEduBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=0" target="_parent">${vWishlist.title}</a></td>
 								<td>${vWishlist.regdate}</td>
 								<td>
-									<input type="button" id="btnDeleteVideoWish" value="삭제"/>										
+									<input type="button" class="btn waves-effect waves-light" id="btnDeleteVideoWish" value="삭제"/>										
 								</td>
 							</tr>
 						</c:forEach>

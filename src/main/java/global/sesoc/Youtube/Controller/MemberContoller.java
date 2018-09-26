@@ -401,11 +401,6 @@ public class MemberContoller {
       return "Member/certification";
    }
 
-   @RequestMapping(value = "closeID", method = RequestMethod.GET)
-   public String closeID() {
-      return "Member/closeID";
-   }
-
    @RequestMapping(value = "closeIDsubmit", method = RequestMethod.POST)
    public @ResponseBody String closeIDsubmit(@RequestBody Member member) {
       System.out.println(member);

@@ -46,7 +46,7 @@
 			$('#modal1').modal(); //로그인 모달
 			$('#modal2').modal(); //회원탈퇴 모달
 			$('#modal3').modal(); //회원정보수정 모달
-      $('#modal4').modal(); //계정복구 모달
+      		$('#modal4').modal(); //계정복구 모달
 			$('#modal5').modal(); //
 			
 			//side-nav open
@@ -500,8 +500,7 @@
         	</div>
     	</div>
     </footer>
-
-<script type="text/javascript" src="js/materialize.js"></script>
-<script type="text/javascript" src="js/LoginMenu.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+	<script type="text/javascript" src="js/LoginMenu.js"></script>
 </body>
 </html>
