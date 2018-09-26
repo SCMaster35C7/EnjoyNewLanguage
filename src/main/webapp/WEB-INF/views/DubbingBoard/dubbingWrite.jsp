@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>DJ DJ 더빙 시작</title>
+	<title data-langNum2="201">DJ DJ 더빙 시작</title>
 	<meta name="author" content="zisung">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<!--Import Google Icon Font-->
@@ -20,12 +20,14 @@
 	</style>
 	
 	<script type="text/javascript" src="JQuery/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="js/LanguageSet.js"></script>
 	<script>
 		var saveTime = null; //자막 싱크용 시간저장변수
 		var videoStartTime = 0; //비디오 시작타임, 파일이름생성에 쓰인다.
 		var cherkPoint = true;
 	
 		$(function() {
+			SetLanguage();
 			$('#record').on('click', function() {
 				saveVideoStartTime();
 				cherkPoint = (!cherkPoint);
@@ -38,6 +40,10 @@
 			$('#modal2').modal(); //회원탈퇴 모달
 			$('#modal3').modal(); //회원정보수정 모달
 			$('#modal4').modal(); //계정복구 모달
+			$('#modal5').modal(); //계정복구 모달
+			
+			//dropdown
+			$(".dropdown-trigger").dropdown();
 
 			//floating actionbutton
 			$(".fixed-action-btn").floatingActionButton({
@@ -45,6 +51,10 @@
 			});		
 			//side-nav open
 			$('.sidenav').sidenav();
+			
+			$('#small-navi').sidenav({
+	            edge:'right'
+	         });
 			
 			//tooltip
 			$('.tooltipped').tooltip();
@@ -55,39 +65,7 @@
 			$('#sticker').on('click', function() {
 				$('#checkline').val('');
 			});
-			
-			$('#loginBtn').on('click',function(){
-				var useremail = $('#useremail');
-				var userpwd = $('#userpwd');
-				
 	
-				var sendData = {	
-					"useremail":useremail
-					,"userpwd": userpwd
-				};
-				
-				$.ajax({
-					method	:	'post'
-					, url	: 'statusCheck'
-					, data	: JSON.stringify(sendData)
-					, dataType	: 'text'
-					, contentType: 'application/json; charset=utf-8'
-					, success	: function(resp){
-						if (resp=="checkEmail") {
-							$("#checkline").val('이메일 인증 먼저 해주세요!');
-						}else if (resp=="loginFailure") {
-							//alert('담으로가자');
-							//$('#loginForm').submit();
-							$("#checkline").val('아이디나 비밀번호가 틀렸습니다!');
-						} else {
-							window.location.reload();
-						}
-					}, error:function(resp, code, error) {
-						alert("resp : "+resp+", code:"+code+", error:"+error);
-					}
-				});//ajax
-			});
-			
 			$('.search').on('keydown', function(key) {
 				if (key.keyCode == 13) {
 					// naver 검색
@@ -102,7 +80,6 @@
 			});
 		});
 			
-	
 		function closeModal(){
 			var elem=document.getElementById('directions');
 			var instance = M.Modal.getInstance(elem);
@@ -129,6 +106,46 @@
 			submitForm.submit();
 		}
 	</script>
+	<!-- 페이지 언어팩 -->
+	<script>
+	var koPage={
+			101:'더빙 사용자를 위한 사용 설명서'
+	       ,102:'1. 영상에서 원하는 지점까지 이동하신다음 일시정지하세요.'
+	       ,103:'2. Microphone을 체크하시고 마이크 감도를 조절하세요.'
+	       ,104:'3. RECORD 버튼을 누르고 더빙을 즐겨주세요.'
+	       ,105:'4. STOP 버튼을 누르시면 더빙파일을 감상, 다운받기가 가능합니다.'
+	       ,106:'5. 마음에 드는 파일을 파일명을 변경하자미사고 업로드 해주세요.'
+	       ,107:'등록 파일명'
+	       ,108:'간단 코멘트'
+	       ,201:'DJ DJ 더빙 시작'
+	}
+	var jpPage={
+			101:'吹き替え説明書'
+		   ,102:'１．動画で好きな所まで移動した後、一時停止してうださい。'
+		   ,103:'２．マイクの作動を確認し、マイクの感度を整てください。'
+		   ,104:'３．レコードボタンを押して、ダビングを楽しんでください。'
+		   ,105:'４．STOPボタンを押すと、ダビングの感想、そのファイルのダウンロードができます。'
+		   ,106:'５．ファイルの名前を変更せず、アップロードしてください。'
+		   ,107:'登録ファイル名'
+		   ,108:'簡単コメント'
+		   ,201:'DJ DJダビング開始'
+	}
+	function languageChange_Page(lang){
+		if(lang=='kor'){
+			$('[data-langNum2]').each(function() {
+			    var $this = $(this); 
+			    $this.html(koPage[$this.data('langnum2')]); 
+			});
+			
+		}else if(lang=='jp'){
+			$('[data-langNum2]').each(function() {
+			    var $this = $(this); 
+			    $this.html(jpPage[$this.data('langnum2')]); 
+			});
+			
+		}
+	}
+	</script>
 </head>
 
 <body>
@@ -140,6 +157,11 @@
 				});
 			</script>
 		</c:if>
+		<!-- Dropdown Structure -->
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a onclick="languageChange('kor')" style="padding-left:6px; padding-right:6px;"><img src="images/korea.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"><span style="margin-left:4px;">KOR</span></a></li>
+        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JAP</span></a></li>
+      </ul>
 
 		<!-- nav -->
 		<nav class="nav-extended">
@@ -147,14 +169,12 @@
 			    <!-- sidenav trigger -->
 			    <ul class="left">
 			    	<li>
-			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline">
-			    			<i class="material-icons">menu</i>
-			    		</a>
+			    		<a href="#" data-target="slide-out" class="sidenav-trigger" style="display:inline"><i class="material-icons">menu</i></a>
 			    	</li>
 			    </ul>
-			    <a href="${pageContext.request.contextPath}" class="brand-logo">Logo</a>
-			     
+			    <a href="${pageContext.request.contextPath}" class="brand-logo"><img src="images/fulllogo.png" style="margin-top:5px;"></a>
 			    <a href="#" data-target="small-navi"  class="sidenav-trigger"><i class="material-icons">menu</i></a>
+			    
 			    <ul class="right hide-on-med-and-down">
 				  	<li>
 				  		<div class="header-search-wrapper hide-on-med-and-down" style="display:inline-block; width:200px; margin-left:-5%;">
@@ -162,10 +182,11 @@
 	                  		<input type="search" name="search" class="header-search-input z-depth-2 search" placeholder="SEARCH WORD"/>
 	              		</div>
 				  	</li>		 
-			      	<li><a href="eduBoard">영상게시판</a></li>
-			      	<li><a href="dubbingBoard">더빙게시판</a></li>
-			      	<li><a href="InvestigationBoard">자막검증게시판</a></li>
-			      	<li><a href="myPage">마이페이지</a></li>
+			      	<li><a href="eduBoard" data-langNum="1"></a></li>
+			      	<li><a href="dubbingBoard" data-langNum="2"></a></li>
+			      	<li><a href="InvestigationBoard" data-langNum="3"></a></li>
+			      	<li><a href="myPage"  data-langNum="4"></a></li>
+			        <li><a class="dropdown-trigger" style="margin-right:20px;" href="#!" data-target="dropdown1">Language<i class="material-icons right">language</i></a></li>
 			    </ul>
 			</div>		
 			<div class="nav-content">
@@ -175,39 +196,24 @@
 			</div>
 		</nav>
 	</header>
-
-	  	  
+	
 	<!-- 창 축소시 사이드 nav -->
 	<ul class="sidenav" id="small-navi">
 		<li>
-        	<div class="input-field">
-          		<input class="search" type="search" style="margin-left: 15%;" required>
-          		<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+        	<div class="input-field" style="width:70%; margin-left:15%;">
+          		<input class="search" type="search" required>
+          		<label class="label-icon" for="search" style="margin-left:-18%;"><i class="material-icons">search</i></label>
           		<i class="material-icons">close</i>
        		</div>
 		</li>		 
-		<li><a href="eduBoard">영상게시판</a></li>
-		<li><a href="dubbingBoard">더빙게시판</a></li>
-		<li><a href="InvestigationBoard">자막게시판</a></li>
-		<li><a href="myPage">마이페이지</a></li>
+		<li><a href="eduBoard" data-langNum="1"></a></li>
+		<li><a href="dubbingBoard" data-langNum="2"></a></li>
+		<li><a href="InvestigationBoard" data-langNum="3"></a></li>
+		<li><a href="myPage" data-langNum="4"></a></li>
+		<li><div class="divider"></div></li>
+        <li><a onclick="languageChange('kor')">KOR</a></li>
+        <li><a onclick="languageChange('jp')">JAP</a></li>
 	</ul>
-
-	<!-- 첫 설명서 모달 -->
-	<div id="directions" class="modal" style="width:50%; ">
-		<div class="container">
-	    	<div class="modal-content" style="margin-left: -20%; margin-right: -20%;">
-		
-				<h4>더빙 사용자를 위한 사용 설명서</h4>
-				<h6>1. 영상에서 원하는 지점까지 이동하신다음 일시정지하세요.</h6>
-				<h6>2. Microphone을 체크하시고 마이크 감도를 조절하세요.</h6>
-				<h6>3. RECORD 버튼을 누르고 더빙을 즐겨주세요.</h6>
-				<h6>4. STOP 버튼을 누르시면 더빙파일을 감상, 다운받기가 가능합니다.</h6>
-				<h6>5. 마음에 드는 파일을 파일명을 변경하지마시고 업로드해주세요.</h6>
-				<br/>
-				<h4 style="margin-left: 5%;"><a onclick="closeModal()" >OK! Let's Start Dubbing!</a></h4>
-			</div>
-		</div>
-	</div>
 	  	  
 	<!-- 로그인 MODAL -->
 	<div id="modal1" class="modal">
@@ -216,7 +222,6 @@
 				<form class="col s12" id=loginForm action="login" method="POST">
 					<div class="row">
 						<h4 class="center-align">LOGIN</h4>
-					
 						<div class="row">
 							<c:if test="${empty sessionScope.useremail }">
 								<div class="input-field col s12">
@@ -237,9 +242,10 @@
 								</div>
 							</c:if>
 						</div>
+						
 						<!-- 글씨뜨는거 -->
 						<c:if test="${not empty sessionScope.useremail }">
-							<h4 class="center">${sessionScope.useremail}환영합니다.</h4>
+							<h4 class="center">${sessionScope.useremail} <span data-langNum="5"></span></h4>
 						</c:if>
 					</div>	
 				
@@ -254,7 +260,7 @@
 							</c:if>
 						
 							<span class="flow-text">
-								<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+								<button class="btn waves-effect waves-light modal-close" type="button">BACK
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
@@ -268,43 +274,27 @@
 						</div>
 						
 						<div class="fixed-action-btn">
-							<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
-							<i class="large material-icons">person</i>
-							</a>
-							<ul>
-							    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
-							    <li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
-								<li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
-							</ul>
+								<a class="btn-floating btn-large red waves-effect waves-light tooltipped" data-position="left" data-tooltip="ACCOUNT?">
+								<i class="large material-icons">person</i>
+								</a>
+								<ul>
+								    <li><a href="joinForm" class="btn-floating blue tooltipped" data-position="top" data-tooltip="JOIN US!"><i class="material-icons">person_add</i></a></li>
+								    <li><a class="btn-floating pink modal-close modal-trigger tooltipped" data-position="top" data-tooltip="RESEND CERTIFICATION MAIL" href="#modal5"><i class="material-icons">mail</i></a></li>
+								    <li><a class="btn-floating modal-close modal-trigger green tooltipped" data-position="top" data-tooltip="ACCOUNT RECOVERY" href="#modal4"><i class="material-icons">sync</i></a></li>
+								    <li><a class="btn-floating yellow darken-1 modal-close modal-trigger tooltipped"  data-position="top" data-tooltip="QUIT US" href="#modal2"><i class="material-icons">clear</i></a></li>
+								</ul>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>	
 	</div>
-		<!-- 계정복구 모달 -->
-	  	<div id="modal4" class="modal">
-			<div class="modal-content">
-				<div class="container center">
-					<h5>계정을 복구하시겠습니까?</h5>
-					<form id="req" action="recoveryMail" method="post">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">mail</i>
-							<input id="recoveryEmail" type="text" name="recoveryEmail" placeholder="이메일 주소를 입력하세요."/>
-						</div>
-						<input type="button" class="btn" value="이메일인증" onclick="check()">
-					</form>
-					<!-- 이메일 인증을 하고 인증이 되면 해당 이메일 주소를 recoveryID tag에 넣고 recovery() 메소드 호출-->
-				</div>
-			</div>
-		</div>
-		
-		
-	<!-- 회원수정모달 -->
+	  
+	  <!-- 회원수정모달 -->
 	  <div id="modal3" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5>회원정보수정</h5>
+				<h5 data-langNum="6"></h5>
 				<form id="updateMember" action="updateMember" method="post">
 					<div class="row" style="margin-top:10%;">
 						<div class="col s6">
@@ -314,7 +304,7 @@
 									<td>${sessionScope.useremail}</td>
 								</tr>
 								<tr>
-									<th>성별</th>
+									<th data-langNum="7"></th>
 									<td>${sessionScope.gender}</td>
 								</tr>
 							</table>
@@ -326,7 +316,7 @@
 									<td>${sessionScope.usernick}</td>
 								</tr>
 								<tr>
-									<th>생일</th>
+									<th data-langNum="8"></th>
 									<td>${sessionScope.birth}</td>
 								</tr>
 							</table>
@@ -359,29 +349,45 @@
 			</div>
 		</div>
 	</div>	
-	
-	<!-- 회원탈퇴 모달 -->
+	  
+	  <!-- 계정복구 모달 -->
+	  	<div id="modal4" class="modal">
+			<div class="modal-content">
+				<div class="container center">
+					<h5 data-langNum="16">계정을 복구하시겠습니까?</h5>
+					<form id="req" action="recoveryMail" method="post">
+						<div class="input-field col s12">
+							<i class="material-icons prefix">mail</i>
+							<input id="recoveryEmail" type="text" name="recoveryEmail" placeholder="이메일 주소를 입력하세요."/>
+						</div>
+						<input id="Ecertification" type="button" class="btn" value="이메일인증" onclick="check()">
+					</form>
+					<!-- 이메일 인증을 하고 인증이 되면 해당 이메일 주소를 recoveryID tag에 넣고 recovery() 메소드 호출-->
+				</div>
+			</div>
+		</div>
+	  <!-- 회원탈퇴 모달 -->
 	  <div id="modal2" class="modal">
 		<div class="modal-content">
 			<div class="container center">
-				<h5>탈퇴하시겠습니까?</h5>
+				<h5 data-langNum="9"></h5>
 				
 				<div class="row">
 					<form action="insertCloseID" method="post" id="submitform">
 						<div class="input-field col s12">
 			          		<i class="material-icons prefix">mail</i>
-			          		<input id="useremail" name="useremail" type="text" class="validate">
-			          		<label for="useremail">USERMAIL</label>
+			          		<input id="checkuseremail" name="useremail" type="text" class="validate">
+			          		<label for="checkuseremail">USERMAIL</label>
 			        	</div>
+				        <div class="input-field col s12">
+				          <i class="material-icons prefix">mode_edit</i>
+				          <input id="pwd" type="password" class="validate">
+				          <label for="pwd">PASSWORD</label>
+				        </div>
 					</form>
-			        <div class="input-field col s12">
-			          <i class="material-icons prefix">mode_edit</i>
-			          <input id="pwd" type="password" class="validate">
-			          <label for="pwd">PASSWORD</label>
-			        </div>
 				<div class="row">
 					<span class="flow-text">
-						<button class="btn waves-effect waves-light modal-close" id="back" type="button">BACK
+						<button class="btn waves-effect waves-light modal-close" type="button">BACK
 							<i class="material-icons right">keyboard_return</i>
 						</button>
 					</span>
@@ -392,36 +398,84 @@
 					</span>	
 				</div>	
 			</div>
-				<p style="color:red;">회원탈퇴 후 한달 이내에 계정을 복구할 수 있습니다.</p>
-				<p style="margin-top:0;">기간 이후에는 회원정보가 영구 삭제됩니다.</p>
+				<p style="color:red;" data-langNum="10"></p>
+				<p style="margin-top:0;" data-langNum="11"></p>
 			</div>
 	  	</div>
 	  </div>
 	  
-	
+	  <!-- 인증메일 다시보내기 모달 -->
+	  <div id="modal5" class="modal">
+		<div class="modal-content">
+			<div class="container center">
+				<h5 data-langNum="15"></h5>
+				
+				<div class="row">
+					<form action="resendEmail" method="post" id="resendForm">
+						<div class="input-field col s12">
+			          		<i class="material-icons prefix">mail</i>
+			          		<input id="resendemail" name="useremail" type="text" class="validate">
+			          		<label for="checkuseremail">USERMAIL</label>
+			        	</div>
+				        <div class="input-field col s12">
+				          <i class="material-icons prefix">mode_edit</i>
+				          <input id="resendpwd" type="password" class="validate">
+				          <label for="pwd">PASSWORD</label>
+				        </div>
+					</form>
+				<div class="row">
+					<span class="flow-text">
+						<button class="btn waves-effect waves-light modal-close" type="button">BACK
+							<i class="material-icons right">keyboard_return</i>
+						</button>
+					</span>
+					<span class="flow-text">
+						<button class="btn" onclick="checkResend()">RESEND
+							<i class="material-icons right">mood_bad</i>
+						</button>
+					</span>	
+				</div>	
+			</div>
+			</div>
+	  	</div>
+	  </div>
+	  
+	  
+	<!-- 메인 -->
 	<div class="wrapper">
 		<!-- sidenav -->	  
-		  <aside>	  	  
-			  <ul id="slide-out" class="sidenav" style="margin-top:64px;">
-			    <li>
-	          <div class="user-view">
-			        <div class="background">
-			        <!-- <img src="images/"> -->
-			        </div>
-			        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
-			        <a href="#name"><span class="white-text name">${usernick}</span></a> 
-			        <a href="#email"><span class="white-text email">${useremail}</span></a>
-				</div>
-			</li>
-			<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-            <li><a href="#!">wishList</a></li>
-            <li><div class="divider"></div></li>
-            <li><a class="subheader">회원정보관리</a></li>
-            <li><a class="waves-effect modal-close modal-trigger" href="#modal3">회원정보수정</a></li>
-            <li><a class="waves-effect modal-close modal-trigger" href="#modal2">회원탈퇴</a></li>
+		<aside>	  	  
+			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
+		    	<li>
+          			<div class="user-view">
+		        		<div class="background"><!-- <img src="images/"> --></div>
+				        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
+				        <a href="#name"><span class="white-text name">${usernick}</span></a> 
+				        <a href="#email"><span class="white-text email">${useremail}</span></a>
+					</div>
+				</li>
+				<li>
+					<a href="#!">
+					<i class="material-icons">cloud</i>First Link With Icon</a>
+				</li>
+				<li>
+					<a href="#!">wishList</a>
+				</li>
+				<li>
+					<div class="divider"></div>
+				</li>
+				<li>
+					<a class="subheader" data-langNum="12"></a>
+				</li>
+				<li>
+					<a class="waves-effect modal-close modal-trigger sidenav-close" href="#modal3" data-langNum="13"></a>
+				</li>
+				<li>
+					<a class="waves-effect modal-close modal-trigger sidenav-close" href="#modal2" data-langNum="14"></a>
+				</li>
 			</ul>
-		</aside>
-		
+		</aside>		
+	
 		<section>
 			<div class="container" style="width:98%; margin-top:2%">
 				<div class="row">
@@ -480,16 +534,16 @@
 							 
 						 	<div class="input-field col s4 m4 l4">
 						  		<input name="title" type="text" class="validate"/>
-								<label for="subtitleName">등록 파일명</label>
+								<label for="subtitleName" data-langNum2="107">등록 파일명</label>
 						 	</div>
 						 	
 						 	<div class="input-field col s4 m4 l4">
 						  		<input name="content" type="text" class="validate"/>
-								<label for="subtitleName">간단 코멘트</label>
+								<label for="subtitleName"  data-langNum2="108">간단 코멘트</label>
 						 	</div>
 						 	
 						 	<div class="input-field col s1 m1 l1"> 
-						 		<i class="small material-icons left tooltipped" data-tooltip="등록" onclick="submitDubbing()" style="color: #097cdb">description</i>
+						 		<i class="small material-icons left tooltipped" data-tooltip="register" onclick="submitDubbing()" style="color: #097cdb">description</i>
 						 	</div>
 					    </div>
 				
@@ -499,6 +553,23 @@
 				</div>
 			</div>
 		</section>
+	</div>
+	
+	<!-- 첫 설명서 모달 -->
+	<div id="directions" class="modal" style="width:50%; ">
+		<div class="container">
+	    	<div class="modal-content" style="margin-left: -20%; margin-right: -20%;">
+		
+				<h4 data-langNum2="101">더빙 사용자를 위한 사용 설명서</h4>
+				<h6 data-langNum2="102">1. 영상에서 원하는 지점까지 이동하신다음 일시정지하세요.</h6>
+				<h6 data-langNum2="103">2. Microphone을 체크하시고 마이크 감도를 조절하세요.</h6>
+				<h6 data-langNum2="104">3. RECORD 버튼을 누르고 더빙을 즐겨주세요.</h6>
+				<h6 data-langNum2="105">4. STOP 버튼을 누르시면 더빙파일을 감상, 다운받기가 가능합니다.</h6>
+				<h6 data-langNum2="106">5. 마음에 드는 파일을 파일명을 변경하지마시고 업로드해주세요.</h6>
+				<br/>
+				<h4 style="margin-left: 5%;"><a onclick="closeModal()" >OK! Let's Start Dubbing!</a></h4>
+			</div>
+		</div>
 	</div>
 	
 	<script>

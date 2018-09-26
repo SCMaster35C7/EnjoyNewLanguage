@@ -1,8 +1,8 @@
 package global.sesoc.Youtube.dto;
 
 public class WishList {
-	
-	private int rownum;
+
+	private int rnum;
 	private int wishtable;
 	private int identificationnum;
 	private String useremail;
@@ -14,10 +14,10 @@ public class WishList {
 		super();
 	}
 
-	public WishList(int rownum, int wishtable, int identificationnum, String useremail, String url, String title,
+	public WishList(int rnum, int wishtable, int identificationnum, String useremail, String url, String title,
 			String regdate) {
 		super();
-		this.rownum = rownum;
+		this.rnum = rnum;
 		this.wishtable = wishtable;
 		this.identificationnum = identificationnum;
 		this.useremail = useremail;
@@ -26,12 +26,12 @@ public class WishList {
 		this.regdate = regdate;
 	}
 
-	public int getRownum() {
-		return rownum;
+	public int getRnum() {
+		return rnum;
 	}
 
-	public void setRownum(int rownum) {
-		this.rownum = rownum;
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
 	}
 
 	public int getWishtable() {
@@ -84,7 +84,10 @@ public class WishList {
 
 	@Override
 	public String toString() {
-		return "WishList [rownum=" + rownum + ", wishtable=" + wishtable + ", identificationnum=" + identificationnum
+		return "WishList [rnum=" + rnum + ", wishtable=" + wishtable + ", identificationnum=" + identificationnum
 				+ ", useremail=" + useremail + ", url=" + url + ", title=" + title + ", regdate=" + regdate + "]";
-	}	
+	}
+	
+	
 }
+

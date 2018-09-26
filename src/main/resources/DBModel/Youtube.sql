@@ -1,4 +1,5 @@
-﻿
+DROP TABLE confirmmember;			-- 탈퇴 회원 테이블		
+DROP TABLE Blacklist;				-- 댓글 블랙리스트 테이블
 DROP TABLE Recommendation;			-- 추천 테이블
 DROP TABLE DubbingReply;			-- 자막요청 게시판 댓글 테이블
 DROP TABLE Dubbing;					-- 더빙 게시판 테이블
@@ -16,7 +17,6 @@ DROP SEQUENCE DUBBING_SEQ;					-- 더빙게시판 시퀀스
 DROP SEQUENCE INVESTIGATION_REPLY_SEQ;		-- 자막검증게시판 댓글 시퀀스
 DROP SEQUENCE INVESTIGATION_SUBTITLE_SEQ;	-- 요청자막 제공 시퀀스 
 DROP SEQUENCE INVESTIGATION_SEQ;			-- 자막요청 시퀀스
-DROP SEQUENCE WISH_LIST_SEQ;				-- 찜한목록 시퀀스	
 DROP SEQUENCE USER_STUDY_SEQ;				-- 사용자학습용 시퀀스
 DROP SEQUENCE WRONG_ANSWER_SEQ;				-- 사용자오답용 시퀀스
 DROP SEQUENCE EDUCATION_VIDEO_SEQ;			-- 교육자료용 시퀀스
@@ -73,7 +73,7 @@ CREATE TABLE UserStudy(
 	useremail		VARCHAR2(100),																-- 사용자 아이디
 	url				VARCHAR2(1000)	CONSTRAINT userstudy_useremail_nn		NOT NULL,			-- 영상URL
 	lastStudy		DATE			DEFAULT SYSDATE,
- 	testlevel       NUMBER                											-- 최종
+ 	testlevel       NUMBER,                														-- 최종
 	challengeCount	NUMBER			DEFAULT 0,													-- 도전 횟수
 	successCount	NUMBER			DEFAULT 0,													-- 성공 횟수
 	failureCount	NUMBER			DEFAULT 0,													-- 실패 횟수
@@ -115,7 +115,7 @@ CREATE TABLE InvestigationSubtitle(
 	originalFile		VARCHAR2(1000)	CONSTRAINT isubtitle_originalfile_nn	NOT NULL,		-- 자막 원본 이름
 	savedFile			VARCHAR2(1000)	CONSTRAINT isubtitle_savedFile_nn		NOT NULL,		-- 저장된 파일 이름
 	useremail			VARCHAR2(100)	CONSTRAINT isubtitle_useremail_nn		NOT NULL,		-- 자막 제공자
-	investigationnum	NUMBER,																	-- 자막 요청 게시글 번호
+	investigationnum	NUMBER			CONSTRAINT isubtitle_invnum_nn 			NOT NULL,		-- 자막 요청 게시글 번호
 	regDate				DATE			DEFAULT SYSDATE,										-- 자막 제공일
 	useCount			NUMBER			DEFAULT 0,												-- 사용횟수
 	recommendation		NUMBER			DEFAULT 0,												-- 추천수									
@@ -128,12 +128,12 @@ CREATE SEQUENCE INVESTIGATION_SUBTITLE_SEQ;
 
 -- 8. 자막검증 게시판 댓글 테이블
 CREATE TABLE InvestigationReply(
-	replynum			NUMBER			CONSTRAINT ireply_replynum_nn	NOT NULL,	-- 댓글 번호
-	investigationnum	NUMBER,														-- 검증 게시글 번호
-	useremail			VARCHAR2(100)	CONSTRAINT ireply_useremail_nn	NOT NULL,	-- 댓글 등록자
-	content				VARCHAR2(2000)	CONSTRAINT ireply_content_nn	NOT NULL,	-- 댓글 내용
-	regDate				DATE			DEFAULT SYSDATE,							-- 댓글 등록일
-	blackCount			NUMBER			DEFAULT 0,									-- 신고 횟수
+	replynum			NUMBER			CONSTRAINT ireply_replynum_pk	PRIMARY KEY,	-- 댓글 번호
+	investigationnum	NUMBER			CONSTRAINT ireply_invnum_nn		NOT NULL,		-- 검증 게시글 번호
+	useremail			VARCHAR2(100)	CONSTRAINT ireply_useremail_nn	NOT NULL,		-- 댓글 등록자
+	content				VARCHAR2(2000)	CONSTRAINT ireply_content_nn	NOT NULL,		-- 댓글 내용
+	regDate				DATE			DEFAULT SYSDATE,								-- 댓글 등록일
+	blackCount			NUMBER			DEFAULT 0,										-- 신고 횟수
 	CONSTRAINT ireply_inum_fk FOREIGN KEY(investigationnum) 
 	REFERENCES Investigation(investigationnum) ON DELETE CASCADE
 );
@@ -151,9 +151,9 @@ CREATE TABLE  Dubbing(
 	regdate				DATE			DEFAULT SYSDATE,									-- 게시글 등록일
 	hitcount			NUMBER			DEFAULT 0,											-- 조회수
 	recommendation		NUMBER			DEFAULT 0,											-- 추천수
-	decommendation		NUMBER			DEFAULT 0											-- 비추천수
-        starttime                      varchar2(50)                 -- 더빙파일의 녹화 시작시간(영상 기준)
-        endtime                        varchar2(50)                 -- 더빙파일의 녹화 종료시간(영상 기준)
+	decommendation		NUMBER			DEFAULT 0,											-- 비추천수
+    starttime           VARCHAR2(50)	CONSTRAINT dubbing_starttime_nn		NOT NULL,       -- 더빙파일의 녹화 시작시간(영상 기준)
+    endtime             VARCHAR2(50)	CONSTRAINT dubbing_endtime_nn		NOT NULL        -- 더빙파일의 녹화 종료시간(영상 기준)
 );
 
 CREATE SEQUENCE DUBBING_SEQ;
@@ -161,7 +161,7 @@ CREATE SEQUENCE DUBBING_SEQ;
 -- 10. 더빙 게시판 댓글 테이블
 CREATE TABLE DubbingReply(
 	replynum			NUMBER			CONSTRAINT dubbingreply_replynum_pk		PRIMARY KEY,	-- 댓글 번호
-	dubbingnum			NUMBER,																	-- 더빙 게시글 번호
+	dubbingnum			NUMBER			CONSTRAINT dubbingreply_dubbingnum_pk	NOT NULL,		-- 더빙게시글 번호	
 	useremail			VARCHAR2(100)	CONSTRAINT dubbingreply_useremail_nn	NOT NULL,		-- 댓글 등록자
 	content				VARCHAR2(2000)	CONSTRAINT dubbingreply_content_nn		NOT NULL,		-- 댓글 내용
 	regDate				DATE			DEFAULT SYSDATE,										-- 댓글 등록일
@@ -183,11 +183,16 @@ CREATE TABLE Recommendation(
 );
 
 -- 12. 신고 테이블
-CREATE TABLE Blacklist(
+CREATE TABLE BlackList(
 	useremail			VARCHAR2(100),
 	whichboard			NUMBER,																-- 테이블 식별코드(0-더빙리플, 1-자막리플)
-	replynum				NUMBER,
+	replynum			NUMBER,
 	regDate				Date 			DEFAULT SYSDATE,	
 	CONSTRAINT blacklist_fk PRIMARY KEY(useremail, whichboard, replynum) 
 );
 
+-- 13. 탈퇴 회원 관리 테이블
+CREATE TABLE ConfirmMember (
+	useremail	VARCHAR2(100)	references member(useremail),		-- 삭제된 아이디
+	outdate		DATE			default sysdate						-- 삭제한 날짜
+);

@@ -4,52 +4,64 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="global.sesoc.Youtube.dao.WishMapper">
-
+  
 	<!-- 영상, 자막, 더빙 위시리스트 데이터 수 세기 -->
-	<select id="getTotalCount1" parameterType="map" resultType="int">
+	<select id="getTotalCount" parameterType="map" resultType="int">
 		select
 			count(*)
 		from
 			WishList
 		where
-			${searchType} like '%' || #{searchWord} || '%'
+			wishtable = #{wishtable}
+		and
+			useremail = #{useremail}
 	</select>
 	
 	<!-- 영상, 자막, 더빙 위시리스트 조회 -->
-	<select id="getAllWishList" parameterType="map" resultType="WishList">
+	<select id="getParticularWishList" parameterType="map" resultType="WishList">
 		select 
-			*
+			rownum rnum
+			, w.wishtable
+			, w.identificationnum
+			, w.useremail
+			, w.url
+			, w.title
+			, to_char(w.regdate, 'YYYY-MM-DD') regdate
 		from
 			WishList w
-			<if test="wishtable == 0">
-				, educationvideo e
-			</if>
-			<if test="wishtable == 1">
-				, dubbing d
-			</if>
-			<if test="wishtable == 2">
-				, investigation i
-			</if>
+		<if test="wishtable == 0">
+			, educationvideo e
+		</if>
+		<if test="wishtable == 1">
+			, investigation i
+		</if>
+		<if test="wishtable == 2">
+			, dubbing d
+		</if>
 		where
-			useremail = #{useremail}
-			<if test="wishtable == 0">
-			and 
-				w.identificationnum = e.videonum
-			</if>
-			<if test="wishtable == 1">
-			and 
-				w.identificationnum = d.dubbingnum
-			</if>
-			<if test="wishtable == 2">
-			and 
-				w.identificationnum = i.investigationnum
-			</if>
+			w.useremail = #{useremail}
+		and
+			w.wishtable = #{wishtable}
+		<if test="wishtable == 0">
+		and 
+			w.identificationnum = e.videonum
+		</if>
+		<if test="wishtable == 1">
+		and 
+			w.identificationnum = i.investigationnum
+		</if>
+		<if test="wishtable == 2">
+		and 
+			w.identificationnum = d.dubbingnum
+		</if>
+		order by
+			rnum desc
 	</select>
 	
 		<!-- 영상, 자막, 더빙 위시리스트에서 선택하기 -->
 	<select id="selectOneFromWishList" parameterType="WishList" resultType="WishList">
-		select 
-			rownum as rownum
+		select
+ 			rownum rnum
 			, wishtable
 			, identificationnum
 			, useremail
@@ -57,26 +69,14 @@
 			, title
 			, to_char(regdate, 'YYYY-MM-DD') regdate
 		from
-			wishlist
+ 			wishlist
 		where
-			wishtable=${wishtable}		
-		<!-- <if test="wishtable == 0">
-			wishtable = 0
-		</if>
-		<if test="wishtable == 1">
-			wishtable = 1
-		</if>	
-		<if test="wishtable == 2">
-			wishtable = 2
-		</if>		 -->
+  			wishtable = #{wishtable}
 		and
-			identificationnum = #{identificationnum}
-		and
-			useremail = #{useremail}
+  			useremail = #{useremail}
+  		and
+  			identificationnum = #{identificationnum}
 	</select>
-	
-		
-	
 	
 	<!-- 영상, 자막, 더빙 위시리스트 삭제 -->
 	<delete id="deleteWish" parameterType="string">
@@ -89,30 +89,13 @@
 	</delete>
 	
 	<!-- 영상 위시리스트 등록 -->	
-	<insert id="insertVideoWish" parameterType="WishList">
+	<insert id="insertWish" parameterType="WishList">
 		insert into wishlist(
 			wishtable	
 			, useremail
 			, identificationnum
 			, title
-			, url		
-		)values(
-			#{wishtable}	
-			, #{useremail}
-			, #{identificationnum}
-			, #{title}
-			, #{url}
-		)		
-	</insert>
-	
-	<!-- 자막 위시리스트 등록 -->
-	<insert id="insertSubWish" parameterType="WishList">
-		insert into wishlist(
-			wishtable	
-			, useremail
-			, identificationnum
-			, title
-			, url		
+			, url
 		)values(
 			#{wishtable}	
 			, #{useremail}
@@ -122,21 +105,4 @@
 		)		
 	</insert>
 
-	<!-- 더빙 위시리스트 등록 -->
-	<insert id="insertDubWish" parameterType="WishList">
-		insert into wishlist(
-			wishtable	
-			, useremail
-			, identificationnum
-			, title
-			, url		
-		)values(
-			#{wishtable}	
-			, #{useremail}
-			, #{identificationnum}
-			, #{title}
-			, #{url}
-		)		
-	</insert>
-	
 </mapper>

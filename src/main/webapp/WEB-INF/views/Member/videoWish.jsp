@@ -22,9 +22,13 @@
 		//삭제버튼 클릭시 작업
 		$('#btnDeleteVideoWish').on('click', function() {
 			
-			
-			
-			$('#deleteVideoWish').submit();	
+			var wishnum = $(this).attr('data-rno');
+			$.ajax({
+				type : 'get',
+				url : 'replyDelete',
+				data : 'wishnum=' + wishnum,
+				success : init
+			})
 		});	
 		//취소버튼 클릭시 이동
 		$('#btnCancel').on('click', function() {		
@@ -85,10 +89,9 @@
 							<td>삭제</td>
 						</tr>
 						<c:forEach var="vWishlist" items="${vWishlist}">
-							<tr>
-								
-								<td>${vWishlist.rownum}</td>								
-								<td><a href="detailEduBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&searchType=${searchType}&searchWord=${searchWord}">${vWishlist.title}</a></td>
+							<tr>								
+								<td>${vWishlist.rnum}</td>								
+								<td><a href="detailEduBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=0" target="_parent">${vWishlist.title}</a></td>
 								<td>${vWishlist.regdate}</td>
 								<td>
 									<input type="button" id="btnDeleteVideoWish" value="삭제"/>										
@@ -103,13 +106,13 @@
 			<div class="center">
 			<ul class="pagination">
 			<li class="waves-effect">
-				<a href="videoWish?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+				<a href="particularList?currentPage=${navi.currentPage - navi.PAGE_PER_GROUP}&useremail=${useremail}&wishtable=0&distinguishNum=1">
 					<i class="material-icons">first_page</i>
 				</a>
 			</li>
 			
 				<li class="waves-effect">
-					<a href="videoWish?currentPage=${navi.currentPage - 1}&searchType=${searchType}&searchWord=${searchWord}"> 
+					<a href="particularList?currentPage=${navi.currentPage - 1}&useremail=${useremail}&wishtable=0&distinguishNum=1"> 
 						<i class="material-icons">chevron_left</i>
 					</a>
 				</li>
@@ -120,18 +123,18 @@
 					</c:if>
 					<c:if test="${navi.currentPage != page }">
 						<li class="page-item"><a class="page-link"
-							href="videoWish?currentPage=${page}&searchType=${searchType}&searchWord=${searchWord}">${page}</a></li>
+							href="particularList?currentPage=${page}&useremail=${useremail}&wishtable=0&distinguishNum=1">${page}</a></li>
 					</c:if>
 				</c:forEach>
 			
 				<li class="waves-effect">
-					<a href="videoWish?currentPage=${navi.currentPage + 1}&searchType=${searchType}&searchWord=${searchWord}">
+					<a href="particularList?currentPage=${navi.currentPage + 1}&useremail=${useremail}&wishtable=0&distinguishNum=1">
 						<i class="material-icons">chevron_right</i> 
 					</a>
 				</li>
 			
 				<li class="waves-effect">
-					<a href="videoWish?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&searchType=${searchType}&searchWord=${searchWord}">
+					<a href="particularList?currentPage=${navi.currentPage + navi.PAGE_PER_GROUP}&useremail=${useremail}&wishtable=0&distinguishNum=1">
 						<i class="material-icons">last_page</i> 
 					</a>
 				</li>

@@ -34,18 +34,18 @@ function search(pageCode) {
 					var title = item.snippet.title;
 					var videoId = item.id.videoId;
 					
-					var addVideo = '<div class="container" style="width:90%;">';
-					addVideo += '<div class="item">';
-					addVideo += '<h6 class="center">' + title + '</h6>';
-					addVideo += '<div class="video-container z-depth-2">';
-					addVideo += '<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/'+ videoId
-								+ '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
-					addVideo += '</div>';
-					addVideo += '<input type="button" class="decideURL btn right" style="margin-top:5px;" data-rno="http://www.youtube.com/embed/'
-								+ videoId + '" value="Choice"/>';
-					addVideo += '</div>';
-					addVideo += '</div>';
-					addVideo += '<br>';
+					var addVideo = '<div class="container" style="width:90%; margin-bottom:10%;">';
+		               addVideo += '<div class="item">';
+		               addVideo += '<h6 class="center">' + title + '</h6>';
+		               addVideo += '<div class="video-container z-depth-2">';
+		               addVideo += '<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/'+ videoId
+		                        + '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
+		               addVideo += '</div>';
+		               addVideo += '<input type="button" class="decideURL btn right" style="margin-top:5px;" data-rno="http://www.youtube.com/embed/'
+		                        + videoId + '" value="Choice"/>';
+		               addVideo += '</div>';
+		               addVideo += '</div>';
+		               addVideo += '<br>';
 
 					$("#results").append(addVideo);
 				});
@@ -54,7 +54,7 @@ function search(pageCode) {
 
 				if (prevPage) {
 					$("#results").append(
-						"<input type='button' class='btn' id='prevPage' value='Prev'/>");
+						"<input type='button' class='btn' id='prevPage' value='Prev' style='margin-right:1%;'/>");
 					$("#prevPage").on('click', function() {
 						console.log('p: ' + prevPage);
 						search(prevPage);
