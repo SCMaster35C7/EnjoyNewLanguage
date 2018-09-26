@@ -216,7 +216,7 @@ public class MemberContoller {
 			messageHelper.setTo(member.getUseremail()); // 받는사람 이메일
 			messageHelper.setSubject("[앤죠애캉] 회원가입 인증"); // 메일제목은 생략이 가능하다
 
-			String host = "http://localhost:8888/Youtube/certification"; // 인증완료페이지
+			String host = "http://203.233.199.132:9999/Youtube/certification"; // 인증완료페이지
 
 			messageHelper.setText("", " <h2>앤죠애캉 회원가입 인증</h2><br/>" + "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>" + "<a href="
 					+ host + ">"
@@ -254,7 +254,7 @@ public class MemberContoller {
 			messageHelper.setTo(recoveryEmail); // 받는사람 이메일
 			messageHelper.setSubject("[앤죠애캉] 회원복구 인증"); // 메일제목은 생략이 가능하다
 
-			String host = "http://localhost:8888/Youtube/recoveryID"; // 인증완료페이지
+			String host = "http://203.233.199.132:9999/Youtube/recoveryID"; // 인증완료페이지
 
 			messageHelper.setText("", " <h2>앤죠애캉 회원복구 인증</h2><br/>" + "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>" + "<a href="
 					+ host + ">"
@@ -462,7 +462,7 @@ public class MemberContoller {
 			messageHelper.setTo(member.getUseremail()); // 받는사람 이메일
 			messageHelper.setSubject("[앤죠애캉] 회원가입 인증"); // 메일제목은 생략이 가능하다
 
-			String host = "http://localhost:8888/Youtube/certification"; // 인증완료페이지
+			String host = "http://203.233.199.132:9999/Youtube/certification"; // 인증완료페이지
 
 			messageHelper.setText("", " <h2>앤죠애캉 회원가입 인증</h2><br/>" + "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>" + "<a href="
 					+ host + ">"

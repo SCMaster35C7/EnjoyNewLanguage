@@ -560,17 +560,17 @@
 				    </ul>
 				    <div class="tab_Content_Wrap">
 				        <div id="tabContent01" class="tabPage">
-							<iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
+							<iframe style="width: 100%; height: 100%;" src="http://203.233.199.132:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>			
 				        </div>
 				        <div id="tabContent02" class="tabPage">
-				           <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
+				           <iframe style="width: 100%; height: 100%;" src="http://203.233.199.132:9999/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>
 				        </div>
 				        <div id="tabContent03" class="tabPage">
-				            <iframe style="width: 100%; height: 100%;" src="http://localhost:9999/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
+				            <iframe style="width: 100%; height: 100%;" src="http://203.233.199.132:9999/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>
 				        </div>
@@ -616,13 +616,13 @@
                               <tr>
                                  <td><a href="detailEduBoard?videoNum=${f.videoNum}">${f.title}</a></td>
                                  <td><a href="TryRetake?videoNum=${f.videoNum}"
-                                    class="waves-effect waves-light btn"  data-langNum2="111"></a></td>
+                                    class="waves-effect waves-light btn"  	></a></td>
                               </tr>
                            </c:forEach>
                         </c:if>
 
                         <c:if test="${empty finished}">
-                           <td  data-langNum2="112">학습중인 영상이 없습니다.</td>
+                           <td data-langNum2="112">학습중인 영상이 없습니다.</td>
                         </c:if>
                      </tbody>
                   </table>
