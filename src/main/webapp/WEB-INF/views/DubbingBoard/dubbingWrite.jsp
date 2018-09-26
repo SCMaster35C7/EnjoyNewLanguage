@@ -115,7 +115,7 @@
 	       ,104:'3. RECORD 버튼을 누르고 더빙을 즐겨주세요.'
 	       ,105:'4. STOP 버튼을 누르시면 더빙파일을 감상, 다운받기가 가능합니다.'
 	       ,106:'5. 마음에 드는 파일을 파일명을 변경하자미사고 업로드 해주세요.'
-	       ,107:'등록 파일명'
+	       ,107:'더빙 제목'
 	       ,108:'간단 코멘트'
 	       ,201:'DJ DJ 더빙 시작'
 	}
@@ -126,7 +126,7 @@
 		   ,104:'３．レコードボタンを押して、ダビングを楽しんでください。'
 		   ,105:'４．STOPボタンを押すと、ダビングの感想、そのファイルのダウンロードができます。'
 		   ,106:'５．ファイルの名前を変更せず、アップロードしてください。'
-		   ,107:'登録ファイル名'
+		   ,107:'ダビングタイトル'
 		   ,108:'簡単コメント'
 		   ,201:'DJ DJダビング開始'
 	}
@@ -160,7 +160,7 @@
 		<!-- Dropdown Structure -->
       <ul id="dropdown1" class="dropdown-content">
         <li><a onclick="languageChange('kor')" style="padding-left:6px; padding-right:6px;"><img src="images/korea.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"><span style="margin-left:4px;">KOR</span></a></li>
-        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JAP</span></a></li>
+        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JPN</span></a></li>
       </ul>
 
 		<!-- nav -->
@@ -212,7 +212,7 @@
 		<li><a href="myPage" data-langNum="4"></a></li>
 		<li><div class="divider"></div></li>
         <li><a onclick="languageChange('kor')">KOR</a></li>
-        <li><a onclick="languageChange('jp')">JAP</a></li>
+        <li><a onclick="languageChange('jp')">JPN</a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->
@@ -483,7 +483,7 @@
 						<div class="video-container z-depth-2">
 							<!-- 1. <iframe>태그로 대체될 <div>태그이다. 해당 위치에 Youtube Player가 붙는다. -->
 							<!--<div id="youtube"></div>   -->
-							<iframe id="youtube" width="960" height="490"src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen>
+							<iframe id="youtube" width="960" height="490"src="https://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen>
 							</iframe>
 	         			</div>
 		  			</div>
@@ -534,7 +534,7 @@
 							 
 						 	<div class="input-field col s4 m4 l4">
 						  		<input name="title" type="text" class="validate"/>
-								<label for="subtitleName" data-langNum2="107">등록 파일명</label>
+								<label for="subtitleName" data-langNum2="107">더빙 제목</label>
 						 	</div>
 						 	
 						 	<div class="input-field col s4 m4 l4">

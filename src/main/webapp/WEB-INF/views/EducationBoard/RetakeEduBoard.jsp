@@ -253,6 +253,11 @@
 				});
 			</script>
 		</c:if>
+<!-- Dropdown Structure -->
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a onclick="languageChange('kor')" style="padding-left:6px; padding-right:6px;"><img src="images/korea.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"><span style="margin-left:4px;">KOR</span></a></li>
+        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JPN</span></a></li>
+      </ul>
 
 		<!-- nav -->
 		<nav class="nav-extended">
@@ -276,7 +281,8 @@
 			      	<li><a href="eduBoard" data-langNum="1"></a></li>
 			      	<li><a href="dubbingBoard" data-langNum="2"></a></li>
 			      	<li><a href="InvestigationBoard" data-langNum="3"></a></li>
-			      	<li><a href="myPage" style="margin-right:20px;" data-langNum="4"></a></li>
+			      	<li><a href="myPage" data-langNum="4"></a></li>
+			        <li><a class="dropdown-trigger" style="margin-right:20px;" href="#!" data-target="dropdown1">Language<i class="material-icons right">language</i></a></li>
 			    </ul>
 			</div>		
 			<div class="nav-content">
@@ -300,6 +306,8 @@
 		<li><a href="dubbingBoard" data-langNum="2"></a></li>
 		<li><a href="InvestigationBoard" data-langNum="3"></a></li>
 		<li><a href="myPage" data-langNum="4"></a></li>
+		<li><a onclick="languageChange('kor')">KOR</a></li>
+        <li><a onclick="languageChange('jp')">JPN</a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->
@@ -347,7 +355,7 @@
 							</c:if>
 						
 							<span class="flow-text">
-								<button class="btn waves-effect waves-light modal-close" type="button">BACK
+								<button class="btn waves-effect waves-light modal-close"  type="button">BACK
 									<i class="material-icons right">keyboard_return</i>
 								</button>
 							</span>
@@ -561,7 +569,7 @@
 					<a class="waves-effect modal-close modal-trigger sidenav-close" href="#modal2" data-langNum="14"></a>
 				</li>
 			</ul>
-		</aside>			
+		</aside>	
 	<div class="container" style="width:98%;">
 		 <i class="material-icons" onclick="goback()" style="size: 100px;">storage</i>
 		<div class="row">
@@ -570,7 +578,7 @@
 	<!--<div id="youtube"></div>   -->
 	<div class="video-container z-depth-2">
 	<iframe id="youtube" width="960" height="490"
-		src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+		src="https://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
 		frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
