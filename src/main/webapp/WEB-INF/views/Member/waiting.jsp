@@ -11,8 +11,12 @@
 		background-color: #cbc5c1;
 	}
 </style>
+<script language="JavaScript">
+function forwarding(){
+		location = "./"}
+</script>
 </head>
-<body>
+<body onLoad="setTimeout('forwarding()', 3000)">
 	<div class="wrapper" align="center">
 	<h1 align="center">이메일 인증</h1>
 	
