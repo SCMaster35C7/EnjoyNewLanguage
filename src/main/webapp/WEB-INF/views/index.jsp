@@ -33,6 +33,10 @@
 			//dropdown
 			$(".dropdown-trigger").dropdown();
 			
+			$('.slider').slider({
+	            indicators:true
+	         });	
+		
 			//floating actionbutton
 			$(".fixed-action-btn").floatingActionButton({
 				/* direction:'left' */
@@ -102,7 +106,7 @@
 <!-- Dropdown Structure -->
       <ul id="dropdown1" class="dropdown-content">
         <li><a onclick="languageChange('kor')" style="padding-left:6px; padding-right:6px;"><img src="images/korea.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"><span style="margin-left:4px;">KOR</span></a></li>
-        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JAP</span></a></li>
+        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JPN</span></a></li>
       </ul>
 
 		<!-- nav -->
@@ -132,7 +136,7 @@
 			    </ul>
 			</div>		
 			<div class="nav-content">
-				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" href="#modal1">
+				<a class="btn-floating btn-large halfway-fab pulse modal-trigger tooltipped" data-position="left" data-tooltip="LOGIN!" style="z-index:10;" href="#modal1">
 		        	<i class="medium material-icons" id="sticker">person</i>
 		     	</a>
 			</div>
@@ -154,7 +158,7 @@
 		<li><a href="myPage" data-langNum="4"></a></li>
 		<li><div class="divider"></div></li>
         <li><a onclick="languageChange('kor')">KOR</a></li>
-        <li><a onclick="languageChange('jp')">JAP</a></li>
+        <li><a onclick="languageChange('jp')">JPN</a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->
@@ -163,7 +167,7 @@
 			<div class="container">
 				<form class="col s12" id=loginForm action="login" method="POST">
 					<div class="row">
-						<h4 class="center-align">LOGIN</h4>
+		Z				<h4 class="center-align">LOGIN</h4>
 						<div class="row">
 							<c:if test="${empty sessionScope.useremail }">
 								<div class="input-field col s12">
@@ -419,18 +423,53 @@
 		</aside>			
 
 		<section>	
-			<div class="container" style="width:80%;">
-			  	<h3 class="center">인기 항목</h3>
+			<div class="slider">
+             <ul class="slides" style="pointer-events: none;">
+               <li>
+                 <div>
+                 <img src="images/light.png">
+                 </div>
+                 <div class="caption center-align">
+                   <h3>Wanna Fun</h3>
+                   <h5 class="light grey-text text-lighten-3">Enjoy English</h5>
+                 </div>
+               </li>
+               <li>
+               <div class="caption left-align">
+                  <h3>YouTube</h3>
+                  <h5 class="light grey-text text-lighten-3">Find Video & See</h5>
+                </div>
+                   <!-- <img src="images/edu.png" width="200px;" height="150px;"> -->          
+               </li>
+               <li>
+                 <img src="">
+                 <div class="caption right-align">
+                   <h3>Dubbing</h3>
+                   <h5 class="light grey-text text-lighten-3">Yours & Other's</h5>
+                 </div>
+               </li>
+               <li>
+                 <img src="">
+                 <div class="caption left-align">
+                   <h3>Check Yours</h3>
+                   <h5 class="light grey-text text-lighten-3">In Mypage</h5>
+                 </div>
+               </li>
+             </ul>
+           </div>
+		
+			<div class="container">
+			  	<h3 class="center">Best List</h3>
+				<div class="row">					
+					<div class="carousel carousel-slider">
+						<c:forEach var="eList" items="${eList}">
+							<a class="carousel-item" href="#one!" style="width:512px; height:auto;">
+								<iframe class="video w100" width="512" height="324" src="https://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>
+							</a>
+						</c:forEach>
+					</div>
+				</div>	  
 			</div>
-			<div class="row">					
-				<div class="carousel carousel-slider col s10 m10 l10">
-					<c:forEach var="eList" items="${eList}">
-						<a class="carousel-item" href="#one!" style="width:512px; height:auto;">
-							<iframe class="video w100" width="512" height="324" src="http://www.youtube.com/embed/${eList.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>
-						</a>
-					</c:forEach>
-				</div>
-			</div>	  
 		</section>
 	</div>
 	

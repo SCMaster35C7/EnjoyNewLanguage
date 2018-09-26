@@ -191,7 +191,7 @@
 <!-- Dropdown Structure -->
       <ul id="dropdown1" class="dropdown-content">
         <li><a onclick="languageChange('kor')" style="padding-left:6px; padding-right:6px;"><img src="images/korea.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"><span style="margin-left:4px;">KOR</span></a></li>
-        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JAP</span></a></li>
+        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JPN</span></a></li>
       </ul>		
 
 		<!-- nav -->
@@ -242,7 +242,7 @@
 		<li><a href="InvestigationBoard" data-langNum="3"></a></li>
 		<li><a href="myPage" data-langNum="4"></a></li>
 	    <li><a onclick="languageChange('kor')">KOR</a></li>
-        <li><a onclick="languageChange('jp')">JAP</a></li>
+        <li><a onclick="languageChange('jp')">JPN</a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->
@@ -560,17 +560,17 @@
 				    </ul>
 				    <div class="tab_Content_Wrap">
 				        <div id="tabContent01" class="tabPage">
-							<iframe style="width: 100%; height: 100%;" src="http://203.233.199.132:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
+							<iframe style="width: 100%; height: 100%;" src="https://enjoylanguage.ml/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>			
 				        </div>
 				        <div id="tabContent02" class="tabPage">
-				           <iframe style="width: 100%; height: 100%;" src="http://203.233.199.132:9999/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
+				           <iframe style="width: 100%; height: 100%;" src="https://enjoylanguage.ml/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>
 				        </div>
 				        <div id="tabContent03" class="tabPage">
-				            <iframe style="width: 100%; height: 100%;" src="http://203.233.199.132:9999/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
+				            <iframe style="width: 100%; height: 100%;" src="https://enjoylanguage.ml/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>
 				        </div>

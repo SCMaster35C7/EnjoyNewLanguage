@@ -347,7 +347,7 @@
 <!-- Dropdown Structure -->
       <ul id="dropdown1" class="dropdown-content">
         <li><a onclick="languageChange('kor')" style="padding-left:6px; padding-right:6px;"><img src="images/korea.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"><span style="margin-left:4px;">KOR</span></a></li>
-        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JAP</span></a></li>
+        <li><a onclick="languageChange('jp')" style="padding-left:6px; padding-right:6px;"><img src="images/japan.png" hspace="8" style="vertical-align:middle; width:32px; height:32px;"/><span style="margin-left:4px;">JPN</span></a></li>
       </ul>
 
 		<!-- nav -->
@@ -399,7 +399,7 @@
 		<li><a href="myPage" data-langNum="4"></a></li>
 		<li><div class="divider"></div></li>
         <li><a onclick="languageChange('kor')">KOR</a></li>
-        <li><a onclick="languageChange('jp')">JAP</a></li>
+        <li><a onclick="languageChange('jp')">JPN</a></li>
 	</ul>
 	  	  
 	<!-- 로그인 MODAL -->
@@ -672,7 +672,7 @@
 						<!--<div id="youtube"></div>   -->
 							<div class="video-container z-depth-2">
 								<iframe id="youtube" width="960" height="490"
-									src="http://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+									src="https://www.youtube.com/embed/${edu.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
 									frameborder="0" allowfullscreen> </iframe>
 							</div>
 						</div>
