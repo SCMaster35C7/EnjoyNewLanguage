@@ -296,8 +296,8 @@ public class MemberContoller {
       int totalRecordUnfinishedCount = mRepository.getTotalCountFromUnfinished(useremail);
       
       // 페이징용 navigation
-      PageNavigator finishedNavi = new PageNavigator(finishedCurrentPage, totalRecordFinishedCount, 8);
-      PageNavigator unfinishedNavi = new PageNavigator(unfinishedCurrentPage, totalRecordUnfinishedCount, 8);
+      PageNavigator finishedNavi = new PageNavigator(finishedCurrentPage, totalRecordFinishedCount, 5);
+      PageNavigator unfinishedNavi = new PageNavigator(unfinishedCurrentPage, totalRecordUnfinishedCount, 5);
       
       // 각 페이지별 자료 추출
       List<Video> finished = mRepository.selectFinishedVideo(useremail, finishedNavi.getStartRecord(), finishedNavi.getcountPerPage());
@@ -466,7 +466,7 @@ public class MemberContoller {
          messageHelper.setTo(member.getUseremail()); // 받는사람 이메일
          messageHelper.setSubject("[앤죠애캉] 회원가입 인증"); // 메일제목은 생략이 가능하다
 
-         String host = "http://localhost:8888/Youtube/certification"; // 인증완료페이지
+         String host = "http://localhost:9999/Youtube/certification"; // 인증완료페이지
 
          messageHelper.setText("", " <h2>앤죠애캉 회원가입 인증</h2><br/>" + "<h4>인증하시려면 아래 버튼을 누르세여</h4><br/>" + "<a href="
                + host + ">"

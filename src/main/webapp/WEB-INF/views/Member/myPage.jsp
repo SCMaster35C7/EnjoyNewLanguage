@@ -589,7 +589,7 @@
                                        <ul class="pagination">
                            
                                        <li class="waves-effect">
-                                          <a href="myPage?currentPage=${unfinishedfinishedNavi.currentPage - 1}"> 
+                                          <a href="myPage?currentPage=${unfinishedNavi.currentPage - 1}"> 
                                              <i class="material-icons">chevron_left</i>
                                           </a>
                                        </li>
