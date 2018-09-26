@@ -753,8 +753,7 @@
 							<input type="number" placeholder="Choice Test Type" id="level"
 								size="10px" readonly="readonly">
 						</div>
-		
-							<i class="material-icons medium tooltipped" style="margin-left:10px; margin-right:30px;" data-position="left"
+						<i class="material-icons medium tooltipped" style="margin-left:10px; margin-right:30px;" data-position="left"
 							data-tooltip="문제 생성" style="color: orange" onclick="getSubList()" id="mq">subtitles</i>
 						
 					
