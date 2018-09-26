@@ -268,12 +268,12 @@
 				result +=			'<td>' + resp[i].regdate + '</td>';
 				result +=			'<td colspan="2">';
 				if ('${sessionScope.useremail}'==resp[i].useremail) {
-					result += '<input class="replyUpdate btn" type="button" data-rno="'+resp[i].replynum+'" value="'+update+'" />';
+					result += '<input class="replyUpdate btn" type="button" style="margin-right:1%;" data-rno="'+resp[i].replynum+'" value="'+update+'" />';
 					result += '<input class="replyDelete btn" type="button" data-rno="'+resp[i].replynum+'" value="'+del+'" />';
 				}
 				result +=			'</td>';
 				result +=		'<td>';
-				result += '<img class="report" src="images/warning.jpg" style="margin: 1%;" data-rno="'+resp[i].replynum+'" />';
+				result +=   '<i class="small material-icons report" style="color:#fbc02d;" data-rno="'+resp[i].replynum+'">'+'error'+'</i>';
 				result +=		'</td></tr>';
 				result += 	'</tbody>';
 			}
@@ -285,7 +285,7 @@
 			//여기서(output) 나가기 전에 이벤트 걸어야함
 			 $("input:button.replyDelete").click(replyDelete);
 			 $("input:button.replyUpdate").click(replyUpdate); 
-			 $("img.report").click(reportReply); 
+			 $("i.report").click(reportReply); 
 		}
 		
 		function reportReply() {
@@ -426,12 +426,12 @@
 	</script>
 	<script>
 	var koPage={		
-	        109:'작성자의 한마디:'
+	        109:'의'
 	       ,110:'리뷰를 작성해주세요 ^ㅅ^'
 	       ,111:'녹음:'
 	}
 	var jpPage={
-		    109:'作成者の一言:'
+		    109:'の'
 		   ,110:'ビューを作成してください ^_^'
 		   ,111:'録音:'
 	}
@@ -780,6 +780,96 @@
 		</aside>				
 		
 		<section>
+         <div class="container" style="width:98%;">
+            <div style="margin-top:2%;"></div>
+               <div class="row">
+                  <div class="col s12 m8 l8">
+                     <div class="video-container z-depth-2">
+                           <iframe id="youtube" width="960" height="490"
+                              src="http://www.youtube.com/embed/${dubbing.url}?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1"
+                              frameborder="0" allowfullscreen>
+                           </iframe>
+                     </div>
+                  </div>
+                   <div class="col s12 m4 l4">
+                       <div class="card" style="height:466px; margin-top:0px;">
+                           <div class="card-content">
+                              <span class="card-title activator grey-text text-darken-4">
+                                 ${dubbing.title}
+                                 <c:if test="${sessionScope.useremail eq dubbing.useremail}">
+                                 <i class="small material-icons right tooltipped" data-tooltip="더빙 삭제" style="color: #c62828" onclick="deleteDubbing()">delete</i> 
+                              </c:if>   
+                              </span>
+                        
+                        
+                   <!-- 카드패널 -->
+                           
+                              <h6 style="margin-top:10%;" data-langNum2="111"><span data-langNum2="111"></span> ${dubbing.usernick}</h6>
+                              <h6 style="margin-top:10%;">${dubbing.usernick}<span data-langNum2="109">의</span> Comment </h6>
+                            
+                           <div class="card">
+                              <p style="margin-top:8%;">${dubbing.content}</p>
+                           </div>
+                        
+                        <div style="margin-top:10%;">
+                           <h6>PlayTime</h6> 
+                              <div class="row">
+                                 <div class="col s8 m6 l6">
+                                    <div class="card" style="width:100%;">
+                                    <h5 class="center" style="height:36px;">${dubbing.starttime} ~ ${dubbing.endtime}</h5>
+                                    </div>
+                                 </div>
+                                 <div class="col s4 m4 l4 right" style="margin-top:4%;">
+                                    <a type="button" class="waves-effect waves-light btn red right" style="padding-left:8px; padding-right:8px;" onclick="sinkTime()">
+                                       <i class="material-icons right">play_arrow</i>Play
+                                    </a>
+                                    <input type="hidden" value="${dubbing.dubbingnum}">
+                                 </div>
+                              </div>    
+                        </div>
+                   
+                        <div class="card-action" style="margin-top:20%; padding:10px;">
+                           <div class="row left">
+                              <button class="btn recommendation">
+                                 <i class="material-icons">thumb_up</i>
+                                 <span id="recoCount">${dubbing.recommendation}</span>
+                              </button>
+                                                
+                              <button class="btn decommendation">
+                                 <i class="material-icons">thumb_down</i>
+                                 <span id="decoCount">${dubbing.decommendation}</span>
+                              </button>
+                           </div>   
+                     		<a class="btn-floating waves-effect waves-light right red tooltipped btnRegistSubWish" data-position="bottom" data-tooltip="Wish!"><i class="material-icons">add</i></a>
+                        </div>
+                      </div><!-- card-content -->
+                    </div>
+              </div>
+          </div><!-- row -->
+       
+            <!--댓글 영역-->
+               <div class="row">
+                  <div class="col s12"  style="margin-left:3%;">
+                     <div class="input-field col s6 m4 l4">
+                        <input  type="text" id="replytext" class="materialize-textarea" data-length="40" maxlength="40">
+                        <label id="replylabel" for="replytext"data-langNum2="110">리뷰를 작성해주세요 ^ㅅ^</label>      
+                     </div>
+                        <input id="replyInsert" type="button" class="btn" value="Register" style="margin-top:10px;"/>
+                        <input id="cancelUpdate" type="button" class="btn"  style="visibility:hidden; margin-top:10px;" value="Cancel"/>   
+                  </div>
+                     
+                  <input type="hidden" id="useremail" value="${sessionScope.useremail}">
+                  <input type="hidden" id="updatereplynum">
+                  
+                  <div id="result"> 
+                     <!-- 반복적으로 나오게 -->
+                  </div>
+               </div>
+            </div>
+      </section>
+		
+	<!-- ----------------------------------------------------- -->	
+		<%-- <section>
 		<div class="row">
 			<div class="container" style="width:98%;">
 			<div class="row">
@@ -855,7 +945,7 @@
 					</div>
 				</div>
 			</div>
-		</section>
+		</section> --%>
 	</div>
 	
 	<script>
