@@ -54,7 +54,7 @@ function deleteparticularList(){
 								<td>${vWishlist.regdate}</td>
 								<td>
 									<form action="deleteWish" method="get" >
-										<input type="button" id="btnDeleteparticularList" value="삭제"/>										
+										<input type="button" class="btn waves-effect waves-light" id="btnDeleteparticularList" value="삭제"/>										
 									</form>
 								</td>
 							</tr>

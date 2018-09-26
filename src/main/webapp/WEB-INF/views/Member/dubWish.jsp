@@ -50,7 +50,7 @@
 								<td><a href="dubDetail?dubbingnum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=2" target="_parent">${vWishlist.title}</a></td>
 								<td>${vWishlist.regdate}</td>
 								<td>
-									<input type="button" id="btnDeleteWish" value="삭제"/>										
+									<input type="button" class="btn waves-effect waves-light" id="btnDeleteWish" value="삭제"/>										
 								</td>
 							</tr>
 						</c:forEach>
