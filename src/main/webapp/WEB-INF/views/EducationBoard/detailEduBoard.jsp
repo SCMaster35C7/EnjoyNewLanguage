@@ -678,14 +678,13 @@
 						</div>
 					<div class="col s12 m4 l4">
 						<div class="card" style="height:466px;; margin-top: 0px;">
-		                    <c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
+		                     <c:if test="${(not empty sessionScope.admin) and sessionScope.admin == 0}">
 		                    <div id="deleteEdu">
-		                    <i class="medium material-icons right tooltipped" data-tooltip="Delete Video" style="color: grey" onclick="deleteEdu()">delete</i> 
+		                    <i class="medium material-icons left tooltipped" data-tooltip="Delete Video" style="color: grey" onclick="deleteEdu()">delete</i> 
 		                    </div>
 		                    </c:if>
 		                    
 							<div id=TestControlForm class="card-content" style="display: none">
-		
 								<span class="card-title activator grey-text text-darken-4">
 									<!-- 문제 <i class="material-icons reft tooltipped" data-position="left" data-tooltip="focus on/off" style="color:black" onclick=" focusing()">sync</i> -->
 									<i class="material-icons right tooltipped" data-position="left"
@@ -760,42 +759,6 @@
 				</div>
 			</div>
 		</section>
-	</div>
-	
-	<!-- 메인 -->
-	<div class="wrapper">
-		<!-- sidenav -->	  
-		<aside>	  	  
-			<ul id="slide-out" class="sidenav" style="margin-top:64px;">
-		    	<li>
-          			<div class="user-view">
-		        		<div class="background"><!-- <img src="images/"> --></div>
-				        <!-- <a href="#user"><img class="circle" src="images/"></a> -->
-				        <a href="#name"><span class="white-text name">${usernick}</span></a> 
-				        <a href="#email"><span class="white-text email">${useremail}</span></a>
-					</div>
-				</li>
-				<li>
-					<a href="#!">
-					<i class="material-icons">cloud</i>First Link With Icon</a>
-				</li>
-				<li>
-					<a href="#!">wishList</a>
-				</li>
-				<li>
-					<div class="divider"></div>
-				</li>
-				<li>
-					<a class="subheader">회원정보관리</a>
-				</li>
-				<li>
-					<a class="waves-effect" href="updateMember">회원정보수정</a>
-				</li>
-				<li>
-					<a class="waves-effect" href="#">회원탈퇴</a>
-				</li>
-			</ul>
-		</aside>			
 	</div>
 	
 	<footer class="page-footer">
