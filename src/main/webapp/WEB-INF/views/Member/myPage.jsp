@@ -583,13 +583,13 @@
                   <table class="highlight">
                      <thead>
                         <tr>
-                              <th data-langNum2="108">보고있는 영상</th>
+                        	<th data-langNum2="108">보고있는 영상</th>
                                  <td class="right">
                                     <div class="center">
                                        <ul class="pagination">
                            
                                        <li class="waves-effect">
-                                          <a href="myPage?currentPage=${unfinishedNavi.currentPage - 1}"> 
+                                          <a href="myPage?unfinishedCurrentPage=${unfinishedNavi.currentPage - 1}&finishedCurrentPage=${finishedNavi.currentPage}"> 
                                              <i class="material-icons">chevron_left</i>
                                           </a>
                                        </li>
@@ -600,12 +600,12 @@
                                           </c:if>
                                           <c:if test="${unfinishedNavi.currentPage != page }">
                                              <li class="page-item"><a class="page-link"
-                                                href="myPage?currentPage=${page}">${page}</a></li>
+                                                href="myPage?unfinishedCurrentPage=${page}&finishedCurrentPage=${finishedNavi.currentPage}">${page}</a></li>
                                           </c:if>
                                        </c:forEach>
                            
                                        <li class="waves-effect">
-                                          <a href="myPage?currentPage=${unfinishedNavi.currentPage + 1}">
+                                          <a href="myPage?unfinishedCurrentPage=${unfinishedNavi.currentPage + 1}&finishedCurrentPage=${finishedNavi.currentPage}">
                                              <i class="material-icons">chevron_right</i> 
                                           </a>
                                        </li>
@@ -642,7 +642,7 @@
 
                            
                               <li class="waves-effect">
-                                 <a href="myPage?currentPage=${finishedNavi.currentPage - 1}"> 
+                                 <a href="myPage?finishedCurrentPage=${finishedNavi.currentPage - 1}&unfinishedCurrentPage=${unfinishedNavi.currentPage}"> 
                                     <i class="material-icons">chevron_left</i>
                                  </a>
                               </li>
@@ -653,12 +653,12 @@
                                  </c:if>
                                  <c:if test="${finishedNavi.currentPage != page }">
                                     <li class="page-item"><a class="page-link"
-                                       href="myPage?currentPage=${page}">${page}</a></li>
+                                       href="myPage?finishedCurrentPage=${page&unfinishedCurrentPage=${unfinishedNavi.currentPage}}">${page}</a></li>
                                  </c:if>
                               </c:forEach>
                            
                               <li class="waves-effect">
-                                 <a href="myPage?currentPage=${finishedNavi.currentPage + 1}">
+                                 <a href="myPage?finishedCurrentPage=${finishedNavi.currentPage + 1}&unfinishedCurrentPage=${unfinishedNavi.currentPage}">
                                     <i class="material-icons">chevron_right</i> 
                                  </a>
                               </li>
