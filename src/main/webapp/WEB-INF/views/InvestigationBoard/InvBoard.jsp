@@ -139,7 +139,7 @@
 			var useremail = "${sessionScope.useremail}";
 			
 			if(useremail.trim().length == 0) {
-				location.href="login";
+				alert("로그인을 해주세요.");
 				return;
 			}
 			var target = $(this);
@@ -184,7 +184,7 @@
 			var useremail = "${sessionScope.useremail}";
 			
 			if(useremail.trim().length == 0) {
-				location.href="login";
+				alert("로그인을 해주세요.");
 				return;
 			}
 			var target = $(this);
@@ -707,8 +707,8 @@
 								</div>
 								
 								<div class="card-action" style="height:70px">
-										<input type="hidden" value="${invList.investigationnum}">
 									<div class="row">
+										<input type="hidden" value="${invList.investigationnum}">
 											<button class="btn recommendation" style="width:65px; padding-right:4px; padding-left:4px;">
 												<i class="material-icons">thumb_up</i>
 												<span id="recoCount">${invList.recommendation}</span>

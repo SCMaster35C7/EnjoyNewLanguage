@@ -20,23 +20,20 @@
 		var recoveryEmail = $("#recoveryEmail").val();
 		//alert(recoveryEmail);
 		$.ajax({
-					type : 'post',
-					url : 'selectInConfirm',
-					data : recoveryEmail,
-					dataType:'text',
-					contentType: "application/text; charset=UTF-8",
-					success : function(resp){
-						if (resp=="notok") {
-							alert("이메일을 다시 한 번 확인해주세요.");
-						} else {
-							$('#req').submit();
-						}
-					}
-				});
-	
-
+			type : 'post',
+			url : 'selectInConfirm',
+			data : recoveryEmail,
+			dataType:'text',
+			contentType: "application/text; charset=UTF-8",
+			success : function(resp){
+				if (resp=="notok") {
+					alert("이메일을 다시 한 번 확인해주세요.");
+				} else {
+					$('#req').submit();
+				}
+			}
+		});
 	}
-
 </script>
 
 

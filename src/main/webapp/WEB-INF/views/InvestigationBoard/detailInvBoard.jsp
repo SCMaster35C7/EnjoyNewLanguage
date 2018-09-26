@@ -111,7 +111,7 @@
  
            $('.recommendation').on('click', function() {
                  if(useremail.trim().length == 0) {
-                  location.href="login";
+                	 alert("로그인을 해주세요.");
                   return;
                  }
                  var target = $(this);
@@ -154,8 +154,8 @@
             
             $('.decommendation').on('click', function() {
               if(useremail.trim().length == 0) {
-                     location.href="login";
-                     return;
+            	  	alert("로그인을 해주세요.");
+               		return;
                }
                var target = $(this);
                var decoCount = Number(target.children("span").text());
