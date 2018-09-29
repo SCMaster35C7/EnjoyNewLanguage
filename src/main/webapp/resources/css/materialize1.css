@@ -8442,7 +8442,7 @@ input[type=range]::-ms-thumb {
   height: 8px;
   width: 8px;
   margin: 24px 4px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #e0e0e0;
   -webkit-transition: background-color .3s;
   transition: background-color .3s;
   border-radius: 50%;
