@@ -45,8 +45,6 @@
 		$('#modal4').modal(); //계정복구 모달
 		$('#modal5').modal(); //
 
-		
-		//$('#requestInv').modal();
 		//side-nav open
 		$('.sidenav').sidenav();
 		
@@ -76,19 +74,18 @@
 				});
 			}
 		});
-		 //위시리스트에 비디오 등록
-	      $('.btnRegistSubWish').on('click', function(){
-	         var target = $(this);
-	         var useremail = "${sessionScope.useremail}";
-	         var investigationnum = target.parent().children("#investigationnum").val();
-	         var title = target.parent().parent().children('.card-content').children("span").children("a").html();
-	         var url = target.parent().children("#url").val();
-	         var rnum = "${WishList.rnum}";
-	         
-	         alert("title : "+title+"investigationnum:"+investigationnum+"url:"+url);
-	         //로그인된 세션이 있는지 확인
-	         if(useremail.trim().length == 0) {
-	            location.href="login";
+		//위시리스트에 비디오 등록
+		$('.btnRegistSubWish').on('click', function(){
+			var target = $(this);
+	        var useremail = "${sessionScope.useremail}";
+	        var investigationnum = target.parent().children("#investigationnum").val();
+	        var title = target.parent().parent().children('.card-content').children("span").children("a").html();
+	        var url = target.parent().children("#url").val();
+	        var rnum = "${WishList.rnum}";
+	        
+	        //로그인된 세션이 있는지 확인
+	        if(useremail.trim().length == 0) {
+	        	$('#modal1').modal('open');
 	            return;
 	         }else{
 	            //선택된 비디오 정보를 위시리스트로 보내기
