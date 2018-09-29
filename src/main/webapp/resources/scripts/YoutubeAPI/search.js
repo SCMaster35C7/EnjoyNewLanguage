@@ -38,7 +38,7 @@ function search(pageCode) {
 		               addVideo += '<div class="item">';
 		               addVideo += '<h6 class="center">' + title + '</h6>';
 		               addVideo += '<div class="video-container z-depth-2">';
-		               addVideo += '<iframe class="video w100" width="640" height="360" src="http://www.youtube.com/embed/'+ videoId
+		               addVideo += '<iframe class="video w100" width="640" height="360" src="https://www.youtube.com/embed/'+ videoId
 		                        + '?enablejsapi=1&rel=0&showinfo=0&autohide=1&controls=1&modestbranding=1" frameborder="0" allowfullscreen></iframe>';
 		               addVideo += '</div>';
 		               addVideo += '<input type="button" class="decideURL btn right" style="margin-top:5px;" data-rno="http://www.youtube.com/embed/'
