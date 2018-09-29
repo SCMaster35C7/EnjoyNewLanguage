@@ -52,10 +52,8 @@ public class WishRepository {
 		map.put("useremail", useremail);
 		map.put("wishtable", wishtable);
 		
-		System.out.println("매쁘"+map);
-		
 		List<WishList> vWishList = wMapper.getParticularWishList(map, bound);
-		System.out.println("매쁘 결과"+vWishList);
+		
 		return vWishList;
 	}
 	

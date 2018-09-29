@@ -42,7 +42,6 @@ public class MemberRepository {
       int result = mapper.insertMember(member);
 
       return result;
-
    }
 
    public int updateStatus(String useremail) {
@@ -64,7 +63,6 @@ public class MemberRepository {
       int result = mapper.updateLastAccess(useremail);
 
       return result;
-
    }
 
    public int updateMember(String useremail, String currpwd, String newpwd, String usernick/* , Member member */) {
@@ -89,7 +87,6 @@ public class MemberRepository {
    }
 
    public Member selectMyInfo(Member member) {
-
       MemberMapper mapper = session.getMapper(MemberMapper.class);
       Member result = mapper.selectMyInfo(member);
 
@@ -100,30 +97,35 @@ public class MemberRepository {
    public List<TestResult> selectLevels(String useremail) {
       MemberMapper mapper = session.getMapper(MemberMapper.class);
       List<TestResult> levelList = mapper.selectLevels(useremail);
+      
       return levelList;
    }
 
    public Integer checkChallengeCount(String useremail) {
       MemberMapper mapper = session.getMapper(MemberMapper.class);
       Integer result = mapper.checkChallengeCount(useremail);
+      
       return result;
    }
 
    public int insertCloseID(String useremail) {
       MemberMapper mapper = session.getMapper(MemberMapper.class);
       int result = mapper.insertCloseID(useremail);
+      
       return result;
    }
 
    public int recoveryID(String useremail) {
       MemberMapper mapper = session.getMapper(MemberMapper.class);
       int result = mapper.recoveryID(useremail);
+      
       return result;
    }
 
    public Member selectInConfirm(String useremail) {
       MemberMapper mapper = session.getMapper(MemberMapper.class);
       Member member = mapper.selectInConfirm(useremail);
+      
       return member;
    }
 

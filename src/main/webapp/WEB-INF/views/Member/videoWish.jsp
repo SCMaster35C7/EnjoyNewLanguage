@@ -35,7 +35,6 @@
 			location.href = "${pageContext.request.contextPath}/"
 		});		
 	});	
-
 	
 	/* $(function() {
 
@@ -63,44 +62,37 @@
 			}
 		});
 	}); */
-
 </script>
 </head>
 <body>
 	<div id="wrapper">
-		 <c:if test="${sessionScope.useremail!=null}">
+		<c:if test="${sessionScope.useremail!=null}">
+			<table border="1">
+				<tr>
+					<td>번호</td>
+					<td>제목</td>
+					<td>작성일자</td>
+					<td>삭제</td>
+				</tr>
 				<c:if test="${empty vWishlist}">
-
-					<table border="1">
-						<tr>
-							<td>영상위시리스트가 비어있습니다.</td>
-						</tr>
-					</table>
+					<tr>
+						<td>영상위시리스트가 비어있습니다.</td>
+					</tr>
 				</c:if>
-
-				<c:if test="${vWishlist != null}">
-
-					<table border="1">
-						<tr>
-							
-							<td>번호</td>
-							<td>제목</td>
-							<td>작성일자</td>
-							<td>삭제</td>
+				<c:if test="${not empty vWishlist}">
+					<c:forEach var="vWishlist" items="${vWishlist}">
+						<tr>								
+							<td>${vWishlist.rnum}</td>								
+							<td><a href="detailEduBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=0" target="_parent">${vWishlist.title}</a></td>
+							<td>${vWishlist.regdate}</td>
+							<td>
+								<input type="button" class="btn waves-effect waves-light" id="btnDeleteVideoWish" value="삭제"/>										
+							</td>
 						</tr>
-						<c:forEach var="vWishlist" items="${vWishlist}">
-							<tr>								
-								<td>${vWishlist.rnum}</td>								
-								<td><a href="detailEduBoard?videoNum=${vWishlist.identificationnum}&currentPage=${navi.currentPage}&useremail=${useremail}&wishtable=0" target="_parent">${vWishlist.title}</a></td>
-								<td>${vWishlist.regdate}</td>
-								<td>
-									<input type="button" class="btn waves-effect waves-light" id="btnDeleteVideoWish" value="삭제"/>										
-								</td>
-							</tr>
-						</c:forEach>
-					</table>
+					</c:forEach>
 				</c:if>
-			</c:if>
+			</table>
+		</c:if>
 			
 		<!-- 페이징 -->
 			<div class="center">

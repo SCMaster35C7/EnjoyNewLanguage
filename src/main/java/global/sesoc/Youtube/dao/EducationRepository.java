@@ -182,6 +182,7 @@ public class EducationRepository {
 	public List<WrongAnswer> selectWrongAnswerList(WrongAnswer wa) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		List<WrongAnswer> result = mapper.selectWrongAnswerList(wa);
+		
 		return result;
 	}
 
@@ -220,18 +221,21 @@ public class EducationRepository {
 	public int deleteAllWishList(String url) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.deleteAllWishList(url);
+		
 		return result;
 	}
 
 	public int deleteUserStudyByURL(String url) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.deleteUserStudyByURL(url);
+		
 		return result;
 	}
 
 	public int deleteVideo(int videoNum) {
 		EducationMapper mapper = session.getMapper(EducationMapper.class);
 		int result = mapper.deleteVideo(videoNum);
+		
 		return result;
 	}
 }

@@ -316,6 +316,7 @@ public class MemberContoller {
       checkIfo.setUseremail(useremail);
       // 갠정보
       Member member = mRepository.selectMyInfo(checkIfo);
+      System.out.println("member : "+member);
       // 갠레벨스
       List<TestResult> levelList = mRepository.selectLevels(useremail);
       
@@ -348,9 +349,10 @@ public class MemberContoller {
       levelArray.add(five);
       
       List<Integer> winningRate = new ArrayList<>();
-      winningRate.add(member.getAllSuccess());
-      winningRate.add(member.getAllFailure());
-      
+      if(member != null) {
+    	  winningRate.add(member.getAllSuccess());
+    	  winningRate.add(member.getAllFailure());
+      }
       model.addAttribute("myInfo", member);
       model.addAttribute("finished", finished);
       model.addAttribute("unfinished", unfinished);

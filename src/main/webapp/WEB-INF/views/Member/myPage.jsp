@@ -560,17 +560,17 @@
 				    </ul>
 				    <div class="tab_Content_Wrap">
 				        <div id="tabContent01" class="tabPage">
-							<iframe style="width: 100%; height: 100%;" src="localhost:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
+							<iframe style="width: 100%; height: 100%;" src="http://www.localhost:9999/Youtube/particularList?wishtable=0&useremail=${sessionScope.useremail}&distinguishNum=1" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>			
 				        </div>
 				        <div id="tabContent02" class="tabPage">
-				           <iframe style="width: 100%; height: 100%;" src="localhost:9999/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
+				           <iframe style="width: 100%; height: 100%;" src="http://www.localhost:9999/Youtube/particularList?wishtable=1&useremail=${sessionScope.useremail}&distinguishNum=2" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>
 				        </div>
 				        <div id="tabContent03" class="tabPage">
-				            <iframe style="width: 100%; height: 100%;" src="localhost:9999/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
+				            <iframe style="width: 100%; height: 100%;" src="http://www.localhost:9999/Youtube/particularList?wishtable=2&useremail=${sessionScope.useremail}&distinguishNum=3" class="myFrame">
 				  				<p>크롬으로 실행해야 제대로 화면에 표시됩니다.</p>
 							</iframe>
 				        </div>
