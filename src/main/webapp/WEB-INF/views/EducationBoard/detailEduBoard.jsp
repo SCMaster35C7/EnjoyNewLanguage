@@ -229,7 +229,26 @@
 			var level = $('#level').val();
 	
 			for (var i = 0; i < correct.length; i++) {
-				if (correct[i] == answer[i].value) {
+				if(answer[i].value.indexOf("'")!=(-1)){
+					if(answer[i].value.length==correct[i].length){
+						if(answer[i].value.replace("'","").toLowerCase()==correct[i].replace("'","").toLowerCase()){
+							correctCount++;
+							answer[i].style.color = "blue";
+							answer[i].readOnly = true;
+						}else{
+						    answer[i].readOnly = true;
+							answer[i].style.color = "red";
+							answer[i].value = ('R: ' + correct[i] + ", W: " + answer[i].value);
+							WronganswerList.push(quizIndex[i]);
+							CorrectanswerList.push(correct[i]);
+							answer[i].size = (correct[i].length * 4);
+							answer[i].readOnly = true;
+						}
+					}
+				}
+				else{
+				
+				if (correct[i].toLowerCase() == answer[i].value.toLowerCase()) {
 					correctCount++;
 					answer[i].style.color = "blue";
 					answer[i].readOnly = true;
@@ -242,6 +261,7 @@
 					answer[i].size = (correct[i].length * 4);
 					answer[i].readOnly = true;
 				}
+			    }
 			}
 	
 			$.ajax({

@@ -44,7 +44,7 @@ public class EducationController {
 		// 수험자id
 		// url : 영상 주소값, correctCount: 정답갯수 testType: 시험 타입(false text true mic),
 		// testlevel: 난이도
-		double successPercent = correctCount / (WronganswerList.length + correctCount);
+		double successPercent = (double)correctCount / (double)(WronganswerList.length + correctCount);
 		TestResult tr = new TestResult();
 		tr.setUseremail(useremail);
 		tr.setUrl(url);

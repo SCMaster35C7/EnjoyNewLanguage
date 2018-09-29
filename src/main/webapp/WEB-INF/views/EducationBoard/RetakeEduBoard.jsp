@@ -189,6 +189,24 @@
 			var WronganswerCount=0;
 			var level=$('#level').val();
 			for(var i=0;i<correct.length;i++){
+				if(answer[i].value.indexOf("'")!=(-1)){
+					if(answer[i].value.length==correct[i].length){
+						if(answer[i].value.replace("'","").toLowerCase()==correct[i].replace("'","").toLowerCase()){
+							correctCount++;
+							answer[i].style.color = "blue";
+							answer[i].readOnly = true;
+						}else{
+						    answer[i].readOnly = true;
+							answer[i].style.color = "red";
+							answer[i].value = ('R: ' + correct[i] + ", W: " + answer[i].value);
+							WronganswerList.push(quizIndex[i]);
+							CorrectanswerList.push(correct[i]);
+							answer[i].size = (correct[i].length * 4);
+							answer[i].readOnly = true;
+						}
+					}
+				}
+				else{
 				if(correct[i]==answer[i].value){
 					CorrectanswerList.push(quizIndex[i]);
 					answer[i].style.color= "blue";
@@ -200,6 +218,7 @@
 					WronganswerCount++;
 					answer[i].size=(correct[i].length*4);
 					answer[i].readOnly=true;
+				}
 				}
 			}
 			//재시험결과 ajax로 전송, 맞은 문제의 경우 오답리스트에서 삭제
