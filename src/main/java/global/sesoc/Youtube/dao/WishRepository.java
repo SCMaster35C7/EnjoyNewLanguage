@@ -66,11 +66,16 @@ public class WishRepository {
 		return result;
 	}
 	//영상, 자막, 더빙 위시리스트에서 삭제
-	public int deleteWish (String title) {
+	public int deleteWish (int wishtable, int identificationnum, String useremail) {
 		WishMapper wMapper = session.getMapper(WishMapper.class);
-		wMapper.deleteWish(title);
+		Map<String, Object> map = new HashMap<>();
+		map.put("wishtable", wishtable);
+		map.put("identificationnum", identificationnum);
+		map.put("useremail", useremail);
 		
-		return 0;
+		int result = wMapper.deleteWish(map);
+		
+		return result;
 	}
 	
 }

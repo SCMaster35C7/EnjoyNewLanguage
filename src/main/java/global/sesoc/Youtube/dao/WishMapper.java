@@ -20,6 +20,6 @@ public interface WishMapper {
 	//영상, 자막, 더빙 위시리스트 등록
 	public int insertWish(WishList wishlist);
 	//영상, 자막, 더빙 위시리스트 삭제	
-	public int deleteWish(String title);	
+	public int deleteWish(Map<String,Object> map);	
 		
 }

@@ -79,13 +79,15 @@
 	</select>
 	
 	<!-- 영상, 자막, 더빙 위시리스트 삭제 -->
-	<delete id="deleteWish" parameterType="string">
+	<delete id="deleteWish" parameterType="map">
 		delete from
 			wishlist
 		where
-			title = #{title}
+			wishtable = #{wishtable}
 		and
 			useremail = #{useremail}
+		and
+			identificationnum = #{identificationnum}
 	</delete>
 	
 	<!-- 영상 위시리스트 등록 -->	

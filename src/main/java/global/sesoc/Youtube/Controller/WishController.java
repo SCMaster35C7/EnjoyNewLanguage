@@ -42,7 +42,6 @@ public class WishController {
 		int totalRecordCount = wRepository.getTotalCount(wishtable, useremail);
 		PageNavigator navi = new PageNavigator(currentPage, totalRecordCount, 5);
 		List<WishList> vWishlist =  wRepository.getParticularWishList(wishtable, useremail, navi.getStartRecord(), navi.getcountPerPage());
-		System.out.println(vWishlist);
 		
 		model.addAttribute("vWishlist", vWishlist);
 		model.addAttribute("wishtable", wishtable);
@@ -65,13 +64,16 @@ public class WishController {
 	 * @param session
 	 * @return
 	 */	
-	@RequestMapping(value = "/deleteWish", method = RequestMethod.POST)
-	public String deleteWish(String title) {
-
-		wRepository.deleteWish(title);
+	@RequestMapping(value = "/deleteWish", method = RequestMethod.GET)
+	public @ResponseBody String deleteWish(int wishtable, int identificationnum, String useremail) {
+		System.out.println("wishtable = "+wishtable+", identificationnum="+identificationnum+", useremail="+useremail);
 		
-	return "redirect:/Member/wishList";
-
+		int result = wRepository.deleteWish(wishtable, identificationnum, useremail);
+		System.out.println(result);
+		if(result > 0)
+			return "success";
+		else
+			return "failure";
 	}
 
 
@@ -83,10 +85,8 @@ public class WishController {
 	 */	
 	@RequestMapping(value = "/insertVideoWish", method = RequestMethod.POST)
 	public @ResponseBody String insertVideoWish(@RequestBody WishList wishlist) {
-		System.out.println(wishlist);
 		//WishList wishlist = wRepository.selectVideoWish(videoNum);
 		WishList wList = wRepository.selectOneFromWishList(wishlist);
-		System.out.println("대상:"+wList);
 		if(wList == null) {
 			int result = wRepository.insertWish(wishlist);
 			
@@ -108,7 +108,6 @@ public class WishController {
 	 */	
 	@RequestMapping(value = "/insertSubWish", method = RequestMethod.POST)
 	public @ResponseBody String insertSubWish(@RequestBody WishList wishlist) {
-		System.out.println(wishlist);
 		//WishList wishlist = wRepository.selectVideoWish(videoNum);
 		WishList wList = wRepository.selectOneFromWishList(wishlist);
 		
@@ -132,7 +131,6 @@ public class WishController {
 	 */	
 	@RequestMapping(value = "/insertDubWish", method = RequestMethod.POST)
 	public @ResponseBody String insertDubWish(@RequestBody WishList wishlist) {
-		System.out.println(wishlist);
 		//WishList wishlist = wRepository.selectVideoWish(videoNum);
 		WishList wList = wRepository.selectOneFromWishList(wishlist);
 		
@@ -147,5 +145,4 @@ public class WishController {
 		
 		return "failure";
 	}	
-
 }
